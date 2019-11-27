@@ -9,15 +9,13 @@ $census-accent-green: rgb(0, 153, 100);
 $census-accent-purple: rgb(103, 30, 137);
 $census-accent-teal: rgb(0, 149, 168);
 
-$title-font: "Roboto";
-$subtitle-font: "Roboto";
-$number-font: "Roboto";
-$body-font: "Lora";
-
-.primary {
-  background-color: #112e51 !important;
-  border-color: #112e51 !important;
-}
+$primary: "#112e51";
+$secondary: "#78909c";
+$accent: "#82b1ff";
+$error: "#ff5252";
+$info: "#2196f3";
+$success: "#4caf50";
+$warning: "#ffc107";
 
 /* roboto-regular - latin */
 @font-face {
@@ -36,23 +34,4 @@ $body-font: "Lora";
       format("truetype"),
     /* Safari, Android, iOS */
       url("~@/assets/fonts/roboto-v20-latin-regular.svg#Roboto") format("svg"); /* Legacy iOS */
-}
-
-/* lora-regular - latin */
-@font-face {
-  font-family: "Lora";
-  font-style: normal;
-  font-weight: 400;
-  src: url("~@/assets/fonts/lora-v14-latin-regular.eot"); /* IE9 Compat Modes */
-  src: local("Lora"), local("Lora-Regular"),
-    url("~@/assets/fonts/lora-v14-latin-regular.eot?#iefix")
-      format("embedded-opentype"),
-    /* IE6-IE8 */ url("~@/assets/fonts/lora-v14-latin-regular.woff2")
-      format("woff2"),
-    /* Super Modern Browsers */
-      url("~@/assets/fonts/lora-v14-latin-regular.woff") format("woff"),
-    /* Modern Browsers */ url("~@/assets/fonts/lora-v14-latin-regular.ttf")
-      format("truetype"),
-    /* Safari, Android, iOS */
-      url("~@/assets/fonts/lora-v14-latin-regular.svg#Lora") format("svg"); /* Legacy iOS */
 }
