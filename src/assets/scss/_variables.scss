@@ -1,0 +1,58 @@
+$census-blue: rgb(32, 84, 147);
+$census-background1: rgb(167, 192, 205);
+$census-background2: rgb(120, 144, 156);
+$census-background3: rgb(75, 99, 110);
+$census-accent-red: rgb(155, 39, 67);
+$census-accent-blue: rgb(0, 87, 184);
+$census-accent-orange: rgb(255, 112, 67);
+$census-accent-green: rgb(0, 153, 100);
+$census-accent-purple: rgb(103, 30, 137);
+$census-accent-teal: rgb(0, 149, 168);
+
+$title-font: "Roboto";
+$subtitle-font: "Roboto";
+$number-font: "Roboto";
+$body-font: "Lora";
+
+.primary {
+  background-color: #112e51 !important;
+  border-color: #112e51 !important;
+}
+
+/* roboto-regular - latin */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: url("~@/assets/fonts/roboto-v20-latin-regular.eot"); /* IE9 Compat Modes */
+  src: local("Roboto"), local("Roboto-Regular"),
+    url("~@/assets/fonts/roboto-v20-latin-regular.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("~@/assets/fonts/roboto-v20-latin-regular.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("~@/assets/fonts/roboto-v20-latin-regular.woff") format("woff"),
+    /* Modern Browsers */ url("~@/assets/fonts/roboto-v20-latin-regular.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("~@/assets/fonts/roboto-v20-latin-regular.svg#Roboto") format("svg"); /* Legacy iOS */
+}
+
+/* lora-regular - latin */
+@font-face {
+  font-family: "Lora";
+  font-style: normal;
+  font-weight: 400;
+  src: url("~@/assets/fonts/lora-v14-latin-regular.eot"); /* IE9 Compat Modes */
+  src: local("Lora"), local("Lora-Regular"),
+    url("~@/assets/fonts/lora-v14-latin-regular.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("~@/assets/fonts/lora-v14-latin-regular.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("~@/assets/fonts/lora-v14-latin-regular.woff") format("woff"),
+    /* Modern Browsers */ url("~@/assets/fonts/lora-v14-latin-regular.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("~@/assets/fonts/lora-v14-latin-regular.svg#Lora") format("svg"); /* Legacy iOS */
+}
