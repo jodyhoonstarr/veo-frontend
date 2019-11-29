@@ -1,7 +1,8 @@
 <template>
-  <v-footer absolute color="primary" class="font-weight-medium">
-    <v-col class="text-center" cols="12">
-      {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+  <v-footer absolute color="primary" elevation="0" class="font-weight-medium">
+    <v-col class="text-center white--text" cols="12">
+      {{ new Date().getFullYear() }}
+      <strong>Vuetify</strong>
     </v-col>
   </v-footer>
 </template>
