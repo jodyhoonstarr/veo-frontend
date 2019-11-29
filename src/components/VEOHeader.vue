@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app color="primary" elevation="0">
-    <v-spacer class="hidden-md-and-up"></v-spacer>
+    <v-spacer class="hidden-sm-and-up"></v-spacer>
     <v-toolbar-title class="ml-0 pl-md-3">
       <a href="https://www.census.gov">
         <v-img
@@ -12,7 +12,7 @@
         />
       </a>
     </v-toolbar-title>
-    <v-spacer class="hidden-md-and-up"></v-spacer>
+    <v-spacer class="hidden-sm-and-up"></v-spacer>
   </v-app-bar>
 </template>
 
