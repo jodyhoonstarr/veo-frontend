@@ -1,23 +1,23 @@
 <template>
   <v-app>
-    <VEOHeader />
-    <VEOContent />
-    <VEOFooter />
+    <Header />
+    <Content />
+    <Footer />
   </v-app>
 </template>
 
 <script>
-import VEOContent from "./components/VEOContent";
-import VEOHeader from "./components/VEOHeader";
-import VEOFooter from "./components/VEOFooter";
+import Content from "./components/Content.vue";
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
 
 export default {
   name: "App",
 
   components: {
-    VEOHeader,
-    VEOContent,
-    VEOFooter
+    Header,
+    Content,
+    Footer
   },
 
   data: () => ({
