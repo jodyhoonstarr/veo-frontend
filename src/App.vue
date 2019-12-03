@@ -1,10 +1,8 @@
 <template>
   <v-app>
-    <v-content>
-      <VEOHeader />
-      <VEOContent />
-      <VEOFooter />
-    </v-content>
+    <VEOHeader />
+    <VEOContent />
+    <VEOFooter />
   </v-app>
 </template>
 
