@@ -1,27 +1,29 @@
 <template>
   <v-app>
     <Header />
-    <Content />
+    <v-content>
+      <Navbar />
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-content>
+
     <Footer />
   </v-app>
 </template>
 
 <script>
-import Content from "./components/Content.vue";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
+import Navbar from "./components/Navbar.vue";
 
 export default {
   name: "App",
 
   components: {
     Header,
-    Content,
-    Footer
-  },
-
-  data: () => ({
-    //
-  })
+    Footer,
+    Navbar
+  }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="primary py-5">
+  <v-footer app class="primary py-5">
     <v-card
       flat
       fluid
