@@ -1,16 +1,16 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-import AFQT from "../views/AFQT.vue";
-import Age from "../views/Age.vue";
-import Education from "../views/Education.vue";
-import Experience from "../views/Experience.vue";
-import Occupation from "../views/Occupation.vue";
-import Paygrade from "../views/Paygrade.vue";
-import RaceEthincity from "../views/RaceEthnicity.vue";
-import Sector from "../views/Sector.vue";
-import Sex from "../views/Sex.vue";
-import State from "../views/State.vue";
+import Home from "@/views/Home.vue";
+import AFQT from "@/views/AFQT.vue";
+import Age from "@/views/Age.vue";
+import Education from "@/views/Education.vue";
+import Experience from "@/views/Experience.vue";
+import Occupation from "@/views/Occupation.vue";
+import Paygrade from "@/views/Paygrade.vue";
+import RaceEthincity from "@/views/RaceEthnicity.vue";
+import Sector from "@/views/Sector.vue";
+import Sex from "@/views/Sex.vue";
+import State from "@/views/State.vue";
 
 Vue.use(VueRouter);
 
