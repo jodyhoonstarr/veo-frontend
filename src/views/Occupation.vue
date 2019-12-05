@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>This is the Occupation page</h1>
+    <h1 class="text-center">This is the Occupation page</h1>
     <DataLayout />
   </div>
 </template>
