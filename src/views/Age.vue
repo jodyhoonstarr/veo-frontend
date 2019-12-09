@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "age"
+  name: "Age"
 };
 </script>

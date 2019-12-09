@@ -8,7 +8,7 @@
 <script>
 import DataLayout from "@/components/DataLayout.vue";
 export default {
-  name: "occupation",
+  name: "Occupation",
   components: {
     DataLayout
   }

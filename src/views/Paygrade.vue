@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "paygrade"
+  name: "Paygrade"
 };
 </script>

@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "sector"
+  name: "Sector"
 };
 </script>

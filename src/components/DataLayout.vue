@@ -1,6 +1,7 @@
 <template>
   <v-container fluid>
     <v-layout text-center row wrap>
+      //TODO remove v-layout is from v1
       <v-container pa-0 class="grey lighten-5">
         <v-row dense>
           <v-col order-xs="2" order-sm="1" cols="12" xs="12" sm="4">

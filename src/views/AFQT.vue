@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "afqt"
+  name: "AFQT"
 };
 </script>

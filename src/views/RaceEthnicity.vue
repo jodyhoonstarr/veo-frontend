@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "raceethnicity"
+  name: "RaceEthnicity"
 };
 </script>

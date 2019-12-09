@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "state"
+  name: "State"
 };
 </script>

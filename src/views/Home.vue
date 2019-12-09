@@ -4,13 +4,9 @@
     <v-card class="mx-auto" max-width="60%">
       <v-card-text>
         <div>Content</div>
-        <p class="display-1 text--primary">
-          We put some content here
-        </p>
+        <p class="display-1 text--primary">We put some content here</p>
         <p>Description of VEO</p>
-        <div class="pb-3 text--primary">
-          Some overview documentation and references
-        </div>
+        <div class="pb-3 text--primary">Some overview documentation and references</div>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet,
           beatae! Eum quo, deleniti minima atque maxime odit nesciunt facere
@@ -24,6 +20,6 @@
 
 <script>
 export default {
-  name: "home"
+  name: "Home"
 };
 </script>
