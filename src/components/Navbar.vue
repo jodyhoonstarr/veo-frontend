@@ -6,19 +6,27 @@
         next-icon="mdi-arrow-right-bold-box-outline"
         prev-icon="mdi-arrow-left-bold-box-outline"
         show-arrows
+        v-model="activeTab"
       >
         <v-tabs-slider></v-tabs-slider>
 
         <template v-for="tab in tabs">
           <!-- tab with no children/dropdown -->
           <v-tab
+            @click="setActiveTab(tab.route)"
             v-if="typeof tab.children === 'undefined' || tab.children.length === 0"
             :key="tab.label"
             :to="tab.route"
           >{{ tab.label }}</v-tab>
 
           <!-- tab with children/dropdown -->
-          <v-tab v-else :key="tab.label" :to="tab.route" class="px-0">
+          <v-tab
+            @click.capture="$event.preventDefault()"
+            v-else
+            :key="tab.label"
+            :to="tab.route"
+            class="px-0"
+          >
             <v-menu bottom left offset-y transition="slide-y-transition">
               <template v-slot:activator="{ on }">
                 <v-btn
@@ -37,6 +45,7 @@
 
               <v-list>
                 <v-list-item
+                  @click="setActiveTab(tab.route)"
                   v-for="child in tab.children"
                   :key="child.label"
                   :to="child.route"
@@ -76,8 +85,17 @@ export default {
         { route: "/experience", label: "Experience" },
         { route: "/education", label: "Education" },
         { route: "/afqt", label: "AFQT" }
-      ]
+      ],
+      activeTab: null
     };
+  },
+  methods: {
+    setActiveTab: function(tab) {
+      this.activeTab = tab;
+    }
+  },
+  mounted() {
+    this.activeTab = this.$route.path;
   }
 };
 </script>
