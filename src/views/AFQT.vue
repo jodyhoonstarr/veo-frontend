@@ -13,8 +13,6 @@
         ></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
-        <!-- the commented section is the form of v-model -->
-        <!--DropDown-- :value="selectedCohorts" @input="(e) => {selectedCohorts = e}"></!--DropDown-->
         <DropDown
           label="Cohort"
           hint="Year of discharge"
