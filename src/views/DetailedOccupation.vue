@@ -120,7 +120,7 @@ export default {
         {
           id: "123",
           label:
-            "Analysis / Electronic Countermeasures / Intercept Operators (Code and Non-Code) / Signal Intelligence/Electronic Warfare, General",
+            "Analysis / Electronic Countermeasures / Intercept Operators (Code and Non-Code) / Signal Intelligence / Electronic Warfare, General",
           details:
             "Cryptologic Network Warfare Specialist (35Q), Communications Interceptor/Locator (98H), EW/SIGINT Morse Interceptor (05H), EW/SIGINT Non-Morse Interceptor (05K), Signals Collection/Identification Analyst (98K), Electronic Warfare Specialist (29E), Signals Intelligence (SIGINT) Senior Sergeant/SIGINT Chief (35Z), Signals Intelligence Analyst (98C), Aerial Sensor Specialist (RC) (17L), Common Ground Station (CGS) Analyst (35H), EW/Cryptanalytic Cryptanalyst (98B), Signals Collector/Analyst (35S), Signal Security Specialist (05G), Multi-Discipline Counter-Intelligence Operator/Analyst (97G), EW/SIGINT Emitter Identifier/Locator (05D), Signals Intelligence (SIGINT) Voice Interceptor (35P), Emitter Locator/Identifier (98D), Signals Collector/Analyst (98Y), Signals Intelligence Analyst (35N), Electronic Intelligence Interceptor/Analyst (98J), Multi-Sensor Operator (98P), Multi Sensor Operator (35U), Electronic Warfare Specialist (17E), Signals Intelligence (Electronic Warfare) Senior Sergeant/Chief (98Z), Common Ground Station Operator (96H), Chief Signals Intelligence (SIGINT) Sergeant (35V), Cryptologic Communications Interceptor/Locator (98G)"
         },
