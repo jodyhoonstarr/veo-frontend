@@ -44,7 +44,7 @@ export default {
         },
         {
           id: "143",
-          label: "Divers / EOD/UDT",
+          label: "Divers / EOD / UDT",
           details:
             "Diver (00B), Explosive Ordnance Disposal Specialist (89D), Diver (21D), Diver (12D), Explosive Ordnance Disposal Specialist (55D)"
         },
@@ -224,7 +224,7 @@ export default {
         },
         {
           id: "153",
-          label: "Operators/Analysts / Programmers",
+          label: "Operators / Analysts / Programmers",
           details:
             "Card & Tape Writer (71U), Information Systems Chief (74Z), Information Systems Chief (25Y), Information Technology Specialist (25B), Computer/Machine Operator (74D), Information Systems Operator-Analyst (74B), Computer Systems Operator (74E), Software Analyst (74F)"
         },
