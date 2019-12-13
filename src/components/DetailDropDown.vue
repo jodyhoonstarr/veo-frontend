@@ -32,7 +32,12 @@
           v-html="parent.genFilteredText(item.details)"
           wrap
         ></p>
-        <p v-else class="grey--text caption mb-0 pb-1" v-html="item.details" wrap></p>
+        <v-list-item-subtitle
+          v-else
+          class="grey--text caption mb-0 pb-1"
+          v-html="item.details"
+          wrap
+        ></v-list-item-subtitle>
         <v-divider></v-divider>
       </v-list-item-content>
     </template>

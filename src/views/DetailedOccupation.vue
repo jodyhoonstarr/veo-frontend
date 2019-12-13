@@ -250,7 +250,7 @@ export default {
         {
           id: "130",
           label:
-            "Behavioral Sciences/Mental Health Services / Licensed Practical Nurse / Medical Care and Treatment, General / Operating Room Services / Orthopedic Services / Physical/Occupational Therapy Services / Respiratory Therapy Services",
+            "Behavioral Sciences / Mental Health Services / Licensed Practical Nurse / Medical Care and Treatment, General / Operating Room Services / Orthopedic Services / Physical/Occupational Therapy Services / Respiratory Therapy Services",
           details:
             "Chief Medical NCO (68Z), Cardiac Specialist (91N), Medical Specialist (91A), Orthopedic Specialist (68B), Ear, Nose, & Throat (ENT) Specialist (91U), Physical Therapy Specialist (68F), Operating Room Specialist (68D), Chief Medical NCO (91Z), Cardiovascular Specialist (68N), Practical Nurse (91C), Behavioral Science Specialist (91G), Respiratory Specialist (68V), Mental Health Specialist (91X), Orthotic Specialist (42C), Behavioral Health Specialist (68X), Occupational Therapy Specialist (68L), Occupational Therapy Specialist (91L), Respiratory Specialist (91V), Health Care Specialist (91W), Physical Therapy Specialist (91J), Orthopedic Specialist (91H), Combat Medic Specialist (68W), Ear, Nose, and Throat (ENT) Specialist (68U), Practical Nursing Specialist (68C), Operating Room Specialist (91D), Physical Reconditioning Specialist (91K), Psychiatric Specialist (91F)"
         },
