@@ -237,7 +237,7 @@ export default {
         {
           id: "124",
           label:
-            "Counterintelligence / Image Interpretation / Language Interrogation/Interpretation / Operational Intelligence",
+            "Counterintelligence / Image Interpretation / Language Interrogation / Interpretation / Operational Intelligence",
           details:
             "Human Intelligence Collector (97E), Area Intelligence Specialist (97C), Counter Intelligence Agent (35L), Psychological Operations Specialist (96F), Expert Linguist (04C), Intelligence Senior Sergeant (96Z), Intelligence Senior Sergeant/Chief Intelligence Sergeant (35X), Counterintelligence Agent (97B), Intelligence Analyst (35F), Translator-Interpreter (04B), Interrogator (96C), Intelligence Analyst (96B), Chief Counterintelligence/Human Intelligence Sergeant (35Y), Military Intelligence Coordinator (97D), Ground Surveillance Systems Operator (96R), Interpreter/Translator (09L), Psychological Operations Specialist (37F), Attache Specialist (71S), Human Intelligence Collector (35M), Counterintelligence/Human Intelligence, Senior Sergeant (97Z), Translator/Interpreter (RC) (97L), Imagery Analyst (96D), Geospatial Intelligence Imagery Analyst (35G)"
         },
