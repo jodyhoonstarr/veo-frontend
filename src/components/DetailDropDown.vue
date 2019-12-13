@@ -18,7 +18,7 @@
       </v-chip>
       <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
     </template>
-    <template three-line v-slot:item="{ parent, item, toggle }">
+    <template three-line v-slot:item="{ parent, item }">
       <v-list-item-content class="py-0">
         <v-list-item-title
           v-if="search && item.label.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) > -1"
@@ -27,12 +27,12 @@
         ></v-list-item-title>
         <v-list-item-title v-else class="pt-1" v-html="item.label"></v-list-item-title>
         <p
-          v-if="search && item.mos.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) > -1"
+          v-if="search && item.details.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) > -1"
           class="grey--text caption mb-0 pb-1"
-          v-html="parent.genFilteredText(item.mos)"
+          v-html="parent.genFilteredText(item.details)"
           wrap
         ></p>
-        <p v-else class="grey--text caption mb-0 pb-1" v-html="item.mos" wrap></p>
+        <p v-else class="grey--text caption mb-0 pb-1" v-html="item.details" wrap></p>
         <v-divider></v-divider>
       </v-list-item-content>
     </template>
@@ -41,6 +41,7 @@
 
 <script>
 export default {
+  name: "DetailDropDown",
   props: ["value", "items", "label", "multiple", "hint"],
   data() {
     return {
@@ -55,7 +56,9 @@ export default {
       return (
         item.label.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) >
           -1 ||
-        item.mos.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) > -1
+        item.details
+          .toLocaleLowerCase()
+          .indexOf(queryText.toLocaleLowerCase()) > -1
       );
     }
   }
