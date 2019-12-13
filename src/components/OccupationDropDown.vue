@@ -12,32 +12,28 @@
     @input="dropDownSelect"
     :search-input.sync="search"
   >
-    <!-- <template v-slot:selection="{ item }">
-      <v-chip close @click:close>{{item.label}}</v-chip>
-    </template>-->
-    <!-- <template v-slot:selection="item">
-      <v-chip
-        v-bind="item.attrs"
-        :input-value="item.selected"
-        close
-        @click="item.select"
-        @click:close="remove(item.item)"
-      >{{ item.label }}</v-chip>
-    </template>-->
-    <template v-slot:item="{ parent, item }">
-      <v-list-item-content>
-        <p
+    <template v-slot:selection="{ item, index }">
+      <v-chip v-if="index <= 2">
+        <span>{{ item.label }}</span>
+      </v-chip>
+      <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
+    </template>
+    <template three-line v-slot:item="{ parent, item, toggle }">
+      <v-list-item-content class="py-0">
+        <v-list-item-title
           v-if="search && item.label.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) > -1"
-          class="occ"
+          class="pt-1"
           v-html="parent.genFilteredText(item.label)"
-        ></p>
-        <p v-else class="occ" v-html="item.label"></p>
+        ></v-list-item-title>
+        <v-list-item-title v-else class="pt-1" v-html="item.label"></v-list-item-title>
         <p
           v-if="search && item.mos.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) > -1"
-          class="mos grey--text caption mb-0"
+          class="grey--text caption mb-0 pb-1"
           v-html="parent.genFilteredText(item.mos)"
+          wrap
         ></p>
-        <p v-else class="mos grey--text caption mb-0" v-html="item.mos"></p>
+        <p v-else class="grey--text caption mb-0 pb-1" v-html="item.mos" wrap></p>
+        <v-divider></v-divider>
       </v-list-item-content>
     </template>
   </v-autocomplete>

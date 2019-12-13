@@ -9,6 +9,7 @@
           :items="occupations"
           v-model="selectedOccupations"
           multiple
+          close
         ></OccupationDropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
@@ -33,8 +34,6 @@ export default {
   data() {
     return {
       //TODO get full list of detailed occs
-      //TODO consider removing hardcode
-      //TODO duplicates being returned to state
       selectedOccupations: [],
       selectedCohort: [],
       occupations: [
