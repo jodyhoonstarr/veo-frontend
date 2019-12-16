@@ -1,14 +1,38 @@
 <template>
   <div>
     <h1 class="text-center">This is the Experience page</h1>
+    <SelectBar>
+      <v-col cols="12" xs="12" sm="9">
+        <DropDown
+          label="Experience"
+          hint="Select Experience Level"
+          :items="experienceCategories"
+          v-model="selectedExperienceCategory"
+          multiple
+          close
+        ></DropDown>
+      </v-col>
+      <v-col cols="12" xs="12" sm="3">
+        <DropDown label="Cohort" hint="Year of discharge" :items="cohorts" v-model="selectedCohort"></DropDown>
+      </v-col>
+    </SelectBar>
   </div>
 </template>
 
 <script>
+import SelectBar from "@/components/SelectBar.vue";
+import DropDown from "@/components/DropDown.vue";
+
 export default {
   name: "Experience",
+  components: {
+    SelectBar,
+    DropDown
+  },
   data() {
     return {
+      selectedExperienceCategory: null,
+      selectedCohort: null,
       experienceCategories: [
         { id: "A1", label: "0-5 years" },
         { id: "A2", label: "6-19 years" },
