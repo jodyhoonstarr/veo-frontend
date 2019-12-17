@@ -1,14 +1,43 @@
 <template>
   <div>
     <h1 class="text-center">This is the Paygrade page</h1>
+    <SelectBar>
+      <v-col cols="12" xs="12" sm="9">
+        <DropDown
+          label="Pay Grade"
+          hint="Pay grade"
+          :items="paygrades"
+          v-model="selectedPaygrade"
+          multiple
+          close
+        ></DropDown>
+      </v-col>
+      <v-col cols="12" xs="12" sm="3">
+        <DropDown
+          label="Cohort"
+          hint="Year of discharge"
+          :items="cohorts"
+          v-model="selectedCohort"
+        ></DropDown>
+      </v-col>
+    </SelectBar>
   </div>
 </template>
 
 <script>
+import SelectBar from "@/components/SelectBar.vue";
+import DropDown from "@/components/DropDown.vue";
+
 export default {
   name: "Paygrade",
+  components: {
+    SelectBar,
+    DropDown
+  },
   data() {
     return {
+      selectedPaygrade: null,
+      selectedCohort: null,
       paygrades: [
         { id: "E1", label: "Private" },
         { id: "E2", label: "Private (PV2)" },
