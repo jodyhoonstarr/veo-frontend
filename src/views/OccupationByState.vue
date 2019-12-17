@@ -1,14 +1,54 @@
 <template>
   <div>
     <h1 class="text-center">This is the Occupation by State page</h1>
+    <SelectBar>
+      <v-col cols="12" xs="12" sm="4">
+        <DropDown
+          label="State"
+          hint="Select State"
+          :items="states"
+          v-model="selectedState"
+          multiple
+          close
+        ></DropDown>
+      </v-col>
+      <v-col cols="12" xs="12" sm="5">
+        <DropDown
+          label="Occupation"
+          hint="Select Occupation"
+          :items="occupations"
+          v-model="selectedOccupation"
+          multiple
+          close
+        ></DropDown>
+      </v-col>
+      <v-col cols="12" xs="12" sm="3">
+        <DropDown
+          label="Cohort"
+          hint="Year of discharge"
+          :items="cohorts"
+          v-model="selectedCohort"
+        ></DropDown>
+      </v-col>
+    </SelectBar>
   </div>
 </template>
 
 <script>
+import SelectBar from "@/components/SelectBar.vue";
+import DropDown from "@/components/DropDown.vue";
+
 export default {
   name: "OccupationByState",
+  components: {
+    SelectBar,
+    DropDown
+  },
   data() {
     return {
+      selectedOccupation: null,
+      selectedState: null,
+      selectedCohort: null,
       occupations: [
         { id: "10X", label: "Infantry, Gun Crews, and Seamanship Specialists" },
         { id: "11X", label: "Electronic Equipment Repairers" },
