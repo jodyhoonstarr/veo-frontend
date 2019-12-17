@@ -16,18 +16,34 @@
       <v-chip v-if="index <= 2">
         <span>{{ item.label }}</span>
       </v-chip>
-      <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
+      <span v-if="index === 3" class="grey--text caption"
+        >(+{{ value.length - 3 }} others)</span
+      >
     </template>
     <template three-line v-slot:item="{ parent, item }">
       <v-list-item-content class="py-0">
         <v-list-item-title
-          v-if="search && item.label.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) > -1"
+          v-if="
+            search &&
+              item.label
+                .toLocaleLowerCase()
+                .indexOf(search.toLocaleLowerCase()) > -1
+          "
           class="pt-1"
           v-html="parent.genFilteredText(item.label)"
         ></v-list-item-title>
-        <v-list-item-title v-else class="pt-1" v-html="item.label"></v-list-item-title>
+        <v-list-item-title
+          v-else
+          class="pt-1"
+          v-html="item.label"
+        ></v-list-item-title>
         <p
-          v-if="search && item.details.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) > -1"
+          v-if="
+            search &&
+              item.details
+                .toLocaleLowerCase()
+                .indexOf(search.toLocaleLowerCase()) > -1
+          "
           class="grey--text caption mb-0 pb-1"
           v-html="parent.genFilteredText(item.details)"
           wrap
@@ -36,7 +52,6 @@
           v-else
           class="grey--text caption mb-0 pb-1"
           v-html="item.details"
-          wrap
         ></v-list-item-subtitle>
         <v-divider></v-divider>
       </v-list-item-content>
@@ -69,4 +84,3 @@ export default {
   }
 };
 </script>
-
