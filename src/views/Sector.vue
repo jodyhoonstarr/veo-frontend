@@ -1,14 +1,43 @@
 <template>
   <div>
     <h1 class="text-center">This is the Sector page</h1>
+    <SelectBar>
+      <v-col cols="12" xs="12" sm="9">
+        <DropDown
+          label="Sector"
+          hint="NAICS 2-Digit Sector"
+          :items="sectors"
+          v-model="selectedSector"
+          multiple
+          close
+        ></DropDown>
+      </v-col>
+      <v-col cols="12" xs="12" sm="3">
+        <DropDown
+          label="Cohort"
+          hint="Year of discharge"
+          :items="cohorts"
+          v-model="selectedCohort"
+        ></DropDown>
+      </v-col>
+    </SelectBar>
   </div>
 </template>
 
 <script>
+import SelectBar from "@/components/SelectBar.vue";
+import DropDown from "@/components/DropDown.vue";
+
 export default {
   name: "Sector",
+  components: {
+    SelectBar,
+    DropDown
+  },
   data() {
     return {
+      selectedSector: null,
+      selectedCohort: null,
       sectors: [
         { id: "11", label: "Agriculture, Forestry, Fishing and Hunting" },
         { id: "21", label: "Mining, Quarrying, and Oil and Gas Extraction" },
