@@ -1,14 +1,43 @@
 <template>
   <div>
     <h1 class="text-center">This is the State page</h1>
+    <SelectBar>
+      <v-col cols="12" xs="12" sm="9">
+        <DropDown
+          label="State"
+          hint="State"
+          :items="states"
+          v-model="selectedState"
+          multiple
+          close
+        ></DropDown>
+      </v-col>
+      <v-col cols="12" xs="12" sm="3">
+        <DropDown
+          label="Cohort"
+          hint="Year of discharge"
+          :items="cohorts"
+          v-model="selectedCohort"
+        ></DropDown>
+      </v-col>
+    </SelectBar>
   </div>
 </template>
 
 <script>
+import SelectBar from "@/components/SelectBar.vue";
+import DropDown from "@/components/DropDown.vue";
+
 export default {
   name: "State",
+  components: {
+    SelectBar,
+    DropDown
+  },
   data() {
     return {
+      selectedState: null,
+      selectedCohort: null,
       states: [
         { id: "01", label: "Alabama" },
         { id: "02", label: "Alaska" },
