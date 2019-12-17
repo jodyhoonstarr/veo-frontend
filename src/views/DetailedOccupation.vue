@@ -13,7 +13,12 @@
         ></DetailDropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
-        <DropDown label="Cohort" hint="Year of discharge" :items="cohorts" v-model="selectedCohort"></DropDown>
+        <DropDown
+          label="Cohort"
+          hint="Year of discharge"
+          :items="cohorts"
+          v-model="selectedCohort"
+        ></DropDown>
       </v-col>
     </SelectBar>
   </div>
@@ -120,7 +125,7 @@ export default {
         {
           id: "123",
           label:
-            "Analysis / Electronic Countermeasures / Intercept Operators (Code and Non-Code) / Signal Intelligence / Electronic Warfare, General",
+            "Analysis / Electronic Countermeasures / Intercept Operators (Code and Non-Code) / Signal Intelligence/Electronic Warfare, General",
           details:
             "Cryptologic Network Warfare Specialist (35Q), Communications Interceptor/Locator (98H), EW/SIGINT Morse Interceptor (05H), EW/SIGINT Non-Morse Interceptor (05K), Signals Collection/Identification Analyst (98K), Electronic Warfare Specialist (29E), Signals Intelligence (SIGINT) Senior Sergeant/SIGINT Chief (35Z), Signals Intelligence Analyst (98C), Aerial Sensor Specialist (RC) (17L), Common Ground Station (CGS) Analyst (35H), EW/Cryptanalytic Cryptanalyst (98B), Signals Collector/Analyst (35S), Signal Security Specialist (05G), Multi-Discipline Counter-Intelligence Operator/Analyst (97G), EW/SIGINT Emitter Identifier/Locator (05D), Signals Intelligence (SIGINT) Voice Interceptor (35P), Emitter Locator/Identifier (98D), Signals Collector/Analyst (98Y), Signals Intelligence Analyst (35N), Electronic Intelligence Interceptor/Analyst (98J), Multi-Sensor Operator (98P), Multi Sensor Operator (35U), Electronic Warfare Specialist (17E), Signals Intelligence (Electronic Warfare) Senior Sergeant/Chief (98Z), Common Ground Station Operator (96H), Chief Signals Intelligence (SIGINT) Sergeant (35V), Cryptologic Communications Interceptor/Locator (98G)"
         },
@@ -224,7 +229,7 @@ export default {
         },
         {
           id: "153",
-          label: "Operators / Analysts / Programmers",
+          label: "Operators/Analysts / Programmers",
           details:
             "Card & Tape Writer (71U), Information Systems Chief (74Z), Information Systems Chief (25Y), Information Technology Specialist (25B), Computer/Machine Operator (74D), Information Systems Operator-Analyst (74B), Computer Systems Operator (74E), Software Analyst (74F)"
         },
@@ -237,7 +242,7 @@ export default {
         {
           id: "124",
           label:
-            "Counterintelligence / Image Interpretation / Language Interrogation / Interpretation / Operational Intelligence",
+            "Counterintelligence / Image Interpretation / Language Interrogation/Interpretation / Operational Intelligence",
           details:
             "Human Intelligence Collector (97E), Area Intelligence Specialist (97C), Counter Intelligence Agent (35L), Psychological Operations Specialist (96F), Expert Linguist (04C), Intelligence Senior Sergeant (96Z), Intelligence Senior Sergeant/Chief Intelligence Sergeant (35X), Counterintelligence Agent (97B), Intelligence Analyst (35F), Translator-Interpreter (04B), Interrogator (96C), Intelligence Analyst (96B), Chief Counterintelligence/Human Intelligence Sergeant (35Y), Military Intelligence Coordinator (97D), Ground Surveillance Systems Operator (96R), Interpreter/Translator (09L), Psychological Operations Specialist (37F), Attache Specialist (71S), Human Intelligence Collector (35M), Counterintelligence/Human Intelligence, Senior Sergeant (97Z), Translator/Interpreter (RC) (97L), Imagery Analyst (96D), Geospatial Intelligence Imagery Analyst (35G)"
         },
@@ -250,7 +255,7 @@ export default {
         {
           id: "130",
           label:
-            "Behavioral Sciences / Mental Health Services / Licensed Practical Nurse / Medical Care and Treatment, General / Operating Room Services / Orthopedic Services / Physical/Occupational Therapy Services / Respiratory Therapy Services",
+            "Behavioral Sciences/Mental Health Services / Licensed Practical Nurse / Medical Care and Treatment, General / Operating Room Services / Orthopedic Services / Physical/Occupational Therapy Services / Respiratory Therapy Services",
           details:
             "Chief Medical NCO (68Z), Cardiac Specialist (91N), Medical Specialist (91A), Orthopedic Specialist (68B), Ear, Nose, & Throat (ENT) Specialist (91U), Physical Therapy Specialist (68F), Operating Room Specialist (68D), Chief Medical NCO (91Z), Cardiovascular Specialist (68N), Practical Nurse (91C), Behavioral Science Specialist (91G), Respiratory Specialist (68V), Mental Health Specialist (91X), Orthotic Specialist (42C), Behavioral Health Specialist (68X), Occupational Therapy Specialist (68L), Occupational Therapy Specialist (91L), Respiratory Specialist (91V), Health Care Specialist (91W), Physical Therapy Specialist (91J), Orthopedic Specialist (91H), Combat Medic Specialist (68W), Ear, Nose, and Throat (ENT) Specialist (68U), Practical Nursing Specialist (68C), Operating Room Specialist (91D), Physical Reconditioning Specialist (91K), Psychiatric Specialist (91F)"
         },
