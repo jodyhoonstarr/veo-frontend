@@ -27,11 +27,7 @@
       </v-col>
     </SelectBar>
     <ChartArea>
-      <ChartCard v-for="paygrade in selectedPaygrade">
-        <v-card-title>{{ paygrade.id }}</v-card-title>
-        <v-card-subtitle>{{ paygrade.label }}</v-card-subtitle>
-        <v-card-text>Chart area here</v-card-text>
-      </ChartCard>
+      <ChartCard v-for="paygrade in selectedPaygrade" :value="paygrade"></ChartCard>
     </ChartArea>
   </div>
 </template>
