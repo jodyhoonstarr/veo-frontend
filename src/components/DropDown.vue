@@ -1,5 +1,5 @@
 <template>
-  <v-select
+  <v-autocomplete
     v-if="typeof items[0] === 'object' && items[0] !== null"
     item-text="label"
     return-object
@@ -15,9 +15,7 @@
       <v-chip v-if="index <= 2">
         <span>{{ item.label }}</span>
       </v-chip>
-      <span v-if="index === 3" class="grey--text caption"
-        >(+{{ value.length - 3 }} others)</span
-      >
+      <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
     </template>
 
     <template three-line v-slot:item="{ item }">
@@ -25,8 +23,8 @@
         <v-list-item-title class="pt-1" v-html="item.label"></v-list-item-title>
       </v-list-item-content>
     </template>
-  </v-select>
-  <v-select
+  </v-autocomplete>
+  <v-autocomplete
     v-else
     :items="items"
     :label="label"
@@ -40,9 +38,7 @@
       <v-chip v-if="index <= 2">
         <span>{{ item }}</span>
       </v-chip>
-      <span v-if="index === 3" class="grey--text caption"
-        >(+{{ value.length - 3 }} others)</span
-      >
+      <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
     </template>
 
     <template three-line v-slot:item="{ item }">
@@ -50,7 +46,7 @@
         <v-list-item-title class="pt-1" v-html="item"></v-list-item-title>
       </v-list-item-content>
     </template>
-  </v-select>
+  </v-autocomplete>
 </template>
 
 <script>

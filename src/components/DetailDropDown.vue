@@ -15,7 +15,8 @@
   >
     <template v-slot:selection="{ item, index }">
       <v-chip close @click:close="chipRemove(item)" v-if="index <= 2">
-        <span>{{ item.label }}</span>
+        <span v-if="item.label.length > 33">{{ item.label.substring(0,30) }}...</span>
+        <span v-else>{{ item.label }}</span>
       </v-chip>
       <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
     </template>
