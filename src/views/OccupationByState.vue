@@ -23,26 +23,32 @@
         ></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
-        <DropDown
-          label="Cohort"
-          hint="Year of discharge"
-          :items="cohorts"
-          v-model="selectedCohort"
-        ></DropDown>
+        <DropDown label="Cohort" hint="Year of discharge" :items="cohorts" v-model="selectedCohort"></DropDown>
       </v-col>
     </SelectBar>
+    <ChartArea>
+      <ChartCard v-for="state in selectedState">
+        <v-card-title>{{ state.id }}</v-card-title>
+        <v-card-subtitle>{{ state.label }}</v-card-subtitle>
+        <v-card-text>Chart area here</v-card-text>
+      </ChartCard>
+    </ChartArea>
   </div>
 </template>
 
 <script>
 import SelectBar from "@/components/SelectBar.vue";
 import DropDown from "@/components/DropDown.vue";
+import ChartArea from "@/components/ChartArea.vue";
+import ChartCard from "@/components/ChartCard.vue";
 
 export default {
   name: "OccupationByState",
   components: {
     SelectBar,
-    DropDown
+    DropDown,
+    ChartArea,
+    ChartCard
   },
   data() {
     return {
