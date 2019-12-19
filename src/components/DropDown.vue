@@ -1,6 +1,17 @@
 <template>
   <v-autocomplete
-    v-if="typeof items[0] === 'object' && items[0] !== null"
+    v-if="this.itemsIsEmpty"
+    item-text="label"
+    :items="items"
+    :label="label"
+    :multiple="multiple"
+    disabled
+    hint="No valid selection available"
+    persistent-hint
+    @input="dropDownSelect"
+  ></v-autocomplete>
+  <v-autocomplete
+    v-else-if="this.itemsIsObject"
     item-text="label"
     return-object
     :items="items"
@@ -52,7 +63,18 @@
 <script>
 export default {
   props: ["value", "items", "label", "multiple", "hint"],
-
+  computed: {
+    itemsIsEmpty: function() {
+      Array.isArray(this.items) && this.items.length;
+    },
+    itemsIsObject: function() {
+      return (
+        Array.isArray(this.items) &&
+        this.items.length &&
+        typeof this.items[0] === "object"
+      );
+    }
+  },
   methods: {
     dropDownSelect(event) {
       this.$emit("input", event);
