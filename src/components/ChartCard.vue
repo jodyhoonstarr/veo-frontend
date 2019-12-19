@@ -5,8 +5,8 @@
         <v-card-title>{{ value.id }}</v-card-title>
         <v-card-subtitle>{{ value.label }}</v-card-subtitle>
         <v-card-text>Chart area here</v-card-text>
-        <BarChart :id="value.id"></BarChart>
-        <v-card-text>width: {{ width }} | height: {{ height }}</v-card-text>
+        <BarChart :id="value.id" :svgwidth="width"></BarChart>
+        <v-card-text>width: {{ width }}</v-card-text>
       </v-card>
     </v-col>
   </v-row>
@@ -21,13 +21,11 @@ export default {
   props: ["value"],
   data() {
     return {
-      height: 0,
       width: 0
     };
   },
   methods: {
     handleResize: function() {
-      this.height = this.$refs[this.value.id].$el.clientHeight;
       this.width = this.$refs[this.value.id].$el.clientWidth;
     }
   },
@@ -36,7 +34,6 @@ export default {
     window.addEventListener("resize", this.handleResize);
   },
   beforeDestroy: function() {
-    console.log("remove listener");
     window.removeEventListener("resize", this.handleResize);
   }
 };
