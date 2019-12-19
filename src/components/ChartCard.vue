@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     handleResize: function() {
-      this.width = this.$refs[this.value.id].$el.clientWidth;
+      this.width = Math.floor(this.$refs[this.value.id].$el.clientWidth);
     }
   },
   mounted() {

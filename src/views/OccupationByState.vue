@@ -27,11 +27,7 @@
       </v-col>
     </SelectBar>
     <ChartArea>
-      <ChartCard v-for="state in selectedState">
-        <v-card-title>{{ state.id }}</v-card-title>
-        <v-card-subtitle>{{ state.label }}</v-card-subtitle>
-        <v-card-text>Chart area here</v-card-text>
-      </ChartCard>
+      <ChartCard v-for="state in selectedState" :value="state"></ChartCard>
     </ChartArea>
   </div>
 </template>
