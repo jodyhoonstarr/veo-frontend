@@ -5,7 +5,7 @@
     disabled
     hint="No valid selection available"
     persistent-hint
-    class="my-1 py-3"
+    :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   ></v-autocomplete>
   <v-autocomplete
     v-else
@@ -21,7 +21,7 @@
     :filter="filterFullObject"
     @input="dropDownSelect"
     :search-input.sync="search"
-    class="my-1 py-3"
+    :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   >
     <template v-slot:selection="{ item, index }">
       <v-chip close @click:close="chipRemove(item)" v-if="index <= 2">
