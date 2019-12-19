@@ -95,7 +95,17 @@ export default {
     }
   },
   mounted() {
-    this.activeTab = this.$route.path;
+    const occupationArray = [
+      "/occupationbypaygrade",
+      "/occupationbysector",
+      "/detailedoccupation",
+      "/occupationbystate"
+    ];
+    if (occupationArray.includes(this.$route.path)) {
+      this.activeTab = "/occupation";
+    } else {
+      this.activeTab = this.$route.path;
+    }
   }
 };
 </script>
