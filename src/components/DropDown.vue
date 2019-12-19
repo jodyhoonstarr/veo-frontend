@@ -1,17 +1,13 @@
 <template>
   <v-autocomplete
-    v-if="this.itemsIsEmpty"
-    item-text="label"
-    :items="items"
+    v-if="this.itemsAreEmpty"
     :label="label"
-    :multiple="multiple"
     disabled
     hint="No valid selection available"
     persistent-hint
-    @input="dropDownSelect"
   ></v-autocomplete>
   <v-autocomplete
-    v-else-if="this.itemsIsObject"
+    v-else-if="this.itemIsObject"
     item-text="label"
     return-object
     :items="items"
@@ -64,13 +60,16 @@
 export default {
   props: ["value", "items", "label", "multiple", "hint"],
   computed: {
-    itemsIsEmpty: function() {
-      Array.isArray(this.items) && this.items.length;
+    itemsAreEmpty: function() {
+      return (
+        this.items == null ||
+        (Array.isArray(this.items) && this.items.length === 0)
+      );
     },
-    itemsIsObject: function() {
+    itemIsObject: function() {
       return (
         Array.isArray(this.items) &&
-        this.items.length &&
+        this.items.length > 0 &&
         typeof this.items[0] === "object"
       );
     }

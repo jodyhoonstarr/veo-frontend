@@ -1,5 +1,13 @@
 <template>
   <v-autocomplete
+    v-if="this.itemsAreEmpty"
+    :label="label"
+    disabled
+    hint="No valid selection available"
+    persistent-hint
+  ></v-autocomplete>
+  <v-autocomplete
+    v-else
     item-text="label"
     return-object
     :items="items"
@@ -55,6 +63,11 @@
 export default {
   name: "DetailDropDown",
   props: ["value", "items", "label", "multiple", "hint"],
+  computed: {
+    itemsAreEmpty: function() {
+      return Array.isArray(this.items) && this.items.length === 0;
+    }
+  },
   data() {
     return {
       search: null,
