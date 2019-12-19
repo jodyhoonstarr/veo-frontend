@@ -6,6 +6,7 @@
     :label="label"
     :multiple="multiple"
     chips
+    clearable
     :hint="hint"
     persistent-hint
     :filter="filterFullObject"
@@ -13,12 +14,10 @@
     :search-input.sync="search"
   >
     <template v-slot:selection="{ item, index }">
-      <v-chip v-if="index <= 2">
+      <v-chip close @click:close="chipRemove(item)" v-if="index <= 2">
         <span>{{ item.label }}</span>
       </v-chip>
-      <span v-if="index === 3" class="grey--text caption"
-        >(+{{ value.length - 3 }} others)</span
-      >
+      <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
     </template>
     <template three-line v-slot:item="{ parent, item }">
       <v-list-item-content class="py-0">
@@ -32,11 +31,7 @@
           class="pt-1"
           v-html="parent.genFilteredText(item.label)"
         ></v-list-item-title>
-        <v-list-item-title
-          v-else
-          class="pt-1"
-          v-html="item.label"
-        ></v-list-item-title>
+        <v-list-item-title v-else class="pt-1" v-html="item.label"></v-list-item-title>
         <p
           v-if="
             search &&
@@ -48,11 +43,7 @@
           v-html="parent.genFilteredText(item.details)"
           wrap
         ></p>
-        <v-list-item-subtitle
-          v-else
-          class="grey--text caption mb-0 pb-1"
-          v-html="item.details"
-        ></v-list-item-subtitle>
+        <v-list-item-subtitle v-else class="grey--text caption mb-0 pb-1" v-html="item.details"></v-list-item-subtitle>
         <v-divider></v-divider>
       </v-list-item-content>
     </template>
@@ -65,12 +56,23 @@ export default {
   props: ["value", "items", "label", "multiple", "hint"],
   data() {
     return {
-      search: null
+      search: null,
+      selected: this.value
     };
+  },
+  watch: {
+    value(input) {
+      this.selected = input;
+    }
   },
   methods: {
     dropDownSelect(event) {
       this.$emit("input", event);
+    },
+    chipRemove(item) {
+      this.selected.splice(this.selected.indexOf(item), 1);
+      this.selected = [...this.selected];
+      this.$emit(this.selected);
     },
     filterFullObject(item, queryText, itemText) {
       return (
