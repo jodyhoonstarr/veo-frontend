@@ -5,6 +5,7 @@
     disabled
     hint="No valid selection available"
     persistent-hint
+    class="my-1 py-3"
   ></v-autocomplete>
   <v-autocomplete
     v-else
@@ -20,6 +21,7 @@
     :filter="filterFullObject"
     @input="dropDownSelect"
     :search-input.sync="search"
+    class="my-1 py-3"
   >
     <template v-slot:selection="{ item, index }">
       <v-chip close @click:close="chipRemove(item)" v-if="index <= 2">
