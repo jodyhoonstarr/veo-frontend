@@ -86,7 +86,7 @@ export default {
     chipRemove(item) {
       this.selected.splice(this.selected.indexOf(item), 1);
       this.selected = [...this.selected];
-      this.$emit(this.selected);
+      this.$emit("change", this.selected);
     },
     filterFullObject(item, queryText, itemText) {
       return (

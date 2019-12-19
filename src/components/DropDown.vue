@@ -19,8 +19,9 @@
     @input="dropDownSelect"
   >
     <template v-slot:selection="{ item, index }">
-      <v-chip v-if="index <= 2">
-        <span>{{ item.label }}</span>
+      <v-chip close @click:close="chipRemove(item)" v-if="index <= 2">
+        <span v-if="item.label.length > 33">{{ item.label.substring(0,30) }}...</span>
+        <span v-else>{{ item.label }}</span>
       </v-chip>
       <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
     </template>
@@ -42,8 +43,9 @@
     @input="dropDownSelect"
   >
     <template v-slot:selection="{ item, index }">
-      <v-chip v-if="index <= 2">
-        <span>{{ item }}</span>
+      <v-chip close @click:close="chipRemove(item)" v-if="index <= 2">
+        <span v-if="item.length > 33">{{ item.substring(0,30) }}...</span>
+        <span v-else>{{ item }}</span>
       </v-chip>
       <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
     </template>
@@ -74,9 +76,24 @@ export default {
       );
     }
   },
+  data() {
+    return {
+      selected: this.value
+    };
+  },
+  watch: {
+    value(input) {
+      this.selected = input;
+    }
+  },
   methods: {
     dropDownSelect(event) {
       this.$emit("input", event);
+    },
+    chipRemove(item) {
+      this.selected.splice(this.selected.indexOf(item), 1);
+      this.selected = [...this.selected];
+      this.$emit("change", this.selected);
     }
   }
 };
