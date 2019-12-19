@@ -14,7 +14,7 @@
     :label="label"
     :multiple="multiple"
     chips
-    clearable
+    :clearable="clearable"
     :hint="hint"
     persistent-hint
     :filter="filterFullObject"
@@ -62,7 +62,7 @@
 <script>
 export default {
   name: "DetailDropDown",
-  props: ["value", "items", "label", "multiple", "hint"],
+  props: ["value", "items", "label", "multiple", "hint", "clearable"],
   computed: {
     itemsAreEmpty: function() {
       return Array.isArray(this.items) && this.items.length === 0;

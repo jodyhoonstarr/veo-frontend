@@ -14,6 +14,7 @@
     :label="label"
     :multiple="multiple"
     chips
+    :clearable="clearable"
     :hint="hint"
     persistent-hint
     @input="dropDownSelect"
@@ -38,6 +39,7 @@
     :label="label"
     :multiple="multiple"
     chips
+    :clearable="clearable"
     :hint="hint"
     persistent-hint
     @input="dropDownSelect"
@@ -60,7 +62,7 @@
 
 <script>
 export default {
-  props: ["value", "items", "label", "multiple", "hint"],
+  props: ["value", "items", "label", "multiple", "hint", "clearable"],
   computed: {
     itemsAreEmpty: function() {
       return (
