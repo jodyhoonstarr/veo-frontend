@@ -70,21 +70,27 @@ export default {
           route: "/occupation",
           label: "Occupation",
           children: [
-            { route: "/occupationbypaygrade", label: "Occupation by Paygrade" },
-            { route: "/occupationbystate", label: "Occupation by State" },
-            { route: "/occupationbysector", label: "Occupation by Sector" },
-            { route: "/detailedoccupation", label: "Detailed Occupation" }
+            { route: "/occupation/paygrade", label: "Occupation by Paygrade" },
+            { route: "/occupation/state", label: "Occupation by State" },
+            { route: "/occupation/sector", label: "Occupation by Sector" },
+            { route: "/occupation/detail", label: "Detailed Occupation" }
           ]
         },
-        { route: "/paygrade", label: "Pay Grade" },
-        { route: "/state", label: "State" },
-        { route: "/sector", label: "Sector" },
-        { route: "/age", label: "Age" },
-        { route: "/sex", label: "Sex" },
-        { route: "/raceethnicity", label: "Race/Ethnicity" },
-        { route: "/experience", label: "Experience" },
-        { route: "/education", label: "Education" },
-        { route: "/afqt", label: "AFQT" }
+        {
+          route: "/time",
+          label: "Time",
+          children: [
+            { route: "/time/paygrade", label: "Pay Grade" },
+            { route: "/time/state", label: "State" },
+            { route: "/time/sector", label: "Sector" },
+            { route: "/time/age", label: "Age" },
+            { route: "/time/sex", label: "Sex" },
+            { route: "/time/raceethnicity", label: "Race/Ethnicity" },
+            { route: "/time/experience", label: "Experience" },
+            { route: "/time/education", label: "Education" },
+            { route: "/time/afqt", label: "AFQT" }
+          ]
+        }
       ],
       activeTab: null
     };
@@ -95,16 +101,18 @@ export default {
     }
   },
   mounted() {
-    const occupationArray = [
-      "/occupationbypaygrade",
-      "/occupationbysector",
-      "/detailedoccupation",
-      "/occupationbystate"
-    ];
-    if (occupationArray.includes(this.$route.path)) {
-      this.activeTab = "/occupation";
+    const parentTab = this.tabs.find(tab => {
+      if (tab.children) {
+        return (
+          tab.children.filter(child => child.route === this.$route.path)
+            .length > 0
+        );
+      }
+    });
+    if (parentTab) {
+      this.activeTab = parentTab.route;
     } else {
-      this.activeTab = this.$route.path;
+      this.$router.push("/");
     }
   }
 };

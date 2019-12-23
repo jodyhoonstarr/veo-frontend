@@ -11,6 +11,7 @@ import RaceEthnicity from "@/views/RaceEthnicity.vue";
 import Sector from "@/views/Sector.vue";
 import Sex from "@/views/Sex.vue";
 import State from "@/views/State.vue";
+import Time from "@/views/Time.vue";
 import DetailedOccupation from "@/views/DetailedOccupation.vue";
 import OccupationByPaygrade from "@/views/OccupationByPaygrade.vue";
 import OccupationBySector from "@/views/OccupationBySector.vue";
@@ -25,78 +26,85 @@ const routes = [
     component: Home
   },
   {
-    path: "/afqt",
-    name: "AFQT",
-    component: AFQT
-  },
-  {
-    path: "/age",
-    name: "Age",
-    component: Age
-  },
-  {
-    path: "/education",
-    name: "Education",
-    component: Education
-  },
-  {
-    path: "/experience",
-    name: "Experience",
-    component: Experience
-  },
-  {
-    path: "/occupation",
+    path: "/occupation/",
     name: "Occcupation",
-    component: Occupation
-  },
-  {
-    path: "/detailedoccupation",
-    name: "DetailedOccupation",
-    component: DetailedOccupation
-  },
+    component: Occupation,
+    children: [
+      {
+        path: "detail",
+        name: "DetailedOccupation",
+        component: DetailedOccupation
+      },
 
-  {
-    path: "/occupationbypaygrade",
-    name: "OccupationByPaygrade",
-    component: OccupationByPaygrade
-  },
+      {
+        path: "paygrade",
+        name: "OccupationByPaygrade",
+        component: OccupationByPaygrade
+      },
 
-  {
-    path: "/occupationbysector",
-    name: "OccupationBySector",
-    component: OccupationBySector
-  },
-
-  {
-    path: "/occupationbystate",
-    name: "OcccupationByState",
-    component: OccupationByState
-  },
-
-  {
-    path: "/paygrade",
-    name: "Paygrade",
-    component: Paygrade
+      {
+        path: "sector",
+        name: "OccupationBySector",
+        component: OccupationBySector
+      },
+      {
+        path: "state",
+        name: "OcccupationByState",
+        component: OccupationByState
+      }
+    ]
   },
   {
-    path: "/raceethnicity",
-    name: "Raceethnicity",
-    component: RaceEthnicity
-  },
-  {
-    path: "/sector",
-    name: "Sector",
-    component: Sector
-  },
-  {
-    path: "/sex",
-    name: "Sex",
-    component: Sex
-  },
-  {
-    path: "/state",
-    name: "State",
-    component: State
+    path: "/time/",
+    name: "Time",
+    component: Time,
+    children: [
+      {
+        path: "afqt",
+        name: "AFQT",
+        component: AFQT
+      },
+      {
+        path: "age",
+        name: "Age",
+        component: Age
+      },
+      {
+        path: "education",
+        name: "Education",
+        component: Education
+      },
+      {
+        path: "experience",
+        name: "Experience",
+        component: Experience
+      },
+      {
+        path: "paygrade",
+        name: "Paygrade",
+        component: Paygrade
+      },
+      {
+        path: "raceethnicity",
+        name: "Raceethnicity",
+        component: RaceEthnicity
+      },
+      {
+        path: "sector",
+        name: "Sector",
+        component: Sector
+      },
+      {
+        path: "sex",
+        name: "Sex",
+        component: Sex
+      },
+      {
+        path: "state",
+        name: "State",
+        component: State
+      }
+    ]
   }
 
   // {

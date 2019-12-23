@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: "Occupation"
+  name: "Time"
 };
 </script>
