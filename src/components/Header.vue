@@ -7,6 +7,7 @@
         src="@/assets/images/census-logo-white.svg"
         transition="scale-transition"
         width="86"
+        aspect-ratio="1"
       />
     </a>
     <v-divider class="mx-4 divider-color" vertical></v-divider>
