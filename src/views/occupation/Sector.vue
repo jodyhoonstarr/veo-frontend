@@ -10,6 +10,7 @@
           v-model="selectedSector"
           multiple
           close
+          clearable
         ></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="5">
@@ -20,15 +21,11 @@
           v-model="selectedOccupation"
           multiple
           close
+          clearable
         ></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
-        <DropDown
-          label="Cohort"
-          hint="Year of discharge"
-          :items="cohorts"
-          v-model="selectedCohort"
-        ></DropDown>
+        <DropDown label="Cohort" hint="Year of discharge" :items="cohorts" v-model="selectedCohort"></DropDown>
       </v-col>
     </SelectBar>
   </div>
