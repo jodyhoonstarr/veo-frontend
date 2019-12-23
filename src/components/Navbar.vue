@@ -119,7 +119,7 @@ export default {
     });
     if (parentTab) {
       this.activeTab = parentTab.route;
-    } else {
+    } else if (this.$route.path !== "/") {
       this.$router.push("/");
     }
   }
