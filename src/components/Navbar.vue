@@ -70,10 +70,10 @@ export default {
           route: "/occupation",
           label: "Occupation",
           children: [
+            { route: "/occupation/detail", label: "Detailed Occupation" },
             { route: "/occupation/paygrade", label: "Occupation by Paygrade" },
             { route: "/occupation/state", label: "Occupation by State" },
-            { route: "/occupation/sector", label: "Occupation by Sector" },
-            { route: "/occupation/detail", label: "Detailed Occupation" }
+            { route: "/occupation/sector", label: "Occupation by Sector" }
           ]
         },
         {
@@ -89,6 +89,14 @@ export default {
             { route: "/time/experience", label: "Experience" },
             { route: "/time/education", label: "Education" },
             { route: "/time/afqt", label: "AFQT" }
+          ]
+        },
+        {
+          route: "/custom",
+          label: "Custom",
+          children: [
+            { route: "/time/bubble", label: "Bubble Chart" },
+            { route: "/time/currated", label: "Currated View" }
           ]
         }
       ],

@@ -1,21 +1,24 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/Home.vue";
-import AFQT from "@/views/AFQT.vue";
-import Age from "@/views/Age.vue";
-import Education from "@/views/Education.vue";
-import Experience from "@/views/Experience.vue";
-import Occupation from "@/views/Occupation.vue";
-import Paygrade from "@/views/Paygrade.vue";
-import RaceEthnicity from "@/views/RaceEthnicity.vue";
-import Sector from "@/views/Sector.vue";
-import Sex from "@/views/Sex.vue";
-import State from "@/views/State.vue";
 import Time from "@/views/Time.vue";
-import DetailedOccupation from "@/views/DetailedOccupation.vue";
-import OccupationByPaygrade from "@/views/OccupationByPaygrade.vue";
-import OccupationBySector from "@/views/OccupationBySector.vue";
-import OccupationByState from "@/views/OccupationByState.vue";
+import AFQT from "@/views/time/AFQT.vue";
+import Age from "@/views/time/Age.vue";
+import Education from "@/views/time/Education.vue";
+import Experience from "@/views/time/Experience.vue";
+import Paygrade from "@/views/time/Paygrade.vue";
+import RaceEthnicity from "@/views/time/RaceEthnicity.vue";
+import Sector from "@/views/time/Sector.vue";
+import Sex from "@/views/time/Sex.vue";
+import State from "@/views/time/State.vue";
+import Occupation from "@/views/Occupation.vue";
+import OccupationDetail from "@/views/occupation/Detail.vue";
+import OccupationByPaygrade from "@/views/occupation/Paygrade.vue";
+import OccupationBySector from "@/views/occupation/Sector.vue";
+import OccupationByState from "@/views/occupation/State.vue";
+import Custom from "@/views/Custom.vue";
+import CustomBubble from "@/views/custom/Bubble.vue";
+import CustomCustom from "@/views/custom/Custom.vue";
 
 Vue.use(VueRouter);
 
@@ -32,8 +35,8 @@ const routes = [
     children: [
       {
         path: "detail",
-        name: "DetailedOccupation",
-        component: DetailedOccupation
+        name: "OccupationDetail",
+        component: OccupationDetail
       },
 
       {
@@ -103,6 +106,23 @@ const routes = [
         path: "state",
         name: "State",
         component: State
+      }
+    ]
+  },
+  {
+    path: "/custom/",
+    name: "Custom",
+    component: Custom,
+    children: [
+      {
+        path: "bubble",
+        name: "Bubble",
+        component: CustomBubble
+      },
+      {
+        path: "custom",
+        name: "Custom",
+        component: CustomCustom
       }
     ]
   }
