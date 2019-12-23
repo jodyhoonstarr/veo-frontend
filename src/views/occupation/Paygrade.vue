@@ -29,7 +29,9 @@
       </v-col>
     </SelectBar>
     <ChartArea>
-      <ChartCard v-for="paygrade in selectedPaygrade" :value="paygrade"></ChartCard>
+      <template v-for="paygrade in selectedPaygrade">
+        <ChartCard :svgData="filteredDataByPaygrade(paygrade.id)" :value="paygrade"></ChartCard>
+      </template>
     </ChartArea>
   </div>
 </template>
@@ -39,6 +41,7 @@ import SelectBar from "@/components/SelectBar.vue";
 import DropDown from "@/components/DropDown.vue";
 import ChartArea from "@/components/ChartArea.vue";
 import ChartCard from "@/components/ChartCard.vue";
+import { csv } from "d3";
 
 export default {
   name: "OccupationByPaygrade",
@@ -50,6 +53,7 @@ export default {
   },
   data() {
     return {
+      csvData: null,
       selectedPaygrade: null,
       selectedOccupation: null,
       selectedCohort: null,
@@ -75,6 +79,37 @@ export default {
         { id: "2012", label: "2012-2015" }
       ]
     };
+  },
+  mounted: function() {
+    csv("/veoo2p.csv").then(data => {
+      this.csvData = data;
+    });
+  },
+  methods: {
+    filteredDataByPaygrade: function(paygrade) {
+      if (this.filteredData != null) {
+        return this.filteredData.filter(row => {
+          return row.paygrade === paygrade;
+        });
+      }
+    }
+  },
+  computed: {
+    filteredData: function() {
+      if (
+        this.selectedCohort != null &&
+        this.selectedPaygrade != null &&
+        this.selectedOccupation != null
+      ) {
+        return this.csvData.filter(row => {
+          return (
+            this.selectedCohort.id === row.cohort &&
+            this.selectedPaygrade.some(e => e.id === row.paygrade) &&
+            this.selectedOccupation.some(e => e.id === row.dod_occ_code)
+          );
+        });
+      }
+    }
   }
 };
 </script>

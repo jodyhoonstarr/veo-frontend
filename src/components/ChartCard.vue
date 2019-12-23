@@ -18,7 +18,7 @@ import BarChart from "@/components/BarChart.vue";
 export default {
   name: "ChartCard",
   components: { BarChart },
-  props: ["value"],
+  props: ["value", "svgData"],
   data() {
     return {
       width: 0
