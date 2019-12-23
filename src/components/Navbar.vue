@@ -96,7 +96,7 @@ export default {
           label: "Custom",
           children: [
             { route: "/custom/bubble", label: "Bubble Chart" },
-            { route: "/custom/currated", label: "Currated View" }
+            { route: "/custom/curated", label: "Curated View" }
           ]
         }
       ],
