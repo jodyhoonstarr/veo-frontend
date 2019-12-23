@@ -95,8 +95,8 @@ export default {
           route: "/custom",
           label: "Custom",
           children: [
-            { route: "/time/bubble", label: "Bubble Chart" },
-            { route: "/time/currated", label: "Currated View" }
+            { route: "/custom/bubble", label: "Bubble Chart" },
+            { route: "/custom/currated", label: "Currated View" }
           ]
         }
       ],

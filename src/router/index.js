@@ -18,7 +18,7 @@ import OccupationBySector from "@/views/occupation/Sector.vue";
 import OccupationByState from "@/views/occupation/State.vue";
 import Custom from "@/views/Custom.vue";
 import CustomBubble from "@/views/custom/Bubble.vue";
-import CustomCustom from "@/views/custom/Custom.vue";
+import CustomCurrated from "@/views/custom/Currated.vue";
 
 Vue.use(VueRouter);
 
@@ -120,9 +120,9 @@ const routes = [
         component: CustomBubble
       },
       {
-        path: "custom",
-        name: "Custom",
-        component: CustomCustom
+        path: "currated",
+        name: "Currated",
+        component: CustomCurrated
       }
     ]
   }
