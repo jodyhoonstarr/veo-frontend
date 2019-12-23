@@ -10,6 +10,7 @@
           v-model="selectedAgeGroup"
           multiple
           close
+          clearable
         ></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">

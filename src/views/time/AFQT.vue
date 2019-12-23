@@ -10,6 +10,7 @@
           :items="AFQTScores"
           v-model="selectedAFQTScores"
           multiple
+          clearable
         ></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
