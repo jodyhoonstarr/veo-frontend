@@ -22,7 +22,7 @@
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   >
     <template v-slot:selection="{ item, index }">
-      <v-chip close @click:close="chipRemove(item)" v-if="index <= 2">
+      <v-chip close label @click:close="chipRemove(item)" v-if="index <= 2">
         <template v-if="item.label.length > 33">{{ item.label.substring(0,30) }}...</template>
         <template v-else>{{ item.label }}</template>
       </v-chip>
@@ -48,7 +48,7 @@
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   >
     <template v-slot:selection="{ item, index }">
-      <v-chip close @click:close="chipRemove(item)" v-if="index <= 2">
+      <v-chip close label @click:close="chipRemove(item)" v-if="index <= 2">
         <template v-if="item.length > 33">{{ item.substring(0,30) }}...</template>
         <template v-else>{{ item }}</template>
       </v-chip>
