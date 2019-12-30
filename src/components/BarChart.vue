@@ -1,6 +1,8 @@
 <template>
   <div>
-    <svg :id="id" :style="svgStyle" />
+    <svg :id="id" :style="svgStyle">
+      <rect width="100%" height="100%" fill="LightGray" />
+    </svg>
   </div>
 </template>
 
@@ -17,7 +19,7 @@ export default {
     svgStyle: function() {
       return `width: ${this.svgwidth}px; height: ${Math.floor(
         this.svgwidth / this.svgratio
-      )}px; max-height: 400px`;
+      )}px; max-height: 400px;`;
     }
   }
 };

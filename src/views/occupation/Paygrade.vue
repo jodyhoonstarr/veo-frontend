@@ -30,7 +30,11 @@
     </SelectBar>
     <ChartArea>
       <template v-for="paygrade in selectedPaygrade">
-        <ChartCard :svgData="filteredDataByPaygrade(paygrade.id)" :value="paygrade"></ChartCard>
+        <ChartCard
+          :filters="filters"
+          :chartData="filteredDataByPaygrade(paygrade.id)"
+          :value="paygrade"
+        ></ChartCard>
       </template>
     </ChartArea>
   </div>
@@ -41,6 +45,7 @@ import SelectBar from "@/components/SelectBar.vue";
 import DropDown from "@/components/DropDown.vue";
 import ChartArea from "@/components/ChartArea.vue";
 import ChartCard from "@/components/ChartCard.vue";
+import { BARCHARTFILTERS } from "@/constants/filters";
 import { csv } from "d3";
 
 export default {
@@ -57,6 +62,7 @@ export default {
       selectedPaygrade: null,
       selectedOccupation: null,
       selectedCohort: null,
+      filters: BARCHARTFILTERS,
       paygrades: [
         { id: "E1-E5", label: "Sergeant and below" },
         { id: "E6-E9", label: "Staff Sargeant and higher" }
