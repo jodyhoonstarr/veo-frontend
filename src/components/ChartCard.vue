@@ -2,12 +2,15 @@
   <v-row>
     <v-col cols="12">
       <v-card :ref="value.id" outlined>
-        <v-row>
+        <v-row align="baseline">
           <v-col xs="12" sm="6">
             <v-card-title>{{ value.label }}</v-card-title>
           </v-col>
           <v-col xs="12" sm="6" class="text-right">
-            <ChartFilters @change="updateFilter" :value="filters"></ChartFilters>
+            <v-card-subtitle>
+              Data:
+              <ChartFilters @change="updateFilter" :value="filters"></ChartFilters>
+            </v-card-subtitle>
           </v-col>
         </v-row>
         <BarChart :id="value.id" :svgwidth="width"></BarChart>
