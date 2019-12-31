@@ -9,7 +9,7 @@
 <script>
 export default {
   name: "BarChart",
-  props: ["id", "svgwidth"],
+  props: ["id", "svgwidth", "svgdata"],
   data() {
     return {
       svgratio: 1.9

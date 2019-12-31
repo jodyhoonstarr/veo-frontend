@@ -13,7 +13,7 @@
             </v-card-subtitle>
           </v-col>
         </v-row>
-        <BarChart :id="value.id" :svgwidth="width"></BarChart>
+        <BarChart :id="value.id" :svgwidth="width" :svgdata="svgData"></BarChart>
         <!-- <v-card-text>width: {{ width }}</v-card-text> -->
       </v-card>
     </v-col>
@@ -33,6 +33,29 @@ export default {
       width: 0,
       filter: null
     };
+  },
+  computed: {
+    svgData: function() {
+      if (this.filter && this.chartData) {
+        let objKeys = Object.keys(this.chartData[0]);
+        let keepKeys = objKeys.filter(k => {
+          return (
+            k.toLocaleLowerCase().indexOf(this.filter.id.toLocaleLowerCase()) >
+              -1 && k.toLocaleLowerCase().indexOf("status") === -1
+          );
+        });
+
+        keepKeys.unshift("dod_occ_code");
+        //TODO get occ_code label instead of numeric in data files
+        // keep only the selected keys from the original data
+        return this.chartData.map(function(o) {
+          return Object.assign(
+            {},
+            ...keepKeys.map(prop => ({ [prop]: o[prop] }))
+          );
+        });
+      }
+    }
   },
   methods: {
     handleResize: function() {
