@@ -3,18 +3,31 @@
     <v-col cols="12">
       <v-card :ref="value.id" outlined>
         <v-row align="baseline">
-          <v-col xs="12" sm="6">
+          <v-col cols="12" xs="12" sm="6">
             <v-card-title>{{ value.label }}</v-card-title>
           </v-col>
-          <v-col xs="12" sm="6" class="text-right">
+          <v-col cols="12" xs="12" sm="6" class="text-right">
             <v-card-subtitle>
               Data:
               <ChartFilters @change="updateFilter" :value="filters"></ChartFilters>
             </v-card-subtitle>
           </v-col>
         </v-row>
-        <BarChart :id="value.id" :svgwidth="width" :svgdata="svgData"></BarChart>
-        <!-- <v-card-text>width: {{ width }}</v-card-text> -->
+        <BarChartGrouped
+          v-if="filter && filter.id === 'earnings'"
+          :id="value.id"
+          :svg-width="width"
+          :svg-data="svgData"
+          data-group="year"
+          data-cut="percentile"
+          data-cut-selection="50"
+        ></BarChartGrouped>
+        <BarChart
+          v-if="filter && filter.id !== 'earnings'"
+          :id="value.id"
+          :svg-width="width"
+          :svg-data="svgData"
+        ></BarChart>
       </v-card>
     </v-col>
   </v-row>
@@ -22,11 +35,12 @@
 
 <script>
 import BarChart from "@/components/BarChart.vue";
+import BarChartGrouped from "@/components/BarChartGrouped.vue";
 import ChartFilters from "@/components/ChartFilters.vue";
 
 export default {
   name: "ChartCard",
-  components: { BarChart, ChartFilters },
+  components: { BarChart, BarChartGrouped, ChartFilters },
   props: ["value", "chartData", "filters"],
   data() {
     return {

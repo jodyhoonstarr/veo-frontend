@@ -9,16 +9,16 @@
 <script>
 export default {
   name: "BarChart",
-  props: ["id", "svgwidth", "svgdata"],
+  props: ["id", "svgWidth", "svgData"],
   data() {
     return {
-      svgratio: 1.9
+      svgRatio: 1.9
     };
   },
   computed: {
     svgStyle: function() {
-      return `width: ${this.svgwidth}px; height: ${Math.floor(
-        this.svgwidth / this.svgratio
+      return `width: ${this.svgWidth}px; height: ${Math.floor(
+        this.svgWidth / this.svgRatio
       )}px; max-height: 400px;`;
     }
   }
