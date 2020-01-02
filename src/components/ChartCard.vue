@@ -40,8 +40,10 @@ export default {
         let objKeys = Object.keys(this.chartData[0]);
         let keepKeys = objKeys.filter(k => {
           return (
-            k.toLocaleLowerCase().indexOf(this.filter.id.toLocaleLowerCase()) >
-              -1 && k.toLocaleLowerCase().indexOf("status") === -1
+            k
+              .toLocaleLowerCase()
+              .indexOf(`_${this.filter.id.toLocaleLowerCase()}`) > -1 &&
+            k.toLocaleLowerCase().indexOf("status") === -1
           );
         });
 
