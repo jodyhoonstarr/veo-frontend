@@ -4,10 +4,27 @@
       <!-- wrapper group with margins -->
       <g :transform="transform">
         <!-- bar groups -->
-        <g v-for="d in tempData" class="bar" :transform="getBarTransform(d.State)" />
+        <g
+          v-for="barGroup in tempData"
+          class="bargroup"
+          :transform="getBarTransform(barGroup.State)"
+        >
+          <!-- individual bars -->
+          <rect
+            v-for="(value, key) in barGroup"
+            v-if="!isNaN(value)"
+            class="bar"
+            :id="`${barGroup.State}-${key}`"
+            :width="x1.bandwidth()"
+            :x="x1(key)"
+            :y="y(value)"
+            :height="height - y(value)"
+            :fill="z(key)"
+          />
+        </g>
 
         <!-- temporary placeholder -->
-        <rect :width="width" :height="height" fill="LightGray" />
+        <!-- <rect :width="width" :height="height" fill="LightGray" /> -->
       </g>
     </svg>
   </div>
@@ -83,7 +100,22 @@ export default {
       return scaleBand().padding(0.05);
     },
     y: function() {
-      return scaleLinear().rangeRound([this.height, 0]);
+      const that = this;
+      if (this.tempData) {
+        return scaleLinear()
+          .rangeRound([that.height, 0])
+          .domain([
+            0,
+            max(that.tempData, function(d) {
+              return max(that.tempKeys, function(key) {
+                return +d[key];
+              });
+            })
+          ])
+          .nice();
+      } else {
+        return scaleLinear().rangeRound([this.height, 0]);
+      }
     },
     z: function() {
       return scaleOrdinal().range([
@@ -100,6 +132,10 @@ export default {
   methods: {
     getBarTransform: function(state) {
       return `translate(${this.x0(state)},0)`;
+    },
+    log: function(height, value) {
+      console.log(`log : ${height} : ${value}`);
+      console.log(`calc : ${this.y(value)} : ${height + this.y(value)}`);
     }
   },
   mounted() {
@@ -121,11 +157,21 @@ export default {
           0,
           max(data, function(d) {
             return max(keys, function(key) {
-              return d[key];
+              return +d[key];
             });
           })
         ])
         .nice();
+
+      console.log("max");
+
+      console.log(
+        max(data, function(d) {
+          return max(keys, function(key) {
+            return +d[key];
+          });
+        })
+      );
     });
   }
 };
