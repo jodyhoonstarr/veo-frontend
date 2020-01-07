@@ -11,14 +11,14 @@
         <v-card-subtitle v-if="isEarnings" class="pa-0">
           View:
           <ChartFilters
-            v-if="data.filter"
-            @change="(f) => { data.subFilter = f; emit_event() }"
-            :filters="data.filter.filters"
+            v-if="data.type"
+            @change="(f) => { data.view = f; emit_event() }"
+            :filters="data.type.filters"
           ></ChartFilters>:
           <ChartFilters
-            v-if="data.subFilter"
+            v-if="data.view"
             @change="(f) => { data.cut = f; emit_event() }"
-            :filters="data.subFilter.filters"
+            :filters="data.view.filters"
           ></ChartFilters>
         </v-card-subtitle>
       </v-col>
@@ -37,15 +37,15 @@ export default {
     return {
       filters: BARCHARTFILTERS,
       data: {
-        filter: null,
-        subFilter: null,
+        type: null,
+        view: null,
         cut: null
       }
     };
   },
   computed: {
     isEarnings: function() {
-      return this.data.filter && this.data.filter.id == "earnings";
+      return this.data.type && this.data.type.id == "earnings";
     }
   },
   methods: {
@@ -54,8 +54,8 @@ export default {
       this.$emit("change", this.data);
     },
     updateFilter: function(filter) {
-      this.data.filter = filter;
-      this.data.subFilter = null;
+      this.data.type = filter;
+      this.data.view = null;
       this.data.cut = null;
       this.emit_event();
     }
