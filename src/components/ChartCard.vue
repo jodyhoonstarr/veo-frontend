@@ -17,12 +17,11 @@
 <script>
 import BarChart from "@/components/BarChart.vue";
 import BarChartGrouped from "@/components/BarChartGrouped.vue";
-import ChartFilters from "@/components/ChartFilters.vue";
 
 export default {
   name: "ChartCard",
-  components: { BarChart, BarChartGrouped, ChartFilters },
-  props: ["value", "chartData", "filters"],
+  components: { BarChart, BarChartGrouped },
+  props: ["value", "chartData"],
   data() {
     return {
       width: 0,

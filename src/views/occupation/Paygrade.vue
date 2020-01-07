@@ -31,7 +31,11 @@
     <FiltersBar @change="(f) => { filters = f }"></FiltersBar>
     <ChartArea>
       <template v-for="paygrade in selectedPaygrade">
-        <ChartCard :value="paygrade"></ChartCard>
+        <ChartCard
+          v-if="filteredData != null"
+          :value="paygrade"
+          :chartData="filteredDataByPaygrade(paygrade)"
+        ></ChartCard>
       </template>
     </ChartArea>
   </div>
@@ -91,11 +95,68 @@ export default {
   },
   methods: {
     filteredDataByPaygrade: function(paygrade) {
-      if (this.filteredData != null) {
-        return this.filteredData.filter(row => {
-          return row.paygrade === paygrade;
-        });
-      }
+      const paygradeData = this.filteredData.filter(row => {
+        return row.paygrade === paygrade.id;
+      });
+      const result =
+        this.filters.cut != null
+          ? this.formatForGroupedBarChart(paygradeData)
+          : this.formatForBarChart(paygradeData);
+      return result;
+    },
+    formatForGroupedBarChart: function(data) {
+      // get the set of available props
+      const objKeys = Object.keys(data[0]);
+
+      // find the props/keys that are valid for the filter set
+      let keepKeys = objKeys.filter(key => {
+        return (
+          key
+            .toLocaleLowerCase()
+            .indexOf(`_${this.filters.type.id.toLocaleLowerCase()}`) > -1 &&
+          key
+            .toLocaleLowerCase()
+            .indexOf(`${this.filters.cut.id.toLocaleLowerCase()}_`) > -1 &&
+          key.toLocaleLowerCase().indexOf("status") === -1
+        );
+      });
+
+      // create simplified labels with the above filters removed
+      const strippedKeys = keepKeys.map(key => {
+        let noType = key
+          .toLocaleLowerCase()
+          .replace(`${this.filters.type.id.toLocaleLowerCase()}`, "");
+        let noCut = noType.replace(
+          `${this.filters.cut.id.toLocaleLowerCase()}_`,
+          ""
+        );
+        let noUnderscore = noCut.replace("_", "");
+        return noUnderscore;
+      });
+
+      // create a lookup using the simple labels
+      let keepLookup = Object.assign(
+        {},
+        ...keepKeys.map((n, index) => ({ [n]: strippedKeys[index] }))
+      );
+
+      // keep occ code until the label can be passed through
+      // FIXME get text labels
+      keepKeys.push("dod_occ_code");
+      keepLookup["dod_occ_code"] = "label";
+
+      // return a simplified data object with the clean labels
+      return data.map(function(o) {
+        return Object.assign(
+          {},
+          ...keepKeys.map(prop => ({ [keepLookup[prop]]: o[prop] }))
+        );
+      });
+    },
+    formatForBarChart: function(data) {
+      // TODO
+      console.log("formatting for plain");
+      return data;
     }
   },
   computed: {
@@ -103,8 +164,10 @@ export default {
       if (
         this.selectedCohort != null &&
         this.selectedPaygrade != null &&
-        this.selectedOccupation != null
+        this.selectedOccupation != null &&
+        this.filters != null
       ) {
+        // filter the selected rows from the data
         return this.csvData.filter(row => {
           return (
             this.selectedCohort.id === row.cohort &&
@@ -112,6 +175,8 @@ export default {
             this.selectedOccupation.some(e => e.id === row.dod_occ_code)
           );
         });
+      } else {
+        return null;
       }
     }
   }

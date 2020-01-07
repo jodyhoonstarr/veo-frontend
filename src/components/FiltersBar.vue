@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     emit_event: function() {
-      console.log("custom event");
       this.$emit("change", this.data);
     },
     updateFilter: function(filter) {
