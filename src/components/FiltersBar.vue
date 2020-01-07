@@ -1,24 +1,24 @@
 <template>
   <v-container>
     <v-row align="center">
-      <v-col cols="12" sm="12" md="6" class="text-left text-no-wrap pa-0">
+      <v-col cols="12" sm="12" md="6" class="text-left text-no-wrap py-0">
         <v-card-subtitle class="pa-0">
           Data:
-          <ChartFilters @change="(f) => { dataTypeFilter = f }" :filters="filters"></ChartFilters>
+          <ChartFilters @change="updateFilter" :filters="filters"></ChartFilters>
         </v-card-subtitle>
       </v-col>
-      <v-col cols="12" sm="12" md="6" class="text-left text-no-wrap pa-0">
+      <v-col cols="12" sm="12" md="6" class="text-left text-no-wrap py-0">
         <v-card-subtitle v-if="isEarnings" class="pa-0">
           View:
           <ChartFilters
-            v-if="dataTypeFilter"
-            @change="(f) => { dataTypeSubFilter = f }"
-            :filters="dataTypeFilter.filters"
+            v-if="data.filter"
+            @change="(f) => { data.subFilter = f; emit_event() }"
+            :filters="data.filter.filters"
           ></ChartFilters>:
           <ChartFilters
-            v-if="dataTypeSubFilter"
-            @change="(f) => { dataCut = f }"
-            :filters="dataTypeSubFilter.filters"
+            v-if="data.subFilter"
+            @change="(f) => { data.cut = f; emit_event() }"
+            :filters="data.subFilter.filters"
           ></ChartFilters>
         </v-card-subtitle>
       </v-col>
@@ -36,14 +36,28 @@ export default {
   data() {
     return {
       filters: BARCHARTFILTERS,
-      dataTypeFilter: null,
-      dataTypeSubFilter: null,
-      dataCut: null
+      data: {
+        filter: null,
+        subFilter: null,
+        cut: null
+      }
     };
   },
   computed: {
     isEarnings: function() {
-      return this.dataTypeFilter && this.dataTypeFilter.id == "earnings";
+      return this.data.filter && this.data.filter.id == "earnings";
+    }
+  },
+  methods: {
+    emit_event: function() {
+      console.log("custom event");
+      this.$emit("change", this.data);
+    },
+    updateFilter: function(filter) {
+      this.data.filter = filter;
+      this.data.subFilter = null;
+      this.data.cut = null;
+      this.emit_event();
     }
   }
 };

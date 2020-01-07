@@ -7,8 +7,8 @@
             <v-card-title>{{ value.label }}</v-card-title>
           </v-col>
         </v-row>
-        <BarChartGrouped v-if="isEarnings" :id="value.id" :svg-width="width" :svg-data="svgData"></BarChartGrouped>
-        <BarChart v-else :id="value.id" :svg-width="width" :svg-data="svgData"></BarChart>
+        <BarChartGrouped :id="value.id" :svg-width="width" :svg-data="svgData"></BarChartGrouped>
+        <!-- <BarChart v-else :id="value.id" :svg-width="width" :svg-data="svgData"></BarChart> -->
       </v-card>
     </v-col>
   </v-row>

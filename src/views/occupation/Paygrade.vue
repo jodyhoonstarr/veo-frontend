@@ -28,7 +28,7 @@
         <DropDown label="Cohort" hint="Year of discharge" :items="cohorts" v-model="selectedCohort"></DropDown>
       </v-col>
     </SelectBar>
-    <FiltersBar></FiltersBar>
+    <FiltersBar @change="(f) => { filters = f }"></FiltersBar>
     <ChartArea>
       <template v-for="paygrade in selectedPaygrade">
         <ChartCard :value="paygrade"></ChartCard>
@@ -80,7 +80,8 @@ export default {
         { id: "2004", label: "2004-2007" },
         { id: "2008", label: "2008-2011" },
         { id: "2012", label: "2012-2015" }
-      ]
+      ],
+      filters: null
     };
   },
   mounted: function() {
