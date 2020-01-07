@@ -6,28 +6,25 @@
           <v-col cols="12" xs="12" sm="6">
             <v-card-title>{{ value.label }}</v-card-title>
           </v-col>
-          <v-col cols="12" xs="12" sm="6" class="text-right">
+          <v-col cols="12" xs="12" sm="6" class="text-left">
             <v-card-subtitle>
               Data:
               <ChartFilters @change="updateFilter" :value="filters"></ChartFilters>
             </v-card-subtitle>
           </v-col>
         </v-row>
-        <BarChartGrouped
-          v-if="filter && filter.id === 'earnings'"
-          :id="value.id"
-          :svg-width="width"
-          :svg-data="svgData"
-          data-group="year"
-          data-cut="percentile"
-          data-cut-selection="50"
-        ></BarChartGrouped>
-        <BarChart
-          v-if="filter && filter.id !== 'earnings'"
-          :id="value.id"
-          :svg-width="width"
-          :svg-data="svgData"
-        ></BarChart>
+        <v-row v-if="isEarnings" align="baseline">
+          <template v-for="subFilter in dataTypeFilter.filters">
+            <v-col cols="12" xs="12" sm="6" class="text-left">
+              <v-card-subtitle>
+                {{ subFilter.label }}:
+                <ChartFilters :value="subFilter.filters"></ChartFilters>
+              </v-card-subtitle>
+            </v-col>
+          </template>
+        </v-row>
+        <BarChartGrouped v-if="isEarnings" :id="value.id" :svg-width="width" :svg-data="svgData"></BarChartGrouped>
+        <BarChart v-else :id="value.id" :svg-width="width" :svg-data="svgData"></BarChart>
       </v-card>
     </v-col>
   </v-row>
@@ -45,18 +42,21 @@ export default {
   data() {
     return {
       width: 0,
-      filter: null
+      dataTypeFilter: null
     };
   },
   computed: {
+    isEarnings: function() {
+      return this.dataTypeFilter && this.dataTypeFilter.id == "earnings";
+    },
     svgData: function() {
-      if (this.filter && this.chartData) {
+      if (this.dataTypeFilter && this.chartData) {
         let objKeys = Object.keys(this.chartData[0]);
         let keepKeys = objKeys.filter(k => {
           return (
             k
               .toLocaleLowerCase()
-              .indexOf(`_${this.filter.id.toLocaleLowerCase()}`) > -1 &&
+              .indexOf(`_${this.dataTypeFilter.id.toLocaleLowerCase()}`) > -1 &&
             k.toLocaleLowerCase().indexOf("status") === -1
           );
         });
@@ -78,7 +78,7 @@ export default {
       this.width = Math.floor(this.$refs[this.value.id].$el.clientWidth);
     },
     updateFilter(filter) {
-      this.filter = filter;
+      this.dataTypeFilter = filter;
     }
   },
   mounted() {
