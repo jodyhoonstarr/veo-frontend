@@ -1,6 +1,6 @@
 <template>
   <v-btn-toggle @change="inputChange" mandatory tile group dense>
-    <template v-for="filter in value">
+    <template v-for="filter in filters">
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" :value="filter">{{filter.short}}</v-btn>
@@ -14,7 +14,7 @@
 <script>
 export default {
   name: "ChartFilters",
-  props: ["value"],
+  props: ["filters"],
   methods: {
     inputChange(event) {
       this.$emit("change", event);

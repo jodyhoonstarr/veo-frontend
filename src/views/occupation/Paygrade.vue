@@ -28,13 +28,10 @@
         <DropDown label="Cohort" hint="Year of discharge" :items="cohorts" v-model="selectedCohort"></DropDown>
       </v-col>
     </SelectBar>
+    <FiltersBar></FiltersBar>
     <ChartArea>
       <template v-for="paygrade in selectedPaygrade">
-        <ChartCard
-          :filters="filters"
-          :chartData="filteredDataByPaygrade(paygrade.id)"
-          :value="paygrade"
-        ></ChartCard>
+        <ChartCard :value="paygrade"></ChartCard>
       </template>
     </ChartArea>
   </div>
@@ -43,9 +40,9 @@
 <script>
 import SelectBar from "@/components/SelectBar.vue";
 import DropDown from "@/components/DropDown.vue";
+import FiltersBar from "@/components/FiltersBar.vue";
 import ChartArea from "@/components/ChartArea.vue";
 import ChartCard from "@/components/ChartCard.vue";
-import { BARCHARTFILTERS } from "@/constants/filters";
 import { csv } from "d3";
 
 export default {
@@ -53,6 +50,7 @@ export default {
   components: {
     SelectBar,
     DropDown,
+    FiltersBar,
     ChartArea,
     ChartCard
   },
@@ -62,7 +60,6 @@ export default {
       selectedPaygrade: null,
       selectedOccupation: null,
       selectedCohort: null,
-      filters: BARCHARTFILTERS,
       paygrades: [
         { id: "E1-E5", label: "Sergeant and below" },
         { id: "E6-E9", label: "Staff Sargeant and higher" }

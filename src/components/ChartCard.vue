@@ -6,22 +6,6 @@
           <v-col cols="12" xs="12" sm="6">
             <v-card-title>{{ value.label }}</v-card-title>
           </v-col>
-          <v-col cols="12" xs="12" sm="6" class="text-left">
-            <v-card-subtitle>
-              Data:
-              <ChartFilters @change="updateFilter" :value="filters"></ChartFilters>
-            </v-card-subtitle>
-          </v-col>
-        </v-row>
-        <v-row v-if="isEarnings" align="baseline">
-          <template v-for="subFilter in dataTypeFilter.filters">
-            <v-col cols="12" xs="12" sm="6" class="text-left">
-              <v-card-subtitle>
-                {{ subFilter.label }}:
-                <ChartFilters :value="subFilter.filters"></ChartFilters>
-              </v-card-subtitle>
-            </v-col>
-          </template>
         </v-row>
         <BarChartGrouped v-if="isEarnings" :id="value.id" :svg-width="width" :svg-data="svgData"></BarChartGrouped>
         <BarChart v-else :id="value.id" :svg-width="width" :svg-data="svgData"></BarChart>
@@ -46,9 +30,6 @@ export default {
     };
   },
   computed: {
-    isEarnings: function() {
-      return this.dataTypeFilter && this.dataTypeFilter.id == "earnings";
-    },
     svgData: function() {
       if (this.dataTypeFilter && this.chartData) {
         let objKeys = Object.keys(this.chartData[0]);
@@ -76,9 +57,6 @@ export default {
   methods: {
     handleResize: function() {
       this.width = Math.floor(this.$refs[this.value.id].$el.clientWidth);
-    },
-    updateFilter(filter) {
-      this.dataTypeFilter = filter;
     }
   },
   mounted() {
