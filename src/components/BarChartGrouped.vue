@@ -1,17 +1,49 @@
 <template>
   <div>
-    <svg :id="id" :width="svgWidth" :height="svgHeight" :max-height="svgMaxHeight">
+    <svg
+      :id="id"
+      :width="svgWidth"
+      :height="svgHeight"
+      :max-height="svgMaxHeight"
+    >
       <!-- wrapper group with margins -->
       <g :transform="chartTransform">
+        <!-- bar groups -->
+        <g
+          v-for="barGroup in d3Data"
+          class="bargroup"
+          :transform="getBarGroupTransform(barGroup.label)"
+        >
+          <!-- individual bars -->
+          <rect
+            v-for="(value, key) in barGroup"
+            v-if="!isNaN(value) || key !== 'label'"
+            class="bar"
+            :id="`${barGroup.label}-${key}`"
+            :width="x1.bandwidth()"
+            :x="x1(key)"
+            :y="y(value)"
+            :height="chartHeight - y(value)"
+            :fill="z(key)"
+          />
+        </g>
         <!-- temporary placeholder -->
-        <rect :width="chartWidth" :height="chartHeight" fill="LightGray" :data="d3Data" />
+        <!-- <rect :width="chartWidth" :height="chartHeight" fill="LightGray" /> -->
       </g>
     </svg>
   </div>
 </template>
 
 <script>
-import { scaleBand, scaleLinear, scaleOrdinal, max } from "d3";
+import {
+  scaleBand,
+  scaleLinear,
+  scaleOrdinal,
+  max,
+  min,
+  select,
+  selectAll
+} from "d3";
 
 export default {
   name: "BarChartGrouped",
@@ -36,25 +68,88 @@ export default {
     chartHeight: function() {
       return this.svgHeight - this.margin.top - this.margin.bottom;
     },
+    d3DataKeys: function() {
+      let keys = [];
+      for (const key of Object.keys(this.chartData[0])) {
+        if (key !== "label") {
+          keys.push(key);
+        }
+      }
+      return keys;
+    },
     d3Data: function() {
       // convert everything but the label to numeric
       let newArr = [];
       this.chartData.map(obj => {
         let newObj = {};
         for (const key of Object.keys(obj)) {
-          if (key === "label") {
-            newObj[key] = obj[key];
-          } else {
+          if (this.d3DataKeys.includes(key)) {
             newObj[key] = +obj[key];
+          } else {
+            newObj[key] = obj[key];
           }
         }
         newArr.push(newObj);
       });
       return newArr;
+    },
+    d3DataGroups: function() {
+      return this.d3Data.map(function(d) {
+        return d.label;
+      });
+    },
+    d3DataMax: function() {
+      const vm = this;
+      return max(vm.d3Data, function(d) {
+        return max(vm.d3DataKeys, function(key) {
+          return d[key];
+        });
+      });
+    },
+    d3DataMin: function() {
+      const vm = this;
+      return min(vm.d3Data, function(d) {
+        return min(vm.d3DataKeys, function(key) {
+          return d[key];
+        });
+      });
+    },
+    x0: function() {
+      return scaleBand()
+        .rangeRound([0, this.chartWidth])
+        .paddingInner(0.1)
+        .domain(this.d3DataGroups);
+    },
+    x1: function() {
+      return scaleBand()
+        .padding(0.05)
+        .domain(this.d3DataKeys)
+        .rangeRound([0, this.x0.bandwidth()]);
+    },
+    y: function() {
+      return scaleLinear()
+        .rangeRound([this.chartHeight, 0])
+        .domain([this.d3DataMin > 0 ? 0 : this.d3DataMin, this.d3DataMax])
+        .nice();
+    },
+    z: function() {
+      return scaleOrdinal().range([
+        "#98abc5",
+        "#8a89a6",
+        "#7b6888",
+        "#6b486b",
+        "#a05d56",
+        "#d0743c",
+        "#ff8c00"
+      ]);
+    }
+  },
+  methods: {
+    getBarGroupTransform: function(key) {
+      return `translate(${this.x0(key)},0)`;
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-</style>>
+<style lang="scss" scoped></style>>

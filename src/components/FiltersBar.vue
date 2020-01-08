@@ -1,19 +1,32 @@
 <template>
-  <v-container>
+  <v-container class="px-0 pt-0 pb-2">
     <v-row align="center">
       <v-col cols="12" sm="12" md="6" class="text-left text-no-wrap py-0">
         <v-card-subtitle class="pa-0">
           Data:
-          <ChartFilters @change="updateFilter" :filters="filters"></ChartFilters>
+          <ChartFilters
+            @change="updateFilter"
+            :filters="filters"
+          ></ChartFilters>
         </v-card-subtitle>
       </v-col>
       <v-col cols="12" sm="12" md="6" class="text-left text-no-wrap py-0">
         <v-card-subtitle v-if="isEarnings" class="pa-0">
           View:
-          <ChartFilters v-if="data.type" @change="updateSubFilter" :filters="data.type.filters"></ChartFilters>:
+          <ChartFilters
+            v-if="data.type"
+            @change="updateSubFilter"
+            :filters="data.type.filters"
+          ></ChartFilters
+          >:
           <ChartFilters
             v-if="data.view"
-            @change="(f) => { data.cut = f; emit_event() }"
+            @change="
+              f => {
+                data.cut = f;
+                emit_event();
+              }
+            "
             :filters="data.view.filters"
           ></ChartFilters>
         </v-card-subtitle>
@@ -66,5 +79,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
