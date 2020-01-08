@@ -10,11 +10,7 @@
       <v-col cols="12" sm="12" md="6" class="text-left text-no-wrap py-0">
         <v-card-subtitle v-if="isEarnings" class="pa-0">
           View:
-          <ChartFilters
-            v-if="data.type"
-            @change="(f) => { data.view = f; emit_event() }"
-            :filters="data.type.filters"
-          ></ChartFilters>:
+          <ChartFilters v-if="data.type" @change="updateSubFilter" :filters="data.type.filters"></ChartFilters>:
           <ChartFilters
             v-if="data.view"
             @change="(f) => { data.cut = f; emit_event() }"
@@ -39,6 +35,7 @@ export default {
       data: {
         type: null,
         view: null,
+        group: null,
         cut: null
       }
     };
@@ -55,7 +52,14 @@ export default {
     updateFilter: function(filter) {
       this.data.type = filter;
       this.data.view = null;
+      this.data.group = null;
       this.data.cut = null;
+      this.emit_event();
+    },
+    updateSubFilter: function(filter) {
+      this.data.view = filter;
+      // save the inactive filter to the group for later lookup
+      this.data.group = this.data.type.filters.filter(obj => obj !== filter)[0];
       this.emit_event();
     }
   }

@@ -121,23 +121,20 @@ export default {
         );
       });
 
-      // create simplified labels with the above filters removed
-      const strippedKeys = keepKeys.map(key => {
-        let noType = key
-          .toLocaleLowerCase()
-          .replace(`${this.filters.type.id.toLocaleLowerCase()}`, "");
-        let noCut = noType.replace(
-          `${this.filters.cut.id.toLocaleLowerCase()}_`,
-          ""
-        );
-        let noUnderscore = noCut.replace("_", "");
-        return noUnderscore;
+      const groupLabels = keepKeys.map(key => {
+        // find the group filter that is contained in the key string
+        const match = this.filters.group.filters.find(({ id }) => {
+          return (
+            key.toLocaleLowerCase().indexOf(`${id.toLocaleLowerCase()}_`) > -1
+          );
+        });
+        return match.id;
       });
 
       // create a lookup using the simple labels
       let keepLookup = Object.assign(
         {},
-        ...keepKeys.map((n, index) => ({ [n]: strippedKeys[index] }))
+        ...keepKeys.map((n, index) => ({ [n]: groupLabels[index] }))
       );
 
       // keep occ code until the label can be passed through
