@@ -7,7 +7,7 @@
             <v-card-title>{{ value.label }}</v-card-title>
           </v-col>
         </v-row>
-        <BarChartGrouped :id="value.id" :svg-width="width" :svg-data="svgData"></BarChartGrouped>
+        <BarChartGrouped v-if="width" :id="value.id" :svg-width="width" :chart-data="chartData"></BarChartGrouped>
         <!-- <BarChart v-else :id="value.id" :svg-width="width" :svg-data="svgData"></BarChart> -->
       </v-card>
     </v-col>
@@ -24,34 +24,8 @@ export default {
   props: ["value", "chartData"],
   data() {
     return {
-      width: 0,
-      dataTypeFilter: null
+      width: null
     };
-  },
-  computed: {
-    svgData: function() {
-      if (this.dataTypeFilter && this.chartData) {
-        let objKeys = Object.keys(this.chartData[0]);
-        let keepKeys = objKeys.filter(k => {
-          return (
-            k
-              .toLocaleLowerCase()
-              .indexOf(`_${this.dataTypeFilter.id.toLocaleLowerCase()}`) > -1 &&
-            k.toLocaleLowerCase().indexOf("status") === -1
-          );
-        });
-
-        keepKeys.unshift("dod_occ_code");
-        //TODO get occ_code label instead of numeric in data files
-        // keep only the selected keys from the original data
-        return this.chartData.map(function(o) {
-          return Object.assign(
-            {},
-            ...keepKeys.map(prop => ({ [prop]: o[prop] }))
-          );
-        });
-      }
-    }
   },
   methods: {
     handleResize: function() {

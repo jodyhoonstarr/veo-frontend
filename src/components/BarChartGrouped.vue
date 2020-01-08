@@ -4,7 +4,7 @@
       <!-- wrapper group with margins -->
       <g :transform="chartTransform">
         <!-- temporary placeholder -->
-        <rect :width="chartWidth" :height="chartHeight" fill="LightGray" />
+        <rect :width="chartWidth" :height="chartHeight" fill="LightGray" :data="d3Data" />
       </g>
     </svg>
   </div>
@@ -15,7 +15,7 @@ import { scaleBand, scaleLinear, scaleOrdinal, max } from "d3";
 
 export default {
   name: "BarChartGrouped",
-  props: ["id", "svgWidth", "svgData"],
+  props: ["id", "svgWidth", "chartData"],
   data() {
     return {
       svgRatio: 1.9,
@@ -35,6 +35,22 @@ export default {
     },
     chartHeight: function() {
       return this.svgHeight - this.margin.top - this.margin.bottom;
+    },
+    d3Data: function() {
+      // convert everything but the label to numeric
+      let newArr = [];
+      this.chartData.map(obj => {
+        let newObj = {};
+        for (const key of Object.keys(obj)) {
+          if (key === "label") {
+            newObj[key] = obj[key];
+          } else {
+            newObj[key] = +obj[key];
+          }
+        }
+        newArr.push(newObj);
+      });
+      return newArr;
     }
   }
 };
