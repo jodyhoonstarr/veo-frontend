@@ -27,8 +27,9 @@
             :fill="z(key)"
           />
         </g>
-        <!-- temporary placeholder -->
-        <!-- <rect :width="chartWidth" :height="chartHeight" fill="LightGray" /> -->
+        <div :data="axisBottom"
+        <g v-axis:x="scale" :transform="`translate(0,${chartHeight})`"></g>
+        <g v-axis:y="scale"></g>
       </g>
     </svg>
   </div>
@@ -42,7 +43,9 @@ import {
   max,
   min,
   select,
-  selectAll
+  selectAll,
+  axisBottom,
+  axisLeft
 } from "d3";
 
 export default {
@@ -142,11 +145,30 @@ export default {
         "#d0743c",
         "#ff8c00"
       ]);
-    }
+    },
+    scale: function() {
+      const x = this.x0;
+      const y = this.y;
+      return { x, y };
+    },
   },
   methods: {
     getBarGroupTransform: function(key) {
       return `translate(${this.x0(key)},0)`;
+    },
+  },
+  directives: {
+    axis(el, binding) {
+      const axis = binding.arg;
+      const axisMethod = { x: "axisBottom", y: "axisLeft" }[axis];
+      const methodArg = binding.value[axis];
+
+      // ? calling [axisMethod] causes error, hardcoded works, namespace issue possible
+      if (axisMethod === "axisBottom"){
+        select(el).call(axisBottom(methodArg));
+      } else if (axisMethod === "axisLeft") {
+        select(el).call(axisLeft(methodArg));
+      }
     }
   }
 };
