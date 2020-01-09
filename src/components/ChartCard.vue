@@ -3,7 +3,7 @@
     <v-col cols="12">
       <v-card :ref="value.id" outlined>
         <v-row align="baseline">
-          <v-col cols="12" xs="12" sm="6">
+          <v-col class="py-0" cols="12" xs="12" sm="6">
             <v-card-title>{{ value.label }}</v-card-title>
           </v-col>
         </v-row>

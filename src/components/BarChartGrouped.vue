@@ -1,11 +1,6 @@
 <template>
   <div>
-    <svg
-      :id="id"
-      :width="svgWidth"
-      :height="svgHeight"
-      :max-height="svgMaxHeight"
-    >
+    <svg :id="id" :width="svgWidth" :height="svgHeight" :max-height="svgMaxHeight">
       <!-- wrapper group with margins -->
       <g :transform="chartTransform">
         <!-- bar groups -->
@@ -14,22 +9,33 @@
           class="bargroup"
           :transform="getBarGroupTransform(barGroup.label)"
         >
-          <!-- individual bars -->
-          <rect
-            v-for="(value, key) in barGroup"
-            v-if="!isNaN(value) || key !== 'label'"
-            class="bar"
-            :id="`${barGroup.label}-${key}`"
-            :width="x1.bandwidth()"
-            :x="x1(key)"
-            :y="y(value)"
-            :height="chartHeight - y(value)"
-            :fill="z(key)"
-          />
+          <template v-for="(value, key) in barGroup" v-if="!isNaN(value) || key !== 'label'">
+            <!-- individual bars -->
+            <rect
+              class="bar"
+              :id="`${barGroup.label}-${key}`"
+              :width="x1.bandwidth()"
+              :x="x1(key)"
+              :y="y(value)"
+              :height="chartHeight - y(value)"
+              :fill="z(key)"
+            />
+
+            <!-- individual labels -->
+            <text
+              class="barlabel hidden-xs-only"
+              text-anchor="middle"
+              fill="white"
+              :id="`${barGroup.label}-${key}`"
+              :x="x1(key) + x1.bandwidth()/2"
+              :y="y(value)+ 20"
+              :height="chartHeight - y(value)"
+            >{{ value }}</text>
+          </template>
         </g>
-        <div :data="axisBottom"
-        <g v-axis:x="scale" :transform="`translate(0,${chartHeight})`"></g>
-        <g v-axis:y="scale"></g>
+
+        <g v-axis:x="scale" :transform="`translate(0,${chartHeight})`" />
+        <g v-axis:y="scale" />
       </g>
     </svg>
   </div>
@@ -55,7 +61,7 @@ export default {
     return {
       svgRatio: 1.9,
       svgMaxHeight: 400,
-      margin: { top: 10, right: 10, bottom: 30, left: 40 }
+      margin: { top: 10, right: 30, bottom: 30, left: 60 }
     };
   },
   computed: {
@@ -125,7 +131,7 @@ export default {
     },
     x1: function() {
       return scaleBand()
-        .padding(0.05)
+        .padding(0.04)
         .domain(this.d3DataKeys)
         .rangeRound([0, this.x0.bandwidth()]);
     },
@@ -150,12 +156,12 @@ export default {
       const x = this.x0;
       const y = this.y;
       return { x, y };
-    },
+    }
   },
   methods: {
     getBarGroupTransform: function(key) {
       return `translate(${this.x0(key)},0)`;
-    },
+    }
   },
   directives: {
     axis(el, binding) {
@@ -164,7 +170,7 @@ export default {
       const methodArg = binding.value[axis];
 
       // ? calling [axisMethod] causes error, hardcoded works, namespace issue possible
-      if (axisMethod === "axisBottom"){
+      if (axisMethod === "axisBottom") {
         select(el).call(axisBottom(methodArg));
       } else if (axisMethod === "axisLeft") {
         select(el).call(axisLeft(methodArg));
@@ -174,4 +180,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>>
+<style lang="scss" scoped>
+</style>>
