@@ -66,7 +66,12 @@ export default {
   },
   computed: {
     svgHeight: function() {
-      return Math.floor(this.svgWidth / this.svgRatio);
+      const calculatedHeight = Math.floor(this.svgWidth / this.svgRatio);
+      if (calculatedHeight < this.svgMaxHeight) {
+        return calculatedHeight;
+      } else {
+        return this.svgMaxHeight;
+      }
     },
     chartTransform: function() {
       return `translate(${this.margin.left}, ${this.margin.top})`;

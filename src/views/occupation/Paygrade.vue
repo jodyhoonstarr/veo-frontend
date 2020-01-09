@@ -152,8 +152,36 @@ export default {
     },
     formatForBarChart: function(data) {
       // TODO
-      console.log("formatting for plain");
-      return data;
+      // get the set of available props
+      const objKeys = Object.keys(data[0]);
+
+      // find the props/keys that are valid for the filter set
+      let keepKeys = objKeys.filter(key => {
+        return (
+          key
+            .toLocaleLowerCase()
+            .indexOf(`_${this.filters.type.id.toLocaleLowerCase()}`) > -1 &&
+          key.toLocaleLowerCase().indexOf("status") === -1
+        );
+      });
+
+      let keepLookup = {};
+      keepLookup[`y1_${this.filters.type.id.toLocaleLowerCase()}`] = "y1";
+      keepLookup[`y5_${this.filters.type.id.toLocaleLowerCase()}`] = "y5";
+      keepLookup[`y10_${this.filters.type.id.toLocaleLowerCase()}`] = "y10";
+
+      // keep occ code until the label can be passed through
+      // FIXME get text labels
+      keepKeys.push("dod_occ_code");
+      keepLookup["dod_occ_code"] = "label";
+
+      // return a simplified data object with the clean labels
+      return data.map(function(o) {
+        return Object.assign(
+          {},
+          ...keepKeys.map(prop => ({ [keepLookup[prop]]: o[prop] }))
+        );
+      });
     }
   },
   computed: {
@@ -174,6 +202,13 @@ export default {
         });
       } else {
         return null;
+      }
+    },
+    chartType: function() {
+      if (this.filters.type.id === "earnings") {
+        return "BarChartGrouped";
+      } else {
+        return "BarChart";
       }
     }
   }

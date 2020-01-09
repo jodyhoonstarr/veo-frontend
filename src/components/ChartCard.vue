@@ -8,19 +8,17 @@
           </v-col>
         </v-row>
         <BarChartGrouped v-if="width" :id="value.id" :svg-width="width" :chart-data="chartData"></BarChartGrouped>
-        <!-- <BarChart v-else :id="value.id" :svg-width="width" :svg-data="svgData"></BarChart> -->
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import BarChart from "@/components/BarChart.vue";
 import BarChartGrouped from "@/components/BarChartGrouped.vue";
 
 export default {
   name: "ChartCard",
-  components: { BarChart, BarChartGrouped },
+  components: { BarChartGrouped },
   props: ["value", "chartData"],
   data() {
     return {
