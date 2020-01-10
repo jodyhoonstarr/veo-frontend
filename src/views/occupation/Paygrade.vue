@@ -3,30 +3,50 @@
     <h1 class="text-center">This is the Occupation by Paygrade page</h1>
     <SelectBar>
       <v-col cols="12" xs="12" sm="4">
-        <DropDown label="Paygrade" :items="paygrades" v-model="selectedPaygrade" close clearable></DropDown>
+        <v-row>
+          <v-col cols="2">
+            <v-switch value="paygrade"></v-switch>
+          </v-col>
+          <v-col cols="10">
+            <DropDown label="Paygrade" :items="paygrades" v-model="selectedPaygrade" clearable></DropDown>
+          </v-col>
+        </v-row>
       </v-col>
-      <v-col cols="12" xs="12" sm="5">
-        <DropDown
-          label="Occupation"
-          :items="occupations"
-          v-model="selectedOccupation"
-          multiple
-          close
-          clearable
-        ></DropDown>
+      <v-col cols="12" xs="12" sm="4">
+        <v-row>
+          <v-col cols="2">
+            <v-switch value="paygrade"></v-switch>
+          </v-col>
+          <v-col cols="10">
+            <DropDown
+              label="Occupation"
+              :items="occupations"
+              v-model="selectedOccupation"
+              multiple
+              clearable
+            ></DropDown>
+          </v-col>
+        </v-row>
       </v-col>
-      <v-col cols="12" xs="12" sm="3">
-        <DropDown label="Cohort" :items="cohorts" v-model="selectedCohort"></DropDown>
+      <v-col cols="12" xs="12" sm="4">
+        <v-row>
+          <v-col cols="2">
+            <v-switch value="paygrade"></v-switch>
+          </v-col>
+          <v-col cols="10">
+            <DropDown label="Cohort" :items="cohorts" v-model="selectedCohort" clearable></DropDown>
+          </v-col>
+        </v-row>
       </v-col>
     </SelectBar>
     <FiltersBar @change="(f) => { filters = f }"></FiltersBar>
-    <ChartArea>
+    <!-- <ChartArea>
       <ChartCard
         v-if="filteredData != null"
         :value="selectedPaygrade"
         :chartData="filteredDataByPaygrade(selectedPaygrade)"
       ></ChartCard>
-    </ChartArea>
+    </ChartArea>-->
   </div>
 </template>
 
@@ -53,6 +73,7 @@ export default {
       selectedPaygrade: null,
       selectedOccupation: null,
       selectedCohort: null,
+      groupSwitch: null,
       paygrades: [
         { id: "E1-E5", label: "Sergeant and below" },
         { id: "E6-E9", label: "Staff Sargeant and higher" }

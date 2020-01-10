@@ -3,7 +3,6 @@
     v-if="this.itemsAreEmpty"
     :label="label"
     disabled
-    outlined
     dense
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   ></v-autocomplete>
@@ -14,7 +13,6 @@
     :items="items"
     :label="label"
     :multiple="multiple"
-    outlined
     dense
     :clearable="clearable"
     @input="dropDownSelect"
@@ -36,7 +34,7 @@
     :items="items"
     :label="label"
     :multiple="multiple"
-    chips
+    dense
     :clearable="clearable"
     @input="dropDownSelect"
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
