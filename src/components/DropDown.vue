@@ -3,6 +3,8 @@
     v-if="this.itemsAreEmpty"
     :label="label"
     disabled
+    outlined
+    dense
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   ></v-autocomplete>
   <v-autocomplete
@@ -12,17 +14,15 @@
     :items="items"
     :label="label"
     :multiple="multiple"
-    chips
+    outlined
+    dense
     :clearable="clearable"
     @input="dropDownSelect"
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   >
     <template v-slot:selection="{ item, index }">
-      <v-chip close label @click:close="chipRemove(item)" v-if="index <= 2">
-        <template v-if="item.label.length > 33">{{ item.label.substring(0,30) }}...</template>
-        <template v-else>{{ item.label }}</template>
-      </v-chip>
-      <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
+      <div class="selection" v-if="index === 0 && itemCount === 1">{{ item.label }}</div>
+      <div class="selection" v-else-if="index === 1">{{ itemCount }} selections</div>
     </template>
 
     <template three-line v-slot:item="{ item }">
@@ -42,11 +42,8 @@
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   >
     <template v-slot:selection="{ item, index }">
-      <v-chip close label @click:close="chipRemove(item)" v-if="index <= 2">
-        <template v-if="item.length > 33">{{ item.substring(0,30) }}...</template>
-        <template v-else>{{ item }}</template>
-      </v-chip>
-      <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
+      <div class="selection" v-if="index === 0 && itemCount === 1">{{ item }}</div>
+      <div class="selection" v-else-if="index === 1">{{ itemCount }} selections</div>
     </template>
 
     <template three-line v-slot:item="{ item }">
@@ -73,6 +70,17 @@ export default {
         this.items.length > 0 &&
         typeof this.items[0] === "object"
       );
+    },
+    itemCount: function() {
+      if (Array.isArray(this.selected)) {
+        return this.selected.length;
+      } else {
+        if (this.selected != null) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
     }
   },
   data() {
@@ -88,12 +96,17 @@ export default {
   methods: {
     dropDownSelect(event) {
       this.$emit("input", event);
-    },
-    chipRemove(item) {
-      this.selected.splice(this.selected.indexOf(item), 1);
-      this.selected = [...this.selected];
-      this.$emit("change", this.selected);
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.selection {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  width: 80%;
+}
+</style>

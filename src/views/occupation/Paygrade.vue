@@ -3,14 +3,7 @@
     <h1 class="text-center">This is the Occupation by Paygrade page</h1>
     <SelectBar>
       <v-col cols="12" xs="12" sm="4">
-        <DropDown
-          label="Paygrade"
-          :items="paygrades"
-          v-model="selectedPaygrade"
-          multiple
-          close
-          clearable
-        ></DropDown>
+        <DropDown label="Paygrade" :items="paygrades" v-model="selectedPaygrade" close clearable></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="5">
         <DropDown
@@ -28,13 +21,11 @@
     </SelectBar>
     <FiltersBar @change="(f) => { filters = f }"></FiltersBar>
     <ChartArea>
-      <template v-for="paygrade in selectedPaygrade">
-        <ChartCard
-          v-if="filteredData != null"
-          :value="paygrade"
-          :chartData="filteredDataByPaygrade(paygrade)"
-        ></ChartCard>
-      </template>
+      <ChartCard
+        v-if="filteredData != null"
+        :value="selectedPaygrade"
+        :chartData="filteredDataByPaygrade(selectedPaygrade)"
+      ></ChartCard>
     </ChartArea>
   </div>
 </template>
@@ -188,13 +179,14 @@ export default {
         this.selectedCohort != null &&
         this.selectedPaygrade != null &&
         this.selectedOccupation != null &&
+        this.selectedOccupation != [] &&
         this.filters != null
       ) {
         // filter the selected rows from the data
         return this.csvData.filter(row => {
           return (
             this.selectedCohort.id === row.cohort &&
-            this.selectedPaygrade.some(e => e.id === row.paygrade) &&
+            this.selectedPaygrade.id === row.paygrade &&
             this.selectedOccupation.some(e => e.id === row.dod_occ_code)
           );
         });
