@@ -3,18 +3,10 @@
     <h1 class="text-center">This is the Sector page</h1>
     <SelectBar>
       <v-col cols="12" xs="12" sm="9">
-        <DropDown
-          label="Sector"
-          hint="NAICS 2-Digit Sector"
-          :items="sectors"
-          v-model="selectedSector"
-          multiple
-          close
-          clearable
-        ></DropDown>
+        <DropDown label="Sector" :items="sectors" v-model="selectedSector" multiple close clearable></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
-        <DropDown label="Cohort" hint="Year of discharge" :items="cohorts" v-model="selectedCohort"></DropDown>
+        <DropDown label="Cohort" :items="cohorts" v-model="selectedCohort"></DropDown>
       </v-col>
     </SelectBar>
   </div>

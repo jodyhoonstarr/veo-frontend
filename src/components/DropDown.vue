@@ -3,8 +3,6 @@
     v-if="this.itemsAreEmpty"
     :label="label"
     disabled
-    hint="No valid selection available"
-    persistent-hint
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   ></v-autocomplete>
   <v-autocomplete
@@ -16,8 +14,6 @@
     :multiple="multiple"
     chips
     :clearable="clearable"
-    :hint="hint"
-    persistent-hint
     @input="dropDownSelect"
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   >
@@ -42,8 +38,6 @@
     :multiple="multiple"
     chips
     :clearable="clearable"
-    :hint="hint"
-    persistent-hint
     @input="dropDownSelect"
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   >
@@ -65,7 +59,7 @@
 
 <script>
 export default {
-  props: ["value", "items", "label", "multiple", "hint", "clearable"],
+  props: ["value", "items", "label", "multiple", "clearable"],
   computed: {
     itemsAreEmpty: function() {
       return (

@@ -3,18 +3,10 @@
     <h1 class="text-center">This is the State page</h1>
     <SelectBar>
       <v-col cols="12" xs="12" sm="9">
-        <DropDown
-          label="State"
-          hint="State"
-          :items="states"
-          v-model="selectedState"
-          multiple
-          close
-          clearable
-        ></DropDown>
+        <DropDown label="State" :items="states" v-model="selectedState" multiple close clearable></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
-        <DropDown label="Cohort" hint="Year of discharge" :items="cohorts" v-model="selectedCohort"></DropDown>
+        <DropDown label="Cohort" :items="cohorts" v-model="selectedCohort"></DropDown>
       </v-col>
     </SelectBar>
   </div>

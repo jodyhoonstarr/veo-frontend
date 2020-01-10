@@ -5,7 +5,6 @@
       <v-col cols="12" xs="12" sm="9">
         <DropDown
           label="Experience"
-          hint="Select Experience Level"
           :items="experienceCategories"
           v-model="selectedExperienceCategory"
           multiple
@@ -13,7 +12,7 @@
         ></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
-        <DropDown label="Cohort" hint="Year of discharge" :items="cohorts" v-model="selectedCohort"></DropDown>
+        <DropDown label="Cohort" :items="cohorts" v-model="selectedCohort"></DropDown>
       </v-col>
     </SelectBar>
   </div>

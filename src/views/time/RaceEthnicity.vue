@@ -3,20 +3,11 @@
     <h1 class="text-center">This is the Race/Ethnicity page</h1>
     <SelectBar>
       <v-col cols="12" xs="12" sm="5">
-        <DropDown
-          label="Race"
-          hint="Selected Race"
-          :items="races"
-          v-model="selectedRace"
-          multiple
-          close
-          clearable
-        ></DropDown>
+        <DropDown label="Race" :items="races" v-model="selectedRace" multiple close clearable></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="4">
         <DropDown
           label="Ethnicity"
-          hint="Selected Ethnicity"
           :items="ethnicities"
           v-model="selectedEthnicity"
           multiple
@@ -25,7 +16,7 @@
         ></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
-        <DropDown label="Cohort" hint="Year of discharge" :items="cohorts" v-model="selectedCohort"></DropDown>
+        <DropDown label="Cohort" :items="cohorts" v-model="selectedCohort"></DropDown>
       </v-col>
     </SelectBar>
   </div>
