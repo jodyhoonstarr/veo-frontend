@@ -22,7 +22,7 @@
   >
     <template v-slot:selection="{ item, index }">
       <div class="selection" v-if="index === 0 && itemCount === 1">{{ item.label }}</div>
-      <div class="selection" v-else-if="index === 1">{{ itemCount }} selections</div>
+      <div class="selection" v-else-if="index === 1">{{ itemCount }} {{ label }}s</div>
     </template>
 
     <template three-line v-slot:item="{ item }">
@@ -43,7 +43,7 @@
   >
     <template v-slot:selection="{ item, index }">
       <div class="selection" v-if="index === 0 && itemCount === 1">{{ item }}</div>
-      <div class="selection" v-else-if="index === 1">{{ itemCount }} selections</div>
+      <div class="selection" v-else-if="index === 1">{{ itemCount }} {{ label }}s</div>
     </template>
 
     <template three-line v-slot:item="{ item }">
@@ -107,6 +107,6 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   position: relative;
-  width: 80%;
+  max-width: 95%;
 }
 </style>
