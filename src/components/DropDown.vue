@@ -14,8 +14,11 @@
     :label="label"
     :multiple="multiple"
     dense
+    :hint="hintText"
+    :persistentHint="persistentHint"
     :clearable="clearable"
     @input="dropDownSelect"
+    v-model="selected"
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   >
     <template v-slot:selection="{ item, index }">
@@ -35,8 +38,11 @@
     :label="label"
     :multiple="multiple"
     dense
+    :hint="hintText"
+    :persistentHint="persistentHint"
     :clearable="clearable"
     @input="dropDownSelect"
+    v-model="selected"
     :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
   >
     <template v-slot:selection="{ item, index }">
@@ -54,7 +60,15 @@
 
 <script>
 export default {
-  props: ["value", "items", "label", "multiple", "clearable"],
+  props: [
+    "value",
+    "items",
+    "label",
+    "multiple",
+    "clearable",
+    "persistentHint",
+    "color"
+  ],
   computed: {
     itemsAreEmpty: function() {
       return (
@@ -78,6 +92,11 @@ export default {
         } else {
           return 0;
         }
+      }
+    },
+    hintText: function() {
+      if (this.persistentHint) {
+        return "Active Group";
       }
     }
   },

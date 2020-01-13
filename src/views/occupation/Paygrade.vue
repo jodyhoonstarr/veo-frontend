@@ -29,17 +29,17 @@
         </v-row>
       </v-col>
       <v-col cols="12" xs="12" sm="4">
-        <v-row>
-          <v-col cols="2">
-            <v-switch value="paygrade"></v-switch>
-          </v-col>
-          <v-col cols="10">
-            <DropDown label="Cohort" :items="cohorts" v-model="selectedCohort" clearable></DropDown>
-          </v-col>
-        </v-row>
+        <DropDownwSwitch
+          label="Cohort"
+          id="cohort"
+          :items="cohorts"
+          :toggle="groupSwitch === 'cohort'"
+          @change="handleDropDownwSwitch"
+        ></DropDownwSwitch>
+        <!-- v-model="selectedCohort" -->
       </v-col>
     </SelectBar>
-    <FiltersBar @change="(f) => { filters = f }"></FiltersBar>
+    <!-- <FiltersBar @change="(f) => { filters = f }"></FiltersBar> -->
     <!-- <ChartArea>
       <ChartCard
         v-if="filteredData != null"
@@ -53,6 +53,7 @@
 <script>
 import SelectBar from "@/components/SelectBar.vue";
 import DropDown from "@/components/DropDown.vue";
+import DropDownwSwitch from "@/components/DropDownwSwitch.vue";
 import FiltersBar from "@/components/FiltersBar.vue";
 import ChartArea from "@/components/ChartArea.vue";
 import ChartCard from "@/components/ChartCard.vue";
@@ -63,6 +64,7 @@ export default {
   components: {
     SelectBar,
     DropDown,
+    DropDownwSwitch,
     FiltersBar,
     ChartArea,
     ChartCard
@@ -73,7 +75,7 @@ export default {
       selectedPaygrade: null,
       selectedOccupation: null,
       selectedCohort: null,
-      groupSwitch: null,
+      groupSwitch: "cohort",
       paygrades: [
         { id: "E1-E5", label: "Sergeant and below" },
         { id: "E6-E9", label: "Staff Sargeant and higher" }
@@ -192,6 +194,10 @@ export default {
           ...keepKeys.map(prop => ({ [keepLookup[prop]]: o[prop] }))
         );
       });
+    },
+    handleDropDownwSwitch: function(data) {
+      // TODO handle state here
+      console.log(data);
     }
   },
   computed: {
@@ -213,13 +219,6 @@ export default {
         });
       } else {
         return null;
-      }
-    },
-    chartType: function() {
-      if (this.filters.type.id === "earnings") {
-        return "BarChartGrouped";
-      } else {
-        return "BarChart";
       }
     }
   }
