@@ -1,14 +1,22 @@
 <template>
   <v-row>
     <v-col cols="2">
-      <v-switch color="primary" @change="activeToggleChange" v-model="activeToggle"></v-switch>
+      <v-btn
+        icon
+        :ripple="false"
+        color="primary"
+        @click="activeToggleChange"
+        class="v-input--selection-controls"
+      >
+        <v-icon v-if="activeToggle">mdi-radiobox-marked</v-icon>
+        <v-icon v-else>mdi-radiobox-blank</v-icon>
+      </v-btn>
     </v-col>
     <v-col cols="10">
       <DropDown
         :label="label"
         :items="items"
         v-model="selected"
-        clearable
         :multiple="activeToggle"
         @input="dropDownSelect"
         :persistentHint="activeToggle"
@@ -47,6 +55,7 @@ export default {
       });
     },
     activeToggleChange() {
+      this.activeToggle = !this.activeToggle;
       this.changeArraytoObj();
       this.changeObjtoArray();
       this.$emit("change", {
@@ -73,3 +82,14 @@ export default {
 };
 </script>
 
+<style lang="scss" scoped>
+.v-btn:before {
+  display: none;
+}
+.v-btn.v-ripple__animation {
+  display: none;
+}
+.v-btn:focus {
+  outline: none;
+}
+</style>

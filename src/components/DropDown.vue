@@ -14,6 +14,7 @@
     :label="label"
     :multiple="multiple"
     dense
+    :outlined="outlined"
     :hint="hintText"
     :persistentHint="persistentHint"
     :clearable="clearable"
@@ -38,6 +39,7 @@
     :label="label"
     :multiple="multiple"
     dense
+    :outlined="outlined"
     :hint="hintText"
     :persistentHint="persistentHint"
     :clearable="clearable"
@@ -67,7 +69,8 @@ export default {
     "multiple",
     "clearable",
     "persistentHint",
-    "color"
+    "color",
+    "outlined"
   ],
   computed: {
     itemsAreEmpty: function() {
