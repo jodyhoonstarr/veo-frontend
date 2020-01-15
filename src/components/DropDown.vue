@@ -99,7 +99,7 @@ export default {
     },
     hintText: function() {
       if (this.persistentHint) {
-        return "Active Group";
+        return "Select Multiple Characteristics";
       }
     }
   },

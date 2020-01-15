@@ -3,40 +3,31 @@
     <h1 class="text-center">This is the Occupation by Paygrade page</h1>
     <SelectBar>
       <v-col cols="12" xs="12" sm="4">
-        <v-row>
-          <v-col cols="2">
-            <v-switch value="paygrade"></v-switch>
-          </v-col>
-          <v-col cols="10">
-            <DropDown label="Paygrade" :items="paygrades" v-model="selectedPaygrade" clearable></DropDown>
-          </v-col>
-        </v-row>
+        <DropDownwSwitch
+          label="Occupation"
+          :items="occupations"
+          id="occupation"
+          :toggle="activeToggle === 'occupation'"
+          @change="handleDropDownToggle"
+        ></DropDownwSwitch>
       </v-col>
       <v-col cols="12" xs="12" sm="4">
-        <v-row>
-          <v-col cols="2">
-            <v-switch value="paygrade"></v-switch>
-          </v-col>
-          <v-col cols="10">
-            <DropDown
-              label="Occupation"
-              :items="occupations"
-              v-model="selectedOccupation"
-              multiple
-              clearable
-            ></DropDown>
-          </v-col>
-        </v-row>
+        <DropDownwSwitch
+          label="Paygrade"
+          :items="paygrades"
+          id="paygrade"
+          :toggle="activeToggle === 'paygrade'"
+          @change="handleDropDownToggle"
+        ></DropDownwSwitch>
       </v-col>
       <v-col cols="12" xs="12" sm="4">
         <DropDownwSwitch
           label="Cohort"
           id="cohort"
           :items="cohorts"
-          :toggle="groupSwitch === 'cohort'"
-          @change="handleDropDownwSwitch"
+          :toggle="activeToggle === 'cohort'"
+          @change="handleDropDownToggle"
         ></DropDownwSwitch>
-        <!-- v-model="selectedCohort" -->
       </v-col>
     </SelectBar>
     <!-- <FiltersBar @change="(f) => { filters = f }"></FiltersBar> -->
@@ -75,7 +66,7 @@ export default {
       selectedPaygrade: null,
       selectedOccupation: null,
       selectedCohort: null,
-      groupSwitch: "cohort",
+      activeToggle: "occupation",
       paygrades: [
         { id: "E1-E5", label: "Sergeant and below" },
         { id: "E6-E9", label: "Staff Sargeant and higher" }
@@ -195,9 +186,13 @@ export default {
         );
       });
     },
-    handleDropDownwSwitch: function(data) {
+    handleDropDownToggle: function(data) {
       // TODO handle state here
+      // selectedOccupations, cohorts, paygrades
       console.log(data);
+      if (data.toggle) {
+        this.activeToggle = data.id;
+      }
     }
   },
   computed: {

@@ -41,6 +41,11 @@ export default {
     };
   },
   watch: {
+    toggle: function() {
+      this.activeToggle = this.toggle;
+      this.changeArraytoObj();
+      this.changeObjtoArray();
+    },
     activeToggle: function() {
       this.changeArraytoObj();
       this.changeObjtoArray();
@@ -55,14 +60,16 @@ export default {
       });
     },
     activeToggleChange() {
-      this.activeToggle = !this.activeToggle;
-      this.changeArraytoObj();
-      this.changeObjtoArray();
-      this.$emit("change", {
-        id: this.id,
-        selected: this.selected,
-        toggle: this.activeToggle
-      });
+      if (this.activeToggle === false) {
+        this.activeToggle = true;
+        this.changeArraytoObj();
+        this.changeObjtoArray();
+        this.$emit("change", {
+          id: this.id,
+          selected: this.selected,
+          toggle: this.activeToggle
+        });
+      }
     },
     changeArraytoObj() {
       if (
