@@ -3,31 +3,31 @@
     <h1 class="text-center">This is the Occupation by Paygrade page</h1>
     <SelectBar>
       <v-col cols="12" xs="12" sm="4">
-        <DropDownwSwitch
+        <DropDownwRadio
           label="Occupation"
           :items="occupations"
           id="occupation"
           :toggle="activeToggle === 'occupation'"
           @change="handleDropDownToggle"
-        ></DropDownwSwitch>
+        ></DropDownwRadio>
       </v-col>
       <v-col cols="12" xs="12" sm="4">
-        <DropDownwSwitch
+        <DropDownwRadio
           label="Paygrade"
           :items="paygrades"
           id="paygrade"
           :toggle="activeToggle === 'paygrade'"
           @change="handleDropDownToggle"
-        ></DropDownwSwitch>
+        ></DropDownwRadio>
       </v-col>
       <v-col cols="12" xs="12" sm="4">
-        <DropDownwSwitch
+        <DropDownwRadio
           label="Cohort"
           id="cohort"
           :items="cohorts"
           :toggle="activeToggle === 'cohort'"
           @change="handleDropDownToggle"
-        ></DropDownwSwitch>
+        ></DropDownwRadio>
       </v-col>
     </SelectBar>
     <!-- <FiltersBar @change="(f) => { filters = f }"></FiltersBar> -->
@@ -44,7 +44,7 @@
 <script>
 import SelectBar from "@/components/SelectBar.vue";
 import DropDown from "@/components/DropDown.vue";
-import DropDownwSwitch from "@/components/DropDownwSwitch.vue";
+import DropDownwRadio from "@/components/DropDownwRadio.vue";
 import FiltersBar from "@/components/FiltersBar.vue";
 import ChartArea from "@/components/ChartArea.vue";
 import ChartCard from "@/components/ChartCard.vue";
@@ -55,7 +55,7 @@ export default {
   components: {
     SelectBar,
     DropDown,
-    DropDownwSwitch,
+    DropDownwRadio,
     FiltersBar,
     ChartArea,
     ChartCard
