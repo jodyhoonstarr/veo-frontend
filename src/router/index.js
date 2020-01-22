@@ -1,24 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "@/views/Home.vue";
-import Time from "@/views/Time.vue";
-import AFQT from "@/views/time/AFQT.vue";
-import Age from "@/views/time/Age.vue";
-import Education from "@/views/time/Education.vue";
-import Experience from "@/views/time/Experience.vue";
-import Paygrade from "@/views/time/Paygrade.vue";
-import RaceEthnicity from "@/views/time/RaceEthnicity.vue";
-import Sector from "@/views/time/Sector.vue";
-import Sex from "@/views/time/Sex.vue";
-import State from "@/views/time/State.vue";
-import Occupation from "@/views/Occupation.vue";
-import OccupationDetail from "@/views/occupation/Detail.vue";
-import OccupationByPaygrade from "@/views/occupation/Paygrade.vue";
-import OccupationBySector from "@/views/occupation/Sector.vue";
-import OccupationByState from "@/views/occupation/State.vue";
-import Custom from "@/views/Custom.vue";
-import CustomBubble from "@/views/custom/Bubble.vue";
-import CustomCurated from "@/views/custom/Curated.vue";
 
 Vue.use(VueRouter);
 
@@ -26,103 +7,132 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: () => import(/* webpackChunkName: "home" */ "@/views/Home.vue")
   },
   {
     path: "/occupation/",
     name: "Occcupation",
-    component: Occupation,
+    component: () =>
+      import(/* webpackChunkName: "occupation" */ "@/views/Occupation.vue"),
     children: [
       {
         path: "detail",
         name: "OccupationDetail",
-        component: OccupationDetail
+        component: () =>
+          import(
+            /* webpackChunkName: "occupationdetail" */ "@/views/occupation/Detail.vue"
+          )
       },
-
       {
         path: "paygrade",
         name: "OccupationByPaygrade",
-        component: OccupationByPaygrade
+        component: () =>
+          import(
+            /* webpackChunkName: "occupationbypaygrade" */ "@/views/occupation/Paygrade.vue"
+          )
       },
-
       {
         path: "sector",
         name: "OccupationBySector",
-        component: OccupationBySector
+        component: () =>
+          import(
+            /* webpackChunkName: "occupationbysector" */ "@/views/occupation/Sector.vue"
+          )
       },
       {
         path: "state",
         name: "OcccupationByState",
-        component: OccupationByState
+        component: () =>
+          import(
+            /* webpackChunkName: "occupationbystate" */ "@/views/occupation/State.vue"
+          )
       }
     ]
   },
   {
     path: "/time/",
     name: "Time",
-    component: Time,
+    component: () => import(/* webpackChunkName: "time" */ "@/views/Time.vue"),
     children: [
       {
         path: "afqt",
         name: "AFQT",
-        component: AFQT
+        component: () =>
+          import(/* webpackChunkName: "afqt" */ "@/views/time/AFQT.vue")
       },
       {
         path: "age",
         name: "Age",
-        component: Age
+        component: () =>
+          import(/* webpackChunkName: "age" */ "@/views/time/Age.vue")
       },
       {
         path: "education",
         name: "Education",
-        component: Education
+        component: () =>
+          import(
+            /* webpackChunkName: "education" */ "@/views/time/Education.vue"
+          )
       },
       {
         path: "experience",
         name: "Experience",
-        component: Experience
+        component: () =>
+          import(
+            /* webpackChunkName: "experience" */ "@/views/time/Experience.vue"
+          )
       },
       {
         path: "paygrade",
         name: "Paygrade",
-        component: Paygrade
+        component: () =>
+          import(/* webpackChunkName: "paygrade" */ "@/views/time/Paygrade.vue")
       },
       {
         path: "raceethnicity",
         name: "Raceethnicity",
-        component: RaceEthnicity
+        component: () =>
+          import(
+            /* webpackChunkName: "raceethnicity */ "@/views/time/RaceEthnicity.vue"
+          )
       },
       {
         path: "sector",
         name: "Sector",
-        component: Sector
+        component: () =>
+          import(/* webpackChunkName: "sector" */ "@/views/time/Sector.vue")
       },
       {
         path: "sex",
         name: "Sex",
-        component: Sex
+        component: () =>
+          import(/* webpackChunkName: "sex" */ "@/views/time/Sex.vue")
       },
       {
         path: "state",
         name: "State",
-        component: State
+        component: () =>
+          import(/* webpackChunkName: "state" */ "@/views/time/State.vue")
       }
     ]
   },
   {
     path: "/custom/",
     name: "Custom",
-    component: Custom,
+    component: () =>
+      import(/* webpackChunkName: "custom" */ "@/views/Custom.vue"),
     children: [
       {
         path: "bubble",
         name: "Bubble",
-        component: CustomBubble
+        component: () =>
+          import(/* webpackChunkName: "bubble" */ "@/views/custom/Bubble.vue")
       },
       {
         path: "curated",
         name: "Curated",
-        component: CustomCurated
+        component: () =>
+          import(/* webpackChunkName: "curated" */ "@/views/custom/Curated.vue")
       }
     ]
   }
