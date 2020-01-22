@@ -30,7 +30,19 @@
         ></DropDownwRadio>
       </v-col>
     </SelectBar>
-    <!-- <FiltersBar @change="(f) => { filters = f }"></FiltersBar> -->
+    <v-card>
+      <v-system-bar color="primary">
+        <span class="white--text">Chart Title</span>
+        <v-spacer></v-spacer>
+      </v-system-bar>
+      <FiltersBar
+        @change="
+          f => {
+            filters = f;
+          }
+        "
+      ></FiltersBar>
+    </v-card>
     <!-- <ChartArea>
       <ChartCard
         v-if="filteredData != null"
@@ -201,7 +213,7 @@ export default {
         this.selectedCohort != null &&
         this.selectedPaygrade != null &&
         this.selectedOccupation != null &&
-        this.selectedOccupation != [] &&
+        this.selectedOccupation !== [] &&
         this.filters != null
       ) {
         // filter the selected rows from the data

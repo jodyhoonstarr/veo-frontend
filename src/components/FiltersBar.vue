@@ -1,38 +1,21 @@
 <template>
-  <v-container class="px-0 pt-0 pb-2">
-    <v-row align="center">
-      <v-col cols="12" sm="12" md="6" class="text-left text-no-wrap py-0">
-        <v-card-subtitle class="pa-0">
-          Data:
-          <ChartFilters
-            @change="updateFilter"
-            :filters="filters"
-          ></ChartFilters>
-        </v-card-subtitle>
-      </v-col>
-      <v-col cols="12" sm="12" md="6" class="text-left text-no-wrap py-0">
-        <v-card-subtitle v-if="isEarnings" class="pa-0">
-          View:
-          <ChartFilters
-            v-if="data.type"
-            @change="updateSubFilter"
-            :filters="data.type.filters"
-          ></ChartFilters
-          >:
-          <ChartFilters
-            v-if="data.view"
-            @change="
-              f => {
-                data.cut = f;
-                emit_event();
-              }
-            "
-            :filters="data.view.filters"
-          ></ChartFilters>
-        </v-card-subtitle>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-toolbar class="px-0 pt-0 pb-2">
+    <v-container class="px-0 align-content-xs-center align-content-sm-start">
+      <ChartFilters
+        @change="updateFilter"
+        :filters="filters.filters"
+        :heading="filters.label"
+      ></ChartFilters>
+      <template v-if="data.type && data.type.hasOwnProperty('filters')">
+        <ChartFilters
+          v-for="filter in data.type.filters"
+          :filters="filter.filters"
+          :heading="filter.label"
+        >
+        </ChartFilters>
+      </template>
+    </v-container>
+  </v-toolbar>
 </template>
 
 <script>
@@ -73,6 +56,10 @@ export default {
       this.data.view = filter;
       // save the inactive filter to the group for later lookup
       this.data.group = this.data.type.filters.filter(obj => obj !== filter)[0];
+      this.emit_event();
+    },
+    updateCut: function(filter) {
+      this.data.cut = filter;
       this.emit_event();
     }
   }
