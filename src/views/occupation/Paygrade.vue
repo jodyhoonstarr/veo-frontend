@@ -33,7 +33,10 @@
     <v-card>
       <v-system-bar color="primary">
         <span class="white--text"
-          >Earnings/Counts[filter] for Veterans grouped by [radio above]</span
+          >Earnings/Counts[filter] for Veterans grouped by
+          {{
+            activeToggle.charAt(0).toUpperCase() + activeToggle.slice(1)
+          }}</span
         >
         <v-spacer></v-spacer>
       </v-system-bar>
@@ -226,3 +229,5 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped></style>
