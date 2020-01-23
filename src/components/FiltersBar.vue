@@ -8,8 +8,20 @@
         :heading="filters.label"
       ></ChartFilters>
       <template v-if="data.type && data.type.hasOwnProperty('filters')">
-        <template v-for="filter in data.type.filters">
+        <template v-for="(filter, idx) in data.type.filters">
           <ChartFilters
+            v-if="
+              allCategory === filter.id || (allCategory == null && idx === 0)
+            "
+            :id="filter.id"
+            :value="filter.filters"
+            :filters="filter.filters"
+            :heading="filter.label"
+            :select-all="true"
+            @change="handleFilter"
+          ></ChartFilters>
+          <ChartFilters
+            v-else
             :id="filter.id"
             :filters="filter.filters"
             :heading="filter.label"
@@ -35,10 +47,9 @@ export default {
       filters: BARCHARTFILTERS,
       data: {
         type: null,
-        view: null,
-        group: null,
-        cut: null
-      }
+        filters: {}
+      },
+      allCategory: null
     };
   },
   methods: {
@@ -47,13 +58,15 @@ export default {
     },
     handleDataTypeFilter: function(f) {
       this.data.type = f.selected;
-      this.data.view = null;
-      this.data.group = null;
-      this.data.cut = null;
+      this.data.filters = {};
+      this.allCategory = null;
       this.emit_event();
     },
     handleFilter: function(f) {
-      console.log(f);
+      if (Array.isArray(f.selected)) {
+        this.allCategory = f.id;
+      }
+      this.data.filters[f.id] = f.selected;
     }
   }
 };

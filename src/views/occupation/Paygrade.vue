@@ -33,7 +33,7 @@
     <v-card>
       <v-system-bar color="primary">
         <span class="white--text"
-          >Earnings/Counts[filter] for Veterans grouped by
+          >[Earnings for/Counts of] Veterans by
           {{
             activeToggle.charAt(0).toUpperCase() + activeToggle.slice(1)
           }}</span

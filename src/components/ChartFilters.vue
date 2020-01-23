@@ -46,28 +46,30 @@ export default {
   methods: {
     selectItem(f) {
       this.selected = f;
+    },
+    selectDefault(value, filters) {
+      if (value) {
+        this.selected = value;
+      } else if (filters) {
+        this.selected = filters.find(obj => obj.default === true);
+      } else {
+        this.selected = null;
+      }
     }
   },
   watch: {
     filters: function() {
-      if (this.value) {
-        this.selected = this.value;
-      } else if (this.filters) {
-        this.selected = this.filters.find(obj => obj.default === true);
-      } else {
-        this.selected = null;
-      }
+      this.selectDefault(this.value, this.filters);
     },
     selected: function() {
       this.$emit("change", { id: this.id, selected: this.selected });
+    },
+    value: function() {
+      this.selectDefault(this.value, this.filters);
     }
   },
   mounted() {
-    if (this.value) {
-      this.selected = this.value;
-    } else if (this.filters) {
-      this.selected = this.filters.find(obj => obj.default === true);
-    }
+    this.selectDefault(this.value, this.filters);
   }
 };
 </script>
