@@ -39,13 +39,7 @@
         >
         <v-spacer></v-spacer>
       </v-system-bar>
-      <FiltersBar
-        @change="
-          f => {
-            filters = f;
-          }
-        "
-      ></FiltersBar>
+      <FiltersBar @change="handleFiltersToggle"></FiltersBar>
     </v-card>
   </div>
 </template>
@@ -72,9 +66,9 @@ export default {
   data() {
     return {
       csvData: null,
-      selectedPaygrade: null,
-      selectedOccupation: null,
-      selectedCohort: null,
+      paygrade: null,
+      occupation: null,
+      cohort: null,
       activeToggle: "occupation",
       paygrades: [
         { id: "E1-E5", label: "Sergeant and below" },
@@ -100,7 +94,7 @@ export default {
       filters: null
     };
   },
-  mounted: function() {
+  mounted() {
     csv("/veoo2p.csv").then(data => {
       this.csvData = data;
     });
@@ -196,29 +190,40 @@ export default {
       });
     },
     handleDropDownToggle: function(data) {
-      // TODO handle state here
-      // selectedOccupations, cohorts, paygrades
-      console.log(data);
+      this[data.id] = data.selected;
       if (data.toggle) {
         this.activeToggle = data.id;
       }
+    },
+    handleFiltersToggle: function(f) {
+      this.filters = f;
     }
   },
   computed: {
     filteredData: function() {
       if (
-        this.selectedCohort != null &&
-        this.selectedPaygrade != null &&
-        this.selectedOccupation != null &&
-        this.selectedOccupation !== [] &&
+        this.cohort != null &&
+        this.paygrade != null &&
+        this.occupation != null &&
         this.filters != null
       ) {
+        // convert to array
+        const cohortArray = !Array.isArray(this.cohort)
+          ? [this.cohort]
+          : this.cohort;
+        const paygradeArray = !Array.isArray(this.paygrade)
+          ? [this.paygrade]
+          : this.paygrade;
+        const occupationArray = !Array.isArray(this.occupation)
+          ? [this.occupation]
+          : this.occupation;
+
         // filter the selected rows from the data
         return this.csvData.filter(row => {
           return (
-            this.selectedCohort.id === row.cohort &&
-            this.selectedPaygrade.id === row.paygrade &&
-            this.selectedOccupation.some(e => e.id === row.dod_occ_code)
+            cohortArray.some(e => e.id === row.cohort) &&
+            paygradeArray.some(e => e.id === row.paygrade) &&
+            occupationArray.some(e => e.id === row.dod_occ_code)
           );
         });
       } else {
