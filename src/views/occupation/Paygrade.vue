@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="text-center">This is the Occupation by Paygrade page</h1>
     <SelectBar>
       <v-col cols="12" xs="12" sm="4">
         <DropDownwRadio
@@ -32,8 +31,8 @@
     </SelectBar>
     <v-card>
       <v-system-bar color="primary">
-        <span class="white--text"
-          >[Earnings for/Counts of] Veterans by
+        <span v-if="filters && activeToggle" class="white--text"
+          >{{ filters.type.label }} by
           {{
             activeToggle.charAt(0).toUpperCase() + activeToggle.slice(1)
           }}</span
