@@ -1,6 +1,6 @@
 <template>
   <v-toolbar class="px-0 pt-0 pb-2">
-    <v-container class="px-0 align-content-xs-center align-content-sm-start">
+    <v-container fluid class="px-0 text-xs-center text-sm-right">
       <ChartFilters
         @change="updateFilter"
         :filters="filters.filters"
@@ -11,6 +11,7 @@
           v-for="filter in data.type.filters"
           :filters="filter.filters"
           :heading="filter.label"
+          :select-all="true"
         >
         </ChartFilters>
       </template>

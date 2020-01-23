@@ -32,7 +32,6 @@
     </SelectBar>
     <v-card>
       <v-system-bar color="primary">
-        <span class="white--text">Chart Title</span>
         <v-spacer></v-spacer>
       </v-system-bar>
       <FiltersBar
@@ -43,13 +42,6 @@
         "
       ></FiltersBar>
     </v-card>
-    <!-- <ChartArea>
-      <ChartCard
-        v-if="filteredData != null"
-        :value="selectedPaygrade"
-        :chartData="filteredDataByPaygrade(selectedPaygrade)"
-      ></ChartCard>
-    </ChartArea>-->
   </div>
 </template>
 

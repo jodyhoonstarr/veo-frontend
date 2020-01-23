@@ -5,13 +5,11 @@ export const BARCHARTFILTERS = {
       id: "earnings",
       label: "Earnings for Employed Veterans",
       short: "Earnings",
-      icon: "mdi-currency-usd",
       filters: [
         {
           id: "percentile",
           label: "Earnings Percentile",
           short: "Percentile",
-          icon: "mdi-percent",
           filters: [
             {
               id: "p25",
@@ -23,19 +21,13 @@ export const BARCHARTFILTERS = {
               id: "p50",
               label: "50th Percentile  ",
               short: "50%",
-              default: false
+              default: true
             },
             {
               id: "p75",
               label: "75th Percentile",
               short: "75%",
               default: false
-            },
-            {
-              id: "pall",
-              label: "All Percentiles",
-              short: "All",
-              default: true
             }
           ],
           default: true
@@ -44,7 +36,6 @@ export const BARCHARTFILTERS = {
           id: "year",
           label: "Years Post Discharge",
           short: "Year",
-          icon: "mdi-av-timer",
           filters: [
             {
               id: "y1",
@@ -62,12 +53,6 @@ export const BARCHARTFILTERS = {
               id: "y10",
               label: "10-Years After Discharge",
               short: "10-Years",
-              default: false
-            },
-            {
-              id: "yall",
-              label: "All Years After Discharge",
-              short: "All Years",
               default: false
             }
           ],
@@ -77,16 +62,14 @@ export const BARCHARTFILTERS = {
       default: true
     },
     {
-      id: "count",
-      label: "Count of Employed Veterans",
-      short: "Count",
-      icon: "mdi-account-multiple",
+      id: "counts",
+      label: "Counts of Employed Veterans",
+      short: "Counts",
       filters: [
         {
           id: "year",
           label: "Years Post Discharge",
           short: "Year",
-          icon: "mdi-av-timer",
           filters: [
             {
               id: "y1",
@@ -105,12 +88,6 @@ export const BARCHARTFILTERS = {
               label: "10-Years After Discharge",
               short: "10-Years",
               default: false
-            },
-            {
-              id: "yall",
-              label: "All Years After Discharge",
-              short: "All Years",
-              default: true
             }
           ],
           default: false
