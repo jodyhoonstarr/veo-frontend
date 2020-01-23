@@ -8,6 +8,9 @@
         <template v-else-if="selected && selected.hasOwnProperty('short')">
           {{ selected.short }}
         </template>
+        <template v-else-if="selectAll && selected === filters">
+          All
+        </template>
         <template v-else>
           Select...
         </template>
@@ -16,11 +19,13 @@
     <v-list>
       <v-subheader> {{ heading }}</v-subheader>
       <v-divider></v-divider>
+
       <v-list-item v-for="filter in filters" @click="selectItem(filter)">
         <v-list-item-title>{{ filter.label }}</v-list-item-title>
       </v-list-item>
+
       <v-divider v-if="selectAll"></v-divider>
-      <div v-if="selectAll" class="text-center mt-2">
+      <div v-if="selectAll" class="text-center mt-3 mb-1">
         <v-btn color="primary" class="text--white" @click="selectItem(filters)"
           >Select All</v-btn
         >
@@ -32,7 +37,7 @@
 <script>
 export default {
   name: "ChartFilters",
-  props: ["filters", "heading", "selectAll", "id"],
+  props: ["value", "filters", "heading", "selectAll", "id"],
   data() {
     return {
       selected: null
@@ -45,7 +50,9 @@ export default {
   },
   watch: {
     filters: function() {
-      if (this.filters) {
+      if (this.value) {
+        this.selected = this.value;
+      } else if (this.filters) {
         this.selected = this.filters.find(obj => obj.default === true);
       } else {
         this.selected = null;
@@ -56,7 +63,11 @@ export default {
     }
   },
   mounted() {
-    this.selected = this.filters.find(obj => obj.default === true);
+    if (this.value) {
+      this.selected = this.value;
+    } else if (this.filters) {
+      this.selected = this.filters.find(obj => obj.default === true);
+    }
   }
 };
 </script>

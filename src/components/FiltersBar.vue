@@ -2,21 +2,22 @@
   <v-toolbar class="px-0 pt-0 pb-2">
     <v-container fluid class="px-0 text-xs-center text-sm-right">
       <ChartFilters
-        @change="updateFilter"
+        @change="handleDataTypeFilter"
         :id="filters.id"
         :filters="filters.filters"
         :heading="filters.label"
       ></ChartFilters>
       <template v-if="data.type && data.type.hasOwnProperty('filters')">
-        <ChartFilters
-          v-for="filter in data.type.filters"
-          :id="filter.id"
-          :filters="filter.filters"
-          :heading="filter.label"
-          :select-all="true"
-          @change="handleFilter"
-        >
-        </ChartFilters>
+        <template v-for="filter in data.type.filters">
+          <ChartFilters
+            :id="filter.id"
+            :filters="filter.filters"
+            :heading="filter.label"
+            :select-all="true"
+            @change="handleFilter"
+          >
+          </ChartFilters>
+        </template>
       </template>
     </v-container>
   </v-toolbar>
@@ -44,14 +45,16 @@ export default {
     emit_event: function() {
       this.$emit("change", this.data);
     },
-    updateFilter: function(f) {
+    handleDataTypeFilter: function(f) {
       this.data.type = f.selected;
       this.data.view = null;
       this.data.group = null;
       this.data.cut = null;
       this.emit_event();
     },
-    handleFilter: function(filter) {}
+    handleFilter: function(f) {
+      console.log(f);
+    }
   }
 };
 </script>
