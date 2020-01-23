@@ -3,15 +3,18 @@
     <v-container fluid class="px-0 text-xs-center text-sm-right">
       <ChartFilters
         @change="updateFilter"
+        :id="filters.id"
         :filters="filters.filters"
         :heading="filters.label"
       ></ChartFilters>
       <template v-if="data.type && data.type.hasOwnProperty('filters')">
         <ChartFilters
           v-for="filter in data.type.filters"
+          :id="filter.id"
           :filters="filter.filters"
           :heading="filter.label"
           :select-all="true"
+          @change="handleFilter"
         >
         </ChartFilters>
       </template>
@@ -37,32 +40,18 @@ export default {
       }
     };
   },
-  computed: {
-    isEarnings: function() {
-      return this.data.type && this.data.type.id == "earnings";
-    }
-  },
   methods: {
     emit_event: function() {
       this.$emit("change", this.data);
     },
-    updateFilter: function(filter) {
-      this.data.type = filter;
+    updateFilter: function(f) {
+      this.data.type = f.selected;
       this.data.view = null;
       this.data.group = null;
       this.data.cut = null;
       this.emit_event();
     },
-    updateSubFilter: function(filter) {
-      this.data.view = filter;
-      // save the inactive filter to the group for later lookup
-      this.data.group = this.data.type.filters.filter(obj => obj !== filter)[0];
-      this.emit_event();
-    },
-    updateCut: function(filter) {
-      this.data.cut = filter;
-      this.emit_event();
-    }
+    handleFilter: function(filter) {}
   }
 };
 </script>

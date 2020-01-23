@@ -1,4 +1,5 @@
 export const BARCHARTFILTERS = {
+  id: "type",
   label: "Data Type",
   filters: [
     {
@@ -81,7 +82,7 @@ export const BARCHARTFILTERS = {
               id: "y5",
               label: "5-Years After Discharge",
               short: "5-Years",
-              default: false
+              default: true
             },
             {
               id: "y10",

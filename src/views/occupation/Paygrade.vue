@@ -32,6 +32,9 @@
     </SelectBar>
     <v-card>
       <v-system-bar color="primary">
+        <span class="white--text"
+          >Earnings/Counts[filter] for Veterans grouped by [radio above]</span
+        >
         <v-spacer></v-spacer>
       </v-system-bar>
       <FiltersBar

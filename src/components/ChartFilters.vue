@@ -21,7 +21,9 @@
       </v-list-item>
       <v-divider v-if="selectAll"></v-divider>
       <div v-if="selectAll" class="text-center mt-2">
-        <v-btn color="primary" class="text--white">Select All</v-btn>
+        <v-btn color="primary" class="text--white" @click="selectItem(filters)"
+          >Select All</v-btn
+        >
       </div>
     </v-list>
   </v-menu>
@@ -30,7 +32,7 @@
 <script>
 export default {
   name: "ChartFilters",
-  props: ["filters", "heading", "selectAll"],
+  props: ["filters", "heading", "selectAll", "id"],
   data() {
     return {
       selected: null
@@ -50,7 +52,7 @@ export default {
       }
     },
     selected: function() {
-      this.$emit("change", this.selected);
+      this.$emit("change", { id: this.id, selected: this.selected });
     }
   },
   mounted() {
