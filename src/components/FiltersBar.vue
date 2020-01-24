@@ -1,38 +1,31 @@
 <template>
-  <v-toolbar class="px-0 pt-0 pb-2">
-    <v-container fluid class="px-0 text-xs-center text-sm-right">
-      <ChartFilters
-        @change="handleDataTypeFilter"
-        :id="constantFilters.id"
-        :filters="constantFilters.filters"
-        :heading="constantFilters.label"
-      ></ChartFilters>
+  <v-container class="py-0">
+    <v-row>
+      <v-col cols="12" xs="12" sm="4">
+        <ChartFilters
+          @change="handleDataTypeFilter"
+          :id="constantFilters.id"
+          :filters="constantFilters.filters"
+          :label="constantFilters.label"
+        ></ChartFilters>
+      </v-col>
+
       <template v-if="dataType && dataType.hasOwnProperty('filters')">
         <template v-for="(filter, idx) in dataType.filters">
-          <ChartFilters
-            v-if="
-              allCategory === filter.id || (allCategory == null && idx === 0)
-            "
-            :id="filter.id"
-            :value="filter.filters"
-            :filters="filter.filters"
-            :heading="filter.label"
-            :select-all="true"
-            @change="handleFilter"
-          ></ChartFilters>
-          <ChartFilters
-            v-else
-            :id="filter.id"
-            :filters="filter.filters"
-            :heading="filter.label"
-            :select-all="true"
-            @change="handleFilter"
-          >
-          </ChartFilters>
+          <v-col cols="12" xs="12" sm="4">
+            <ChartFilters
+              :id="filter.id"
+              :filters="filter.filters"
+              :label="filter.label"
+              :multiple="true"
+              @change="handleFilter"
+            >
+            </ChartFilters>
+          </v-col>
         </template>
       </template>
-    </v-container>
-  </v-toolbar>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

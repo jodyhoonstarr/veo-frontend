@@ -4,7 +4,7 @@
     :label="label"
     disabled
     dense
-    :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
+    :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
   ></v-autocomplete>
   <v-autocomplete
     v-else-if="this.itemIsObject"
@@ -20,11 +20,15 @@
     :clearable="clearable"
     @input="dropDownSelect"
     v-model="selected"
-    :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
+    :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
   >
     <template v-slot:selection="{ item, index }">
-      <div class="selection" v-if="index === 0 && itemCount === 1">{{ item.label }}</div>
-      <div class="selection" v-else-if="index === 1">{{ itemCount }} {{ label }}s</div>
+      <div class="selection" v-if="index === 0 && itemCount === 1">
+        {{ item.label }}
+      </div>
+      <div class="selection" v-else-if="index === 1">
+        {{ itemCount }} {{ label }}s
+      </div>
     </template>
 
     <template three-line v-slot:item="{ item }">
@@ -45,11 +49,15 @@
     :clearable="clearable"
     @input="dropDownSelect"
     v-model="selected"
-    :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
+    :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
   >
     <template v-slot:selection="{ item, index }">
-      <div class="selection" v-if="index === 0 && itemCount === 1">{{ item }}</div>
-      <div class="selection" v-else-if="index === 1">{{ itemCount }} {{ label }}s</div>
+      <div class="selection" v-if="index === 0 && itemCount === 1">
+        {{ item }}
+      </div>
+      <div class="selection" v-else-if="index === 1">
+        {{ itemCount }} {{ label }}s
+      </div>
     </template>
 
     <template three-line v-slot:item="{ item }">
@@ -127,6 +135,6 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   position: relative;
-  max-width: 95%;
+  max-width: 80%;
 }
 </style>
