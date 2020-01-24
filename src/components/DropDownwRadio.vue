@@ -18,7 +18,7 @@
         :items="items"
         v-model="selected"
         :multiple="activeToggle"
-        @input="dropDownSelect"
+        @input="emitChangeEvent"
         :persistentHint="activeToggle"
       ></DropDown>
     </v-col>
@@ -52,23 +52,22 @@ export default {
     }
   },
   methods: {
-    dropDownSelect() {
+    emitChangeEvent() {
       this.$emit("change", {
         id: this.id,
-        selected: this.selected,
+        selected: this.toArray(this.selected), //always return array
         toggle: this.activeToggle
       });
+    },
+    toArray: function(obj) {
+      return !Array.isArray(obj) ? [obj] : obj;
     },
     activeToggleChange() {
       if (this.activeToggle === false) {
         this.activeToggle = true;
         this.changeArraytoObj();
         this.changeObjtoArray();
-        this.$emit("change", {
-          id: this.id,
-          selected: this.selected,
-          toggle: this.activeToggle
-        });
+        this.emitChangeEvent();
       }
     },
     changeArraytoObj() {
