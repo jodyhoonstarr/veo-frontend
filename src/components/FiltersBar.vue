@@ -3,12 +3,12 @@
     <v-container fluid class="px-0 text-xs-center text-sm-right">
       <ChartFilters
         @change="handleDataTypeFilter"
-        :id="filters.id"
-        :filters="filters.filters"
-        :heading="filters.label"
+        :id="constantFilters.id"
+        :filters="constantFilters.filters"
+        :heading="constantFilters.label"
       ></ChartFilters>
-      <template v-if="data.type && data.type.hasOwnProperty('filters')">
-        <template v-for="(filter, idx) in data.type.filters">
+      <template v-if="dataType && dataType.hasOwnProperty('filters')">
+        <template v-for="(filter, idx) in dataType.filters">
           <ChartFilters
             v-if="
               allCategory === filter.id || (allCategory == null && idx === 0)
@@ -44,29 +44,31 @@ export default {
   components: { ChartFilters },
   data() {
     return {
-      filters: BARCHARTFILTERS,
-      data: {
-        type: null,
-        filters: {}
+      constantFilters: BARCHARTFILTERS,
+      dataType: null,
+      dataFilters: {
+        year: null,
+        percentile: null
       },
       allCategory: null
     };
   },
   methods: {
     emit_event: function() {
-      this.$emit("change", this.data);
+      this.$emit("change", { type: this.dataType, filters: this.dataFilters });
     },
     handleDataTypeFilter: function(f) {
-      this.data.type = f.selected;
-      this.data.filters = {};
+      this.dataType = f.selected;
+      this.dataFilters.percentile = null;
+      this.dataFilters.year = null;
       this.allCategory = null;
-      this.emit_event();
     },
     handleFilter: function(f) {
       if (Array.isArray(f.selected)) {
         this.allCategory = f.id;
       }
-      this.data.filters[f.id] = f.selected;
+      this.dataFilters[f.id] = f.selected;
+      this.emit_event();
     }
   }
 };
