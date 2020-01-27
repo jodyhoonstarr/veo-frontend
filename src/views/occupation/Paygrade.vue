@@ -29,15 +29,7 @@
         ></DropDownwRadio>
       </v-col>
     </SelectBar>
-    <GetData
-      url="/veoo2p.csv"
-      :emit="true"
-      @change="
-        ({ response }) => {
-          this.csvData = response;
-        }
-      "
-    >
+    <GetData url="/data/veoo2p.csv" :emit="true" @change="updateCsvData">
       <v-card slot-scope="{ loading }" :loading="loading">
         <v-system-bar color="primary">
           <span v-if="loading" class="white--text">Loading...</span>
@@ -137,6 +129,9 @@ export default {
           ...keepKeys.map(prop => ({ [keepLookup[prop]]: o[prop] }))
         );
       });
+    },
+    updateCsvData: function({ response }) {
+      this.csvData = response;
     },
     handleDropDownToggle: function(data) {
       this[data.id] = data.selected;
