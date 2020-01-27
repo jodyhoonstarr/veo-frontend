@@ -21,24 +21,7 @@ export default {
     };
   },
   created() {
-    const urlArray = this.url.split(".");
-    const lastExtension = urlArray[urlArray.length - 1].toLocaleLowerCase();
-    if (lastExtension === "csv") {
-      csv(this.url).then(data => {
-        this.response = data;
-        this.loading = false;
-      });
-    } else if (lastExtension === "json") {
-      get(this.url).then(response => {
-        this.response = response.data;
-        this.loading = false;
-      });
-    } else {
-      get(this.url).then(response => {
-        this.response = response.data;
-        this.loading = false;
-      });
-    }
+    this.getData();
   },
   render() {
     if (this.type === "scopedSlot") {
@@ -51,6 +34,9 @@ export default {
   watch: {
     response: function() {
       this.emitEvent();
+    },
+    url: function() {
+      this.getData();
     }
   },
   methods: {
@@ -59,6 +45,28 @@ export default {
         this.$emit("change", {
           response: this.response,
           loading: this.loading
+        });
+      }
+    },
+    getData: function() {
+      this.loading = true;
+      this.response = null;
+      const urlArray = this.url.split(".");
+      const lastExtension = urlArray[urlArray.length - 1].toLocaleLowerCase();
+      if (lastExtension === "csv") {
+        csv(this.url).then(data => {
+          this.loading = false;
+          this.response = data;
+        });
+      } else if (lastExtension === "json") {
+        get(this.url).then(response => {
+          this.loading = false;
+          this.response = response.data;
+        });
+      } else {
+        get(this.url).then(response => {
+          this.loading = false;
+          this.response = response.data;
         });
       }
     }
