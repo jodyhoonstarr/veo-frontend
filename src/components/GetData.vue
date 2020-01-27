@@ -9,9 +9,9 @@ export default {
       type: String,
       required: true
     },
-    type: {
-      type: String,
-      default: "event"
+    emit: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -24,12 +24,10 @@ export default {
     this.getData();
   },
   render() {
-    if (this.type === "scopedSlot") {
-      return this.$scopedSlots.default({
-        response: this.response,
-        loading: this.loading
-      });
-    }
+    return this.$scopedSlots.default({
+      response: this.response,
+      loading: this.loading
+    });
   },
   watch: {
     response: function() {
@@ -41,7 +39,7 @@ export default {
   },
   methods: {
     emitEvent: function() {
-      if (this.type === "event") {
+      if (this.emit) {
         this.$emit("change", {
           response: this.response,
           loading: this.loading
@@ -53,10 +51,13 @@ export default {
       this.response = null;
       const urlArray = this.url.split(".");
       const lastExtension = urlArray[urlArray.length - 1].toLocaleLowerCase();
+
       if (lastExtension === "csv") {
         csv(this.url).then(data => {
-          this.loading = false;
-          this.response = data;
+          setTimeout(() => {
+            this.loading = false;
+            this.response = data;
+          }, 2000);
         });
       } else if (lastExtension === "json") {
         get(this.url).then(response => {

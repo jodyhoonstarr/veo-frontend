@@ -31,15 +31,17 @@
     </SelectBar>
     <GetData
       url="/veoo2p.csv"
+      :emit="true"
       @change="
         ({ response }) => {
           this.csvData = response;
         }
       "
     >
-      <v-card>
+      <v-card slot-scope="{ loading }" :loading="loading">
         <v-system-bar color="primary">
-          <span v-if="filters && activeToggle" class="white--text"
+          <span v-if="loading" class="white--text">Loading...</span>
+          <span v-else-if="filters && activeToggle" class="white--text"
             >{{ filters.type.label }} by
             {{
               activeToggle.charAt(0).toUpperCase() + activeToggle.slice(1)
