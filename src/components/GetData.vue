@@ -4,7 +4,16 @@ import { get } from "axios";
 
 export default {
   name: "GetData",
-  props: ["url"],
+  props: {
+    url: {
+      type: String,
+      required: true
+    },
+    type: {
+      type: String,
+      default: "event"
+    }
+  },
   data() {
     return {
       response: null,
@@ -32,10 +41,27 @@ export default {
     }
   },
   render() {
-    return this.$scopedSlots.default({
-      response: this.response,
-      loading: this.loading
-    });
+    if (this.type === "scopedSlot") {
+      return this.$scopedSlots.default({
+        response: this.response,
+        loading: this.loading
+      });
+    }
+  },
+  watch: {
+    response: function() {
+      this.emitEvent();
+    }
+  },
+  methods: {
+    emitEvent: function() {
+      if (this.type === "event") {
+        this.$emit("change", {
+          response: this.response,
+          loading: this.loading
+        });
+      }
+    }
   }
 };
 </script>

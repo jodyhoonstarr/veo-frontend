@@ -29,18 +29,27 @@
         ></DropDownwRadio>
       </v-col>
     </SelectBar>
-    <v-card>
-      <v-system-bar color="primary">
-        <span v-if="filters && activeToggle" class="white--text"
-          >{{ filters.type.label }} by
-          {{
-            activeToggle.charAt(0).toUpperCase() + activeToggle.slice(1)
-          }}</span
-        >
-        <v-spacer></v-spacer>
-      </v-system-bar>
-      <FiltersBar @change="handleFiltersToggle"></FiltersBar>
-    </v-card>
+    <GetData
+      url="/veoo2p.csv"
+      @change="
+        ({ response }) => {
+          this.csvData = response;
+        }
+      "
+    >
+      <v-card>
+        <v-system-bar color="primary">
+          <span v-if="filters && activeToggle" class="white--text"
+            >{{ filters.type.label }} by
+            {{
+              activeToggle.charAt(0).toUpperCase() + activeToggle.slice(1)
+            }}</span
+          >
+          <v-spacer></v-spacer>
+        </v-system-bar>
+        <FiltersBar @change="handleFiltersToggle"></FiltersBar>
+      </v-card>
+    </GetData>
   </div>
 </template>
 
@@ -51,7 +60,7 @@ import DropDownwRadio from "@/components/DropDownwRadio.vue";
 import FiltersBar from "@/components/FiltersBar.vue";
 import ChartArea from "@/components/ChartArea.vue";
 import ChartCard from "@/components/ChartCard.vue";
-import { csv } from "d3";
+import GetData from "@/components/GetData";
 
 export default {
   name: "OccupationByPaygrade",
@@ -61,7 +70,8 @@ export default {
     DropDownwRadio,
     FiltersBar,
     ChartArea,
-    ChartCard
+    ChartCard,
+    GetData
   },
   data() {
     return {
@@ -94,11 +104,6 @@ export default {
       ],
       filters: null
     };
-  },
-  mounted() {
-    csv("/veoo2p.csv").then(data => {
-      this.csvData = data;
-    });
   },
   methods: {
     formatForGroupedBarChart: function(data) {
