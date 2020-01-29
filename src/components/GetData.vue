@@ -47,7 +47,9 @@ export default {
       }
     },
     randomDelay: (handler, seconds) => {
-      const delay = Math.floor(Math.random() * seconds) + 1;
+      const plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+      const delay =
+        (Math.floor((Math.random() * seconds) / 2) + 1) * plusOrMinus;
       return new Promise((resolve, reject) => {
         setTimeout(handler, (seconds + delay) * 1000);
       });
@@ -64,7 +66,7 @@ export default {
             this.loading = false;
             this.response = data;
           };
-          this.randomDelay(handler, 2);
+          this.randomDelay(handler, 4);
         });
       } else if (lastExtension === "json") {
         get(this.url).then(response => {
@@ -72,7 +74,7 @@ export default {
             this.loading = false;
             this.response = response.data;
           };
-          this.randomDelay(handler, 2);
+          this.randomDelay(handler, 4);
         });
       } else {
         get(this.url).then(response => {

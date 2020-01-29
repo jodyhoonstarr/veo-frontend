@@ -16,22 +16,32 @@
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="4">
-        <DropDownwRadio
-          label="Paygrade"
-          :items="paygrades"
-          id="paygrade"
-          :toggle="activeToggle === 'paygrade'"
-          @change="handleDropDownToggle"
-        ></DropDownwRadio>
+        <GetData url="/metadata/label_paygrade_groups.json">
+          <DropDownwRadio
+            slot-scope="{ response, loading }"
+            :loading="loading"
+            label="Paygrade"
+            :items="response"
+            propname="labels"
+            id="paygrade"
+            :toggle="activeToggle === 'paygrade'"
+            @change="handleDropDownToggle"
+          ></DropDownwRadio>
+        </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="4">
-        <DropDownwRadio
-          label="Cohort"
-          id="cohort"
-          :items="cohorts"
-          :toggle="activeToggle === 'cohort'"
-          @change="handleDropDownToggle"
-        ></DropDownwRadio>
+        <GetData url="/metadata/label_4year_cohorts.json">
+          <DropDownwRadio
+            slot-scope="{ response, loading }"
+            :loading="loading"
+            label="Cohort"
+            id="cohort"
+            :items="response"
+            propname="labels"
+            :toggle="activeToggle === 'cohort'"
+            @change="handleDropDownToggle"
+          ></DropDownwRadio>
+        </GetData>
       </v-col>
     </SelectBar>
     <GetData url="/data/veoo2p.csv" :emit="true" @change="updateCsvData">
@@ -80,10 +90,6 @@ export default {
       occupation: null,
       cohort: null,
       activeToggle: "occupation",
-      paygrades: [
-        { id: "E1-E5", label: "Sergeant and below" },
-        { id: "E6-E9", label: "Staff Sargeant and higher" }
-      ],
       cohorts: [
         { id: "2000", label: "2000-2003" },
         { id: "2004", label: "2004-2007" },
