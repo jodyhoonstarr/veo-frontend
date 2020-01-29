@@ -1,14 +1,6 @@
 <template>
   <v-autocomplete
-    v-if="this.itemsAreEmpty"
-    :loading="loading"
-    :label="label"
-    disabled
-    dense
-    :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
-  ></v-autocomplete>
-  <v-autocomplete
-    v-else-if="this.itemIsObject"
+    v-if="this.itemIsObject"
     :loading="loading"
     item-text="label"
     return-object
@@ -110,7 +102,7 @@ export default {
       }
     },
     hintText: function() {
-      if (this.persistentHint) {
+      if (!this.loading && this.persistentHint) {
         return "Select Multiple Characteristics";
       }
     }
