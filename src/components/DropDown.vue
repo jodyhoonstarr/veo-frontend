@@ -67,17 +67,32 @@
 
 <script>
 export default {
-  props: [
-    "value",
-    "items",
-    "label",
-    "multiple",
-    "clearable",
-    "persistentHint",
-    "color",
-    "outlined",
-    "loading"
-  ],
+  props: {
+    value: {
+      type: Object | Array,
+      default: null
+    },
+    items: {
+      type: Array,
+      default: null
+    },
+    label: {
+      type: String,
+      default: null
+    },
+    multiple: {
+      type: Boolean,
+      default: null
+    },
+    persistentHint: {
+      type: Boolean,
+      default: null
+    },
+    loading: {
+      type: Boolean,
+      default: null
+    }
+  },
   computed: {
     itemsAreEmpty: function() {
       return (
