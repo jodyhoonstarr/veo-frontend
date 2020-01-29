@@ -1,6 +1,7 @@
 <template>
   <v-autocomplete
     v-if="this.itemsAreEmpty"
+    :loading="loading"
     :label="label"
     disabled
     dense
@@ -8,6 +9,7 @@
   ></v-autocomplete>
   <v-autocomplete
     v-else-if="this.itemIsObject"
+    :loading="loading"
     item-text="label"
     return-object
     :items="items"
@@ -39,6 +41,7 @@
   </v-autocomplete>
   <v-autocomplete
     v-else
+    :loading="loading"
     :items="items"
     :label="label"
     :multiple="multiple"
@@ -78,7 +81,8 @@ export default {
     "clearable",
     "persistentHint",
     "color",
-    "outlined"
+    "outlined",
+    "loading"
   ],
   computed: {
     itemsAreEmpty: function() {

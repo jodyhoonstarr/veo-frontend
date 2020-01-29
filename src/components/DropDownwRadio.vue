@@ -3,6 +3,7 @@
     <v-col cols="2">
       <v-btn
         icon
+        :loading="loading"
         :ripple="false"
         color="primary"
         @click="activeToggleChange"
@@ -15,7 +16,8 @@
     <v-col cols="10">
       <DropDown
         :label="label"
-        :items="items"
+        :items="dropDownItems"
+        :loading="loading"
         v-model="selected"
         :multiple="activeToggle"
         @input="emitChangeEvent"
@@ -33,7 +35,7 @@ export default {
   components: {
     DropDown
   },
-  props: ["id", "items", "label", "toggle"],
+  props: ["id", "items", "propname", "label", "toggle", "loading"],
   data() {
     return {
       selected: null,
@@ -82,6 +84,15 @@ export default {
     changeObjtoArray() {
       if (this.activeToggle && this.selected && !Array.isArray(this.selected)) {
         this.selected = [this.selected];
+      }
+    }
+  },
+  computed: {
+    dropDownItems: function() {
+      if (this.items != null && this.items.hasOwnProperty(this.propname)) {
+        return this.items[this.propname];
+      } else {
+        return this.items;
       }
     }
   }

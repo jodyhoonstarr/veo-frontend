@@ -46,6 +46,12 @@ export default {
         });
       }
     },
+    randomDelay: (handler, seconds) => {
+      const delay = Math.floor(Math.random() * seconds) + 1;
+      return new Promise((resolve, reject) => {
+        setTimeout(handler, (seconds + delay) * 1000);
+      });
+    },
     getData: function() {
       this.loading = true;
       this.response = null;
@@ -54,15 +60,19 @@ export default {
 
       if (lastExtension === "csv") {
         csv(this.url).then(data => {
-          setTimeout(() => {
+          const handler = () => {
             this.loading = false;
             this.response = data;
-          }, 2000);
+          };
+          this.randomDelay(handler, 2);
         });
       } else if (lastExtension === "json") {
         get(this.url).then(response => {
-          this.loading = false;
-          this.response = response.data;
+          const handler = () => {
+            this.loading = false;
+            this.response = response.data;
+          };
+          this.randomDelay(handler, 2);
         });
       } else {
         get(this.url).then(response => {
