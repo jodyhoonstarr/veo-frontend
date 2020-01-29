@@ -1,11 +1,10 @@
 <template>
   <v-autocomplete
-    v-if="itemIsObject"
     :loading="loading"
     :disabled="loading"
     item-text="label"
     return-object
-    :items="items"
+    :items="dropDownItems"
     :label="label"
     :multiple="multiple"
     dense
@@ -96,6 +95,10 @@ export default {
     persistentHint: {
       type: Boolean,
       default: null
+    },
+    propname: {
+      type: String,
+      default: null
     }
   },
   computed: {
@@ -123,6 +126,13 @@ export default {
     hintText: function() {
       if (!this.loading && this.persistentHint) {
         return "Select Multiple Characteristics";
+      }
+    },
+    dropDownItems: function() {
+      if (this.items != null && this.items.hasOwnProperty(this.propname)) {
+        return this.items[this.propname];
+      } else {
+        return this.items;
       }
     }
   },
