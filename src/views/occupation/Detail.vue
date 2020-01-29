@@ -2,7 +2,7 @@
   <div>
     <h1 class="text-center">This is the Detailed Occupation page</h1>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="9">
+      <v-col cols="12" xs="12" sm="6">
         <GetData url="/metadata/label_dod_occ_code_detailed.json">
           <DetailDropDown
             slot-scope="{ response, loading }"
@@ -17,12 +17,17 @@
           ></DetailDropDown>
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="3">
-        <DropDown
-          label="Cohort"
-          :items="cohorts"
-          v-model="selectedCohort"
-        ></DropDown>
+      <v-col cols="12" xs="12" sm="6">
+        <GetData url="/metadata/label_8year_cohorts.json">
+          <DropDown
+            slot-scope="{ response, loading }"
+            :loading="loading"
+            label="Cohort"
+            :items="response"
+            propname="labels"
+            v-model="selectedCohort"
+          ></DropDown>
+        </GetData>
       </v-col>
     </SelectBar>
   </div>
@@ -45,11 +50,7 @@ export default {
   data() {
     return {
       selectedOccupations: [],
-      selectedCohort: [],
-      cohorts: [
-        { id: "2000", label: "2000-2007" },
-        { id: "2008", label: "2008-2015" }
-      ]
+      selectedCohort: []
     };
   }
 };
