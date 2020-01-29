@@ -2,6 +2,7 @@
   <v-autocomplete
     v-if="this.itemIsObject"
     :loading="loading"
+    :disabled="loading"
     item-text="label"
     return-object
     :items="items"
@@ -34,6 +35,7 @@
   <v-autocomplete
     v-else
     :loading="loading"
+    :disabled="loading"
     :items="items"
     :label="label"
     :multiple="multiple"

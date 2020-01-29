@@ -90,12 +90,6 @@ export default {
       occupation: null,
       cohort: null,
       activeToggle: "occupation",
-      cohorts: [
-        { id: "2000", label: "2000-2003" },
-        { id: "2004", label: "2004-2007" },
-        { id: "2008", label: "2008-2011" },
-        { id: "2012", label: "2012-2015" }
-      ],
       filters: null
     };
   },
