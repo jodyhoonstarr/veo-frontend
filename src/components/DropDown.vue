@@ -1,6 +1,6 @@
 <template>
   <v-autocomplete
-    v-if="this.itemIsObject"
+    v-if="itemIsObject"
     :loading="loading"
     :disabled="loading"
     item-text="label"
@@ -91,6 +91,14 @@ export default {
     loading: {
       type: Boolean,
       default: null
+    },
+    outlined: {
+      type: Boolean,
+      default: false
+    },
+    clearable: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

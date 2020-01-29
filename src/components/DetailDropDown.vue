@@ -1,32 +1,31 @@
 <template>
   <v-autocomplete
-    v-if="this.itemsAreEmpty"
-    :label="label"
-    disabled
-    dense
-    :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
-  ></v-autocomplete>
-  <v-autocomplete
-    v-else
+    v-if="itemIsObject"
+    :loading="loading"
+    :disabled="loading"
     item-text="label"
     return-object
     :items="items"
     :label="label"
     :multiple="multiple"
     dense
-    :clearable="clearable"
     :filter="filterFullObject"
+    :hint="hintText"
+    :persistentHint="persistentHint"
+    :clearable="clearable"
     @input="dropDownSelect"
     :search-input.sync="search"
-    :class="{'my-1 py-3': !$vuetify.breakpoint.xs}"
+    :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
   >
     <template v-slot:selection="{ item, index }">
-      <v-chip close label @click:close="chipRemove(item)" v-if="index <= 2">
-        <template v-if="item.label.length > 33">{{ item.label.substring(0,30) }}...</template>
-        <template v-else>{{ item.label }}</template>
-      </v-chip>
-      <span v-if="index === 3" class="grey--text caption">(+{{ value.length - 3 }} others)</span>
+      <div class="selection" v-if="index === 0 && itemCount === 1">
+        {{ item.label }}
+      </div>
+      <div class="selection" v-else-if="index === 1">
+        {{ itemCount }} {{ label }}s
+      </div>
     </template>
+
     <template three-line v-slot:item="{ parent, item }">
       <v-list-item-content class="py-0">
         <v-list-item-title
@@ -39,7 +38,11 @@
           class="pt-1"
           v-html="parent.genFilteredText(item.label)"
         ></v-list-item-title>
-        <v-list-item-title v-else class="pt-1" v-html="item.label"></v-list-item-title>
+        <v-list-item-title
+          v-else
+          class="pt-1"
+          v-html="item.label"
+        ></v-list-item-title>
         <p
           v-if="
             search &&
@@ -51,7 +54,11 @@
           v-html="parent.genFilteredText(item.details)"
           wrap
         ></p>
-        <v-list-item-subtitle v-else class="grey--text caption mb-0 pb-1" v-html="item.details"></v-list-item-subtitle>
+        <v-list-item-subtitle
+          v-else
+          class="grey--text caption mb-0 pb-1"
+          v-html="item.details"
+        ></v-list-item-subtitle>
         <v-divider></v-divider>
       </v-list-item-content>
     </template>
@@ -61,10 +68,62 @@
 <script>
 export default {
   name: "DetailDropDown",
-  props: ["value", "items", "label", "multiple", "clearable"],
+  props: {
+    value: {
+      type: Object | Array,
+      default: null
+    },
+    items: {
+      type: Object | Array,
+      default: null
+    },
+    label: {
+      type: String,
+      default: null
+    },
+    multiple: {
+      type: Boolean,
+      default: null
+    },
+    clearable: {
+      type: Boolean,
+      default: null
+    },
+    loading: {
+      type: Boolean,
+      default: null
+    },
+    persistentHint: {
+      type: Boolean,
+      default: null
+    }
+  },
   computed: {
     itemsAreEmpty: function() {
       return Array.isArray(this.items) && this.items.length === 0;
+    },
+    itemCount: function() {
+      if (Array.isArray(this.selected)) {
+        return this.selected.length;
+      } else {
+        if (this.selected != null) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    },
+    itemIsObject: function() {
+      return (
+        Array.isArray(this.items) &&
+        this.items.length > 0 &&
+        typeof this.items[0] === "object"
+      );
+    },
+    hintText: function() {
+      if (!this.loading && this.persistentHint) {
+        return "Select Multiple Characteristics";
+      }
     }
   },
   data() {
