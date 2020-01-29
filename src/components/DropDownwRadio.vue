@@ -35,7 +35,32 @@ export default {
   components: {
     DropDown
   },
-  props: ["id", "items", "propname", "label", "toggle", "loading"],
+  props: {
+    id: {
+      type: String | Number,
+      default: null
+    },
+    items: {
+      type: Object | Array,
+      default: null
+    },
+    propname: {
+      type: String,
+      default: null
+    },
+    label: {
+      type: String,
+      default: null
+    },
+    toggle: {
+      type: Boolean,
+      default: null
+    },
+    loading: {
+      type: Boolean,
+      default: null
+    }
+  },
   data() {
     return {
       selected: null,
