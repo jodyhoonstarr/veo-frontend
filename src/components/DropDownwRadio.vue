@@ -95,10 +95,31 @@ export default {
     activeToggle: function() {
       this.changeArraytoObj();
       this.changeObjtoArray();
+    },
+    items: function() {
+      if (this.selected == null && this.items != null) {
+      }
+      if (this.dropDownItems != null) {
+        // if it's the active toggle and there are 2 options available, select both
+        if (this.activeToggle && this.dropDownItems.length >= 2) {
+          this.selected = [this.dropDownItems[0], this.dropDownItems[1]];
+          // if its the active toggle but only one option is available, select it
+        } else if (this.activeToggle && this.dropDownItems.length >= 1) {
+          this.selected = [this.dropDownItems[0]];
+          // if it's not the active toggle and there's at least one option, select it as an object
+        } else if (!this.activeToggle && this.dropDownItems.length >= 1) {
+          this.selected = this.dropDownItems[0];
+        }
+      }
+    },
+    selected: function() {
+      this.emitChangeEvent();
     }
   },
   methods: {
     emitChangeEvent() {
+      this.changeArraytoObj();
+      this.changeObjtoArray();
       this.$emit("change", {
         id: this.id,
         selected: this.toArray(this.selected), //always return array
@@ -111,8 +132,6 @@ export default {
     activeToggleChange() {
       if (this.activeToggle === false) {
         this.activeToggle = true;
-        this.changeArraytoObj();
-        this.changeObjtoArray();
         this.emitChangeEvent();
       }
     },
