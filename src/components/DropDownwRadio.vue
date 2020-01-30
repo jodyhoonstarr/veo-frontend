@@ -83,7 +83,7 @@ export default {
   data() {
     return {
       selected: null,
-      activeToggle: this.toggle
+      activeToggle: null
     };
   },
   watch: {
@@ -139,6 +139,9 @@ export default {
         return this.items;
       }
     }
+  },
+  mounted() {
+    this.activeToggle = this.toggle;
   }
 };
 </script>
