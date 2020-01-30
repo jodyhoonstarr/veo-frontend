@@ -14,9 +14,22 @@
       </v-btn>
     </v-col>
     <v-col cols="10">
-      <DropDown
-        :label="label"
+      <DetailDropDown
+        v-if="detailed"
         :items="dropDownItems"
+        :label="label"
+        :loading="loading"
+        v-model="selected"
+        :multiple="activeToggle"
+        @input="emitChangeEvent"
+        :persistentHint="activeToggle"
+        :clearable="true"
+        close
+      ></DetailDropDown>
+      <DropDown
+        v-else
+        :items="dropDownItems"
+        :label="label"
         :loading="loading"
         v-model="selected"
         :multiple="activeToggle"
@@ -29,11 +42,13 @@
 
 <script>
 import DropDown from "@/components/DropDown.vue";
+import DetailDropDown from "@/components/DetailDropDown";
 
 export default {
   name: "DropDownwRadio",
   components: {
-    DropDown
+    DropDown,
+    DetailDropDown
   },
   props: {
     id: {
@@ -59,6 +74,10 @@ export default {
     loading: {
       type: Boolean,
       default: null
+    },
+    detailed: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

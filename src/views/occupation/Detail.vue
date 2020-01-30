@@ -4,29 +4,31 @@
     <SelectBar>
       <v-col cols="12" xs="12" sm="6">
         <GetData url="/metadata/label_dod_occ_code_detailed.json">
-          <DetailDropDown
+          <DropDownwRadio
+            :detailed="true"
             slot-scope="{ response, loading }"
             :loading="loading"
             label="Occupation"
             :items="response"
             propname="labels"
-            v-model="selectedOccupations"
-            :clearable="true"
-            :multiple="true"
-            close
-          ></DetailDropDown>
+            id="occupation"
+            :toggle="activeToggle === 'occupation'"
+            @change="handleDropDownToggle"
+          ></DropDownwRadio>
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="6">
         <GetData url="/metadata/label_8year_cohorts.json">
-          <DropDown
+          <DropDownwRadio
             slot-scope="{ response, loading }"
             :loading="loading"
             label="Cohort"
+            id="cohort"
             :items="response"
             propname="labels"
-            v-model="selectedCohort"
-          ></DropDown>
+            :toggle="activeToggle === 'cohort'"
+            @change="handleDropDownToggle"
+          ></DropDownwRadio>
         </GetData>
       </v-col>
     </SelectBar>
@@ -36,22 +38,31 @@
 <script>
 import SelectBar from "@/components/SelectBar.vue";
 import DropDown from "@/components/DropDown.vue";
-import DetailDropDown from "@/components/DetailDropDown.vue";
 import GetData from "@/components/GetData";
+import DropDownwRadio from "@/components/DropDownwRadio";
 
 export default {
   name: "DetailedOccupation",
   components: {
     SelectBar,
     DropDown,
-    DetailDropDown,
+    DropDownwRadio,
     GetData
   },
   data() {
     return {
-      selectedOccupations: [],
+      activeToggle: "occupation",
+      occupation: null,
       selectedCohort: []
     };
+  },
+  methods: {
+    handleDropDownToggle: function(data) {
+      this[data.id] = data.selected;
+      if (data.toggle) {
+        this.activeToggle = data.id;
+      }
+    }
   }
 };
 </script>

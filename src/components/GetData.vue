@@ -66,7 +66,7 @@ export default {
             this.loading = false;
             this.response = data;
           };
-          this.randomDelay(handler, 4);
+          this.randomDelay(handler, 1);
         });
       } else if (lastExtension === "json") {
         get(this.url).then(response => {
@@ -74,7 +74,7 @@ export default {
             this.loading = false;
             this.response = response.data;
           };
-          this.randomDelay(handler, 4);
+          this.randomDelay(handler, 1);
         });
       } else {
         get(this.url).then(response => {

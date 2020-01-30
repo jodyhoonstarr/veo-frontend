@@ -4,7 +4,7 @@
     :disabled="loading"
     item-text="label"
     return-object
-    :items="dropDownItems"
+    :items="items"
     :label="label"
     :multiple="multiple"
     dense
@@ -126,13 +126,6 @@ export default {
     hintText: function() {
       if (!this.loading && this.persistentHint) {
         return "Select Multiple Characteristics";
-      }
-    },
-    dropDownItems: function() {
-      if (this.items != null && this.items.hasOwnProperty(this.propname)) {
-        return this.items[this.propname];
-      } else {
-        return this.items;
       }
     }
   },
