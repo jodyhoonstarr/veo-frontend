@@ -45,8 +45,8 @@
       </v-col>
     </SelectBar>
     <GetData url="/data/veoo2p.csv" :emit="true" @change="updateCsvData">
-      <v-card slot-scope="{ loading }" :loading="loading">
-        <v-system-bar color="primary">
+      <ChartCard slot-scope="{ loading }" :loading="loading">
+        <template v-slot:header>
           <span v-if="loading" class="white--text">Loading...</span>
           <span v-else-if="filters && activeToggle" class="white--text"
             >{{ filters.type.label }} by
@@ -54,10 +54,9 @@
               activeToggle.charAt(0).toUpperCase() + activeToggle.slice(1)
             }}</span
           >
-          <v-spacer></v-spacer>
-        </v-system-bar>
+        </template>
         <FiltersBar @change="handleFiltersToggle"></FiltersBar>
-      </v-card>
+      </ChartCard>
     </GetData>
   </div>
 </template>
