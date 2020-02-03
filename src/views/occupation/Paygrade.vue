@@ -1,7 +1,7 @@
 <template>
   <div>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="4">
+      <v-col cols="12" xs="12" sm="4" class="pb-0">
         <GetData url="/metadata/label_dod_occ_code.json">
           <DropDownwRadio
             slot-scope="{ response, loading }"
@@ -15,7 +15,7 @@
           ></DropDownwRadio>
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="4">
+      <v-col cols="12" xs="12" sm="4" class="pb-0">
         <GetData url="/metadata/label_paygrade_groups.json">
           <DropDownwRadio
             slot-scope="{ response, loading }"
@@ -29,7 +29,7 @@
           ></DropDownwRadio>
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="4">
+      <v-col cols="12" xs="12" sm="4" class="pb-0">
         <GetData url="/metadata/label_4year_cohorts.json">
           <DropDownwRadio
             slot-scope="{ response, loading }"
@@ -56,6 +56,7 @@
           >
         </template>
         <FiltersBar @change="handleFiltersToggle"></FiltersBar>
+        <Chart></Chart>
       </ChartCard>
     </GetData>
   </div>
@@ -67,6 +68,7 @@ import DropDown from "@/components/DropDown.vue";
 import DropDownwRadio from "@/components/DropDownwRadio.vue";
 import FiltersBar from "@/components/FiltersBar.vue";
 import ChartCard from "@/components/ChartCard.vue";
+import Chart from "@/components/Chart";
 import GetData from "@/components/GetData";
 
 export default {
@@ -76,9 +78,9 @@ export default {
     DropDown,
     DropDownwRadio,
     FiltersBar,
-    ChartArea,
     ChartCard,
-    GetData
+    GetData,
+    Chart
   },
   data() {
     return {

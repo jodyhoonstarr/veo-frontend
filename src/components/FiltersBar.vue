@@ -1,7 +1,7 @@
 <template>
   <v-container class="py-0">
     <v-row>
-      <v-col cols="12" xs="12" sm="4">
+      <v-col cols="12" xs="12" sm="4" class="pb-0">
         <ChartFilters
           @change="handleDataTypeFilter"
           :id="constantFilters.id"
@@ -13,7 +13,7 @@
 
       <template v-if="dataType && dataType.hasOwnProperty('filters')">
         <template v-for="filter in dataType.filters">
-          <v-col cols="12" xs="12" sm="4">
+          <v-col cols="12" xs="12" sm="4" class="pb-0">
             <ChartFilters
               :id="filter.id"
               :filters="filter.filters"

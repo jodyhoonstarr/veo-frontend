@@ -46,7 +46,6 @@ export default {
   components: {
     SelectBar,
     DropDown,
-    ChartArea,
     ChartCard
   },
   data() {
