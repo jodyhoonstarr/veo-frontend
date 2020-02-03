@@ -39,7 +39,6 @@
 <script>
 import SelectBar from "@/components/SelectBar.vue";
 import DropDown from "@/components/DropDown.vue";
-import ChartArea from "@/components/ChartArea.vue";
 import ChartCard from "@/components/ChartCard.vue";
 
 export default {
