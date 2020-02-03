@@ -44,8 +44,8 @@
         </GetData>
       </v-col>
     </SelectBar>
-    <GetData url="/data/veoo2p.csv" :emit="true" @change="updateCsvData">
-      <ChartCard slot-scope="{ loading }" :loading="loading">
+    <GetData url="/data/veoo2p.csv">
+      <ChartCard slot-scope="{ response, loading }" :loading="loading">
         <template v-slot:header>
           <span v-if="loading" class="white--text">Loading...</span>
           <span v-else-if="filters && activeToggle" class="white--text"
@@ -122,9 +122,6 @@ export default {
           ...keepKeys.map(prop => ({ [keepLookup[prop]]: o[prop] }))
         );
       });
-    },
-    updateCsvData: function({ response }) {
-      this.csvData = response;
     },
     handleDropDownToggle: function(data) {
       this[data.id] = data.selected;

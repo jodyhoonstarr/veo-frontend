@@ -8,10 +8,6 @@ export default {
     url: {
       type: String,
       required: true
-    },
-    emit: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -20,7 +16,7 @@ export default {
       loading: true
     };
   },
-  created() {
+  mounted() {
     this.getData();
   },
   render() {
@@ -30,22 +26,11 @@ export default {
     });
   },
   watch: {
-    response: function() {
-      this.emitEvent();
-    },
     url: function() {
       this.getData();
     }
   },
   methods: {
-    emitEvent: function() {
-      if (this.emit) {
-        this.$emit("change", {
-          response: this.response,
-          loading: this.loading
-        });
-      }
-    },
     randomDelay: (handler, seconds) => {
       const plusOrMinus = Math.random() < 0.5 ? -1 : 1;
       const delay =

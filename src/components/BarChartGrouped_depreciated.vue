@@ -1,6 +1,11 @@
 <template>
   <div>
-    <svg :id="id" :width="svgWidth" :height="svgHeight" :max-height="svgMaxHeight">
+    <svg
+      :id="id"
+      :width="svgWidth"
+      :height="svgHeight"
+      :max-height="svgMaxHeight"
+    >
       <!-- wrapper group with margins -->
       <g :transform="chartTransform">
         <!-- bar groups -->
@@ -9,7 +14,10 @@
           class="bargroup"
           :transform="getBarGroupTransform(barGroup.label)"
         >
-          <template v-for="(value, key) in barGroup" v-if="!isNaN(value) || key !== 'label'">
+          <template
+            v-for="(value, key) in barGroup"
+            v-if="!isNaN(value) || key !== 'label'"
+          >
             <!-- individual bars -->
             <rect
               class="bar"
@@ -27,10 +35,12 @@
               text-anchor="middle"
               fill="white"
               :id="`${barGroup.label}-${key}`"
-              :x="x1(key) + x1.bandwidth()/2"
-              :y="y(value)+ 20"
+              :x="x1(key) + x1.bandwidth() / 2"
+              :y="y(value) + 20"
               :height="chartHeight - y(value)"
-            >{{ value }}</text>
+            >
+              {{ value }}
+            </text>
           </template>
         </g>
 
@@ -185,5 +195,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>>
+<style lang="scss" scoped></style>>
