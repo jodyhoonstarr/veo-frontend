@@ -10,12 +10,12 @@
     dense
     :value="selected"
     @change="sortIfArray"
+    class="newSelect otherClass"
   >
     <template v-slot:selection="{ item, index }">
       <div class="selection" v-if="index === 0">
-        {{ item.short }}
+        {{ labels }}
       </div>
-      <div class="selection" v-else-if="index >= 1">, {{ item.short }}</div>
     </template>
   </v-select>
 </template>
@@ -78,16 +78,25 @@ export default {
   },
   mounted() {
     this.selectDefault(this.value, this.filters);
+  },
+  computed: {
+    labels: function() {
+      if (Array.isArray(this.selected)) {
+        return this.selected.map(e => e.short).join(", ");
+      } else {
+        return this.selected.short;
+      }
+    }
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .selection {
-  text-overflow: ellipsis;
   white-space: nowrap;
+  display: block;
   overflow: hidden;
-  position: relative;
-  max-width: 80%;
+  text-overflow: ellipsis;
+  max-width: 90%;
 }
 </style>
