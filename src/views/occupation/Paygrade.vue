@@ -44,8 +44,12 @@
         </GetData>
       </v-col>
     </SelectBar>
-    <GetData url="/data/veoo2p.csv">
-      <ChartCard slot-scope="{ response, loading }" :loading="loading">
+    <GetData
+      url="/data/veoo2p.csv"
+      :emit="true"
+      @change="({ response }) => (this.csvData = response)"
+    >
+      <ChartCard slot-scope="{ loading }" :loading="loading">
         <template v-slot:header>
           <span v-if="loading" class="white--text">Loading...</span>
           <span v-else-if="filters && activeToggle" class="white--text"
@@ -132,17 +136,15 @@ export default {
     },
     handleFiltersToggle: function(f) {
       this.filters = f;
-    }
-  },
-  computed: {
-    selectData: function() {
+    },
+    selectRows: function(data) {
       if (
         this.cohort != null &&
         this.paygrade != null &&
         this.occupation != null
       ) {
         // filter the selected rows from the data
-        return this.csvData.filter(row => {
+        return data.filter(row => {
           return (
             this.cohort.some(e => e.id === row.cohort) &&
             this.paygrade.some(e => e.id === row.paygrade) &&
@@ -153,6 +155,8 @@ export default {
         return null;
       }
     }
+  },
+  computed: {
     // filterData: function() {
     //   if (this.filters != null && this.selectData != null) {
     //     // get the set of available props
