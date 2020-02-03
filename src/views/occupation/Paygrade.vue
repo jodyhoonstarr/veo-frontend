@@ -136,15 +136,18 @@ export default {
     },
     handleFiltersToggle: function(f) {
       this.filters = f;
-    },
-    selectRows: function(data) {
+    }
+  },
+
+  computed: {
+    csvDataRows: function() {
       if (
         this.cohort != null &&
         this.paygrade != null &&
         this.occupation != null
       ) {
         // filter the selected rows from the data
-        return data.filter(row => {
+        return this.csvData.filter(row => {
           return (
             this.cohort.some(e => e.id === row.cohort) &&
             this.paygrade.some(e => e.id === row.paygrade) &&
@@ -155,8 +158,6 @@ export default {
         return null;
       }
     }
-  },
-  computed: {
     // filterData: function() {
     //   if (this.filters != null && this.selectData != null) {
     //     // get the set of available props
