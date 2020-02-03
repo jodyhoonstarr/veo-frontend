@@ -74,6 +74,7 @@ import FiltersBar from "@/components/FiltersBar.vue";
 import ChartCard from "@/components/ChartCard.vue";
 import Chart from "@/components/Chart";
 import GetData from "@/components/GetData";
+import { GROUPCOLUMN } from "@/constants/lookups.js";
 
 export default {
   name: "OccupationByPaygrade",
@@ -98,36 +99,6 @@ export default {
     };
   },
   methods: {
-    formatForGroupedBarChart: function(data) {
-      const groupLabels = keepKeys.map(key => {
-        // find the group filter that is contained in the key string
-        const match = this.filters.group.filters.find(({ id }) => {
-          return (
-            key.toLocaleLowerCase().indexOf(`${id.toLocaleLowerCase()}_`) > -1
-          );
-        });
-        return match.id;
-      });
-
-      // create a lookup using the simple labels
-      let keepLookup = Object.assign(
-        {},
-        ...keepKeys.map((n, index) => ({ [n]: groupLabels[index] }))
-      );
-
-      // keep occ code until the label can be passed through
-      // FIXME get text labels
-      keepKeys.push("dod_occ_code");
-      keepLookup["dod_occ_code"] = "label";
-
-      // return a simplified data object with the clean labels
-      return data.map(function(o) {
-        return Object.assign(
-          {},
-          ...keepKeys.map(prop => ({ [keepLookup[prop]]: o[prop] }))
-        );
-      });
-    },
     handleDropDownToggle: function(data) {
       this[data.id] = data.selected;
       if (data.toggle) {
@@ -138,8 +109,10 @@ export default {
       this.filters = f;
     }
   },
-
   computed: {
+    activeToggleProp: function() {
+      return GROUPCOLUMN[this.activeToggle];
+    },
     csvDataRows: function() {
       if (
         this.cohort != null &&
@@ -157,50 +130,58 @@ export default {
       } else {
         return null;
       }
+    },
+    csvDataRowsSimple: function() {
+      if (this.filters != null && this.csvDataRows != null) {
+        // get the set of available props
+        const objKeys = Object.keys(this.csvDataRows[0]);
+
+        // get either earnings or emp data without the status flag
+        const matchInString =
+          this.filters.type.id === "earnings" ? "earnings" : "emp";
+        const dataTypeKeys = objKeys.filter(key => {
+          return (
+            key.toLocaleLowerCase().indexOf(`${matchInString}`) > -1 &&
+            key.toLocaleLowerCase().indexOf("status") === -1
+          );
+        });
+
+        // get only the props defined in the filters
+        let filterKeys = dataTypeKeys.filter(key => {
+          const f = this.filters.filters;
+          if (
+            f.hasOwnProperty("percentile") &&
+            f.percentile &&
+            f.hasOwnProperty("year") &&
+            f.year
+          ) {
+            const p = f.percentile;
+            const y = f.year;
+            return (
+              p.some(e => key.indexOf(`${e.id}_`) > -1) &&
+              y.some(e => key.indexOf(`${e.id}_`) > -1)
+            );
+          } else {
+            const y = f.year;
+            return y.some(e => key.indexOf(`${e.id}_`) > -1);
+          }
+        });
+
+        // keep the label for the active group
+        filterKeys.push(this.activeToggleProp);
+
+        // filter out the row data to only keep usable props
+        return this.csvDataRows.map(row => {
+          let result = {};
+          filterKeys.forEach(function(key) {
+            if (row.hasOwnProperty(key)) {
+              result[key] = row[key];
+            }
+          });
+          return result;
+        });
+      }
     }
-    // filterData: function() {
-    //   if (this.filters != null && this.selectData != null) {
-    //     // get the set of available props
-    //     const objKeys = Object.keys(this.selectData[0]);
-    //
-    //     // find the props/keys that are valid for the data type
-    //     const matchInString =
-    //         this.filters.type.id.toLocaleLowerCase() === "earnings"
-    //             ? "earnings"
-    //             : "emp";
-    //     const dataTypeKeys = objKeys.filter(key => {
-    //       return (
-    //           key.toLocaleLowerCase().indexOf(`${matchInString}`) > -1 &&
-    //           key.toLocaleLowerCase().indexOf("status") === -1
-    //       );
-    //     });
-    //
-    //     let filterKeys = dataTypeKeys.filter(key => {
-    //       const f = this.filters.filters;
-    //       if (f.hasOwnProperty("percentile") && f.hasOwnProperty("year")) {
-    //         const parr = this.toArray(f.percentile);
-    //         const yarr = this.toArray(f.year);
-    //         return (
-    //             parr.some(
-    //                 e => key.toLocaleLowerCase().indexOf(`${e.id}_`) > -1
-    //             ) &&
-    //             yarr.some(e => key.toLocaleLowerCase().indexOf(`${e.id}_`) > -1)
-    //         );
-    //       } else {
-    //         const yarr = this.toArray(f.year);
-    //         return yarr.some(
-    //             e => key.toLocaleLowerCase().indexOf(`${e.id}_`) > -1
-    //         );
-    //       }
-    //     });
-    //
-    //     let retvar = filterKeys;
-    //     console.log(retvar);
-    //     return retvar;
-    //   } else {
-    //     return null;
-    //   }
-    // },
   }
 };
 </script>
