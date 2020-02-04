@@ -60,7 +60,7 @@
           >
         </template>
         <FiltersBar @change="handleFiltersToggle"></FiltersBar>
-        <Chart></Chart>
+        <Chart :chartData="chartData"></Chart>
       </ChartCard>
     </GetData>
   </div>
@@ -116,7 +116,8 @@ export default {
       if (
         this.cohort != null &&
         this.paygrade != null &&
-        this.occupation != null
+        this.occupation != null &&
+        this.csvData != null
       ) {
         // filter the selected rows from the data
         return this.csvData.filter(row => {
@@ -224,6 +225,7 @@ export default {
 
         data.push(result);
       });
+
       return data;
     }
   }

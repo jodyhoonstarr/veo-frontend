@@ -1,13 +1,27 @@
 <template>
   <v-card ref="chartcard" flat>
-    <v-card-title>Card Title</v-card-title>
-    <v-card-text>Chart goes here</v-card-text>
+    <D3SVG
+      v-if="width"
+      :width="width"
+      :height="height"
+      :max-height="maxHeight"
+      :chartData="chartData"
+    ></D3SVG>
   </v-card>
 </template>
 
 <script>
+import D3SVG from "@/components/D3SVG";
+
 export default {
   name: "Chart",
+  components: { D3SVG },
+  props: {
+    chartData: {
+      type: Array,
+      default: null
+    }
+  },
   data() {
     return {
       width: null,
