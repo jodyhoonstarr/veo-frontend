@@ -10,8 +10,21 @@ export default {
   name: "Chart",
   data() {
     return {
-      width: null
+      width: null,
+      ratio: 1.9,
+      maxHeight: 400
     };
+  },
+  computed: {
+    height: function() {
+      if (this.width == null) {
+        return null;
+      }
+      const calculatedHeight = Math.floor(this.width / this.ratio);
+      return calculatedHeight < this.maxHeight
+        ? calculatedHeight
+        : this.maxHeight;
+    }
   },
   methods: {
     handleResize: function() {
