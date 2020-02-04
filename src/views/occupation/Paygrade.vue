@@ -90,7 +90,6 @@ export default {
   data() {
     return {
       csvData: null,
-      filterData: null,
       paygrade: null,
       occupation: null,
       cohort: null,
@@ -181,6 +180,51 @@ export default {
           return result;
         });
       }
+    },
+    chartData: function() {
+      if (this.csvDataRowsSimple == null) {
+        return null;
+      }
+
+      // take the selected data and get the unique data property
+      // e.g. ['y1_p50', 'y5_p50'] would give ['y1', 'y5']
+      const topRow = this.csvDataRowsSimple[0];
+      let keyArray = [];
+      Object.keys(topRow).map(k => {
+        if (k != this.activeToggleProp) {
+          keyArray.push(k.split("_"));
+        }
+      });
+      const variableColumn =
+        this.filters &&
+        this.filters.filters.percentile &&
+        Array.isArray(this.filters.filters.percentile) &&
+        this.filters.filters.percentile.length > 1
+          ? 1
+          : 0;
+
+      const useKeys = keyArray.map(k => k[variableColumn]);
+
+      let data = [];
+      this.csvDataRowsSimple.map(row => {
+        let result = {};
+
+        // find the label using the active group
+        result.label = this[this.activeToggle].find(obj => {
+          return obj.id === row[this.activeToggleProp];
+        }).label;
+
+        // create the simple data
+        useKeys.forEach(k => {
+          const propName = Object.keys(row).find(prop => {
+            return prop.includes(`${k}_`);
+          });
+          result[k] = row[propName];
+        });
+
+        data.push(result);
+      });
+      return data;
     }
   }
 };
