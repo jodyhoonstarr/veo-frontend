@@ -12,16 +12,10 @@
 </template>
 
 <script>
-import {
-  axisBottom,
-  axisLeft,
-  max,
-  min,
-  scaleBand,
-  scaleLinear,
-  scaleOrdinal,
-  select
-} from "d3";
+import { axisBottom, axisLeft } from "d3-axis";
+import { scaleBand, scaleLinear, scaleOrdinal } from "d3-scale";
+import { min, max } from "d3-array";
+import { select, selectAll } from "d3-selection";
 import { arrayIsNullorEmpty } from "@/components/utils";
 
 export default {
