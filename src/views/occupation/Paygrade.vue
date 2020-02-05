@@ -75,6 +75,7 @@ import ChartCard from "@/components/ChartCard.vue";
 import Chart from "@/components/Chart";
 import GetData from "@/components/GetData";
 import { GROUPCOLUMN } from "@/constants/lookups.js";
+import { arrayIsNullorEmpty } from "@/components/utils";
 
 export default {
   name: "OccupationByPaygrade",
@@ -114,76 +115,79 @@ export default {
     },
     csvDataRows: function() {
       if (
-        this.cohort != null &&
-        this.paygrade != null &&
-        this.occupation != null &&
-        this.csvData != null
+        arrayIsNullorEmpty(this.cohort) ||
+        arrayIsNullorEmpty(this.paygrade) ||
+        arrayIsNullorEmpty(this.occupation) ||
+        arrayIsNullorEmpty(this.csvData)
       ) {
-        // filter the selected rows from the data
-        return this.csvData.filter(row => {
-          return (
-            this.cohort.some(e => e.id === row.cohort) &&
-            this.paygrade.some(e => e.id === row.paygrade) &&
-            this.occupation.some(e => e.id === row.dod_occ_code)
-          );
-        });
-      } else {
         return null;
       }
+      // filter the selected rows from the data
+      return this.csvData.filter(row => {
+        return (
+          this.cohort.some(e => e.id === row.cohort) &&
+          this.paygrade.some(e => e.id === row.paygrade) &&
+          this.occupation.some(e => e.id === row.dod_occ_code)
+        );
+      });
     },
     csvDataRowsSimple: function() {
-      if (this.filters != null && this.csvDataRows != null) {
-        // get the set of available props
-        const objKeys = Object.keys(this.csvDataRows[0]);
+      if (
+        arrayIsNullorEmpty(this.filters) ||
+        arrayIsNullorEmpty(this.csvDataRows)
+      ) {
+        return null;
+      }
+      // get the set of available props
+      const objKeys = Object.keys(this.csvDataRows[0]);
 
-        // get either earnings or emp data without the status flag
-        const matchInString =
-          this.filters.type.id === "earnings" ? "earnings" : "emp";
-        const dataTypeKeys = objKeys.filter(key => {
+      // get either earnings or emp data without the status flag
+      const matchInString =
+        this.filters.type.id === "earnings" ? "earnings" : "emp";
+      const dataTypeKeys = objKeys.filter(key => {
+        return (
+          key.toLocaleLowerCase().indexOf(`${matchInString}`) > -1 &&
+          key.toLocaleLowerCase().indexOf("status") === -1
+        );
+      });
+
+      // get only the props defined in the filters
+      let filterKeys = dataTypeKeys.filter(key => {
+        const f = this.filters.filters;
+        if (
+          f.hasOwnProperty("percentile") &&
+          f.percentile &&
+          f.hasOwnProperty("year") &&
+          f.year
+        ) {
+          const p = f.percentile;
+          const y = f.year;
           return (
-            key.toLocaleLowerCase().indexOf(`${matchInString}`) > -1 &&
-            key.toLocaleLowerCase().indexOf("status") === -1
+            p.some(e => key.indexOf(`${e.id}_`) > -1) &&
+            y.some(e => key.indexOf(`${e.id}_`) > -1)
           );
-        });
+        } else {
+          const y = f.year;
+          return y.some(e => key.indexOf(`${e.id}_`) > -1);
+        }
+      });
 
-        // get only the props defined in the filters
-        let filterKeys = dataTypeKeys.filter(key => {
-          const f = this.filters.filters;
-          if (
-            f.hasOwnProperty("percentile") &&
-            f.percentile &&
-            f.hasOwnProperty("year") &&
-            f.year
-          ) {
-            const p = f.percentile;
-            const y = f.year;
-            return (
-              p.some(e => key.indexOf(`${e.id}_`) > -1) &&
-              y.some(e => key.indexOf(`${e.id}_`) > -1)
-            );
-          } else {
-            const y = f.year;
-            return y.some(e => key.indexOf(`${e.id}_`) > -1);
+      // keep the label for the active group
+      filterKeys.push(this.activeToggleProp);
+
+      // filter out the row data to only keep usable props
+      return this.csvDataRows.map(row => {
+        let result = {};
+        filterKeys.forEach(function(key) {
+          if (row.hasOwnProperty(key)) {
+            result[key] = row[key];
           }
         });
-
-        // keep the label for the active group
-        filterKeys.push(this.activeToggleProp);
-
-        // filter out the row data to only keep usable props
-        return this.csvDataRows.map(row => {
-          let result = {};
-          filterKeys.forEach(function(key) {
-            if (row.hasOwnProperty(key)) {
-              result[key] = row[key];
-            }
-          });
-          return result;
-        });
-      }
+        return result;
+      });
     },
     chartData: function() {
-      if (this.csvDataRowsSimple == null) {
+      if (arrayIsNullorEmpty(this.csvDataRowsSimple)) {
         return null;
       }
 
