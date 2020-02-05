@@ -1,6 +1,7 @@
 <template>
   <svg :width="width" :height="height" :max-height="maxHeight">
-    <g :transform="chartTransform" ref="container">
+    <g :transform="chartTransform">
+      <g ref="chart"></g>
       <g
         v-if="scale.x != null && d3Data"
         v-axis:x="scale"
@@ -40,7 +41,8 @@ export default {
   },
   data() {
     return {
-      margin: { top: 10, right: 30, bottom: 30, left: 60 }
+      margin: { top: 10, right: 30, bottom: 30, left: 60 },
+      transitionDuration: 400
     };
   },
   computed: {
@@ -170,6 +172,137 @@ export default {
           select(el).call(axisLeft(methodArg));
         }
       }
+    }
+  },
+  watch: {
+    d3Data: function() {
+      this.bindRects();
+    }
+  },
+  methods: {
+    bindRects: function() {
+      const bound = select(this.$refs.chart)
+        .selectAll("g")
+        .data(this.d3Data);
+
+      // exit
+      bound
+        .exit()
+        .selectAll("rect")
+        .transition()
+        .duration(this.transitionDuration)
+        .style("opacity", 0)
+        .attr("height", 0)
+        .attr("y", () => {
+          return this.y(this.chartHeight);
+        })
+        .remove();
+      bound
+        .exit()
+        .transition()
+        .delay(this.transitionDuration)
+        .remove();
+
+      // enter
+      bound
+        .enter()
+        .append("g")
+        .attr("class", "bargroup")
+        .attr("transform", d => {
+          return "translate(" + this.x0(d.label) + ",0)";
+        })
+        .selectAll("rect")
+        .data(d => {
+          return this.d3Keys.map(function(key) {
+            return { key: key, value: d[key] };
+          });
+        })
+        .enter()
+        .append("rect")
+        .attr("x", d => {
+          return this.x1(d.key);
+        })
+        .attr("y", d => {
+          return this.y(d.value);
+        })
+        .attr("width", this.x1.bandwidth())
+        .attr("height", d => {
+          return this.chartHeight - this.y(d.value);
+        })
+        .attr("fill", d => {
+          return this.z(d.key);
+        });
+
+      // transition
+      bound
+        .transition()
+        .duration(this.transitionDuration)
+        .attr("transform", d => {
+          return "translate(" + this.x0(d.label) + ",0)";
+        });
+
+      // update
+      //UPDATE existing data
+      const boundBars = bound.selectAll("rect").data(d => {
+        return this.d3Keys.map(key => {
+          return { key: key, value: d[key] || 0 };
+        });
+      });
+
+      //if there are less bars than the previous
+      boundBars
+        .exit()
+        .transition()
+        .duration(this.transitionDuration)
+        .style("opacity", 0)
+        .attr("height", 0)
+        .attr("y", () => {
+          return this.y(this.chartHeight);
+        })
+        .remove();
+
+      // if there are more bars than previous
+      boundBars
+        .enter()
+        .append("rect")
+        .attr("x", d => {
+          return this.x1(d.key);
+        })
+        .attr("y", () => {
+          return this.y(this.chartHeight);
+        })
+        .attr("width", this.x1.bandwidth())
+        .attr("height", 0)
+        .transition()
+        .duration(this.transitionDuration)
+        .style("opacity", 1)
+        .attr("y", d => {
+          return this.y(d.value);
+        })
+        .attr("height", d => {
+          return this.chartHeight - this.y(d.value);
+        })
+        .attr("fill", d => {
+          return this.z(d.key);
+        });
+
+      // if there are the same number of bars as previous
+      boundBars
+        .transition()
+        .style("opacity", 1)
+        .attr("x", d => {
+          return this.x1(d.key);
+        })
+        .attr("y", d => {
+          return this.y(d.value);
+        })
+        .attr("width", this.x1.bandwidth())
+        .attr("height", d => {
+          return this.chartHeight - this.y(d.value);
+        })
+        .attr("fill", d => {
+          return this.z(d.key);
+        });
     }
   }
 };

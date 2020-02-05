@@ -62,19 +62,23 @@ export default {
 
       if (lastExtension === "csv") {
         csv(this.url).then(data => {
-          const handler = () => {
-            this.loading = false;
-            this.response = data;
-          };
-          this.randomDelay(handler, 1);
+          // const handler = () => {
+          //   this.loading = false;
+          //   this.response = data;
+          // };
+          // this.randomDelay(handler, 1);
+          this.loading = false;
+          this.response = data;
         });
       } else if (lastExtension === "json") {
         get(this.url).then(response => {
-          const handler = () => {
-            this.loading = false;
-            this.response = response.data;
-          };
-          this.randomDelay(handler, 1);
+          // const handler = () => {
+          //   this.loading = false;
+          //   this.response = response.data;
+          // };
+          // this.randomDelay(handler, 1);
+          this.loading = false;
+          this.response = response.data;
         });
       } else {
         get(this.url).then(response => {
