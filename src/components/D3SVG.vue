@@ -190,6 +190,19 @@ export default {
     }
   },
   methods: {
+    notNullandHasProp: function(obj, propname) {
+      return obj != null && obj.hasOwnProperty(propname);
+    },
+    barGroupXPosition: function(d) {
+      if (this.notNullandHasProp(d, "label")) {
+        return "translate(" + this.x0(d.label) + ",0)";
+      }
+    },
+    barXPosition: function(d) {
+      if (this.notNullandHasProp(d, "key")) {
+        return this.x1(d.key);
+      }
+    },
     bindRects: function() {
       const bound = select(this.$refs.chart)
         .selectAll("g")
@@ -203,9 +216,7 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 0)
         .attr("height", 0)
-        .attr("y", () => {
-          return this.y(this.chartHeight);
-        })
+        .attr("y", () => this.y(this.chartHeight))
         .remove();
       bound
         .exit()
@@ -218,9 +229,7 @@ export default {
         .enter()
         .append("g")
         .attr("class", "bargroup")
-        .attr("transform", d => {
-          return "translate(" + this.x0(d.label) + ",0)";
-        })
+        .attr("transform", this.barGroupXPosition)
         .selectAll("rect")
         .data(d => {
           return this.d3Keys.map(function(key) {
@@ -229,9 +238,7 @@ export default {
         })
         .enter()
         .append("rect")
-        .attr("x", d => {
-          return this.x1(d.key);
-        })
+        .attr("x", this.barXPosition)
         .attr("y", d => {
           return this.y(d.value);
         })
@@ -247,9 +254,7 @@ export default {
       bound
         .transition()
         .duration(this.transitionDuration)
-        .attr("transform", d => {
-          return "translate(" + this.x0(d.label) + ",0)";
-        });
+        .attr("transform", this.barGroupXPosition);
 
       // update
       //UPDATE existing data
@@ -275,9 +280,7 @@ export default {
       boundBars
         .enter()
         .append("rect")
-        .attr("x", d => {
-          return this.x1(d.key);
-        })
+        .attr("x", this.barXPosition)
         .attr("y", () => {
           return this.y(this.chartHeight);
         })
@@ -300,9 +303,7 @@ export default {
       boundBars
         .transition()
         .style("opacity", 1)
-        .attr("x", d => {
-          return this.x1(d.key);
-        })
+        .attr("x", this.barXPosition)
         .attr("y", d => {
           return this.y(d.value);
         })
