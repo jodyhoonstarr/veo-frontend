@@ -156,9 +156,9 @@ export default {
         const f = this.filters.filters;
         if (
           f.hasOwnProperty("percentile") &&
-          f.percentile &&
+          !arrayIsNullorEmpty(f.percentile) &&
           f.hasOwnProperty("year") &&
-          f.year
+          !arrayIsNullorEmpty(f.year)
         ) {
           const p = f.percentile;
           const y = f.year;
@@ -166,7 +166,7 @@ export default {
             p.some(e => key.indexOf(`${e.id}_`) > -1) &&
             y.some(e => key.indexOf(`${e.id}_`) > -1)
           );
-        } else {
+        } else if (f.hasOwnProperty("year") && !arrayIsNullorEmpty(f.year)) {
           const y = f.year;
           return y.some(e => key.indexOf(`${e.id}_`) > -1);
         }
