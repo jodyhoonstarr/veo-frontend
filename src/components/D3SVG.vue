@@ -18,6 +18,7 @@ import { scaleBand, scaleLinear, scaleOrdinal } from "d3-scale";
 import { min, max } from "d3-array";
 import { select, selectAll } from "d3-selection";
 import { arrayIsNullorEmpty } from "@/components/utils";
+import { wrapLabels } from "@/components/utils";
 
 export default {
   name: "D3SVG",
@@ -159,7 +160,7 @@ export default {
     }
   },
   directives: {
-    axis: function(el, binding) {
+    axis: function(el, binding, vnode) {
       if (binding.value != null) {
         const axis = binding.arg;
         const axisMethod = { x: "axisBottom", y: "axisLeft" }[axis];
@@ -167,7 +168,13 @@ export default {
 
         // ? calling [axisMethod] causes error, hardcoded works, namespace issue possible
         if (axisMethod === "axisBottom") {
-          select(el).call(axisBottom(methodArg));
+          select(el)
+            .call(axisBottom(methodArg))
+            .selectAll(".tick text")
+            .transition()
+            .duration(vnode.context.transitionDuration)
+            .attr("font-family", "Helvetica, Arial, sans-serif;")
+            .call(wrapLabels, vnode.context.x0.bandwidth());
         } else if (axisMethod === "axisLeft") {
           select(el).call(axisLeft(methodArg));
         }
