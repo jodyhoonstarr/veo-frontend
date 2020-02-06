@@ -177,6 +177,9 @@ export default {
   watch: {
     d3Data: function() {
       this.bindRects();
+    },
+    width: function() {
+      this.bindRects();
     }
   },
   methods: {
