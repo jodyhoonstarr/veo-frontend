@@ -193,14 +193,34 @@ export default {
     notNullandHasProp: function(obj, propname) {
       return obj != null && obj.hasOwnProperty(propname);
     },
+    chartYBottom: function() {
+      if (this.y) {
+        return this.y(this.chartHeight);
+      }
+    },
     barGroupXPosition: function(d) {
-      if (this.notNullandHasProp(d, "label")) {
+      if (this.x0 && this.notNullandHasProp(d, "label")) {
         return "translate(" + this.x0(d.label) + ",0)";
       }
     },
     barXPosition: function(d) {
-      if (this.notNullandHasProp(d, "key")) {
+      if (this.x1 && this.notNullandHasProp(d, "key")) {
         return this.x1(d.key);
+      }
+    },
+    barYPosition: function(d) {
+      if (this.y && this.notNullandHasProp(d, "value")) {
+        return this.y(d.value);
+      }
+    },
+    barHeight: function(d) {
+      if (this.y && this.notNullandHasProp(d, "value")) {
+        return this.chartHeight - this.y(d.value);
+      }
+    },
+    barFill: function(d) {
+      if (this.z && this.notNullandHasProp(d, "key")) {
+        return this.z(d.key);
       }
     },
     bindRects: function() {
@@ -216,7 +236,7 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 0)
         .attr("height", 0)
-        .attr("y", () => this.y(this.chartHeight))
+        .attr("y", this.chartYBottom)
         .remove();
       bound
         .exit()
@@ -239,16 +259,10 @@ export default {
         .enter()
         .append("rect")
         .attr("x", this.barXPosition)
-        .attr("y", d => {
-          return this.y(d.value);
-        })
+        .attr("y", this.barYPosition)
         .attr("width", this.x1.bandwidth())
-        .attr("height", d => {
-          return this.chartHeight - this.y(d.value);
-        })
-        .attr("fill", d => {
-          return this.z(d.key);
-        });
+        .attr("height", this.barHeight)
+        .attr("fill", this.barFill);
 
       // transition
       bound
@@ -257,7 +271,6 @@ export default {
         .attr("transform", this.barGroupXPosition);
 
       // update
-      //UPDATE existing data
       const boundBars = bound.selectAll("rect").data(d => {
         return this.d3Keys.map(key => {
           return { key: key, value: d[key] || 0 };
@@ -271,9 +284,7 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 0)
         .attr("height", 0)
-        .attr("y", () => {
-          return this.y(this.chartHeight);
-        })
+        .attr("y", this.chartYBottom)
         .remove();
 
       // if there are more bars than previous
@@ -281,39 +292,25 @@ export default {
         .enter()
         .append("rect")
         .attr("x", this.barXPosition)
-        .attr("y", () => {
-          return this.y(this.chartHeight);
-        })
+        .attr("y", this.chartYBottom)
         .attr("width", this.x1.bandwidth())
         .attr("height", 0)
         .transition()
         .duration(this.transitionDuration)
         .style("opacity", 1)
-        .attr("y", d => {
-          return this.y(d.value);
-        })
-        .attr("height", d => {
-          return this.chartHeight - this.y(d.value);
-        })
-        .attr("fill", d => {
-          return this.z(d.key);
-        });
+        .attr("y", this.barYPosition)
+        .attr("height", this.barHeight)
+        .attr("fill", this.barFill);
 
       // if there are the same number of bars as previous
       boundBars
         .transition()
         .style("opacity", 1)
         .attr("x", this.barXPosition)
-        .attr("y", d => {
-          return this.y(d.value);
-        })
+        .attr("y", this.barYPosition)
         .attr("width", this.x1.bandwidth())
-        .attr("height", d => {
-          return this.chartHeight - this.y(d.value);
-        })
-        .attr("fill", d => {
-          return this.z(d.key);
-        });
+        .attr("height", this.barHeight)
+        .attr("fill", this.barFill);
     }
   }
 };
