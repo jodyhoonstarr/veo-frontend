@@ -9,7 +9,7 @@ export const BARCHARTFILTERS = {
       filters: [
         {
           id: "percentile",
-          label: "Earnings Percentile",
+          label: "Earnings Percentiles",
           short: "Percentile",
           filters: [
             {

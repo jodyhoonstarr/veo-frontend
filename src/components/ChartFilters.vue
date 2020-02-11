@@ -1,15 +1,14 @@
 <template>
   <v-select
     :id="id"
-    :items="filters"
+    :items="allFilters"
     :label="label"
-    :multiple="multiple"
     item-text="label"
     return-object
     outlined
     dense
     :value="selected"
-    @change="sortIfArray"
+    @change="e => (this.selected = e)"
     class="newSelect otherClass"
   >
     <template v-slot:selection="{ item, index }">
@@ -26,7 +25,8 @@ export default {
   props: ["value", "filters", "label", "multiple", "id"],
   data() {
     return {
-      selected: null
+      selected: null,
+      all: { id: "all", short: "All", label: `All ${this.label}` }
     };
   },
   methods: {
@@ -38,28 +38,52 @@ export default {
         // if first string begins with a number, sort by the starting int in the string
         const firstChar = obj[0].short.charAt(0);
         if (firstChar >= "0" && firstChar <= "9") {
-          this.selected = obj.sort((a, b) => {
+          return Array.prototype.slice.call(obj).sort((a, b) => {
             const aInt = parseInt(a.short.replace(/(^\d+)(.+$)/i, "$1"));
             const bInt = parseInt(b.short.replace(/(^\d+)(.+$)/i, "$1"));
             return aInt > bInt ? 1 : -1;
           });
         } else {
           // otherwise sort by the whole string
-          this.selected = obj.sort((a, b) => a.short.localeCompare(b.short));
+          return Array.prototype.slice
+            .call(obj)
+            .sort((a, b) => a.short.localeCompare(b.short));
         }
       } else {
-        this.selected = obj;
+        return Array.prototype.slice.call(obj);
       }
+    },
+    validateIdProps: function(a, b) {
+      // check if all the id props match across the two arrays
+      // vue objs don't compare so we have to validate the id field
+      const matches = a.map(aele => {
+        const found = b.find(bele => {
+          return aele.id === bele.id;
+        });
+        return found != null;
+      });
+
+      // [false true true] should return false since the ids dont match
+      return !matches.includes(false);
     },
     selectDefault(value, filters) {
       if (value) {
-        this.selected = this.multiple
-          ? this.toArray(value)
-          : (this.selected = value);
+        if (this.multiple && Array.isArray(value)) {
+          if (value.length === 1) {
+            // if an array is passed in with one value
+            this.selected = value[0];
+          } else if (this.validateIdProps(value, filters)) {
+            // an array is passed in with all values, select the all category
+            this.selected = this.all;
+          } else {
+            console.log("WARN: Unexpected array passed to ChartFilters");
+            console.log(value);
+          }
+        } else {
+          this.selected = value;
+        }
       } else if (filters) {
-        this.selected = this.multiple
-          ? this.toArray(filters.find(obj => obj.default === true))
-          : filters.find(obj => obj.default === true);
+        this.selected = filters.find(obj => obj.default === true);
       } else {
         this.selected = null;
       }
@@ -70,7 +94,21 @@ export default {
       this.selectDefault(this.value, this.filters);
     },
     selected: function() {
-      this.$emit("change", { id: this.id, selected: this.selected });
+      let emitted;
+      if (this.selected.id === "all") {
+        // if all category, emit all filters as array
+        emitted = this.filters;
+      } else if (this.multiple) {
+        // emit only the selected filter as array
+        emitted = this.toArray(this.selected);
+      } else {
+        // emit the object
+        emitted = this.selected;
+      }
+      this.$emit("change", {
+        id: this.id,
+        selected: emitted
+      });
     },
     value: function() {
       this.selectDefault(this.value, this.filters);
@@ -81,10 +119,19 @@ export default {
   },
   computed: {
     labels: function() {
-      if (Array.isArray(this.selected)) {
-        return this.selected.map(e => e.short).join(", ");
+      if (this.selected.id === "all") {
+        return this.sortIfArray(this.filters)
+          .map(e => e.short)
+          .join(", ");
       } else {
         return this.selected.short;
+      }
+    },
+    allFilters: function() {
+      if (this.multiple === true) {
+        return [...this.filters, this.all];
+      } else {
+        return this.filters;
       }
     }
   }
