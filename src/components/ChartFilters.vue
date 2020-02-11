@@ -12,8 +12,17 @@
     class="newSelect otherClass"
   >
     <template v-slot:selection="{ item, index }">
-      <div class="selection" v-if="index === 0">
-        {{ labels }}
+      <div v-if="item.short === 'All'" class="selection">
+        <template v-for="filter in filters">
+          <v-icon :color="filter.color">mdi-checkbox-blank</v-icon>
+          <span> {{ filter.short }} </span>
+        </template>
+      </div>
+      <div v-else-if="item.color != null">
+        <span> {{ item.short }} </span>
+      </div>
+      <div v-else>
+        <span> {{ item.short }}</span>
       </div>
     </template>
   </v-select>
@@ -118,15 +127,6 @@ export default {
     this.selectDefault(this.value, this.filters);
   },
   computed: {
-    labels: function() {
-      if (this.selected.id === "all") {
-        return this.sortIfArray(this.filters)
-          .map(e => e.short)
-          .join(", ");
-      } else {
-        return this.selected.short;
-      }
-    },
     allFilters: function() {
       if (this.multiple === true) {
         return [...this.filters, this.all];

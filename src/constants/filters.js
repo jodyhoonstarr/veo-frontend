@@ -16,19 +16,22 @@ export const BARCHARTFILTERS = {
               id: "p25",
               label: "25th Percentile",
               short: "25%",
-              default: false
+              default: false,
+              color: "#bae4bc"
             },
             {
               id: "p50",
               label: "50th Percentile  ",
               short: "50%",
-              default: true
+              default: true,
+              color: "#7bccc4"
             },
             {
               id: "p75",
               label: "75th Percentile",
               short: "75%",
-              default: false
+              default: false,
+              color: "#2b8cbe"
             }
           ],
           default: true
@@ -41,20 +44,23 @@ export const BARCHARTFILTERS = {
             {
               id: "y1",
               label: "1-Year After Discharge",
-              short: "1-Year",
-              default: false
+              short: "1",
+              default: false,
+              color: "#c2e699"
             },
             {
               id: "y5",
               label: "5-Years After Discharge",
-              short: "5-Years",
-              default: true
+              short: "5",
+              default: true,
+              color: "#78c679"
             },
             {
               id: "y10",
               label: "10-Years After Discharge",
-              short: "10-Years",
-              default: false
+              short: "10",
+              default: false,
+              color: "#238443"
             }
           ],
           default: false
@@ -75,20 +81,23 @@ export const BARCHARTFILTERS = {
             {
               id: "y1",
               label: "1-Year After Discharge",
-              short: "1-Year",
-              default: false
+              short: "1",
+              default: false,
+              color: "#c2e699"
             },
             {
               id: "y5",
               label: "5-Years After Discharge",
-              short: "5-Years",
-              default: true
+              short: "5",
+              default: true,
+              color: "#78c679"
             },
             {
               id: "y10",
               label: "10-Years After Discharge",
-              short: "10-Years",
-              default: false
+              short: "10",
+              default: false,
+              color: "#238443"
             }
           ],
           default: false
