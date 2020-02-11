@@ -183,10 +183,10 @@ export default {
   },
   watch: {
     d3Data: function() {
-      this.bindRects();
+      this.$nextTick(() => this.bindRects());
     },
     width: function() {
-      this.bindRects();
+      this.$nextTick(() => this.bindRects());
     }
   },
   methods: {
@@ -216,6 +216,11 @@ export default {
     barHeight: function(d) {
       if (this.y && this.notNullandHasProp(d, "value")) {
         return this.chartHeight - this.y(d.value);
+      }
+    },
+    barWidth: function() {
+      if (this.x1 != null) {
+        return this.x1.bandwidth();
       }
     },
     barFill: function(d) {
@@ -260,7 +265,7 @@ export default {
         .append("rect")
         .attr("x", this.barXPosition)
         .attr("y", this.barYPosition)
-        .attr("width", this.x1.bandwidth())
+        .attr("width", this.barWidth)
         .attr("height", this.barHeight)
         .attr("fill", this.barFill);
 
@@ -293,7 +298,7 @@ export default {
         .append("rect")
         .attr("x", this.barXPosition)
         .attr("y", this.chartYBottom)
-        .attr("width", this.x1.bandwidth())
+        .attr("width", this.barWidth)
         .attr("height", 0)
         .transition()
         .duration(this.transitionDuration)
@@ -305,11 +310,12 @@ export default {
       // if there are the same number of bars as previous
       boundBars
         .transition()
+        .duration(this.transitionDuration)
         .style("opacity", 1)
         .attr("x", this.barXPosition)
         .attr("y", this.barYPosition)
-        .attr("width", this.x1.bandwidth())
         .attr("height", this.barHeight)
+        .attr("width", this.barWidth)
         .attr("fill", this.barFill);
     }
   }
