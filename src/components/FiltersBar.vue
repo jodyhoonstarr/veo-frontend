@@ -5,6 +5,7 @@
         <ChartFilters
           @change="handleDataTypeFilter"
           :id="constantFilters.id"
+          :showChips="constantFilters.id === colorCategory"
           :filters="constantFilters.filters"
           :label="constantFilters.label"
           :value="dataType"
@@ -16,6 +17,7 @@
           <v-col cols="12" xs="12" sm="4" class="pb-0">
             <ChartFilters
               :id="filter.id"
+              :showChips="filter.id === colorCategory"
               :filters="filter.filters"
               :label="filter.label"
               :multiple="true"
@@ -46,12 +48,17 @@ export default {
         percentile: null
       },
       testProp: null,
-      allCategory: null
+      allCategory: null,
+      colorCategory: null
     };
   },
   methods: {
     emitEvent: function() {
-      this.$emit("change", { type: this.dataType, filters: this.dataFilters });
+      this.$emit("change", {
+        type: this.dataType,
+        filters: this.dataFilters,
+        colors: this.colors
+      });
     },
     handleDataTypeFilter: function(f) {
       this.dataType = f.selected;
@@ -98,11 +105,35 @@ export default {
       if (!changeFlag) {
         this.emitEvent();
       }
+    },
+    isArraywMultiple: function(o) {
+      return o != null && Array.isArray(o) && o.length > 1;
     }
   },
   mounted() {
     this.dataType = this.constantFilters.filters[0];
     this.setAllPercentiles();
+  },
+
+  computed: {
+    colors: function() {
+      if (this.isArraywMultiple(this.dataFilters.percentile)) {
+        let returnObject = {};
+        this.dataFilters.percentile.map(f => (returnObject[f.id] = f.color));
+        this.colorCategory = "percentile";
+        return returnObject;
+      } else if (this.isArraywMultiple(this.dataFilters.year)) {
+        let returnObject = {};
+        this.dataFilters.year.map(f => (returnObject[f.id] = f.color));
+        this.colorCategory = "year";
+        return returnObject;
+      } else {
+        let returnObject = {};
+        returnObject[this.dataType.id] = "primary";
+        this.colorCategory = "type";
+        return returnObject;
+      }
+    }
   }
 };
 </script>

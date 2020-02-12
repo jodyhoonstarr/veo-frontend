@@ -12,13 +12,14 @@
     class="newSelect otherClass"
   >
     <template v-slot:selection="{ item, index }">
-      <div v-if="item.short === 'All'" class="selection">
+      <div v-if="item.short === 'All' && showChips === true" class="selection">
         <template v-for="filter in filters">
           <v-icon :color="filter.color">mdi-checkbox-blank</v-icon>
           <span> {{ filter.short }} </span>
         </template>
       </div>
-      <div v-else-if="item.color != null">
+      <div v-else-if="item.color != null && showChips === true">
+        <v-icon :color="item.color">mdi-checkbox-blank</v-icon>
         <span> {{ item.short }} </span>
       </div>
       <div v-else>
@@ -31,7 +32,7 @@
 <script>
 export default {
   name: "ChartFilters",
-  props: ["value", "filters", "label", "multiple", "id"],
+  props: ["value", "filters", "label", "multiple", "id", "showChips"],
   data() {
     return {
       selected: null,
