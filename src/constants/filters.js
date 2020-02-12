@@ -67,7 +67,7 @@ export const BARCHARTFILTERS = {
         }
       ],
       default: true,
-      color: "primary"
+      color: "#112e51"
     },
     {
       id: "counts",
@@ -105,7 +105,7 @@ export const BARCHARTFILTERS = {
         }
       ],
       default: false,
-      color: "primary"
+      color: "#112e51"
     }
   ]
 };

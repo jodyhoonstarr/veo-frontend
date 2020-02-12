@@ -47,7 +47,6 @@ export default {
         year: null,
         percentile: null
       },
-      testProp: null,
       allCategory: null,
       colorCategory: null
     };
@@ -129,7 +128,7 @@ export default {
         return returnObject;
       } else {
         let returnObject = {};
-        returnObject[this.dataType.id] = "primary";
+        returnObject[this.dataType.id] = "#112e51";
         this.colorCategory = "type";
         return returnObject;
       }

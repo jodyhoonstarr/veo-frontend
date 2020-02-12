@@ -6,6 +6,7 @@
       :height="height"
       :max-height="maxHeight"
       :chartData="chartData"
+      :chartColors="chartColors"
     ></D3SVG>
   </v-card>
 </template>
@@ -19,6 +20,10 @@ export default {
   props: {
     chartData: {
       type: Array,
+      default: null
+    },
+    chartColors: {
+      type: Object,
       default: null
     }
   },

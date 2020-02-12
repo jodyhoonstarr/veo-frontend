@@ -38,6 +38,10 @@ export default {
     chartData: {
       type: Array,
       default: null
+    },
+    chartColors: {
+      type: Object,
+      default: null
     }
   },
   data() {
@@ -145,15 +149,15 @@ export default {
         .nice();
     },
     z: function() {
-      return scaleOrdinal().range([
-        "#98abc5",
-        "#8a89a6",
-        "#7b6888",
-        "#6b486b",
-        "#a05d56",
-        "#d0743c",
-        "#ff8c00"
-      ]);
+      const domain = Object.keys(this.chartColors);
+      const range = domain.map(k => this.chartColors[k]);
+      if (Object.keys(this.chartColors).length > 1) {
+        return scaleOrdinal()
+          .domain(domain)
+          .range(range);
+      } else {
+        return scaleOrdinal().range(range);
+      }
     },
     scale: function() {
       return { x: this.x0, y: this.y };

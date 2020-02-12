@@ -60,7 +60,7 @@
           >
         </template>
         <FiltersBar @change="handleFiltersToggle"></FiltersBar>
-        <Chart :chartData="chartData"></Chart>
+        <Chart :chartData="chartData" :chartColors="chartColors"></Chart>
       </ChartCard>
     </GetData>
   </div>
@@ -231,6 +231,11 @@ export default {
       });
 
       return data;
+    },
+    chartColors: function() {
+      if (this.filters != null && this.filters.hasOwnProperty("colors")) {
+        return this.filters.colors;
+      }
     }
   }
 };
