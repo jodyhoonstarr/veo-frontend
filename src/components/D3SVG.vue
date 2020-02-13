@@ -17,6 +17,7 @@ import { axisBottom, axisLeft } from "d3-axis";
 import { scaleBand, scaleLinear, scaleOrdinal } from "d3-scale";
 import { min, max } from "d3-array";
 import { select, selectAll } from "d3-selection";
+import { format } from "d3-format";
 import { arrayIsNullorEmpty } from "@/components/utils";
 import { wrapLabels } from "@/components/utils";
 
@@ -47,7 +48,8 @@ export default {
   data() {
     return {
       margin: { top: 10, right: 30, bottom: 30, left: 60 },
-      transitionDuration: 400
+      transitionDuration: 400,
+      rotateLabels: false
     };
   },
   computed: {
@@ -187,10 +189,16 @@ export default {
   },
   watch: {
     d3Data: function() {
-      this.$nextTick(() => this.bindRects());
+      this.$nextTick(() => {
+        this.bindRects();
+        this.bindLabels();
+      });
     },
     width: function() {
-      this.$nextTick(() => this.bindRects());
+      this.$nextTick(() => {
+        this.bindRects();
+        this.bindLabels();
+      });
     }
   },
   methods: {
@@ -206,6 +214,20 @@ export default {
       if (this.x0 && this.notNullandHasProp(d, "label")) {
         return "translate(" + this.x0(d.label) + ",0)";
       }
+    },
+    labelGroupXOffset: function(d) {
+      if (this.x0 && this.notNullandHasProp(d, "label")) {
+        return this.x0(d.label);
+      }
+    },
+    labelXPosition: function(d) {
+      return this.labelGroupXOffset(d) + this.barXPosition(d);
+    },
+    labelTransform: function(d) {
+      const rotate = this.rotateLabels ? -90 : 0;
+      return `translate(${this.labelXPosition(d)},${this.barYPosition(
+        d
+      )}) rotate(${rotate})`;
     },
     barXPosition: function(d) {
       if (this.x1 && this.notNullandHasProp(d, "key")) {
@@ -232,9 +254,36 @@ export default {
         return this.z(d.key);
       }
     },
+    bindLabels: function() {
+      const bound = select(this.$refs.chart)
+        .selectAll("g.labelgroup")
+        .data(this.d3Data);
+
+      // enter - pass down the labels to the children so not to use grouping
+      // ? may be worth swapping off of transform/translate groups for consistency
+      bound
+        .enter()
+        .append("g")
+        .attr("class", "labelgroup")
+        .selectAll("text")
+        .data(d => {
+          return this.d3Keys.map(function(key) {
+            return { key: key, value: d[key], label: d.label };
+          });
+        })
+        .enter()
+        .append("text")
+        .text(function(d) {
+          if (d.value !== 0) {
+            return "$" + format(",.0f")(d.value);
+          }
+        })
+        .attr("fill", "black")
+        .attr("transform", this.labelTransform);
+    },
     bindRects: function() {
       const bound = select(this.$refs.chart)
-        .selectAll("g")
+        .selectAll("g.bargroup")
         .data(this.d3Data);
 
       // exit
