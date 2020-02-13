@@ -69,6 +69,7 @@ export default {
         this.setAllYears();
       }
       this.allCategory = null;
+      this.emitEvent();
     },
     setAllPercentiles: function() {
       this.dataFilters.percentile = this.constantFilters.filters[0].filters[0].filters;
@@ -95,6 +96,7 @@ export default {
           f.id !== key
         ) {
           this.dataFilters[key] = null;
+          changeFlag = true;
         }
       });
 

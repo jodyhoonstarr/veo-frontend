@@ -95,7 +95,11 @@ export default {
       occupation: null,
       cohort: null,
       activeToggle: "occupation",
-      filters: null
+      filters: {
+        colors: null,
+        filters: null,
+        type: null
+      }
     };
   },
   methods: {
@@ -106,7 +110,18 @@ export default {
       }
     },
     handleFiltersToggle: function(f) {
-      this.filters = f;
+      if (f == null) {
+        return null;
+      }
+      if (f.hasOwnProperty("type")) {
+        this.filters.type = f.type;
+      }
+      if (f.hasOwnProperty("filters")) {
+        this.filters.filters = f.filters;
+      }
+      if (f.hasOwnProperty("colors")) {
+        this.filters.colors = f.colors;
+      }
     }
   },
   computed: {

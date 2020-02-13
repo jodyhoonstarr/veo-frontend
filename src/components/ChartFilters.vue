@@ -18,11 +18,14 @@
           <span> {{ filter.short }} </span>
         </template>
       </div>
-      <div v-else-if="item.color != null && showChips === true">
+      <div
+        v-else-if="item.color != null && showChips === true"
+        class="selection"
+      >
         <v-icon :color="item.color">mdi-checkbox-blank</v-icon>
         <span> {{ item.short }} </span>
       </div>
-      <div v-else>
+      <div v-else class="selection">
         <span> {{ item.short }}</span>
       </div>
     </template>
