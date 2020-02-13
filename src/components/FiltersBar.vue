@@ -128,7 +128,7 @@ export default {
         return returnObject;
       } else {
         let returnObject = {};
-        returnObject[this.dataType.id] = "#112e51";
+        returnObject[this.dataType.id] = this.dataType.color;
         this.colorCategory = "type";
         return returnObject;
       }

@@ -17,21 +17,21 @@ export const BARCHARTFILTERS = {
               label: "25th Percentile",
               short: "25%",
               default: false,
-              color: "#bae4bc"
+              color: "#bdd7e7"
             },
             {
               id: "p50",
               label: "50th Percentile  ",
               short: "50%",
               default: true,
-              color: "#7bccc4"
+              color: "#6baed6"
             },
             {
               id: "p75",
               label: "75th Percentile",
               short: "75%",
               default: false,
-              color: "#2b8cbe"
+              color: "#2171b5"
             }
           ],
           default: true
