@@ -105,7 +105,7 @@ export const BARCHARTFILTERS = {
         }
       ],
       default: false,
-      color: "#112e51"
+      color: "#78909c"
     }
   ]
 };
