@@ -223,6 +223,13 @@ export default {
     labelXPosition: function(d) {
       return this.labelGroupXOffset(d) + this.barXPosition(d);
     },
+    labelTransformInit: function(d) {
+      // an initial y position transform for transition
+      const rotate = this.rotateLabels ? -90 : 0;
+      return `translate(${this.labelXPosition(
+        d
+      )},${this.chartYBottom()}) rotate(${rotate})`;
+    },
     labelTransform: function(d) {
       const rotate = this.rotateLabels ? -90 : 0;
       return `translate(${this.labelXPosition(d)},${this.barYPosition(
@@ -259,6 +266,23 @@ export default {
         .selectAll("g.labelgroup")
         .data(this.d3Data);
 
+      // exit the text
+      bound
+        .exit()
+        .selectAll("text")
+        .transition()
+        .duration(this.transitionDuration)
+        .style("opacity", 0)
+        .attr("height", 0)
+        .attr("y", this.chartYBottom)
+        .remove();
+      // exit the g.labelgroup
+      bound
+        .exit()
+        .transition()
+        .delay(this.transitionDuration)
+        .remove();
+
       // enter - pass down the labels to the children so not to use grouping
       // ? may be worth swapping off of transform/translate groups for consistency
       bound
@@ -275,7 +299,54 @@ export default {
         .append("text")
         .text(function(d) {
           if (d.value !== 0) {
-            return "$" + format(",.0f")(d.value);
+            return `${format(",.0f")(d.value)}`;
+          }
+        })
+        .attr("fill", "black")
+        .attr("transform", this.labelTransform);
+
+      // update
+      const boundText = bound.selectAll("text").data(d => {
+        return this.d3Keys.map(key => {
+          return { key: key, value: d[key] || 0, label: d.label };
+        });
+      });
+
+      //if there are less texts than the previous
+      boundText
+        .exit()
+        .transition()
+        .duration(this.transitionDuration)
+        .style("opacity", 0)
+        .attr("height", 0)
+        .attr("y", this.chartYBottom)
+        .remove();
+
+      // if there are more texts than previous
+      boundText
+        .enter()
+        .append("text")
+        .attr("transform", this.labelTransformInit)
+        .style("opacity", 0)
+        .transition()
+        .duration(this.transitionDuration)
+        .style("opacity", 1)
+        .text(function(d) {
+          if (d.value !== 0) {
+            return `${format(",.0f")(d.value)}`;
+          }
+        })
+        .attr("fill", "black")
+        .attr("transform", this.labelTransform);
+
+      // if there are the same number of bars as previous
+      boundText
+        .transition()
+        .duration(this.transitionDuration)
+        .style("opacity", 1)
+        .text(function(d) {
+          if (d.value !== 0) {
+            return `${format(",.0f")(d.value)}`;
           }
         })
         .attr("fill", "black")
@@ -286,7 +357,7 @@ export default {
         .selectAll("g.bargroup")
         .data(this.d3Data);
 
-      // exit
+      // exit the rects
       bound
         .exit()
         .selectAll("rect")
@@ -296,6 +367,7 @@ export default {
         .attr("height", 0)
         .attr("y", this.chartYBottom)
         .remove();
+      // exit the g.bargroup
       bound
         .exit()
         .transition()
