@@ -75,7 +75,7 @@ export default {
       this.dataFilters.percentile = this.constantFilters.filters[0].filters[0].filters;
     },
     setAllYears: function() {
-      this.dataFilters.year = this.constantFilters.filters[0].filters[1].filters;
+      this.dataFilters.year = this.constantFilters.filters[1].filters[0].filters;
     },
     handleFilter: function(f) {
       if (Array.isArray(f.selected)) {
@@ -128,12 +128,17 @@ export default {
         this.dataFilters.year.map(f => (returnObject[f.id] = f.color));
         this.colorCategory = "year";
         return returnObject;
-      } else {
+      } else if (this.dataType != null) {
         let returnObject = {};
         returnObject[this.dataType.id] = this.dataType.color;
         this.colorCategory = "type";
         return returnObject;
       }
+    }
+  },
+  watch: {
+    colors: function() {
+      this.emitEvent();
     }
   }
 };

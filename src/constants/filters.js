@@ -17,14 +17,14 @@ export const BARCHARTFILTERS = {
               label: "25th Percentile",
               short: "25%",
               default: false,
-              color: "#bdd7e7"
+              color: "#6baed6"
             },
             {
               id: "p50",
               label: "50th Percentile  ",
               short: "50%",
               default: true,
-              color: "#6baed6"
+              color: "#4690C6"
             },
             {
               id: "p75",
@@ -46,28 +46,28 @@ export const BARCHARTFILTERS = {
               label: "1-Year After Discharge",
               short: "1",
               default: false,
-              color: "#c2e699"
+              color: "#67a9cf"
             },
             {
               id: "y5",
               label: "5-Years After Discharge",
               short: "5",
               default: true,
-              color: "#78c679"
+              color: "#3595AD"
             },
             {
               id: "y10",
               label: "10-Years After Discharge",
               short: "10",
               default: false,
-              color: "#238443"
+              color: "#02818a"
             }
           ],
           default: false
         }
       ],
       default: true,
-      color: "#112e51"
+      color: "#195083"
     },
     {
       id: "counts",
@@ -105,7 +105,7 @@ export const BARCHARTFILTERS = {
         }
       ],
       default: false,
-      color: "#78909c"
+      color: "#1A594A"
     }
   ]
 };
