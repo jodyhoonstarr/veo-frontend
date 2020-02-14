@@ -11,8 +11,12 @@
       />
     </a>
     <v-divider class="mx-4 divider-color" vertical></v-divider>
-    <v-toolbar-title class="white--text hidden-xs-only ml-0 pl-md-3">Veterans Employment Outcomes</v-toolbar-title>
-    <v-toolbar-title class="white--text hidden-sm-and-up ml-0 pl-md-3">VEO</v-toolbar-title>
+    <v-toolbar-title class="white--text hidden-xs-only ml-0 pl-md-3"
+      >Veterans Employment Outcomes</v-toolbar-title
+    >
+    <v-toolbar-title class="white--text hidden-sm-and-up ml-0 pl-md-3"
+      >VEO</v-toolbar-title
+    >
     <v-spacer></v-spacer>
     <v-btn text>
       <span class="white--text hidden-xs-only">LEHD Home</span>

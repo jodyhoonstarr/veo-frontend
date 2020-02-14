@@ -1,13 +1,20 @@
 <template>
   <v-footer class="primary py-5">
-    <v-card flat fluid ma-0 pa-0 class="primary white--text text-xs-left text-sm-center w-100">
+    <v-card
+      flat
+      fluid
+      ma-0
+      pa-0
+      class="primary white--text text-xs-left text-sm-center w-100"
+    >
       <template v-for="(link, index) in links">
         <a
           :href="link.url"
           :key="link.label"
           class="white--text xs-12 text-left"
           text-xs-left
-        >{{ link.label }}</a>
+          >{{ link.label }}</a
+        >
         <br class="hidden-sm-and-up" />
         <v-divider
           v-if="index !== links.length - 1"
@@ -18,9 +25,9 @@
       </template>
       <v-divider class="my-4 divider-color"></v-divider>
 
-      <v-card-text
-        class="white--text quote py-0 text-center"
-      >Measuring America's People, Places and Economy</v-card-text>
+      <v-card-text class="white--text quote py-0 text-center"
+        >Measuring America's People, Places and Economy</v-card-text
+      >
     </v-card>
   </v-footer>
 </template>

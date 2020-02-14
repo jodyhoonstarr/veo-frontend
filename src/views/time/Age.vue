@@ -13,7 +13,11 @@
         ></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
-        <DropDown label="Cohort" :items="cohorts" v-model="selectedCohort"></DropDown>
+        <DropDown
+          label="Cohort"
+          :items="cohorts"
+          v-model="selectedCohort"
+        ></DropDown>
       </v-col>
     </SelectBar>
   </div>
@@ -33,7 +37,10 @@ export default {
     return {
       selectedAgeGroup: null,
       selectedCohort: null,
-      ageGroups: [{ id: "E01", label: "<25" }, { id: "E02", label: "25+" }],
+      ageGroups: [
+        { id: "E01", label: "<25" },
+        { id: "E02", label: "25+" }
+      ],
       cohorts: [
         { id: "2000", label: "2000-2001" },
         { id: "2002", label: "2002-2003" },

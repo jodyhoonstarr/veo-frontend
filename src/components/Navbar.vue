@@ -14,10 +14,13 @@
           <!-- tab with no children/dropdown -->
           <v-tab
             @click="setActiveTab(tab.route)"
-            v-if="typeof tab.children === 'undefined' || tab.children.length === 0"
+            v-if="
+              typeof tab.children === 'undefined' || tab.children.length === 0
+            "
             :key="tab.label"
             :to="tab.route"
-          >{{ tab.label }}</v-tab>
+            >{{ tab.label }}</v-tab
+          >
 
           <!-- tab with children/dropdown -->
           <v-tab
@@ -49,7 +52,8 @@
                   v-for="child in tab.children"
                   :key="child.label"
                   :to="child.route"
-                >{{ child.label }}</v-list-item>
+                  >{{ child.label }}</v-list-item
+                >
               </v-list>
             </v-menu>
           </v-tab>

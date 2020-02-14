@@ -4,10 +4,20 @@
     <h3 class="font-weight-light">Armed Forces Qualification Test</h3>
     <select-bar>
       <v-col cols="12" xs="12" sm="9">
-        <DropDown label="AFQT" :items="AFQTScores" v-model="selectedAFQTScores" multiple clearable></DropDown>
+        <DropDown
+          label="AFQT"
+          :items="AFQTScores"
+          v-model="selectedAFQTScores"
+          multiple
+          clearable
+        ></DropDown>
       </v-col>
       <v-col cols="12" xs="12" sm="3">
-        <DropDown label="Cohort" :items="cohorts" v-model="selectedCohort"></DropDown>
+        <DropDown
+          label="Cohort"
+          :items="cohorts"
+          v-model="selectedCohort"
+        ></DropDown>
       </v-col>
     </select-bar>
   </div>
