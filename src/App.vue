@@ -3,11 +3,8 @@
     <Header />
     <v-content>
       <Navbar />
-      <v-container fluid>
-        <router-view></router-view>
-      </v-container>
+      <router-view />
     </v-content>
-
     <Footer />
   </v-app>
 </template>
