@@ -262,6 +262,16 @@ export default {
         return this.z(d.key);
       }
     },
+    barData: function(d) {
+      return this.d3Keys.map(function(key) {
+        return { key: key, value: d[key] || 0, label: d.label };
+      });
+    },
+    labelText: function(d) {
+      if (d.value !== 0) {
+        return `${format(",.0f")(d.value)}`;
+      }
+    },
     bindLabels: function() {
       const bound = select(this.$refs.chart)
         .selectAll("g.labelgroup")
@@ -291,27 +301,15 @@ export default {
         .append("g")
         .attr("class", "labelgroup")
         .selectAll("text")
-        .data(d => {
-          return this.d3Keys.map(function(key) {
-            return { key: key, value: d[key], label: d.label };
-          });
-        })
+        .data(this.barData)
         .enter()
         .append("text")
-        .text(function(d) {
-          if (d.value !== 0) {
-            return `${format(",.0f")(d.value)}`;
-          }
-        })
+        .text(this.labelText)
         .attr("fill", "black")
         .attr("transform", this.labelTransform);
 
       // update
-      const boundText = bound.selectAll("text").data(d => {
-        return this.d3Keys.map(key => {
-          return { key: key, value: d[key] || 0, label: d.label };
-        });
-      });
+      const boundText = bound.selectAll("text").data(this.barData);
 
       //if there are less texts than the previous
       boundText
@@ -332,11 +330,7 @@ export default {
         .transition()
         .duration(this.transitionDuration)
         .style("opacity", 1)
-        .text(function(d) {
-          if (d.value !== 0) {
-            return `${format(",.0f")(d.value)}`;
-          }
-        })
+        .text(this.labelText)
         .attr("fill", "black")
         .attr("transform", this.labelTransform);
 
@@ -345,11 +339,7 @@ export default {
         .transition()
         .duration(this.transitionDuration)
         .style("opacity", 1)
-        .text(function(d) {
-          if (d.value !== 0) {
-            return `${format(",.0f")(d.value)}`;
-          }
-        })
+        .text(this.labelText)
         .attr("fill", "black")
         .attr("transform", this.labelTransform);
     },
@@ -382,11 +372,7 @@ export default {
         .attr("class", "bargroup")
         .attr("transform", this.barGroupXPosition)
         .selectAll("rect")
-        .data(d => {
-          return this.d3Keys.map(function(key) {
-            return { key: key, value: d[key] };
-          });
-        })
+        .data(this.barData)
         .enter()
         .append("rect")
         .attr("x", this.barXPosition)
@@ -402,11 +388,7 @@ export default {
         .attr("transform", this.barGroupXPosition);
 
       // update
-      const boundBars = bound.selectAll("rect").data(d => {
-        return this.d3Keys.map(key => {
-          return { key: key, value: d[key] || 0 };
-        });
-      });
+      const boundBars = bound.selectAll("rect").data(this.barData);
 
       //if there are less bars than the previous
       boundBars
