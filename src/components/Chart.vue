@@ -1,22 +1,22 @@
 <template>
   <v-card ref="chartcard" flat>
-    <D3SVG
+    <BarChart
       v-if="width"
       :width="width"
       :height="height"
       :max-height="maxHeight"
       :chartData="chartData"
       :chartColors="chartColors"
-    ></D3SVG>
+    ></BarChart>
   </v-card>
 </template>
 
 <script>
-import D3SVG from "@/components/D3SVG";
+import BarChart from "@/components/BarChart.vue";
 
 export default {
   name: "Chart",
-  components: { D3SVG },
+  components: { BarChart },
   props: {
     chartData: {
       type: Array,
