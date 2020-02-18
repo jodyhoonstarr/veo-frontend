@@ -1,5 +1,5 @@
 <script>
-import { csv } from "d3";
+import { csv } from "d3-fetch";
 import { get } from "axios";
 
 export default {

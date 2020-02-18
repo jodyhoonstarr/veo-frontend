@@ -13,16 +13,17 @@
 </template>
 
 <script>
-import { axisBottom, axisLeft } from "d3-axis";
-import { scaleBand, scaleLinear, scaleOrdinal } from "d3-scale";
-import { min, max } from "d3-array";
-import { select, selectAll } from "d3-selection";
 import { format } from "d3-format";
+import { min, max } from "d3-array";
+import { transition } from "d3-transition";
+import { axisBottom, axisLeft } from "d3-axis";
+import { select, selectAll } from "d3-selection";
+import { scaleBand, scaleLinear, scaleOrdinal } from "d3-scale";
 import { arrayIsNullorEmpty } from "@/components/utils";
 import { wrapLabels } from "@/components/utils";
 
 export default {
-  name: "D3SVG",
+  name: "BarChart",
   props: {
     width: {
       type: Number,
