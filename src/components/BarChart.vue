@@ -203,17 +203,15 @@ export default {
     }
   },
   methods: {
+    // TODO the function labeling here is a bit messy, clean up
+    // label groups and bar groups are mixed in terminology
+    // sometimes the label means the text label, other times the label prop
     notNullandHasProp: function(obj, propname) {
       return obj != null && obj.hasOwnProperty(propname);
     },
     chartYBottom: function() {
       if (this.y) {
         return this.y(this.chartHeight);
-      }
-    },
-    barGroupXPosition: function(d) {
-      if (this.x0 && this.notNullandHasProp(d, "label")) {
-        return "translate(" + this.x0(d.label) + ",0)";
       }
     },
     labelGroupXOffset: function(d) {
@@ -227,15 +225,21 @@ export default {
     labelTransformInit: function(d) {
       // an initial y position transform for transition
       const rotate = this.rotateLabels ? -90 : 0;
-      return `translate(${this.labelXPosition(
-        d
-      )},${this.chartYBottom()}) rotate(${rotate})`;
+      return `translate(${this.labelXPosition(d) ||
+        0},${this.chartYBottom()}) rotate(${rotate})`;
+    },
+    barTransformInit: function(d) {
+      // an initial y position transform for transition
+      return `translate(${this.labelXPosition(d) || 0},${this.chartYBottom()})`;
     },
     labelTransform: function(d) {
       const rotate = this.rotateLabels ? -90 : 0;
       return `translate(${this.labelXPosition(d)},${this.barYPosition(
         d
       )}) rotate(${rotate})`;
+    },
+    barTransform: function(d) {
+      return `translate(${this.labelXPosition(d)},${this.barYPosition(d)})`;
     },
     barXPosition: function(d) {
       if (this.x1 && this.notNullandHasProp(d, "key")) {
@@ -285,7 +289,7 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 0)
         .attr("height", 0)
-        .attr("y", this.chartYBottom)
+        .attr("transform", this.labelTransformInit)
         .remove();
       // exit the g.labelgroup
       bound
@@ -294,8 +298,7 @@ export default {
         .delay(this.transitionDuration)
         .remove();
 
-      // enter - pass down the labels to the children so not to use grouping
-      // ? may be worth swapping off of transform/translate groups for consistency
+      // enter
       bound
         .enter()
         .append("g")
@@ -318,7 +321,7 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 0)
         .attr("height", 0)
-        .attr("y", this.chartYBottom)
+        .attr("transform", this.labelTransformInit)
         .remove();
 
       // if there are more texts than previous
@@ -356,7 +359,7 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 0)
         .attr("height", 0)
-        .attr("y", this.chartYBottom)
+        .attr("transform", this.barTransformInit)
         .remove();
       // exit the g.bargroup
       bound
@@ -365,27 +368,18 @@ export default {
         .delay(this.transitionDuration)
         .remove();
 
-      // enter
       bound
         .enter()
         .append("g")
         .attr("class", "bargroup")
-        .attr("transform", this.barGroupXPosition)
         .selectAll("rect")
         .data(this.barData)
         .enter()
         .append("rect")
-        .attr("x", this.barXPosition)
-        .attr("y", this.barYPosition)
+        .attr("transform", this.barTransform)
         .attr("width", this.barWidth)
         .attr("height", this.barHeight)
         .attr("fill", this.barFill);
-
-      // transition
-      bound
-        .transition()
-        .duration(this.transitionDuration)
-        .attr("transform", this.barGroupXPosition);
 
       // update
       const boundBars = bound.selectAll("rect").data(this.barData);
@@ -397,34 +391,32 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 0)
         .attr("height", 0)
-        .attr("y", this.chartYBottom)
+        .attr("transform", this.barTransformInit)
         .remove();
 
       // if there are more bars than previous
       boundBars
         .enter()
         .append("rect")
-        .attr("x", this.barXPosition)
-        .attr("y", this.chartYBottom)
+        .attr("transform", this.barTransformInit)
         .attr("width", this.barWidth)
         .attr("height", 0)
         .transition()
         .duration(this.transitionDuration)
         .style("opacity", 1)
-        .attr("y", this.barYPosition)
         .attr("height", this.barHeight)
-        .attr("fill", this.barFill);
+        .attr("fill", this.barFill)
+        .attr("transform", this.barTransform);
 
       // if there are the same number of bars as previous
       boundBars
         .transition()
         .duration(this.transitionDuration)
         .style("opacity", 1)
-        .attr("x", this.barXPosition)
-        .attr("y", this.barYPosition)
         .attr("height", this.barHeight)
         .attr("width", this.barWidth)
-        .attr("fill", this.barFill);
+        .attr("fill", this.barFill)
+        .attr("transform", this.barTransform);
     }
   }
 };
