@@ -50,7 +50,8 @@ export default {
     return {
       margin: { top: 10, right: 30, bottom: 30, left: 60 },
       transitionDuration: 400,
-      rotateLabels: false
+      rotateLabels: true,
+      labelFontSizePx: 16
     };
   },
   computed: {
@@ -164,6 +165,9 @@ export default {
     },
     scale: function() {
       return { x: this.x0, y: this.y };
+    },
+    textAnchor: function() {
+      return this.rotateLabels ? "end" : "middle";
     }
   },
   directives: {
@@ -220,6 +224,22 @@ export default {
       }
     },
     labelXPosition: function(d) {
+      // if labels are rotated, move to the bargroup offset, the individual bar,
+      // the center of the bar, then the center of the font size
+      if (this.rotateLabels) {
+        return (
+          this.labelGroupXOffset(d) +
+          this.barXPosition(d) +
+          Math.floor(this.barWidth() / 2) +
+          Math.floor(this.labelFontSizePx / 2)
+        );
+      } else {
+        return (
+          this.labelGroupXOffset(d) + this.barXPosition(d) + this.barWidth() / 2
+        );
+      }
+    },
+    barXFullPosition: function(d) {
       return this.labelGroupXOffset(d) + this.barXPosition(d);
     },
     labelTransformInit: function(d) {
@@ -230,7 +250,8 @@ export default {
     },
     barTransformInit: function(d) {
       // an initial y position transform for transition
-      return `translate(${this.labelXPosition(d) || 0},${this.chartYBottom()})`;
+      return `translate(${this.barXFullPosition(d) ||
+        0},${this.chartYBottom()})`;
     },
     labelTransform: function(d) {
       const rotate = this.rotateLabels ? -90 : 0;
@@ -239,7 +260,7 @@ export default {
       )}) rotate(${rotate})`;
     },
     barTransform: function(d) {
-      return `translate(${this.labelXPosition(d)},${this.barYPosition(d)})`;
+      return `translate(${this.barXFullPosition(d)},${this.barYPosition(d)})`;
     },
     barXPosition: function(d) {
       if (this.x1 && this.notNullandHasProp(d, "key")) {
@@ -309,6 +330,7 @@ export default {
         .append("text")
         .text(this.labelText)
         .attr("fill", "black")
+        .attr("text-anchor", this.textAnchor)
         .attr("transform", this.labelTransform);
 
       // update
@@ -328,6 +350,7 @@ export default {
       boundText
         .enter()
         .append("text")
+        .attr("text-anchor", this.textAnchor)
         .attr("transform", this.labelTransformInit)
         .style("opacity", 0)
         .transition()
