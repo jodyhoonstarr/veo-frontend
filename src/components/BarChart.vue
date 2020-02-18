@@ -50,8 +50,7 @@ export default {
     return {
       margin: { top: 10, right: 30, bottom: 30, left: 60 },
       transitionDuration: 400,
-      rotateLabels: true,
-      labelFontSizePx: 16
+      rotateLabels: true
     };
   },
   computed: {
@@ -168,6 +167,18 @@ export default {
     },
     textAnchor: function() {
       return this.rotateLabels ? "end" : "middle";
+    },
+    labelFontSizePx: function() {
+      // TODO create logic for handling label font size
+      if (!this.rotateLabels) {
+        if (this.x1 != null) {
+          return 20;
+        } else {
+          return 18;
+        }
+      } else {
+        return 26;
+      }
     }
   },
   directives: {
@@ -309,6 +320,7 @@ export default {
         .transition()
         .duration(this.transitionDuration)
         .style("opacity", 0)
+        .style("font-size", 0)
         .attr("height", 0)
         .attr("transform", this.labelTransformInit)
         .remove();
@@ -329,6 +341,7 @@ export default {
         .enter()
         .append("text")
         .text(this.labelText)
+        .style("font-size", `${this.labelFontSizePx}px`)
         .attr("fill", "black")
         .attr("text-anchor", this.textAnchor)
         .attr("transform", this.labelTransform);
@@ -342,6 +355,7 @@ export default {
         .transition()
         .duration(this.transitionDuration)
         .style("opacity", 0)
+        .style("font-size", 0)
         .attr("height", 0)
         .attr("transform", this.labelTransformInit)
         .remove();
@@ -357,6 +371,7 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 1)
         .text(this.labelText)
+        .style("font-size", `${this.labelFontSizePx}px`)
         .attr("fill", "black")
         .attr("transform", this.labelTransform);
 
@@ -366,6 +381,7 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 1)
         .text(this.labelText)
+        .style("font-size", `${this.labelFontSizePx}px`)
         .attr("fill", "black")
         .attr("transform", this.labelTransform);
     },
