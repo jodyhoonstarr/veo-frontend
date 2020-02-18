@@ -1,6 +1,6 @@
 <script>
 import { csv } from "d3-fetch";
-import { get } from "axios";
+import axios from "axios";
 
 export default {
   name: "GetData",
@@ -66,12 +66,12 @@ export default {
           this.response = data;
         });
       } else if (lastExtension === "json") {
-        get(this.url).then(response => {
+        axios.get(this.url).then(response => {
           this.loading = false;
           this.response = response.data;
         });
       } else {
-        get(this.url).then(response => {
+        axios.get(this.url).then(response => {
           this.loading = false;
           this.response = response.data;
         });
