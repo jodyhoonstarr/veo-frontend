@@ -174,13 +174,10 @@ export default {
       }
       if (!this.rotateLabels) {
         // estimated "good" ratio 28px font, 108px bandwidth
-        return Math.floor((28 / 108) * this.x1.bandwidth());
+        return Math.floor((24 / 108) * this.x1.bandwidth());
       } else {
         return 26;
       }
-    },
-    labelFontColor: function() {
-      return "black";
     }
   },
   directives: {
@@ -270,7 +267,7 @@ export default {
       const rotate = this.rotateLabels ? -90 : 0;
       const nudgeUpMargin = 2; // slight bump to raise the text y height
       return `translate(${this.labelXPosition(d)},${this.barYPosition(d) +
-        this.validateLabelHeight(d) -
+        this.validateLabelHeight(d).fontOffset -
         nudgeUpMargin}) rotate(${rotate})`;
     },
     barTransform: function(d) {
@@ -311,21 +308,38 @@ export default {
         return `${format(",.0f")(d.value)}`;
       }
     },
+    labelFontColor: function(d) {
+      // if the label is above the bar, label it with the bar color, else white
+      return this.barHeight(d) > this.labelFontSizePx
+        ? "white"
+        : this.barFill(d);
+    },
     validateLabelHeight: function(d) {
+      let returnObj = {
+        fontSize: 0,
+        fontOffset: 0
+      };
       if (!this.rotateLabels) {
         // horizontal labels
         // this handles cases where the label font is larger than the rect
-        if (this.barHeight(d) > this.labelFontSizePx) {
-          return this.labelFontSizePx;
+        const barHeight = this.barHeight(d);
+        if (barHeight > this.labelFontSizePx) {
+          returnObj.fontSize = this.labelFontSizePx;
+          returnObj.fontOffset = this.labelFontSizePx;
         } else {
-          return this.barHeight(d);
+          // if the label is very tiny, move the label above the bar
+          returnObj.fontSize = this.labelFontSizePx;
+          returnObj.fontOffset = 0;
         }
       } else {
-        return this.labelFontSizePx;
+        returnObj.fontSize = this.labelFontSizePx;
+        returnObj.fontOffset = this.labelFontSizePx;
       }
+      return returnObj;
     },
     labelFontSize: function(d) {
-      return `${this.validateLabelHeight(d)}px`;
+      // handle the negative value
+      return `${Math.abs(this.validateLabelHeight(d).fontSize)}px`;
     },
     bindLabels: function() {
       const bound = select(this.$refs.chart)
