@@ -7,6 +7,7 @@
       :max-height="maxHeight"
       :chartData="chartData"
       :chartColors="chartColors"
+      :chartType="chartType"
     ></BarChart>
   </v-card>
 </template>
@@ -24,6 +25,10 @@ export default {
     },
     chartColors: {
       type: Object,
+      default: null
+    },
+    chartType: {
+      type: String,
       default: null
     }
   },

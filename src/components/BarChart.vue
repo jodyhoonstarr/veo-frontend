@@ -44,6 +44,10 @@ export default {
     chartColors: {
       type: Object,
       default: null
+    },
+    chartType: {
+      type: String,
+      default: null
     }
   },
   data() {
@@ -178,6 +182,13 @@ export default {
       } else {
         return 26;
       }
+    },
+    labelPrefix: function() {
+      if (this.chartType === "earnings") {
+        return "$";
+      } else {
+        return "";
+      }
     }
   },
   directives: {
@@ -304,8 +315,8 @@ export default {
       });
     },
     labelText: function(d) {
-      if (d.value !== 0) {
-        return `${format(",.0f")(d.value)}`;
+      if (d.value != null) {
+        return `${this.labelPrefix}${format(",.0f")(d.value)}`;
       }
     },
     labelFontColor: function(d) {

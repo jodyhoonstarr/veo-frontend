@@ -60,7 +60,11 @@
           >
         </template>
         <FiltersBar @change="handleFiltersToggle"></FiltersBar>
-        <Chart :chartData="chartData" :chartColors="chartColors"></Chart>
+        <Chart
+          :chartData="chartData"
+          :chartColors="chartColors"
+          :chartType="dataType"
+        ></Chart>
       </ChartCard>
     </GetData>
   </div>
@@ -125,6 +129,11 @@ export default {
     }
   },
   computed: {
+    dataType: function() {
+      if (this.filters.type != null) {
+        return this.filters.type.id;
+      }
+    },
     activeToggleProp: function() {
       return GROUPCOLUMN[this.activeToggle];
     },
