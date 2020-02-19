@@ -50,7 +50,7 @@ export default {
     return {
       margin: { top: 10, right: 30, bottom: 30, left: 60 },
       transitionDuration: 400,
-      rotateLabels: true
+      rotateLabels: false
     };
   },
   computed: {
@@ -169,16 +169,18 @@ export default {
       return this.rotateLabels ? "end" : "middle";
     },
     labelFontSizePx: function() {
-      // TODO create logic for handling label font size
+      if (this.x1 == null) {
+        return 16; // default font size if not bandwidth
+      }
       if (!this.rotateLabels) {
-        if (this.x1 != null) {
-          return 20;
-        } else {
-          return 18;
-        }
+        // estimated "good" ratio 28px font, 108px bandwidth
+        return Math.floor((28 / 108) * this.x1.bandwidth());
       } else {
         return 26;
       }
+    },
+    labelFontColor: function() {
+      return "black";
     }
   },
   directives: {
@@ -266,9 +268,10 @@ export default {
     },
     labelTransform: function(d) {
       const rotate = this.rotateLabels ? -90 : 0;
-      return `translate(${this.labelXPosition(d)},${this.barYPosition(
-        d
-      )}) rotate(${rotate})`;
+      const nudgeUpMargin = 2; // slight bump to raise the text y height
+      return `translate(${this.labelXPosition(d)},${this.barYPosition(d) +
+        this.validateLabelHeight(d) -
+        nudgeUpMargin}) rotate(${rotate})`;
     },
     barTransform: function(d) {
       return `translate(${this.barXFullPosition(d)},${this.barYPosition(d)})`;
@@ -308,6 +311,22 @@ export default {
         return `${format(",.0f")(d.value)}`;
       }
     },
+    validateLabelHeight: function(d) {
+      if (!this.rotateLabels) {
+        // horizontal labels
+        // this handles cases where the label font is larger than the rect
+        if (this.barHeight(d) > this.labelFontSizePx) {
+          return this.labelFontSizePx;
+        } else {
+          return this.barHeight(d);
+        }
+      } else {
+        return this.labelFontSizePx;
+      }
+    },
+    labelFontSize: function(d) {
+      return `${this.validateLabelHeight(d)}px`;
+    },
     bindLabels: function() {
       const bound = select(this.$refs.chart)
         .selectAll("g.labelgroup")
@@ -341,8 +360,8 @@ export default {
         .enter()
         .append("text")
         .text(this.labelText)
-        .style("font-size", `${this.labelFontSizePx}px`)
-        .attr("fill", "black")
+        .style("font-size", this.labelFontSize)
+        .attr("fill", this.labelFontColor)
         .attr("text-anchor", this.textAnchor)
         .attr("transform", this.labelTransform);
 
@@ -371,8 +390,8 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 1)
         .text(this.labelText)
-        .style("font-size", `${this.labelFontSizePx}px`)
-        .attr("fill", "black")
+        .style("font-size", this.labelFontSize)
+        .attr("fill", this.labelFontColor)
         .attr("transform", this.labelTransform);
 
       // if there are the same number of bars as previous
@@ -381,8 +400,8 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 1)
         .text(this.labelText)
-        .style("font-size", `${this.labelFontSizePx}px`)
-        .attr("fill", "black")
+        .style("font-size", this.labelFontSize)
+        .attr("fill", this.labelFontColor)
         .attr("transform", this.labelTransform);
     },
     bindRects: function() {
