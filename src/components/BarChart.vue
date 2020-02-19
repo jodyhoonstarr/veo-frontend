@@ -388,9 +388,16 @@ export default {
         .enter()
         .append("text")
         .text(this.labelText)
-        .style("font-size", this.labelFontSize)
-        .attr("fill", this.labelFontColor)
+        .style("opacity", 0)
+        .style("font-size", 0)
+        .attr("height", 0)
         .attr("text-anchor", this.textAnchor)
+        .attr("fill", this.labelFontColor)
+        .attr("transform", this.labelTransformInit)
+        .transition()
+        .delay(this.transitionDuration / 2)
+        .style("opacity", 1)
+        .style("font-size", this.labelFontSize)
         .attr("transform", this.labelTransform);
 
       // update
@@ -462,10 +469,16 @@ export default {
         .data(this.barData)
         .enter()
         .append("rect")
-        .attr("transform", this.barTransform)
+        .style("opacity", 0)
+        .attr("height", 0)
         .attr("width", this.barWidth)
-        .attr("height", this.barHeight)
-        .attr("fill", this.barFill);
+        .attr("fill", this.barFill)
+        .attr("transform", this.barTransformInit)
+        .transition()
+        .delay(this.transitionDuration / 2)
+        .style("opacity", 1)
+        .attr("transform", this.barTransform)
+        .attr("height", this.barHeight);
 
       // update
       const boundBars = bound.selectAll("rect").data(this.barData);
