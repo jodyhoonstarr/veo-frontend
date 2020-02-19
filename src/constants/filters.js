@@ -17,21 +17,21 @@ export const BARCHARTFILTERS = {
               label: "25th Percentile",
               short: "25%",
               default: false,
-              color: "#6baed6"
+              color: "#588eaf"
             },
             {
               id: "p50",
               label: "50th Percentile  ",
               short: "50%",
               default: true,
-              color: "#4690C6"
+              color: "#39739c"
             },
             {
               id: "p75",
               label: "75th Percentile",
               short: "75%",
               default: false,
-              color: "#2171b5"
+              color: "#1b619a"
             }
           ],
           default: true
@@ -46,21 +46,21 @@ export const BARCHARTFILTERS = {
               label: "1-Year After Discharge",
               short: "1",
               default: false,
-              color: "#67a9cf"
+              color: "#588db0"
             },
             {
               id: "y5",
               label: "5-Years After Discharge",
               short: "5",
               default: true,
-              color: "#3595AD"
+              color: "#2c7a8f"
             },
             {
               id: "y10",
               label: "10-Years After Discharge",
               short: "10",
               default: false,
-              color: "#02818a"
+              color: "#026972"
             }
           ],
           default: false
@@ -84,21 +84,21 @@ export const BARCHARTFILTERS = {
               label: "1-Year After Discharge",
               short: "1",
               default: false,
-              color: "#c2e699"
+              color: "#85a067"
             },
             {
               id: "y5",
               label: "5-Years After Discharge",
               short: "5",
               default: true,
-              color: "#78c679"
+              color: "#558e56"
             },
             {
               id: "y10",
               label: "10-Years After Discharge",
               short: "10",
               default: false,
-              color: "#238443"
+              color: "#155028"
             }
           ],
           default: false
