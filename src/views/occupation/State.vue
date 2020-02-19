@@ -30,9 +30,6 @@
         ></DropDown>
       </v-col>
     </SelectBar>
-    <ChartArea>
-      <ChartCard v-for="state in selectedState" :value="state"></ChartCard>
-    </ChartArea>
   </div>
 </template>
 
