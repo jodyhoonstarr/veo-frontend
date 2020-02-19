@@ -52,7 +52,7 @@ export default {
   },
   data() {
     return {
-      margin: { top: 10, right: 30, bottom: 30, left: 60 },
+      margin: { top: 10, right: 30, bottom: 48, left: 60 },
       transitionDuration: 400,
       rotateLabels: false
     };
@@ -208,10 +208,12 @@ export default {
             .selectAll(".tick text")
             .transition()
             .duration(vnode.context.transitionDuration)
-            .attr("font-family", "Helvetica, Arial, sans-serif;")
+            .style("font-size", "12px")
             .call(wrapLabels, vnode.context.x0.bandwidth());
         } else if (axisMethod === "axisLeft") {
-          select(el).call(axisLeft(methodArg));
+          select(el)
+            .call(axisLeft(methodArg))
+            .style("font-size", "12px");
         }
       }
     }
