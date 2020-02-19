@@ -178,7 +178,10 @@ export default {
       }
       if (!this.rotateLabels) {
         // estimated "good" ratio 28px font, 108px bandwidth
-        return Math.floor((24 / 108) * this.x1.bandwidth());
+        const fontSize = Math.floor((24 / 108) * this.x1.bandwidth());
+        // minimum font size to display
+        const minFontSize = 10;
+        return fontSize >= minFontSize ? fontSize : 0;
       } else {
         return 26;
       }
