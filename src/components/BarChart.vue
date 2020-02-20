@@ -320,8 +320,10 @@ export default {
       });
     },
     labelText: function(d) {
-      if (d.value != null) {
+      if (d.value != null && d.value !== 0) {
         return `${this.labelPrefix}${format(",.0f")(d.value)}`;
+      } else {
+        return "";
       }
     },
     labelFontColor: function(d) {
