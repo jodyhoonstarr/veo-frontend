@@ -2,5 +2,6 @@ export const GROUPCOLUMN = {
   occupation: "dod_occ_code",
   paygrade: "paygrade",
   cohort: "cohort",
-  industry: "industry"
+  industry: "industry",
+  state: "geography"
 };
