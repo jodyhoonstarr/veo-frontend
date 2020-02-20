@@ -77,7 +77,7 @@ export default {
             { route: "/occupation/detail", label: "Detailed Occupation" },
             { route: "/occupation/paygrade", label: "Occupation by Paygrade" },
             { route: "/occupation/state", label: "Occupation by State" },
-            { route: "/occupation/sector", label: "Occupation by Sector" }
+            { route: "/occupation/industry", label: "Occupation by Industry" }
           ]
         },
         {

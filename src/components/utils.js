@@ -120,6 +120,7 @@ export function simplifiyRows(csvDataRows, filters, activeToggleProp) {
   });
 }
 
+// format the chart data
 export function createChartData(
   csvDataRowsSimple,
   filters,
