@@ -79,7 +79,7 @@ import ChartCard from "@/components/ChartCard.vue";
 import Chart from "@/components/Chart";
 import GetData from "@/components/GetData";
 import { GROUPCOLUMN } from "@/constants/lookups.js";
-import { arrayIsNullorEmpty } from "@/components/utils";
+import { createChartData, filterRows, simplifiyRows } from "@/components/utils";
 
 export default {
   name: "OccupationByPaygrade",
@@ -129,6 +129,13 @@ export default {
     }
   },
   computed: {
+    dataSelections: function() {
+      return [
+        { data: this.cohort, prop: "cohort" },
+        { data: this.paygrade, prop: "paygrade" },
+        { data: this.occupation, prop: "dod_occ_code" }
+      ];
+    },
     dataType: function() {
       if (this.filters.type != null) {
         return this.filters.type.id;
@@ -138,123 +145,22 @@ export default {
       return GROUPCOLUMN[this.activeToggle];
     },
     csvDataRows: function() {
-      if (
-        arrayIsNullorEmpty(this.cohort) ||
-        arrayIsNullorEmpty(this.paygrade) ||
-        arrayIsNullorEmpty(this.occupation) ||
-        arrayIsNullorEmpty(this.csvData)
-      ) {
-        return null;
-      }
-      // filter the selected rows from the data
-      return this.csvData.filter(row => {
-        return (
-          this.cohort.some(e => e.id === row.cohort) &&
-          this.paygrade.some(e => e.id === row.paygrade) &&
-          this.occupation.some(e => e.id === row.dod_occ_code)
-        );
-      });
+      return filterRows(this.csvData, this.dataSelections);
     },
     csvDataRowsSimple: function() {
-      if (
-        arrayIsNullorEmpty(this.filters) ||
-        arrayIsNullorEmpty(this.csvDataRows)
-      ) {
-        return null;
-      }
-      // get the set of available props
-      const objKeys = Object.keys(this.csvDataRows[0]);
-
-      // get either earnings or emp data without the status flag
-      const matchInString =
-        this.filters.type.id === "earnings" ? "earnings" : "emp";
-      const dataTypeKeys = objKeys.filter(key => {
-        return (
-          key.toLocaleLowerCase().indexOf(`${matchInString}`) > -1 &&
-          key.toLocaleLowerCase().indexOf("status") === -1
-        );
-      });
-
-      // get only the props defined in the filters
-      let filterKeys = dataTypeKeys.filter(key => {
-        const f = this.filters.filters;
-        if (
-          f.hasOwnProperty("percentile") &&
-          !arrayIsNullorEmpty(f.percentile) &&
-          f.hasOwnProperty("year") &&
-          !arrayIsNullorEmpty(f.year)
-        ) {
-          const p = f.percentile;
-          const y = f.year;
-          return (
-            p.some(e => key.indexOf(`${e.id}_`) > -1) &&
-            y.some(e => key.indexOf(`${e.id}_`) > -1)
-          );
-        } else if (f.hasOwnProperty("year") && !arrayIsNullorEmpty(f.year)) {
-          const y = f.year;
-          return y.some(e => key.indexOf(`${e.id}_`) > -1);
-        }
-      });
-
-      // keep the label for the active group
-      filterKeys.push(this.activeToggleProp);
-
-      // filter out the row data to only keep usable props
-      return this.csvDataRows.map(row => {
-        let result = {};
-        filterKeys.forEach(function(key) {
-          if (row.hasOwnProperty(key)) {
-            result[key] = row[key];
-          }
-        });
-        return result;
-      });
+      return simplifiyRows(
+        this.csvDataRows,
+        this.filters,
+        this.activeToggleProp
+      );
     },
     chartData: function() {
-      if (arrayIsNullorEmpty(this.csvDataRowsSimple)) {
-        return null;
-      }
-
-      // take the selected data and get the unique data property
-      // e.g. ['y1_p50', 'y5_p50'] would give ['y1', 'y5']
-      const topRow = this.csvDataRowsSimple[0];
-      let keyArray = [];
-      Object.keys(topRow).map(k => {
-        if (k != this.activeToggleProp) {
-          keyArray.push(k.split("_"));
-        }
-      });
-      const variableColumn =
-        this.filters &&
-        this.filters.filters.percentile &&
-        Array.isArray(this.filters.filters.percentile) &&
-        this.filters.filters.percentile.length > 1
-          ? 1
-          : 0;
-
-      const useKeys = keyArray.map(k => k[variableColumn]);
-
-      let data = [];
-      this.csvDataRowsSimple.map(row => {
-        let result = {};
-
-        // find the label using the active group
-        result.label = this[this.activeToggle].find(obj => {
-          return obj.id === row[this.activeToggleProp];
-        }).label;
-
-        // create the simple data
-        useKeys.forEach(k => {
-          const propName = Object.keys(row).find(prop => {
-            return prop.includes(`${k}_`);
-          });
-          result[k] = row[propName];
-        });
-
-        data.push(result);
-      });
-
-      return data;
+      return createChartData(
+        this.csvDataRowsSimple,
+        this.filters,
+        this.activeToggleProp,
+        this.dataSelections
+      );
     },
     chartColors: function() {
       if (this.filters != null && this.filters.hasOwnProperty("colors")) {
