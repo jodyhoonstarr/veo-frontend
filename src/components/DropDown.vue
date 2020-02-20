@@ -22,7 +22,7 @@
         {{ item.label }}
       </div>
       <div class="selection" v-else-if="index === 1">
-        {{ itemCount }} {{ label }}s
+        {{ pluralLabels }}
       </div>
     </template>
 
@@ -53,7 +53,7 @@
         {{ item }}
       </div>
       <div class="selection" v-else-if="index === 1">
-        {{ itemCount }} {{ label }}s
+        {{ pluralLabels }}
       </div>
     </template>
 
@@ -66,6 +66,8 @@
 </template>
 
 <script>
+import Pluralize from "pluralize";
+
 export default {
   props: {
     value: {
@@ -130,6 +132,9 @@ export default {
       if (!this.loading && this.persistentHint) {
         return "Select Multiple Characteristics";
       }
+    },
+    pluralLabels: function() {
+      return Pluralize(this.label, this.itemCount, true);
     }
   },
   data() {
