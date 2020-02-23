@@ -14,6 +14,7 @@
     :persistentHint="persistentHint"
     :clearable="clearable"
     v-model="selected"
+    :search-input.sync="search"
     :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
   >
     <template v-slot:selection="{ item, index }">
@@ -44,6 +45,7 @@
     :persistentHint="persistentHint"
     :clearable="clearable"
     v-model="selected"
+    :search-input.sync="search"
     :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
   >
     <template v-slot:selection="{ item, index }">
@@ -137,14 +139,17 @@ export default {
   },
   data() {
     return {
-      selected: this.value
+      selected: this.value,
+      search: null
     };
   },
   watch: {
     value(input) {
+      this.search = "";
       this.selected = input;
     },
     selected(newSelected, oldSelected) {
+      this.search = "";
       // hacky way to block deselection of the last item in a list
       if (Array.isArray(newSelected) && newSelected.length === 0) {
         this.selected = newSelected;
