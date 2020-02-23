@@ -23,7 +23,6 @@
         :multiple="activeToggle"
         @input="emitChangeEvent"
         :persistentHint="activeToggle"
-        :clearable="true"
         close
       ></DetailDropDown>
       <DropDown
