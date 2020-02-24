@@ -5,6 +5,13 @@
       <g ref="xaxis"></g>
       <g v-if="d3Max > 0" ref="yaxis"></g>
     </g>
+    <text
+      ref="shoutout"
+      x="50%"
+      :y="margin.top"
+      :font-size="margin.top"
+      text-anchor="middle"
+    ></text>
   </svg>
 </template>
 
@@ -48,7 +55,7 @@ export default {
   },
   data() {
     return {
-      margin: { top: 10, right: 30, bottom: 48, left: 60 },
+      margin: { top: 26, right: 30, bottom: 48, left: 60 },
       transitionDuration: 400,
       rotateLabels: false
     };
@@ -444,6 +451,7 @@ export default {
         .delay(this.transitionDuration)
         .remove();
 
+      let vm = this; // for use with click event in d3
       bound
         .enter()
         .append("g")
@@ -452,6 +460,33 @@ export default {
         .data(this.barData)
         .enter()
         .append("rect")
+        .on("click", function(d) {
+          const delayFactor = 5;
+          const highlightColor = "Black";
+
+          // de-highlight every other rect
+          selectAll(".bargroup > rect").attr("stroke-width", 0);
+
+          // briefly show the clicked text value
+          select(vm.$refs.shoutout)
+            .text("")
+            .transition()
+            .duration(0)
+            .text(vm.labelText(d))
+            .attr("fill", highlightColor)
+            .attr("opacity", 1)
+            .transition()
+            .duration(vm.transitionDuration * delayFactor)
+            .attr("opacity", 0);
+
+          // briefly outline the bar
+          select(this)
+            .attr("stroke", highlightColor)
+            .attr("stroke-width", 4)
+            .transition()
+            .duration(vm.transitionDuration * delayFactor)
+            .attr("stroke-width", 0);
+        })
         .style("opacity", 0)
         .attr("height", 0)
         .attr("width", this.barWidth)
