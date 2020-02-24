@@ -2,12 +2,8 @@
   <svg :width="width" :height="height" :max-height="maxHeight">
     <g :transform="chartTransform">
       <g ref="chart"></g>
-      <g
-        v-if="scale.x != null && d3Data"
-        v-axis:x="scale"
-        :transform="`translate(0,${chartHeight})`"
-      />
-      <g v-if="scale.y != null && d3Data" v-axis:y="scale" />
+      <g ref="xaxis"></g>
+      <g ref="yaxis"></g>
     </g>
   </svg>
 </template>
@@ -194,39 +190,19 @@ export default {
       }
     }
   },
-  directives: {
-    axis: function(el, binding, vnode) {
-      if (binding.value != null) {
-        const axis = binding.arg;
-        const axisMethod = { x: "axisBottom", y: "axisLeft" }[axis];
-        const methodArg = binding.value[axis];
-
-        // ? calling [axisMethod] causes error, hardcoded works, namespace issue possible
-        if (axisMethod === "axisBottom") {
-          select(el)
-            .call(axisBottom(methodArg))
-            .selectAll(".tick text")
-            .transition()
-            .duration(vnode.context.transitionDuration)
-            .style("font-size", "12px")
-            .call(wrapLabels, vnode.context.x0.bandwidth());
-        } else if (axisMethod === "axisLeft") {
-          select(el)
-            .call(axisLeft(methodArg))
-            .style("font-size", "12px");
-        }
-      }
-    }
-  },
   watch: {
     d3Data: function() {
       this.$nextTick(() => {
+        this.bindXAxis();
+        this.bindYAxis();
         this.bindRects();
         this.bindLabels();
       });
     },
     width: function() {
       this.$nextTick(() => {
+        this.bindXAxis();
+        this.bindYAxis();
         this.bindRects();
         this.bindLabels();
       });
@@ -520,6 +496,38 @@ export default {
         .attr("width", this.barWidth)
         .attr("fill", this.barFill)
         .attr("transform", this.barTransform);
+    },
+    bindXAxis: function() {
+      const xaxis = select(this.$refs.xaxis);
+      xaxis
+        .attr("transform", `translate(0,${this.chartHeight})`)
+        .call(axisBottom(this.x0))
+        .transition()
+        .duration(this.transitionDuration)
+        .selectAll(".tick text")
+        .style("font-size", "12px")
+        .call(wrapLabels, this.x0.bandwidth());
+    },
+    bindYAxis: function() {
+      const yaxis = select(this.$refs.yaxis);
+      yaxis
+        .transition()
+        .duration(this.transitionDuration)
+        .call(
+          axisLeft(this.y)
+            .ticks(7)
+            .tickFormat(d => {
+              const dInt = parseInt(d);
+              if (dInt < 1000) {
+                return d;
+              } else if (dInt < 10000) {
+                return `${this.labelPrefix}${format(".1s")(d)}`;
+              } else {
+                return `${this.labelPrefix}${format(".2s")(d)}`;
+              }
+            })
+        )
+        .style("font-size", "12px");
     }
   }
 };
