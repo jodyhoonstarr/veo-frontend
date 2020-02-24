@@ -61,9 +61,10 @@
         </template>
         <FiltersBar @change="handleFiltersToggle"></FiltersBar>
         <Chart
-          :chartData="chartData"
-          :chartColors="chartColors"
-          :chartDataType="chartDataType"
+          chart-type="bar"
+          :chart-data="chartData"
+          :chart-colors="chartColors"
+          :chart-data-type="chartDataType"
         ></Chart>
       </ChartCard>
     </GetData>

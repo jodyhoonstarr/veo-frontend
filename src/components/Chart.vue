@@ -1,7 +1,7 @@
 <template>
   <v-card ref="chartcard" flat>
     <BarChart
-      v-if="width"
+      v-if="chartType === 'bar' && width"
       :width="width"
       :height="height"
       :max-height="maxHeight"
@@ -19,6 +19,11 @@ export default {
   name: "Chart",
   components: { BarChart },
   props: {
+    chartType: {
+      type: String,
+      required: true,
+      validator: val => ["bar", "line"].includes(val)
+    },
     chartData: {
       type: Array,
       default: null
