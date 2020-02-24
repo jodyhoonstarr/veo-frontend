@@ -41,7 +41,7 @@ export default {
       type: Object,
       default: null
     },
-    chartType: {
+    chartDataType: {
       type: String,
       default: null
     }
@@ -183,7 +183,7 @@ export default {
       }
     },
     labelPrefix: function() {
-      if (this.chartType === "earnings") {
+      if (this.chartDataType === "earnings") {
         return "$";
       } else {
         return "";

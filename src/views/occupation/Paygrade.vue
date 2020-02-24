@@ -63,7 +63,7 @@
         <Chart
           :chartData="chartData"
           :chartColors="chartColors"
-          :chartType="dataType"
+          :chartDataType="chartDataType"
         ></Chart>
       </ChartCard>
     </GetData>
@@ -136,7 +136,7 @@ export default {
         { data: this.occupation, prop: "dod_occ_code" }
       ];
     },
-    dataType: function() {
+    chartDataType: function() {
       if (this.filters.type != null) {
         return this.filters.type.id;
       }
