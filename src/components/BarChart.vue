@@ -3,7 +3,7 @@
     <g :transform="chartTransform">
       <g ref="chart"></g>
       <g ref="xaxis"></g>
-      <g ref="yaxis"></g>
+      <g v-if="d3Max > 0" ref="yaxis"></g>
     </g>
   </svg>
 </template>
@@ -148,7 +148,10 @@ export default {
       }
       return scaleLinear()
         .rangeRound([this.chartHeight, 0])
-        .domain([this.d3Min > 0 ? 0 : this.d3Min, this.d3Max])
+        .domain([
+          this.d3Min > 0 ? 0 : this.d3Min,
+          this.d3Max === 0 ? 1 : this.d3Max
+        ])
         .nice();
     },
     z: function() {
