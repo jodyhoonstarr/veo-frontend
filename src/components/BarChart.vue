@@ -595,6 +595,14 @@ export default {
       // remove the domain outline
       yaxisgrid.select(".domain").remove();
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.bindXAxis();
+      this.bindYAxis();
+      this.bindRects();
+      this.bindLabels();
+    });
   }
 };
 </script>
