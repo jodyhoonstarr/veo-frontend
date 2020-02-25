@@ -522,6 +522,9 @@ export default {
       boundBars
         .enter()
         .append("rect")
+        .on("click", function(d) {
+          vm.shoutoutClick(this, vm, d);
+        })
         .attr("transform", this.barTransformInit)
         .attr("width", this.barWidth)
         .attr("height", 0)
@@ -534,6 +537,9 @@ export default {
 
       // if there are the same number of bars as previous
       boundBars
+        .on("click", function(d) {
+          vm.shoutoutClick(this, vm, d);
+        })
         .transition()
         .duration(this.transitionDuration)
         .style("opacity", 1)
