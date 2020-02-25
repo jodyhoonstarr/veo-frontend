@@ -1,8 +1,15 @@
 <template>
   <v-card ref="chartcard" flat>
     <div v-if="loading" class="text-center">
+      <v-progress-circular
+        v-if="width"
+        :size="height"
+        :width="30"
+        indeterminate
+        color="primary"
+      ></v-progress-circular>
       <v-card-text class="py-0">
-        <p class="py-0 display-1 text--secondary">Loading</p>
+        <p class="py-0 display-1 text--secondary">Loading...</p>
       </v-card-text>
     </div>
     <BarChart
@@ -15,10 +22,10 @@
       :chartDataType="chartDataType"
     ></BarChart>
     <div v-else class="text-center">
+      <v-icon :size="height" color="text--secondary">mdi-alert-outline</v-icon>
       <v-card-text class="py-0">
         <p class="py-0 display-1 text--secondary">Error: No Data</p>
       </v-card-text>
-      <v-icon :size="height" color="text--secondary">mdi-alert-outline</v-icon>
     </div>
   </v-card>
 </template>
