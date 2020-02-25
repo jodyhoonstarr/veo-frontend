@@ -1,7 +1,12 @@
 <template>
   <v-card ref="chartcard" flat>
+    <div v-if="loading" class="text-center">
+      <v-card-text class="py-0">
+        <p class="py-0 display-1 text--secondary">Loading</p>
+      </v-card-text>
+    </div>
     <BarChart
-      v-if="chartType === 'bar' && width"
+      v-else-if="chartType === 'bar' && chartData != null && width"
       :width="width"
       :height="height"
       :max-height="maxHeight"
@@ -9,6 +14,12 @@
       :chartColors="chartColors"
       :chartDataType="chartDataType"
     ></BarChart>
+    <div v-else class="text-center">
+      <v-card-text class="py-0">
+        <p class="py-0 display-1 text--secondary">Error: No Data</p>
+      </v-card-text>
+      <v-icon :size="height" color="text--secondary">mdi-alert-outline</v-icon>
+    </div>
   </v-card>
 </template>
 
@@ -24,6 +35,7 @@ export default {
       required: true,
       validator: val => ["bar", "line"].includes(val)
     },
+    loading: { type: Boolean, default: false },
     chartData: {
       type: Array,
       default: null
