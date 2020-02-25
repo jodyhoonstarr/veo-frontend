@@ -429,7 +429,39 @@ export default {
         .attr("fill", this.labelFontColor)
         .attr("transform", this.labelTransform);
     },
+    shoutoutClick: function(d3This, vm, d) {
+      const delayFactor = 5;
+      const strokeWidth = 5;
+      const highlightColor = "Black";
+
+      // de-highlight every other rect
+      selectAll("g.bargroup > rect")
+        .transition()
+        .attr("stroke-width", 0);
+
+      // briefly show the clicked text value
+      select(vm.$refs.shoutout)
+        .text("")
+        .transition()
+        .text(vm.labelText(d))
+        .attr("fill", highlightColor)
+        .attr("opacity", 1)
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("opacity", 0);
+
+      // briefly outline the bar
+      select(d3This)
+        .transition()
+        .attr("stroke", highlightColor)
+        .attr("stroke-width", strokeWidth)
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("stroke-width", 0);
+    },
     bindRects: function() {
+      let vm = this; // for use with click event in d3
+
       const bound = select(this.$refs.chart)
         .selectAll("g.bargroup")
         .data(this.d3Data);
@@ -451,7 +483,6 @@ export default {
         .delay(this.transitionDuration)
         .remove();
 
-      let vm = this; // for use with click event in d3
       bound
         .enter()
         .append("g")
@@ -461,31 +492,7 @@ export default {
         .enter()
         .append("rect")
         .on("click", function(d) {
-          const delayFactor = 5;
-          const highlightColor = "Black";
-
-          // de-highlight every other rect
-          selectAll(".bargroup > rect").attr("stroke-width", 0);
-
-          // briefly show the clicked text value
-          select(vm.$refs.shoutout)
-            .text("")
-            .transition()
-            .duration(0)
-            .text(vm.labelText(d))
-            .attr("fill", highlightColor)
-            .attr("opacity", 1)
-            .transition()
-            .duration(vm.transitionDuration * delayFactor)
-            .attr("opacity", 0);
-
-          // briefly outline the bar
-          select(this)
-            .attr("stroke", highlightColor)
-            .attr("stroke-width", 4)
-            .transition()
-            .duration(vm.transitionDuration * delayFactor)
-            .attr("stroke-width", 0);
+          vm.shoutoutClick(this, vm, d);
         })
         .style("opacity", 0)
         .attr("height", 0)
