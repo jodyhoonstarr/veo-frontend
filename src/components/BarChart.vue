@@ -1,9 +1,10 @@
 <template>
   <svg :width="width" :height="height" :max-height="maxHeight">
     <g :transform="chartTransform">
-      <g ref="chart"></g>
       <g ref="xaxis"></g>
+      <g v-if="d3Max > 0" ref="yaxisgrid" class="ygrid"></g>
       <g v-if="d3Max > 0" ref="yaxis"></g>
+      <g ref="chart"></g>
     </g>
     <text
       ref="shoutout"
@@ -560,13 +561,14 @@ export default {
         .call(wrapLabels, this.x0.bandwidth());
     },
     bindYAxis: function() {
+      const tickCount = 7;
       const yaxis = select(this.$refs.yaxis);
       yaxis
         .transition()
         .duration(this.transitionDuration)
         .call(
           axisLeft(this.y)
-            .ticks(7)
+            .ticks(tickCount)
             .tickFormat(d => {
               const dInt = parseInt(d);
               if (dInt < 1000) {
@@ -579,9 +581,28 @@ export default {
             })
         )
         .style("font-size", "12px");
+
+      const yaxisgrid = select(this.$refs.yaxisgrid);
+      yaxisgrid
+        .transition()
+        .duration(this.transitionDuration)
+        .call(
+          axisLeft(this.y)
+            .ticks(tickCount)
+            .tickFormat("")
+            .tickSize(-this.chartWidth)
+        );
+      // remove the domain outline
+      yaxisgrid.select(".domain").remove();
     }
   }
 };
 </script>
 
-<style scoped></style>
+<style>
+.ygrid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+</style>
