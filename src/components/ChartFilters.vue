@@ -125,6 +125,9 @@ export default {
     },
     value: function() {
       this.selectDefault(this.value, this.filters);
+    },
+    label: function() {
+      this.all.label = `All ${this.label}`;
     }
   },
   mounted() {
