@@ -137,11 +137,9 @@ export default {
   },
   watch: {
     value(input) {
-      this.search = "";
       this.selected = input;
     },
     selected(newSelected, oldSelected) {
-      this.search = "";
       // hacky way to block deselection of the last item in a list
       if (Array.isArray(newSelected) && newSelected.length === 0) {
         this.selected = newSelected;
@@ -169,3 +167,14 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.selection {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  max-width: 80%;
+  padding: 4px 4px 8px 0px;
+}
+</style>
