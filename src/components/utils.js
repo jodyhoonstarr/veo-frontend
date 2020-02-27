@@ -76,7 +76,19 @@ export function simplifiyRows(csvDataRows, filters, activeToggleProp) {
   const objKeys = Object.keys(csvDataRows[0]);
 
   // get either earnings or emp data without the status flag
-  const matchInString = filters.type.id === "earnings" ? "earnings" : "emp";
+  let matchInString;
+  switch (filters.type.id) {
+    case "earnings":
+      matchInString = "_earnings";
+      break;
+    case "countsemp":
+      matchInString = "_emp";
+      break;
+    case "countsnonemp":
+      matchInString = "_nonemp";
+      break;
+  }
+
   const dataTypeKeys = objKeys.filter(key => {
     return (
       key.toLocaleLowerCase().indexOf(`${matchInString}`) > -1 &&

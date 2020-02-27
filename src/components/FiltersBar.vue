@@ -72,10 +72,15 @@ export default {
       this.emitEvent();
     },
     setAllPercentiles: function() {
-      this.dataFilters.percentile = this.constantFilters.filters[0].filters[0].filters;
+      const percentileFilters = this.dataType.filters.find(
+        o => o.id === "percentile"
+      ).filters;
+      this.dataFilters.percentile = percentileFilters;
     },
     setAllYears: function() {
-      this.dataFilters.year = this.constantFilters.filters[1].filters[0].filters;
+      const yearFilters = this.dataType.filters.find(o => o.id === "year")
+        .filters;
+      this.dataFilters.year = yearFilters;
     },
     handleFilter: function(f) {
       if (Array.isArray(f.selected)) {

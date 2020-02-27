@@ -70,9 +70,9 @@ export const BARCHARTFILTERS = {
       color: "#195083"
     },
     {
-      id: "counts",
-      label: "Counts of Employed Veterans",
-      short: "Counts",
+      id: "countsemp",
+      label: "Employed Veterans",
+      short: "Employed Counts",
       filters: [
         {
           id: "year",
@@ -106,6 +106,44 @@ export const BARCHARTFILTERS = {
       ],
       default: false,
       color: "#1A594A"
+    },
+    {
+      id: "countsnonemp",
+      label: "Non-employed or Marginally Employed Veterans",
+      short: "N.M.E. Counts",
+      filters: [
+        {
+          id: "year",
+          label: "Years Post Discharge",
+          short: "Year",
+          filters: [
+            {
+              id: "y1",
+              label: "1-Year After Discharge",
+              short: "1",
+              default: false,
+              color: "#fd8d3c"
+            },
+            {
+              id: "y5",
+              label: "5-Years After Discharge",
+              short: "5",
+              default: true,
+              color: "#e6550d"
+            },
+            {
+              id: "y10",
+              label: "10-Years After Discharge",
+              short: "10",
+              default: false,
+              color: "#ae400a"
+            }
+          ],
+          default: false
+        }
+      ],
+      default: false,
+      color: "#a63603"
     }
   ]
 };
