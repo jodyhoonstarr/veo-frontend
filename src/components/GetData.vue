@@ -1,5 +1,5 @@
 <script>
-import { csv } from "d3-fetch";
+import { csvParse } from "d3-dsv";
 import axios from "axios";
 
 export default {
@@ -61,19 +61,31 @@ export default {
       const lastExtension = urlArray[urlArray.length - 1].toLocaleLowerCase();
 
       if (lastExtension === "csv") {
-        csv(this.url).then(data => {
+        axios.get(this.url).then(response => {
           this.loading = false;
-          this.response = data;
+          if (response.status === 200) {
+            this.response = csvParse(response.data);
+          } else {
+            this.response = null;
+          }
         });
       } else if (lastExtension === "json") {
         axios.get(this.url).then(response => {
           this.loading = false;
-          this.response = response.data;
+          if (response.status === 200) {
+            this.response = response.data;
+          } else {
+            this.response = null;
+          }
         });
       } else {
         axios.get(this.url).then(response => {
           this.loading = false;
-          this.response = response.data;
+          if (response.status === 200) {
+            this.response = response.data;
+          } else {
+            this.response = null;
+          }
         });
       }
     }
