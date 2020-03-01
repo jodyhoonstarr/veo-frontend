@@ -72,7 +72,7 @@ export const BARCHARTFILTERS = {
     {
       id: "countsemp",
       label: "Count of Employed Veterans",
-      short: "Employed Counts",
+      short: "Employed",
       filters: [
         {
           id: "year",
@@ -110,7 +110,7 @@ export const BARCHARTFILTERS = {
     {
       id: "countsnonemp",
       label: "Count of Non-employed or Marginally Employed Veterans",
-      short: "N.M.E. Counts",
+      short: "N.M.E.",
       filters: [
         {
           id: "year",

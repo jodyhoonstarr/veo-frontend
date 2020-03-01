@@ -9,18 +9,27 @@
           :filters="constantFilters.filters"
           :label="constantFilters.label"
           :value="dataType"
+          :multiple="true"
         ></ChartFilters>
       </v-col>
 
-      <template v-if="dataType && dataType.hasOwnProperty('filters')">
-        <template v-for="filter in dataType.filters">
+      <template
+        v-if="
+          dataType != null &&
+            Array.isArray(dataType) &&
+            dataType[0] != null &&
+            dataType[0].hasOwnProperty('filters') &&
+            dataType[0].filters != null
+        "
+      >
+        <template v-for="filter in dataType[0].filters">
           <v-col cols="12" xs="12" sm="4" class="pb-0">
             <ChartFilters
               :id="filter.id"
               :showChips="filter.id === colorCategory"
               :filters="filter.filters"
               :label="filter.label"
-              :multiple="true"
+              :multiple="!compareCounts"
               :value="dataFilters[filter.id]"
               @change="handleFilter"
             >
@@ -47,7 +56,6 @@ export default {
         year: null,
         percentile: null
       },
-      allCategory: null,
       colorCategory: null
     };
   },
@@ -61,31 +69,41 @@ export default {
     },
     handleDataTypeFilter: function(f) {
       this.dataType = f.selected;
-      if (this.dataType.id === "earnings") {
+      // first check is whether there are multiple datatype filters
+      if (Array.isArray(this.dataType) && this.dataType.length > 1) {
+        this.dataFilters.percentile = null;
+        this.dataFilters.year = null;
+      } else if (this.dataType[0].id === "earnings") {
         this.setAllPercentiles(); // toggle all percentiles
         this.dataFilters.year = null; // allow component to select default year
-      } else {
+      } else if (
+        this.dataType[0].id === "countsemp" ||
+        this.dataType[0].id === "countsnonemp"
+      ) {
         this.dataFilters.percentile = null;
         this.setAllYears();
+      } else {
+        this.dataFilters.percentile = null;
+        this.dataFilters.year = null;
       }
-      this.allCategory = null;
       this.emitEvent();
     },
     setAllPercentiles: function() {
-      const percentileFilters = this.dataType.filters.find(
-        o => o.id === "percentile"
-      ).filters;
-      this.dataFilters.percentile = percentileFilters;
+      if (this.dataType[0] != null && this.dataType[0].filters != null) {
+        const percentileFilters = this.dataType[0].filters.find(
+          o => o.id === "percentile"
+        ).filters;
+        this.dataFilters.percentile = percentileFilters;
+      }
     },
     setAllYears: function() {
-      const yearFilters = this.dataType.filters.find(o => o.id === "year")
-        .filters;
-      this.dataFilters.year = yearFilters;
+      if (this.dataType[0] != null && this.dataType[0].filters != null) {
+        const yearFilters = this.dataType[0].filters.find(o => o.id === "year")
+          .filters;
+        this.dataFilters.year = yearFilters;
+      }
     },
     handleFilter: function(f) {
-      if (Array.isArray(f.selected)) {
-        this.allCategory = f.id;
-      }
       this.dataFilters[f.id] = f.selected;
 
       // if this change is an array, null out the other filters
@@ -120,24 +138,48 @@ export default {
     this.dataType = this.constantFilters.filters[0];
     this.setAllPercentiles();
   },
-
   computed: {
     colors: function() {
-      if (this.isArraywMultiple(this.dataFilters.percentile)) {
-        let returnObject = {};
-        this.dataFilters.percentile.map(f => (returnObject[f.id] = f.color));
-        this.colorCategory = "percentile";
-        return returnObject;
-      } else if (this.isArraywMultiple(this.dataFilters.year)) {
-        let returnObject = {};
-        this.dataFilters.year.map(f => (returnObject[f.id] = f.color));
-        this.colorCategory = "year";
-        return returnObject;
-      } else if (this.dataType != null) {
-        let returnObject = {};
-        returnObject[this.dataType.id] = this.dataType.color;
-        this.colorCategory = "type";
-        return returnObject;
+      if (this.dataType == null) {
+        return null;
+      } else {
+        if (this.isArraywMultiple(this.dataType)) {
+          // if the datatype count/nme option is primary and displaying chips
+          let returnObject = {};
+          this.dataType.map(f => (returnObject[f.id] = f.color));
+          this.colorCategory = "type";
+          return returnObject;
+        } else if (this.isArraywMultiple(this.dataFilters.percentile)) {
+          // if the percentile selection is primary and displaying chips
+          let returnObject = {};
+          this.dataFilters.percentile.map(f => (returnObject[f.id] = f.color));
+          this.colorCategory = "percentile";
+          return returnObject;
+        } else if (this.isArraywMultiple(this.dataFilters.year)) {
+          // if the years selection is primary and displaying chips
+          let returnObject = {};
+          this.dataFilters.year.map(f => (returnObject[f.id] = f.color));
+          this.colorCategory = "year";
+          return returnObject;
+        } else if (this.dataType[0] != null) {
+          // otherwise
+          let returnObject = {};
+          const firstEntry = this.dataType[0];
+          returnObject[firstEntry.id] = firstEntry.color;
+          this.colorCategory = "type";
+          return returnObject;
+        }
+      }
+    },
+    compareCounts: function() {
+      if (
+        this.colorCategory === "type" &&
+        Array.isArray(this.dataType) &&
+        this.dataType.length > 1
+      ) {
+        return true;
+      } else {
+        return false;
       }
     }
   },

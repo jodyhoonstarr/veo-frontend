@@ -12,10 +12,15 @@
     class="newSelect otherClass"
   >
     <template v-slot:selection="{ item, index }">
-      <div v-if="item.id === 'all' && showChips === true" class="selection">
-        <template v-for="filter in filters">
-          <v-icon :color="filter.color">mdi-checkbox-blank</v-icon>
-          <span> {{ filter.short }} </span>
+      <div
+        v-if="
+          (item.id === 'all' || item.id === 'allcounts') && showChips === true
+        "
+        class="selection"
+      >
+        <template v-for="val in value">
+          <v-icon :color="val.color">mdi-checkbox-blank</v-icon>
+          <span> {{ val.short }} </span>
         </template>
       </div>
       <div
