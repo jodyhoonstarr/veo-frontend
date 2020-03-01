@@ -8,11 +8,11 @@
     outlined
     dense
     :value="selected"
-    @change="e => (this.selected = e)"
+    @change="handleChange"
     class="newSelect otherClass"
   >
     <template v-slot:selection="{ item, index }">
-      <div v-if="item.short === 'All' && showChips === true" class="selection">
+      <div v-if="item.id === 'all' && showChips === true" class="selection">
         <template v-for="filter in filters">
           <v-icon :color="filter.color">mdi-checkbox-blank</v-icon>
           <span> {{ filter.short }} </span>
@@ -39,34 +39,20 @@ export default {
   data() {
     return {
       selected: null,
-      all: { id: "all", short: "All", label: `All ${this.label}` }
+      all: { id: "all", short: "All", label: `All ${this.label}` },
+      allcounts: {
+        id: "allcounts",
+        short: "All Counts",
+        label: `All Counts ${this.label}`
+      }
     };
   },
   methods: {
     toArray: function(obj) {
       return !Array.isArray(obj) ? [obj] : obj;
     },
-    sortIfArray: function(obj) {
-      if (Array.isArray(obj) && obj.length > 1) {
-        // if first string begins with a number, sort by the starting int in the string
-        const firstChar = obj[0].short.charAt(0);
-        if (firstChar >= "0" && firstChar <= "9") {
-          return Array.prototype.slice.call(obj).sort((a, b) => {
-            const aInt = parseInt(a.short.replace(/(^\d+)(.+$)/i, "$1"));
-            const bInt = parseInt(b.short.replace(/(^\d+)(.+$)/i, "$1"));
-            return aInt > bInt ? 1 : -1;
-          });
-        } else {
-          // otherwise sort by the whole string
-          return Array.prototype.slice
-            .call(obj)
-            .sort((a, b) => a.short.localeCompare(b.short));
-        }
-      } else {
-        return Array.prototype.slice.call(obj);
-      }
-    },
     validateIdProps: function(a, b) {
+      // order matters here! make sure a is the larger array
       // check if all the id props match across the two arrays
       // vue objs don't compare so we have to validate the id field
       const matches = a.map(aele => {
@@ -79,15 +65,20 @@ export default {
       // [false true true] should return false since the ids dont match
       return !matches.includes(false);
     },
-    selectDefault(value, filters) {
+    selectDefault: function(value, filters) {
       if (value) {
         if (this.multiple && Array.isArray(value)) {
           if (value.length === 1) {
             // if an array is passed in with one value
             this.selected = value[0];
-          } else if (this.validateIdProps(value, filters)) {
+          } else if (this.validateIdProps(filters, value)) {
             // an array is passed in with all values, select the all category
             this.selected = this.all;
+          } else if (
+            this.value.filter(o => o.id.includes("count").length === 2)
+          ) {
+            // an array is passed with both count filters
+            this.selected = this.allcounts;
           } else {
             console.log("WARN: Unexpected array passed to ChartFilters");
             console.log(value);
@@ -95,11 +86,14 @@ export default {
         } else {
           this.selected = value;
         }
-      } else if (filters) {
+      } else if (filters != null) {
         this.selected = filters.find(obj => obj.default === true);
       } else {
         this.selected = null;
       }
+    },
+    handleChange: function(e) {
+      this.selected = e;
     }
   },
   watch: {
@@ -111,6 +105,9 @@ export default {
       if (this.selected.id === "all") {
         // if all category, emit all filters as array
         emitted = this.filters;
+      } else if (this.selected.id === "allcounts") {
+        // if only the counts category is selected
+        emitted = this.filters.filter(o => o.id.includes("count"));
       } else if (this.multiple) {
         // emit only the selected filter as array
         emitted = this.toArray(this.selected);
@@ -135,9 +132,14 @@ export default {
   },
   computed: {
     allFilters: function() {
-      if (this.multiple === true) {
+      if (this.id === "type" && this.multiple === true) {
+        // if it's a data type filter
+        return [...this.filters, this.allcounts];
+      } else if (this.multiple === true) {
+        // if it's a year or earnings filter
         return [...this.filters, this.all];
       } else {
+        // otherwise default
         return this.filters;
       }
     }
