@@ -140,7 +140,8 @@ export default {
     },
     chartDataType: function() {
       if (this.filters.type != null) {
-        return this.filters.type.id;
+        console.log(this.filters);
+        return this.filters.type[0].id;
       }
     },
     activeToggleProp: function() {

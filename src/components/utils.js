@@ -75,28 +75,17 @@ export function simplifiyRows(csvDataRows, filters, activeToggleProp) {
   // get the set of available props
   const objKeys = Object.keys(csvDataRows[0]);
 
-  // get either earnings or emp data without the status flag
-  let matchInString;
-  switch (filters.type.id) {
-    case "earnings":
-      matchInString = "_earnings";
-      break;
-    case "countsemp":
-      matchInString = "_emp";
-      break;
-    case "countsnonemp":
-      matchInString = "_nonemp";
-      break;
-  }
+  // prefix the filtername with an underscore e.g. [_emp, _nonemp]
+  let underscoreFilters = filters.type.map(f => `_${f.id}`);
 
   const dataTypeKeys = objKeys.filter(key => {
     return (
-      key.toLocaleLowerCase().indexOf(`${matchInString}`) > -1 &&
+      underscoreFilters.some(f => key.toLocaleLowerCase().indexOf(f) > -1) &&
       key.toLocaleLowerCase().indexOf("status") === -1
     );
   });
 
-  // get only the props defined in the filters
+  // get only the props defined in the filters e.g. y5 p50
   let filterKeys = dataTypeKeys.filter(key => {
     const f = filters.filters;
     if (
@@ -158,14 +147,25 @@ export function createChartData(
       keyArray.push(k.split("_"));
     }
   });
-  const variableColumn =
-    filters &&
-    filters.filters.percentile &&
-    Array.isArray(filters.filters.percentile) &&
-    filters.filters.percentile.length > 1
-      ? 1
-      : 0;
 
+  // determine which column is the unique val
+  let variableColumn;
+  let isDataTypeGroup = false;
+  if (Array.isArray(filters.type) && filters.type.length > 1) {
+    // if there are multiple data types
+    variableColumn = 1;
+    isDataTypeGroup = true;
+  } else {
+    // if there are either percentiles or year filters
+    variableColumn =
+      filters &&
+      filters.filters.percentile &&
+      Array.isArray(filters.filters.percentile) &&
+      filters.filters.percentile.length > 1
+        ? 1
+        : 0;
+  }
+  // get the strings to represent the unique column
   const useKeys = keyArray.map(k => k[variableColumn]);
 
   let data = [];
@@ -173,7 +173,7 @@ export function createChartData(
     let result = {};
 
     // find the activetoggle label from the array of data selections
-    let activeSelection = dataSelections.find(o => o.prop == activeToggleProp);
+    let activeSelection = dataSelections.find(o => o.prop === activeToggleProp);
 
     // find the label using the active group
     result.label = activeSelection.data.find(obj => {
@@ -183,7 +183,11 @@ export function createChartData(
     // create the simple data
     useKeys.forEach(k => {
       const propName = Object.keys(row).find(prop => {
-        return prop.includes(`${k}_`);
+        if (isDataTypeGroup) {
+          return prop.includes(`_${k}`);
+        } else {
+          return prop.includes(`${k}_`);
+        }
       });
       result[k] = row[propName];
     });
