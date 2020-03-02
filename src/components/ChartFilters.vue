@@ -88,6 +88,8 @@ export default {
             console.log("WARN: Unexpected array passed to ChartFilters");
             console.log(value);
           }
+        } else if (Array.isArray(value)) {
+          this.selected = value[0];
         } else {
           this.selected = value;
         }
@@ -111,8 +113,8 @@ export default {
         // if all category, emit all filters as array
         emitted = this.filters;
       } else if (this.selected.id === "allcounts") {
-        // if only the counts category is selected
-        emitted = this.filters.filter(o => o.id.includes("count"));
+        // if only the counts category is selected, tag emp and nonemp
+        emitted = this.filters.filter(o => o.id.includes("emp"));
       } else if (this.multiple) {
         // emit only the selected filter as array
         emitted = this.toArray(this.selected);
@@ -122,7 +124,7 @@ export default {
       }
       this.$emit("change", {
         id: this.id,
-        selected: emitted
+        selected: this.toArray(emitted) //make sure array is returned, even if multiple is false
       });
     },
     value: function() {
