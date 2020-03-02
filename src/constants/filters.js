@@ -70,7 +70,7 @@ export const BARCHARTFILTERS = {
       color: "#195083"
     },
     {
-      id: "countsemp",
+      id: "emp",
       label: "Count of Employed Veterans",
       short: "Employed",
       filters: [
@@ -108,7 +108,7 @@ export const BARCHARTFILTERS = {
       color: "#1A594A"
     },
     {
-      id: "countsnonemp",
+      id: "nonemp",
       label: "Count of Non-employed or Marginally Employed Veterans",
       short: "N.M.E.",
       filters: [
