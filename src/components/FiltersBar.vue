@@ -77,8 +77,8 @@ export default {
         this.setAllPercentiles(); // toggle all percentiles
         this.dataFilters.year = null; // allow component to select default year
       } else if (
-        this.dataType[0].id === "countsemp" ||
-        this.dataType[0].id === "countsnonemp"
+        this.dataType[0].id === "emp" ||
+        this.dataType[0].id === "nonemp"
       ) {
         this.dataFilters.percentile = null;
         this.setAllYears();
