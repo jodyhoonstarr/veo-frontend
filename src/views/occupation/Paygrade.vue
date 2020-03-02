@@ -139,8 +139,10 @@ export default {
       ];
     },
     chartDataType: function() {
-      if (this.filters.type != null) {
-        console.log(this.filters);
+      if (
+        Array.isArray(this.filters.type) &&
+        this.filters.type[0].hasOwnProperty("id")
+      ) {
         return this.filters.type[0].id;
       }
     },
