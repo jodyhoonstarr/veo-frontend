@@ -109,7 +109,7 @@ export const BARCHARTFILTERS = {
     },
     {
       id: "nonemp",
-      label: "Count of Non-employed or Marginally Employed Veterans",
+      label: "Count of Nonemployed or Marginally Employed Veterans",
       short: "N.M.E.",
       filters: [
         {
