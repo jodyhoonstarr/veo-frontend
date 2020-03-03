@@ -1,6 +1,6 @@
 <template>
-  <v-row class="pt-5">
-    <v-col class="pt-5">
+  <v-row class="pt-3">
+    <v-col class="pt-3">
       <v-range-slider
         v-if="textLabels"
         v-model="range"
