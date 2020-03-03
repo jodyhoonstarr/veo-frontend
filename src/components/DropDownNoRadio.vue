@@ -7,7 +7,6 @@
         :loading="loading"
         v-model="selected"
         :multiple="true"
-        @input="emitChangeEvent"
         :persistentHint="true"
       ></DropDown>
     </v-col>
