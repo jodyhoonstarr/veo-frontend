@@ -1,7 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="2"></v-col>
-    <v-col cols="10">
+    <v-col>
       <DropDown
         :items="dropDownItems"
         :label="label"
