@@ -45,7 +45,7 @@ export default {
       required: true,
       validator: val => ["bar", "line"].includes(val)
     },
-    loading: { type: Boolean, default: true },
+    loading: { type: Boolean, default: null, required: true },
     chartData: {
       type: Array,
       default: null
