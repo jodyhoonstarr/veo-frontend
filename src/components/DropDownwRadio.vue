@@ -1,17 +1,19 @@
 <template>
   <v-row>
     <v-col cols="2">
-      <v-btn
-        icon
-        :loading="loading"
-        :ripple="false"
-        color="primary"
-        @click="activeToggleChange"
-        class="v-input--selection-controls"
-      >
-        <v-icon v-if="activeToggle">mdi-radiobox-marked</v-icon>
-        <v-icon v-else>mdi-radiobox-blank</v-icon>
-      </v-btn>
+      <v-row class="justify-center">
+        <v-btn
+          icon
+          :loading="loading"
+          :ripple="false"
+          color="primary"
+          @click="activeToggleChange"
+          class="v-input--selection-controls"
+        >
+          <v-icon v-if="activeToggle">mdi-radiobox-marked</v-icon>
+          <v-icon v-else>mdi-radiobox-blank</v-icon>
+        </v-btn>
+      </v-row>
     </v-col>
     <v-col cols="10">
       <DetailDropDown

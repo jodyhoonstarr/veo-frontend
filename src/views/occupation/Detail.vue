@@ -1,7 +1,7 @@
 <template>
   <div>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="8">
+      <v-col cols="12" xs="12" sm="6">
         <GetData url="/metadata/label_dod_occ_code_detailed.json">
           <DropDownwRadio
             :detailed="true"
@@ -16,7 +16,7 @@
           ></DropDownwRadio>
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="4">
+      <v-col cols="12" xs="12" sm="6">
         <GetData url="/metadata/label_8year_cohorts.json">
           <DropDownwRadio
             slot-scope="{ response, loading }"
