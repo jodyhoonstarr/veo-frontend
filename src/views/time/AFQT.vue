@@ -1,7 +1,7 @@
 <template>
   <div>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="8" class="pb-0">
+      <v-col cols="12" xs="12" sm="6" class="pb-0">
         <GetData url="/metadata/label_afqtgrp.json">
           <DropDownNoRadio
             slot-scope="{ response, loading }"
@@ -13,19 +13,21 @@
           ></DropDownNoRadio>
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="4" class="pb-0">
-        <!--        <GetData url="/metadata/label_2year_cohorts.json">-->
-        <!--          <DropDown-->
-        <!--            slot-scope="{ response, loading }"-->
-        <!--            :loading="loading"-->
-        <!--            label="Cohort"-->
-        <!--            id="cohort"-->
-        <!--            :items="response"-->
-        <!--            propname="labels"-->
-        <!--            :toggle="activeToggle === 'cohort'"-->
-        <!--            @change="handleDropDownToggle"-->
-        <!--          ></DropDown>-->
-        <!--        </GetData>-->
+      <v-col cols="12" xs="12" sm="6" class="pb-0">
+        <v-range-slider
+          :tick-labels="seasons"
+          :value="[0, 1]"
+          min="0"
+          max="3"
+          ticks="always"
+          tick-size="4"
+        >
+          <template v-slot:thumb-label="props">
+            <v-icon dark>
+              {{ season(props.value) }}
+            </v-icon>
+          </template>
+        </v-range-slider>
       </v-col>
     </SelectBar>
   </div>
@@ -45,9 +47,15 @@ export default {
   },
   data() {
     return {
-      activeToggle: "afqt",
-      selected: null
+      selected: null,
+      seasons: ["Winter", "Spring", "Summer", "Fall"],
+      icons: ["mdi-snowflake", "mdi-leaf", "mdi-fire", "mdi-water"]
     };
+  },
+  methods: {
+    season(val) {
+      return this.icons[val];
+    }
   }
 };
 </script>
