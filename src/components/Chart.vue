@@ -1,17 +1,16 @@
 <template>
   <v-card ref="chartcard" flat>
-    <div v-if="loading" class="text-center">
+    <NotificationCard v-if="loading && width" :height="height">
       <v-progress-circular
-        v-if="width"
-        :size="height"
-        :width="30"
+        :size="height / 2"
         indeterminate
         color="primary"
       ></v-progress-circular>
-      <v-card-text class="py-0">
+      <v-card-text class="py-5">
         <p class="py-0 display-1 text--secondary">Loading...</p>
       </v-card-text>
-    </div>
+    </NotificationCard>
+
     <BarChart
       v-else-if="chartType === 'bar' && chartData != null && width"
       :width="width"
@@ -21,28 +20,32 @@
       :chartColors="chartColors"
       :chartDataType="chartDataType"
     ></BarChart>
-    <div v-else class="text-center">
-      <v-icon :size="height" color="text--secondary">mdi-alert-outline</v-icon>
-      <v-card-text class="py-0">
+
+    <NotificationCard v-else-if="width" :height="height">
+      <v-icon :size="height / 2" color="text--secondary"
+        >mdi-alert-outline</v-icon
+      >
+      <v-card-text class="py-5">
         <p class="py-0 display-1 text--secondary">Error: No Data</p>
       </v-card-text>
-    </div>
+    </NotificationCard>
   </v-card>
 </template>
 
 <script>
 import BarChart from "@/components/BarChart.vue";
+import NotificationCard from "@/components/NotificationCard";
 
 export default {
   name: "Chart",
-  components: { BarChart },
+  components: { BarChart, NotificationCard },
   props: {
     chartType: {
       type: String,
       required: true,
       validator: val => ["bar", "line"].includes(val)
     },
-    loading: { type: Boolean, default: false },
+    loading: { type: Boolean, default: true },
     chartData: {
       type: Array,
       default: null
@@ -64,6 +67,9 @@ export default {
     };
   },
   computed: {
+    temp: function() {
+      return false;
+    },
     height: function() {
       if (this.width == null) {
         return null;
