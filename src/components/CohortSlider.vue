@@ -102,7 +102,7 @@ export default {
     },
     range: function() {
       this.$emit(
-        "change",
+        "input",
         this.fullLabels.slice(this.rangeMin, this.rangeMax + 1)
       );
     },

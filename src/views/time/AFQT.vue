@@ -18,6 +18,7 @@
           slot-scope="{ response, loading }"
           :loading="loading"
           :items="response"
+          v-model="cohorts"
         ></cohort-slider>
       </GetData>
     </v-col>
@@ -40,7 +41,8 @@ export default {
   },
   data() {
     return {
-      selected: null
+      selected: null,
+      cohorts: null
     };
   }
 };
