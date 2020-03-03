@@ -31,6 +31,10 @@ export default {
       type: Object | Array,
       default: null
     },
+    value: {
+      type: Array,
+      default: null
+    },
     propname: {
       type: String,
       default: null
@@ -53,9 +57,23 @@ export default {
       selected: null
     };
   },
-  methods: {
-    emitChangeEvent() {
-      console.log("emit event here");
+  watch: {
+    selected: function() {
+      this.$emit("input", this.selected);
+    },
+    value: function() {
+      if (Array.isArray(this.value) && this.value.length >= 1) {
+        this.selected = this.value;
+      }
+    },
+    items: function() {
+      // select the first two items by default
+      if (
+        this.value == null ||
+        (Array.isArray(this.items.labels) && this.items.labels.length >= 2)
+      ) {
+        this.selected = this.items.labels.slice(0, 2);
+      }
     }
   },
   computed: {

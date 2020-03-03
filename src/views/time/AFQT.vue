@@ -9,6 +9,7 @@
           :items="response"
           propname="labels"
           id="afqt"
+          v-model="afqt"
         ></DropDownNoRadio>
       </GetData>
     </v-col>
@@ -41,7 +42,8 @@ export default {
   },
   data() {
     return {
-      selected: null,
+      csvData: null,
+      afqt: null,
       cohorts: null
     };
   }
