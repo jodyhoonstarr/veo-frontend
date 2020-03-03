@@ -62,6 +62,7 @@
         <FiltersBar @change="handleFiltersToggle"></FiltersBar>
         <Chart
           chart-type="bar"
+          :loading="loading"
           :chart-data="chartData"
           :chart-colors="chartColors"
           :chart-data-type="chartDataType"
