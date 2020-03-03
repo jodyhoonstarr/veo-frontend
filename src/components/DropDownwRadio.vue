@@ -10,8 +10,10 @@
           @click="activeToggleChange"
           class="v-input--selection-controls"
         >
-          <v-icon v-if="activeToggle">mdi-radiobox-marked</v-icon>
-          <v-icon v-else>mdi-radiobox-blank</v-icon>
+          <v-icon v-if="activeToggle" color="primary" large
+            >mdi-radiobox-marked</v-icon
+          >
+          <v-icon v-else large color="grey">mdi-radiobox-blank</v-icon>
         </v-btn>
       </v-row>
     </v-col>
