@@ -1,28 +1,30 @@
 <template>
   <v-row class="pt-3">
     <v-col class="pt-3">
-      <v-range-slider
-        v-if="textLabels"
-        :value="range"
-        @input="handleRange"
-        :tick-labels="textLabels"
-        min="0"
-        :max="labelCountZeroIdx"
-        ticks="always"
-        tick-size="4"
-        thumb-label="always"
-        color="primary"
-        thumb-color="primary"
-        track-color="grey"
-        track-fill-color="primary"
-        :loading="loading"
-      >
-        <template v-slot:thumb-label="{ value }">
-          <v-icon dark>
-            {{ icon(value) }}
-          </v-icon>
-        </template>
-      </v-range-slider>
+      <v-container>
+        <v-range-slider
+          v-if="textLabels"
+          :value="range"
+          @input="handleRange"
+          :tick-labels="textLabels"
+          min="0"
+          :max="labelCountZeroIdx"
+          ticks="always"
+          tick-size="4"
+          thumb-label="always"
+          color="primary"
+          thumb-color="primary"
+          track-color="grey"
+          track-fill-color="primary"
+          :loading="loading"
+        >
+          <template v-slot:thumb-label="{ value }">
+            <v-icon dark>
+              {{ icon(value) }}
+            </v-icon>
+          </template>
+        </v-range-slider>
+      </v-container>
     </v-col>
   </v-row>
 </template>
@@ -125,4 +127,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style>
+.v-slider--horizontal .v-slider__tick:last-child .v-slider__tick-label {
+  transform: translate(-50%) !important;
+}
+.v-slider--horizontal .v-slider__tick:first-child .v-slider__tick-label {
+  transform: translate(-50%) !important;
+}
+</style>
