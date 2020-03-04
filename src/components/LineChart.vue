@@ -75,6 +75,9 @@ export default {
       }
       return keys;
     },
+    d3Labels: function() {
+      return [...new Set(this.d3Data.map(o => o.label))];
+    },
     d3Data: function() {
       if (arrayIsNullorEmpty(this.chartData)) {
         return null;
@@ -93,6 +96,16 @@ export default {
         newArr.push(newObj);
       });
       return newArr;
+    },
+    d3LineChartData: function() {
+      // initialize a lookup object e.g. {label = [data1, data2...]}
+      let dataObject = {};
+      this.d3Labels.map(l => (dataObject[l] = []));
+      this.d3Data.map(o => {
+        // TODO strip label from pushed object
+        dataObject[o.label].push(o);
+      });
+      return dataObject;
     },
     d3Max: function() {
       if (arrayIsNullorEmpty(this.d3Data) || arrayIsNullorEmpty(this.d3Keys)) {
