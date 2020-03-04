@@ -175,6 +175,6 @@ export default {
   overflow: hidden;
   position: relative;
   max-width: 80%;
-  padding: 4px 4px 8px 0px;
+  padding: 4px 4px 2px 0px;
 }
 </style>
