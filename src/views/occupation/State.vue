@@ -81,7 +81,12 @@ import ChartCard from "@/components/ChartCard.vue";
 import Chart from "@/components/Chart";
 import GetData from "@/components/GetData";
 import { GROUPCOLUMN } from "@/constants/lookups.js";
-import { createChartData, filterRows, simplifiyRows } from "@/components/utils";
+import {
+  createChartData,
+  filterRows,
+  getChartDataType,
+  simplifiyRows
+} from "@/components/utils";
 
 export default {
   name: "OccupationByState",
@@ -139,12 +144,7 @@ export default {
       ];
     },
     chartDataType: function() {
-      if (
-        Array.isArray(this.filters.type) &&
-        this.filters.type[0].hasOwnProperty("id")
-      ) {
-        return this.filters.type[0].id;
-      }
+      return getChartDataType(this.filters);
     },
     activeToggleProp: function() {
       return GROUPCOLUMN[this.activeToggle];
