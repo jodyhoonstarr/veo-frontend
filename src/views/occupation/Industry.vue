@@ -59,7 +59,7 @@
             }}</span
           >
         </template>
-        <FiltersBar @change="handleFiltersToggle"></FiltersBar>
+        <FiltersBar chart-type="bar" @change="handleFiltersToggle"></FiltersBar>
         <Chart
           chart-type="bar"
           :loading="loading"

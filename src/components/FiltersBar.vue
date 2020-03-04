@@ -29,7 +29,7 @@
               :showChips="filter.id === colorCategory"
               :filters="filter.filters"
               :label="filter.label"
-              :multiple="!compareCounts"
+              :multiple="!compareCounts && chartType === 'bar'"
               :value="dataFilters[filter.id]"
               @change="handleFilter"
             >
@@ -48,6 +48,13 @@ import ChartFilters from "@/components/ChartFilters.vue";
 export default {
   name: "FiltersBar",
   components: { ChartFilters },
+  props: {
+    chartType: {
+      type: String,
+      required: true,
+      validator: val => ["bar", "line"].includes(val)
+    }
+  },
   data() {
     return {
       constantFilters: BARCHARTFILTERS,

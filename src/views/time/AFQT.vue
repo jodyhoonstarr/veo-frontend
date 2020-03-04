@@ -37,7 +37,10 @@
             >{{ filters.type[0].label }} by AFQT over Time
           </span>
         </template>
-        <FiltersBar @change="handleFiltersToggle"></FiltersBar>
+        <FiltersBar
+          chart-type="line"
+          @change="handleFiltersToggle"
+        ></FiltersBar>
         <!--      <Chart-->
         <!--          chart-type="line"-->
         <!--          :loading="loading"-->
