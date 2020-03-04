@@ -36,16 +36,12 @@
       :emit="true"
       @change="({ response }) => (this.csvData = response)"
     >
-      <ChartCard slot-scope="{ loading }" :loading="loading">
-        <template v-slot:header>
-          <span v-if="loading" class="white--text">Loading...</span>
-          <span v-else-if="filters && activeToggle" class="white--text"
-            >{{ filters.type.label }} by
-            {{
-              activeToggle.charAt(0).toUpperCase() + activeToggle.slice(1)
-            }}</span
-          >
-        </template>
+      <ChartCard
+        slot-scope="{ loading }"
+        :loading="loading"
+        :filters="filters"
+        :active-toggle="activeToggle"
+      >
         <FiltersBar chart-type="bar" @change="handleFiltersToggle"></FiltersBar>
         <Chart
           chart-type="bar"

@@ -30,13 +30,13 @@
       :emit="true"
       @change="({ response }) => (this.csvData = response)"
     >
-      <ChartCard slot-scope="{ loading }" :loading="loading">
-        <template v-slot:header>
-          <span v-if="loading" class="white--text">Loading...</span>
-          <span v-else-if="filters.type[0] != null" class="white--text"
-            >{{ filters.type[0].label }} by AFQT over Time
-          </span>
-        </template>
+      <ChartCard
+        slot-scope="{ loading }"
+        :loading="loading"
+        :filters="filters"
+        active-toggle="AFQT"
+        additional-string="Over Time"
+      >
         <FiltersBar
           chart-type="line"
           @change="handleFiltersToggle"
