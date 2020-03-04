@@ -7,7 +7,7 @@
         :loading="loading"
         v-model="selected"
         :multiple="true"
-        :persistentHint="true"
+        :persistentHint="false"
       ></DropDown>
     </v-col>
   </v-row>
