@@ -89,7 +89,9 @@ export default {
             console.log(value);
           }
         } else if (Array.isArray(value)) {
-          this.selected = value[0];
+          // select default when 'all' values are passed in as props
+          // but unavailable in the filters
+          this.selected = filters.find(obj => obj.default === true);
         } else {
           this.selected = value;
         }
