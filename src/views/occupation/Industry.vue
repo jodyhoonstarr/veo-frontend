@@ -139,8 +139,11 @@ export default {
       ];
     },
     chartDataType: function() {
-      if (this.filters.type != null) {
-        return this.filters.type.id;
+      if (
+        Array.isArray(this.filters.type) &&
+        this.filters.type[0].hasOwnProperty("id")
+      ) {
+        return this.filters.type[0].id;
       }
     },
     activeToggleProp: function() {
