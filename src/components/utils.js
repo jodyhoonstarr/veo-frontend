@@ -68,13 +68,22 @@ export function filterRows(csvData, dataSelections) {
 }
 
 // simplify the selected rows of data
-export function simplifiyRows(csvDataRows, filters, activeToggleProp) {
-  if (arrayIsNullorEmpty(filters) || arrayIsNullorEmpty(csvDataRows)) {
+export function simplifiyRows(
+  csvDataRows,
+  filters,
+  activeToggleProp,
+  includeCohorts = false
+) {
+  if (
+    arrayIsNullorEmpty(filters) ||
+    arrayIsNullorEmpty(csvDataRows) ||
+    activeToggleProp == null
+  ) {
     return null;
   }
+
   // get the set of available props
   const objKeys = Object.keys(csvDataRows[0]);
-
   // prefix the filtername with an underscore e.g. [_emp, _nonemp]
   let underscoreFilters = filters.type.map(f => `_${f.id}`);
 
@@ -84,7 +93,6 @@ export function simplifiyRows(csvDataRows, filters, activeToggleProp) {
       key.toLocaleLowerCase().indexOf("status") === -1
     );
   });
-
   // get only the props defined in the filters e.g. y5 p50
   let filterKeys = dataTypeKeys.filter(key => {
     const f = filters.filters;
@@ -108,6 +116,11 @@ export function simplifiyRows(csvDataRows, filters, activeToggleProp) {
 
   // keep the label for the active group
   filterKeys.push(activeToggleProp);
+
+  // keep the cohort data if parameter is set
+  if (includeCohorts) {
+    filterKeys.push("cohort");
+  }
 
   // filter out the row data to only keep usable props
   return csvDataRows.map(row => {
@@ -183,7 +196,9 @@ export function createChartData(
     // create the simple data
     useKeys.forEach(k => {
       const propName = Object.keys(row).find(prop => {
-        if (isDataTypeGroup) {
+        if (prop === "cohort") {
+          return true; // if the cohort is provided, keep it
+        } else if (isDataTypeGroup) {
           return prop.includes(`_${k}`);
         } else {
           return prop.includes(`${k}_`);

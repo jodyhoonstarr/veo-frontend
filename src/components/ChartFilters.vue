@@ -89,9 +89,14 @@ export default {
             console.log(value);
           }
         } else if (Array.isArray(value)) {
-          // select default when 'all' values are passed in as props
-          // but unavailable in the filters
-          this.selected = filters.find(obj => obj.default === true);
+          if (value.length === 1) {
+            // if an array is passed in with one value
+            this.selected = value[0];
+          } else {
+            // select default when 'all' values are passed in as props
+            // but unavailable in the filters
+            this.selected = filters.find(obj => obj.default === true);
+          }
         } else {
           this.selected = value;
         }
@@ -122,7 +127,7 @@ export default {
         emitted = this.toArray(this.selected);
       } else {
         // emit the object
-        emitted = this.selected;
+        emitted = this.toArray(this.selected);
       }
       this.$emit("change", {
         id: this.id,

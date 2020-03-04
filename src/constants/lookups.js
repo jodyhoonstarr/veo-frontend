@@ -3,5 +3,6 @@ export const GROUPCOLUMN = {
   paygrade: "paygrade",
   cohort: "cohort",
   industry: "industry",
-  state: "geography"
+  state: "geography",
+  afqt: "afqtgrp"
 };

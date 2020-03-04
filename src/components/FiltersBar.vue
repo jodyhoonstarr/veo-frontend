@@ -133,7 +133,7 @@ export default {
       // if the other events weren't nulled then emit event
       // otherwise setting the null events above should trigger
       // an event that bubbles back to this function
-      if (!changeFlag) {
+      if (changeFlag) {
         this.emitEvent();
       }
     },

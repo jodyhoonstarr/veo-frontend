@@ -21,6 +21,16 @@
       :chartDataType="chartDataType"
     ></BarChart>
 
+    <LineChart
+      v-else-if="chartType === 'line' && chartData != null && width"
+      :width="width"
+      :height="height"
+      :max-height="maxHeight"
+      :chartData="chartData"
+      :chartColors="chartColors"
+      :chartDataType="chartDataType"
+    ></LineChart>
+
     <NotificationCard v-else-if="width" :height="height">
       <v-icon :size="height / 2" color="text--secondary"
         >mdi-alert-outline</v-icon
@@ -34,11 +44,12 @@
 
 <script>
 import BarChart from "@/components/BarChart.vue";
+import LineChart from "@/components/LineChart";
 import NotificationCard from "@/components/NotificationCard";
 
 export default {
   name: "Chart",
-  components: { BarChart, NotificationCard },
+  components: { BarChart, LineChart, NotificationCard },
   props: {
     chartType: {
       type: String,

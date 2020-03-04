@@ -20,7 +20,7 @@
             slot-scope="{ response, loading }"
             :loading="loading"
             :items="response"
-            v-model="cohorts"
+            v-model="cohort"
           ></cohort-slider>
         </GetData>
       </v-col>
@@ -41,13 +41,13 @@
           chart-type="line"
           @change="handleFiltersToggle"
         ></FiltersBar>
-        <!--      <Chart-->
-        <!--          chart-type="line"-->
-        <!--          :loading="loading"-->
-        <!--          :chart-data="chartData"-->
-        <!--          :chart-colors="chartColors"-->
-        <!--          :chart-data-type="chartDataType"-->
-        <!--      ></Chart>-->
+        <Chart
+          chart-type="line"
+          :loading="false"
+          :chart-data="chartData"
+          :chart-colors="chartColors"
+          :chart-data-type="chartDataType"
+        ></Chart>
       </ChartCard>
     </GetData>
   </div>
@@ -60,6 +60,14 @@ import DropDownNoRadio from "@/components/DropDownNoRadio";
 import CohortSlider from "@/components/CohortSlider";
 import ChartCard from "@/components/ChartCard";
 import FiltersBar from "@/components/FiltersBar";
+import Chart from "@/components/Chart";
+import { GROUPCOLUMN } from "@/constants/lookups";
+import {
+  createChartData,
+  filterRows,
+  simplifiyRows,
+  getChartDataType
+} from "@/components/utils";
 
 export default {
   name: "AFQT",
@@ -69,13 +77,15 @@ export default {
     GetData,
     CohortSlider,
     ChartCard,
-    FiltersBar
+    FiltersBar,
+    Chart
   },
   data() {
     return {
+      name: "afqt",
       csvData: null,
       afqt: null,
-      cohorts: null,
+      cohort: null,
       filters: {
         colors: null,
         filters: null,
@@ -96,6 +106,46 @@ export default {
       }
       if (f.hasOwnProperty("colors")) {
         this.filters.colors = f.colors;
+      }
+    }
+  },
+  computed: {
+    dataColumn: function() {
+      // AKA activeToggleProp in the bar view
+      // in lines this is a fixed column
+      return GROUPCOLUMN[this.name];
+    },
+    dataSelections: function() {
+      return [
+        { data: this.cohort, prop: "cohort" },
+        { data: this.afqt, prop: this.dataColumn }
+      ];
+    },
+    chartDataType: function() {
+      return getChartDataType(this.filters);
+    },
+    csvDataRows: function() {
+      return filterRows(this.csvData, this.dataSelections);
+    },
+    csvDataRowsSimple: function() {
+      return simplifiyRows(
+        this.csvDataRows,
+        this.filters,
+        this.dataColumn,
+        true
+      );
+    },
+    chartData: function() {
+      return createChartData(
+        this.csvDataRowsSimple,
+        this.filters,
+        this.dataColumn,
+        this.dataSelections
+      );
+    },
+    chartColors: function() {
+      if (this.filters != null && this.filters.hasOwnProperty("colors")) {
+        return this.filters.colors;
       }
     }
   }
