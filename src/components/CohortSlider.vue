@@ -1,32 +1,28 @@
 <template>
-  <v-row class="pt-3">
-    <v-col class="pt-3">
-      <v-container>
-        <v-range-slider
-          v-if="textLabels"
-          :value="range"
-          @input="handleRange"
-          :tick-labels="textLabels"
-          min="0"
-          :max="labelCountZeroIdx"
-          ticks="always"
-          tick-size="4"
-          thumb-label="always"
-          color="primary"
-          thumb-color="primary"
-          track-color="grey"
-          track-fill-color="primary"
-          :loading="loading"
-        >
-          <template v-slot:thumb-label="{ value }">
-            <v-icon dark>
-              {{ icon(value) }}
-            </v-icon>
-          </template>
-        </v-range-slider>
-      </v-container>
-    </v-col>
-  </v-row>
+  <v-container>
+    <v-range-slider
+      v-if="textLabels"
+      :value="range"
+      @input="handleRange"
+      :tick-labels="textLabels"
+      min="0"
+      :max="labelCountZeroIdx"
+      ticks="always"
+      tick-size="4"
+      thumb-label="always"
+      color="primary"
+      thumb-color="primary"
+      track-color="grey"
+      track-fill-color="primary"
+      :loading="loading"
+    >
+      <template v-slot:thumb-label="{ value }">
+        <v-icon dark>
+          {{ icon(value) }}
+        </v-icon>
+      </template>
+    </v-range-slider>
+  </v-container>
 </template>
 
 <script>
