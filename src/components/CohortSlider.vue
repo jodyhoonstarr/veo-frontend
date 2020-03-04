@@ -3,7 +3,8 @@
     <v-col class="pt-3">
       <v-range-slider
         v-if="textLabels"
-        v-model="range"
+        :value="range"
+        @input="handleRange"
         :tick-labels="textLabels"
         min="0"
         :max="labelCountZeroIdx"
@@ -45,11 +46,12 @@ export default {
   },
   data() {
     return {
-      range: null
+      rangeMin: null,
+      rangeMax: null
     };
   },
   methods: {
-    icon(value) {
+    icon: function(value) {
       const iconLeft = "mdi-ray-start-arrow";
       const iconRight = "mdi-ray-end-arrow";
       const iconWarn = "mdi-alert-circle-outline";
@@ -60,9 +62,16 @@ export default {
       } else {
         return iconLeft;
       }
+    },
+    handleRange: function(r) {
+      this.rangeMin = Math.min(...r);
+      this.rangeMax = Math.max(...r);
     }
   },
   computed: {
+    range: function() {
+      return [this.rangeMin, this.rangeMax];
+    },
     textLabels: function() {
       if (this.fullLabels != null) {
         return this.fullLabels.map(val => {
@@ -81,23 +90,19 @@ export default {
       } else {
         return 0;
       }
-    },
-    rangeMax: function() {
-      return Math.max(...this.range);
-    },
-    rangeMin: function() {
-      return Math.min(...this.range);
     }
   },
   watch: {
     items: function() {
       // only set the range using the label set if the value is undefined
       if (
-        this.value == null &&
+        this.rangeMin == null &&
+        this.rangeMax == null &&
         this.fullLabels != null &&
         Array.isArray(this.fullLabels)
       ) {
-        this.range = [0, this.fullLabels.length - 1];
+        this.rangeMin = 0;
+        this.rangeMax = this.fullLabels.length - 1;
       }
     },
     range: function() {
@@ -107,8 +112,13 @@ export default {
       );
     },
     value: function() {
-      if (Array.isArray(this.value) && this.value.length === 2) {
-        this.range = this.value;
+      if (Array.isArray(this.value)) {
+        this.rangeMin = this.fullLabels.findIndex(
+          e => e.id === this.value[0].id
+        );
+        this.rangeMax = this.fullLabels.findIndex(
+          e => e.id === this.value[this.value.length - 1].id
+        );
       }
     }
   }
