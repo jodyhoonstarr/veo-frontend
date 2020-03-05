@@ -9,7 +9,6 @@
       :max="labelCountZeroIdx"
       ticks="always"
       tick-size="4"
-      thumb-label="always"
       color="primary"
       thumb-color="primary"
       track-color="grey"
