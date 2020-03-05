@@ -48,7 +48,7 @@ export const BARCHARTFILTERS = {
               id: "y1",
               label: "1-Year After Discharge",
               short: "1",
-              default: false,
+              default: true,
               color: "#588db0",
               linestyle: null
             },
@@ -56,7 +56,7 @@ export const BARCHARTFILTERS = {
               id: "y5",
               label: "5-Years After Discharge",
               short: "5",
-              default: true,
+              default: false,
               color: "#2c7a8f",
               linestyle: null
             },
@@ -90,7 +90,7 @@ export const BARCHARTFILTERS = {
               id: "y1",
               label: "1-Year After Discharge",
               short: "1",
-              default: false,
+              default: true,
               color: "#85a067",
               linestyle: null
             },
@@ -98,7 +98,7 @@ export const BARCHARTFILTERS = {
               id: "y5",
               label: "5-Years After Discharge",
               short: "5",
-              default: true,
+              default: false,
               color: "#558e56",
               linestyle: null
             },
@@ -132,7 +132,7 @@ export const BARCHARTFILTERS = {
               id: "y1",
               label: "1-Year After Discharge",
               short: "1",
-              default: false,
+              default: true,
               color: "#fd8d3c",
               linestyle: null
             },
@@ -140,7 +140,7 @@ export const BARCHARTFILTERS = {
               id: "y5",
               label: "5-Years After Discharge",
               short: "5",
-              default: true,
+              default: false,
               color: "#e6550d",
               linestyle: null
             },
