@@ -1,5 +1,7 @@
 import { select } from "d3-selection";
 import { active } from "d3-transition";
+import { schemeCategory10 } from "d3-scale-chromatic";
+import { scaleOrdinal } from "d3-scale";
 
 // determine if array has contents
 export function arrayIsNullorEmpty(arr) {
@@ -217,5 +219,28 @@ export function createChartData(
 export function getChartDataType(filters) {
   if (Array.isArray(filters.type) && filters.type[0].hasOwnProperty("id")) {
     return filters.type[0].id;
+  }
+}
+
+// set the color set for the chart based on the type, filters, or selection
+export function getColorSet(chartType, filters, data) {
+  if (chartType === "bar") {
+    // bar charts get the color set from the active filters
+    if (filters != null && filters.hasOwnProperty("colors")) {
+      return filters.colors;
+    }
+  } else if (chartType === "line") {
+    // line charts get the colors from the number of data items
+    if (data != null && Array.isArray(data) && data.length > 0) {
+      const colorScale = scaleOrdinal()
+        .domain(data)
+        .range(schemeCategory10);
+
+      let colorsLookup = {};
+      data.map(d => {
+        colorsLookup[d.id] = colorScale(d);
+      });
+      return colorsLookup;
+    }
   }
 }

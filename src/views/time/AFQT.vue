@@ -38,11 +38,11 @@
         additional-string="Over Time"
       >
         <FiltersBar
-          chart-type="line"
+          :chart-type="chartType"
           @change="handleFiltersToggle"
         ></FiltersBar>
         <Chart
-          chart-type="line"
+          :chart-type="chartType"
           :loading="false"
           :chart-data="chartData"
           :chart-colors="chartColors"
@@ -66,7 +66,8 @@ import {
   createChartData,
   filterRows,
   simplifiyRows,
-  getChartDataType
+  getChartDataType,
+  getColorSet
 } from "@/components/utils";
 
 export default {
@@ -83,6 +84,7 @@ export default {
   data() {
     return {
       name: "afqt",
+      chartType: "line",
       csvData: null,
       afqt: null,
       cohort: null,
@@ -144,9 +146,7 @@ export default {
       );
     },
     chartColors: function() {
-      if (this.filters != null && this.filters.hasOwnProperty("colors")) {
-        return this.filters.colors;
-      }
+      return getColorSet(this.chartType, this.filters, this.afqt);
     }
   }
 };
