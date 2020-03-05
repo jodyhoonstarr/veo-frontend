@@ -11,7 +11,7 @@
     @change="handleChange"
     class="newSelect otherClass"
   >
-    <template v-slot:selection="{ item, index }">
+    <template v-slot:selection="{ item }">
       <div
         v-if="
           (item.id === 'all' || item.id === 'allcounts') && showChips === true
@@ -19,7 +19,15 @@
         class="selection"
       >
         <template v-for="val in value">
-          <v-icon :color="val.color">mdi-checkbox-blank</v-icon>
+          <v-icon v-if="chartType === 'bar'" :color="val.color"
+            >mdi-checkbox-blank</v-icon
+          ><template v-if="chartType === 'line' && val.linestyle != null">
+            <v-icon v-if="val.linestyle === 'solid'">mdi-checkbox-blank</v-icon>
+            <v-icon v-else-if="val.linestyle === 'dashed'"
+              >mdi-minus-box-outline</v-icon
+            >
+          </template>
+
           <span> {{ val.short }} </span>
         </template>
       </div>
@@ -27,7 +35,9 @@
         v-else-if="item.color != null && showChips === true"
         class="selection"
       >
-        <v-icon :color="item.color">mdi-checkbox-blank</v-icon>
+        <v-icon v-if="chartType === 'bar'" :color="item.color"
+          >mdi-checkbox-blank</v-icon
+        >
         <span> {{ item.short }} </span>
       </div>
       <div v-else class="selection">
@@ -40,7 +50,15 @@
 <script>
 export default {
   name: "ChartFilters",
-  props: ["value", "filters", "label", "multiple", "id", "showChips"],
+  props: [
+    "value",
+    "filters",
+    "label",
+    "multiple",
+    "id",
+    "showChips",
+    "chartType"
+  ],
   data() {
     return {
       selected: null,

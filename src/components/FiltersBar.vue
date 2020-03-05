@@ -10,6 +10,7 @@
           :label="constantFilters.label"
           :value="dataType"
           :multiple="true"
+          :chart-type="chartType"
         ></ChartFilters>
       </v-col>
 
@@ -32,6 +33,7 @@
               :multiple="!compareCounts && chartType === 'bar'"
               :value="dataFilters[filter.id]"
               @change="handleFilter"
+              :chart-type="chartType"
             >
             </ChartFilters>
           </v-col>
