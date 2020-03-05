@@ -1,4 +1,4 @@
-export const BARCHARTFILTERS = {
+export const FILTERS = {
   id: "type",
   label: "Data Type",
   filters: [
@@ -9,7 +9,7 @@ export const BARCHARTFILTERS = {
       filters: [
         {
           id: "percentile",
-          label: "Earnings Percentiles",
+          label: "Percentiles",
           short: "Percentile",
           filters: [
             {
@@ -18,7 +18,7 @@ export const BARCHARTFILTERS = {
               short: "25%",
               default: false,
               color: "#588eaf",
-              linestyle: null
+              linestyle: "dotted"
             },
             {
               id: "p50",
@@ -26,7 +26,7 @@ export const BARCHARTFILTERS = {
               short: "50%",
               default: true,
               color: "#39739c",
-              linestyle: null
+              linestyle: "solid"
             },
             {
               id: "p75",
@@ -34,7 +34,7 @@ export const BARCHARTFILTERS = {
               short: "75%",
               default: false,
               color: "#1b619a",
-              linestyle: null
+              linestyle: "dashed"
             }
           ],
           default: true
@@ -50,7 +50,7 @@ export const BARCHARTFILTERS = {
               short: "1",
               default: true,
               color: "#588db0",
-              linestyle: null
+              linestyle: "dotted"
             },
             {
               id: "y5",
@@ -58,7 +58,7 @@ export const BARCHARTFILTERS = {
               short: "5",
               default: false,
               color: "#2c7a8f",
-              linestyle: null
+              linestyle: "solid"
             },
             {
               id: "y10",
@@ -66,7 +66,7 @@ export const BARCHARTFILTERS = {
               short: "10",
               default: false,
               color: "#026972",
-              linestyle: null
+              linestyle: "dashed"
             }
           ],
           default: false
@@ -74,91 +74,102 @@ export const BARCHARTFILTERS = {
       ],
       default: true,
       color: "#195083",
-      linestyle: null
-    },
-    {
-      id: "emp",
-      label: "Count of Employed Veterans",
-      short: "Employed",
-      filters: [
-        {
-          id: "year",
-          label: "Years Post Discharge",
-          short: "Year",
-          filters: [
-            {
-              id: "y1",
-              label: "1-Year After Discharge",
-              short: "1",
-              default: true,
-              color: "#85a067",
-              linestyle: null
-            },
-            {
-              id: "y5",
-              label: "5-Years After Discharge",
-              short: "5",
-              default: false,
-              color: "#558e56",
-              linestyle: null
-            },
-            {
-              id: "y10",
-              label: "10-Years After Discharge",
-              short: "10",
-              default: false,
-              color: "#155028",
-              linestyle: null
-            }
-          ],
-          default: false
-        }
-      ],
-      default: false,
-      color: "#1A594A",
       linestyle: "solid"
     },
     {
-      id: "nonemp",
-      label: "Count of Nonemployed or Marginally Employed Veterans",
-      short: "N.M.E.",
+      id: "counts",
+      label: "Counts of Veterans",
+      short: "Counts",
       filters: [
         {
-          id: "year",
-          label: "Years Post Discharge",
-          short: "Year",
+          id: "emp",
+          label: "Employed Veterans",
+          short: "Employed",
           filters: [
             {
-              id: "y1",
-              label: "1-Year After Discharge",
-              short: "1",
-              default: true,
-              color: "#fd8d3c",
-              linestyle: null
-            },
-            {
-              id: "y5",
-              label: "5-Years After Discharge",
-              short: "5",
-              default: false,
-              color: "#e6550d",
-              linestyle: null
-            },
-            {
-              id: "y10",
-              label: "10-Years After Discharge",
-              short: "10",
-              default: false,
-              color: "#ae400a",
-              linestyle: null
+              id: "year",
+              label: "Years Post Discharge",
+              short: "Year",
+              filters: [
+                {
+                  id: "y1",
+                  label: "1-Year After Discharge",
+                  short: "1",
+                  default: true,
+                  color: "#85a067",
+                  linestyle: "dotted"
+                },
+                {
+                  id: "y5",
+                  label: "5-Years After Discharge",
+                  short: "5",
+                  default: false,
+                  color: "#558e56",
+                  linestyle: "solid"
+                },
+                {
+                  id: "y10",
+                  label: "10-Years After Discharge",
+                  short: "10",
+                  default: false,
+                  color: "#155028",
+                  linestyle: "dashed"
+                }
+              ],
+              default: false
             }
           ],
-          default: false
+          default: false,
+          color: "#1A594A",
+          linestyle: "solid"
+        },
+        {
+          id: "nonemp",
+          label: "Nonemployed (or Marginally Employed) Veterans",
+
+          short: "Nonemployed",
+          filters: [
+            {
+              id: "year",
+              label: "Years Post Discharge",
+              short: "Year",
+              filters: [
+                {
+                  id: "y1",
+                  label: "1-Year After Discharge",
+                  short: "1",
+                  default: true,
+                  color: "#fd8d3c",
+                  linestyle: "dotted"
+                },
+                {
+                  id: "y5",
+                  label: "5-Years After Discharge",
+                  short: "5",
+                  default: false,
+                  color: "#e6550d",
+                  linestyle: "solid"
+                },
+                {
+                  id: "y10",
+                  label: "10-Years After Discharge",
+                  short: "10",
+                  default: false,
+                  color: "#ae400a",
+                  linestyle: "dashed"
+                }
+              ],
+              default: false
+            }
+          ],
+          default: false,
+          color: "#a63603",
+          linestyle: "dashed"
         }
       ],
       default: false,
-      color: "#a63603",
-      linestyle: "dashed"
+      color: "#ffca11",
+      linestyle: "solid"
     }
   ]
 };

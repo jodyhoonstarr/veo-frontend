@@ -12,12 +12,7 @@
     class="newSelect otherClass"
   >
     <template v-slot:selection="{ item }">
-      <div
-        v-if="
-          (item.id === 'all' || item.id === 'allcounts') && showChips === true
-        "
-        class="selection"
-      >
+      <div v-if="item.id === 'all' && showChips === true" class="selection">
         <template v-for="val in value">
           <v-icon v-if="chartType === 'bar'" :color="val.color"
             >mdi-checkbox-blank</v-icon
@@ -50,24 +45,40 @@
 <script>
 export default {
   name: "ChartFilters",
-  props: [
-    "value",
-    "filters",
-    "label",
-    "multiple",
-    "id",
-    "showChips",
-    "chartType"
-  ],
+  props: {
+    value: {
+      type: Object | Array,
+      default: null
+    },
+    filters: {
+      type: Array,
+      default: null
+    },
+    label: {
+      type: String,
+      default: null
+    },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    id: {
+      type: String,
+      default: null
+    },
+    showChips: {
+      type: Boolean,
+      default: false
+    },
+    chartType: {
+      type: String,
+      default: null
+    }
+  },
   data() {
     return {
       selected: null,
-      all: { id: "all", short: "All", label: `All ${this.label}` },
-      allcounts: {
-        id: "allcounts",
-        short: "All Counts",
-        label: `All Counts ${this.label}`
-      }
+      all: { id: "all", short: "All", label: `All ${this.label}` }
     };
   },
   methods: {
@@ -97,11 +108,6 @@ export default {
           } else if (this.validateIdProps(filters, value)) {
             // an array is passed in with all values, select the all category
             this.selected = this.all;
-          } else if (
-            this.value.filter(o => o.id.includes("count").length === 2)
-          ) {
-            // an array is passed with both count filters
-            this.selected = this.allcounts;
           } else {
             console.log("WARN: Unexpected array passed to ChartFilters");
             console.log(value);
@@ -134,12 +140,9 @@ export default {
     },
     selected: function() {
       let emitted;
-      if (this.selected.id === "all") {
+      if (this.selected && this.selected.id === "all") {
         // if all category, emit all filters as array
         emitted = this.filters;
-      } else if (this.selected.id === "allcounts") {
-        // if only the counts category is selected, tag emp and nonemp
-        emitted = this.filters.filter(o => o.id.includes("emp"));
       } else if (this.multiple) {
         // emit only the selected filter as array
         emitted = this.toArray(this.selected);
@@ -164,10 +167,7 @@ export default {
   },
   computed: {
     allFilters: function() {
-      if (this.id === "type" && this.multiple === true) {
-        // if it's a data type filter
-        return [...this.filters, this.allcounts];
-      } else if (this.multiple === true) {
+      if (this.multiple === true) {
         // if it's a year or earnings filter
         return [...this.filters, this.all];
       } else {

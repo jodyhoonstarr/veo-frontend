@@ -55,14 +55,14 @@
         :filters="filters"
         :active-toggle="activeToggle"
       >
-        <FiltersBar chart-type="bar" @change="handleFiltersToggle"></FiltersBar>
-        <Chart
-          chart-type="bar"
-          :loading="loading"
-          :chart-data="chartData"
-          :chart-colors="chartColors"
-          :chart-data-type="chartDataType"
-        ></Chart>
+        <FiltersBar chart-type="bar"></FiltersBar>
+        <!--        <Chart-->
+        <!--          chart-type="bar"-->
+        <!--          :loading="loading"-->
+        <!--          :chart-data="chartData"-->
+        <!--          :chart-colors="chartColors"-->
+        <!--          :chart-data-type="chartDataType"-->
+        <!--        ></Chart>-->
       </ChartCard>
     </GetData>
   </div>

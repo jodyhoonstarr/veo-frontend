@@ -3,12 +3,16 @@
     <v-system-bar color="primary">
       <span v-if="loading" class="white--text">Loading...</span>
       <span
-        v-else-if="filters && activeToggle && filters.type.length === 1"
+        v-else-if="
+          filters && activeToggle && filters.type && filters.type.length === 1
+        "
         class="white--text"
         >{{ filters.type[0].label }} by {{ byString }}</span
       >
       <span
-        v-else-if="filters && activeToggle && filters.type.length === 2"
+        v-else-if="
+          filters && activeToggle && filters.type && filters.type.length === 2
+        "
         class="white--text"
         >Count of {{ filters.type[0].short }} vs
         {{ filters.type[1].short }} Veterans by {{ byString }}</span

@@ -3,48 +3,45 @@
     <v-row>
       <v-col cols="12" xs="12" sm="4" class="pb-0">
         <ChartFilters
-          @change="handleDataTypeFilter"
-          :id="constantFilters.id"
-          :showChips="constantFilters.id === colorCategory"
-          :filters="constantFilters.filters"
-          :label="constantFilters.label"
-          :value="dataType"
-          :multiple="true"
+          v-if="primaryFilters"
+          :id="primaryFilters.id"
+          :label="primaryFilters.label"
           :chart-type="chartType"
+          :filters="primaryFilters.filters"
+          :showChips="primaryFilters.id === colorCategory"
+          @change="handlePrimaryFilter"
         ></ChartFilters>
       </v-col>
 
-      <template
-        v-if="
-          dataType != null &&
-            Array.isArray(dataType) &&
-            dataType[0] != null &&
-            dataType[0].hasOwnProperty('filters') &&
-            dataType[0].filters != null
-        "
-      >
-        <template v-for="filter in dataType[0].filters">
-          <v-col cols="12" xs="12" sm="4" class="pb-0">
-            <ChartFilters
-              :id="filter.id"
-              :showChips="filter.id === colorCategory"
-              :filters="filter.filters"
-              :label="filter.label"
-              :multiple="!compareCounts && chartType === 'bar'"
-              :value="dataFilters[filter.id]"
-              @change="handleFilter"
-              :chart-type="chartType"
-            >
-            </ChartFilters>
-          </v-col>
-        </template>
-      </template>
+      <v-col cols="12" xs="12" sm="4" class="pb-0">
+        <ChartFilters
+          v-if="secondaryFilters"
+          :id="secondaryFilters.id"
+          :label="secondaryFilters.label"
+          :chart-type="chartType"
+          :filters="secondaryFilters.filters"
+          :showChips="secondaryFilters.id === colorCategory"
+          @change="handleSecondaryFilter"
+        ></ChartFilters>
+      </v-col>
+
+      <v-col cols="12" xs="12" sm="4" class="pb-0">
+        <ChartFilters
+          v-if="tertiaryFilters"
+          :id="tertiaryFilters.id"
+          :label="tertiaryFilters.label"
+          :chart-type="chartType"
+          :filters="tertiaryFilters.filters"
+          :showChips="tertiaryFilters.id === colorCategory"
+          @change="handleTertiaryFilter"
+        ></ChartFilters>
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { BARCHARTFILTERS } from "@/constants/filters";
+import { FILTERS } from "@/constants/filters";
 import ChartFilters from "@/components/ChartFilters.vue";
 
 export default {
@@ -59,144 +56,86 @@ export default {
   },
   data() {
     return {
-      constantFilters: BARCHARTFILTERS,
-      dataType: null,
-      dataFilters: {
-        year: null,
-        percentile: null
-      },
+      primaryFilters: FILTERS,
+      secondaryFilters: null,
+      tertiaryFilters: null,
       colorCategory: null
     };
   },
   methods: {
-    emitEvent: function() {
-      this.$emit("change", {
-        type: this.dataType,
-        filters: this.dataFilters,
-        colors: this.colors
-      });
-    },
-    handleDataTypeFilter: function(f) {
-      this.dataType = f.selected;
-      // first check is whether there are multiple datatype filters
-      if (Array.isArray(this.dataType) && this.dataType.length > 1) {
-        this.dataFilters.percentile = null;
-        this.dataFilters.year = null;
-      } else if (this.dataType[0].id === "earnings") {
-        this.setAllPercentiles(); // toggle all percentiles
-        this.dataFilters.year = null; // allow component to select default year
-      } else if (
-        this.dataType[0].id === "emp" ||
-        this.dataType[0].id === "nonemp"
-      ) {
-        this.dataFilters.percentile = null;
-        this.setAllYears();
-      } else {
-        this.dataFilters.percentile = null;
-        this.dataFilters.year = null;
-      }
-      this.emitEvent();
-    },
-    setAllPercentiles: function() {
-      if (this.dataType[0] != null && this.dataType[0].filters != null) {
-        const percentileFilters = this.dataType[0].filters.find(
-          o => o.id === "percentile"
-        ).filters;
-        this.dataFilters.percentile = percentileFilters;
-      }
-    },
-    setAllYears: function() {
-      if (this.dataType[0] != null && this.dataType[0].filters != null) {
-        const yearFilters = this.dataType[0].filters.find(o => o.id === "year")
-          .filters;
-        this.dataFilters.year = yearFilters;
-      }
-    },
-    handleFilter: function(f) {
-      this.dataFilters[f.id] = f.selected;
-
-      // if this change is an array, null out the other filters
-      // so that their default values can be chosen
-      let changeFlag = false;
-      Object.keys(this.dataFilters).forEach(key => {
-        const prop = this.dataFilters[key];
-        if (
-          Array.isArray(prop) &&
-          Array.isArray(f.selected) &&
-          prop.length > 1 &&
-          f.selected.length > 1 &&
-          f.id !== key
-        ) {
-          this.dataFilters[key] = null;
-          changeFlag = true;
-        }
-      });
-
-      // if the other events weren't nulled then emit event
-      // otherwise setting the null events above should trigger
-      // an event that bubbles back to this function
-      if (changeFlag) {
-        this.emitEvent();
-      }
-    },
-    isArraywMultiple: function(o) {
-      return o != null && Array.isArray(o) && o.length > 1;
-    }
-  },
-  mounted() {
-    this.dataType = this.constantFilters.filters[0];
-    this.setAllPercentiles();
-  },
-  computed: {
-    colors: function() {
-      if (this.dataType == null) {
-        return null;
-      } else {
-        if (this.isArraywMultiple(this.dataType)) {
-          // if the datatype count/nme option is primary and displaying chips
-          let returnObject = {};
-          this.dataType.map(f => (returnObject[f.id] = f.color));
-          this.colorCategory = "type";
-          return returnObject;
-        } else if (this.isArraywMultiple(this.dataFilters.percentile)) {
-          // if the percentile selection is primary and displaying chips
-          let returnObject = {};
-          this.dataFilters.percentile.map(f => (returnObject[f.id] = f.color));
-          this.colorCategory = "percentile";
-          return returnObject;
-        } else if (this.isArraywMultiple(this.dataFilters.year)) {
-          // if the years selection is primary and displaying chips
-          let returnObject = {};
-          this.dataFilters.year.map(f => (returnObject[f.id] = f.color));
-          this.colorCategory = "year";
-          return returnObject;
-        } else if (this.dataType[0] != null) {
-          // otherwise
-          let returnObject = {};
-          const firstEntry = this.dataType[0];
-          returnObject[firstEntry.id] = firstEntry.color;
-          this.colorCategory = "type";
-          return returnObject;
-        }
-      }
-    },
-    compareCounts: function() {
+    validateSelected(o) {
       if (
-        this.colorCategory === "type" &&
-        Array.isArray(this.dataType) &&
-        this.dataType.length > 1
+        !o ||
+        !o.hasOwnProperty("selected") ||
+        !Array.isArray(o.selected) ||
+        !o.selected.length >= 1
       ) {
-        return true;
-      } else {
-        return false;
+        return;
       }
-    }
-  },
-  watch: {
-    colors: function() {
-      this.emitEvent();
-    }
+      return o.selected[0];
+    },
+    handlePrimaryFilter: function(o) {
+      const selected = this.validateSelected(o);
+      if (
+        selected &&
+        selected.id === "earnings" &&
+        Array.isArray(selected.filters) &&
+        selected.filters.length === 2
+      ) {
+        // if the primary filter is earnings
+        // set the primary and secondary filters
+        this.secondaryFilters = selected.filters[0];
+        this.tertiaryFilters = selected.filters[1];
+      } else if (
+        selected &&
+        selected.id === "counts" &&
+        Array.isArray(selected.filters)
+      ) {
+        // if the primary filter is counts
+        // set secondary and hand off tertiary to handleSecondaryFilter
+        this.secondaryFilters = selected;
+        this.tertiaryFilters = null;
+      }
+    },
+    handleSecondaryFilter: function(o) {
+      // handle the secondary filter if counts is selected
+      // else it's handled by the primary
+      if (o.id === "counts") {
+        const selected = this.validateSelected(o);
+        if (selected && Array.isArray(selected.filters)) {
+          this.tertiaryFilters = selected.filters[0];
+        }
+      }
+    },
+    handleTertiaryFilter: function() {}
   }
+
+  // computed: {
+  //   colors: function() {
+  //     if (this.dataType == null) {
+  //       return null;
+  //     } else {
+  //       if (this.isArraywMultiple(this.dataFilters.percentile)) {
+  //         // if the percentile selection is primary and displaying chips
+  //         let returnObject = {};
+  //         this.dataFilters.percentile.map(f => (returnObject[f.id] = f.color));
+  //         this.colorCategory = "percentile";
+  //         return returnObject;
+  //       } else if (this.isArraywMultiple(this.dataFilters.year)) {
+  //         // if the years selection is primary and displaying chips
+  //         let returnObject = {};
+  //         this.dataFilters.year.map(f => (returnObject[f.id] = f.color));
+  //         this.colorCategory = "year";
+  //         return returnObject;
+  //       }
+  //     }
+  //   }
+  // },
+  // watch: {
+  //   colors: function() {
+  //     this.emitEvent();
+  //   }
+  // }
 };
 </script>
 
