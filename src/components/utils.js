@@ -238,7 +238,7 @@ export function getColorSet(chartType, filters, data) {
 
       let colorsLookup = {};
       data.map(d => {
-        colorsLookup[d.id] = colorScale(d);
+        colorsLookup[d.label] = colorScale(d);
       });
       return colorsLookup;
     }
