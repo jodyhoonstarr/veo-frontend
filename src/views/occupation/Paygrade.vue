@@ -103,9 +103,10 @@ export default {
       cohort: null,
       activeToggle: "occupation",
       filters: {
-        colors: null,
-        filters: null,
-        type: null
+        primary: null,
+        secondary: null,
+        tertiary: null,
+        colors: null
       }
     };
   },
@@ -120,16 +121,11 @@ export default {
       if (f == null) {
         return null;
       }
-      console.log(f);
-      // if (f.hasOwnProperty("type")) {
-      //   this.filters.type = f.type;
-      // }
-      // if (f.hasOwnProperty("filters")) {
-      //   this.filters.filters = f.filters;
-      // }
-      // if (f.hasOwnProperty("colors")) {
-      //   this.filters.colors = f.colors;
-      // }
+      Object.keys(this.filters).forEach(k => {
+        if (f.hasOwnProperty(k)) {
+          this.filters[k] = f[k];
+        }
+      });
     }
   },
   computed: {
