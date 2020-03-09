@@ -79,8 +79,10 @@ export default {
         this.colors != null
       ) {
         this.$emit("change", {
-          filters: [this.primaryValue, this.secondaryValue, this.tertiaryValue],
-          color: this.colors
+          primary: this.primaryValue,
+          secondary: this.secondaryValue,
+          tertiary: this.tertiaryValue,
+          colors: this.colors
         });
       }
     },
