@@ -119,7 +119,7 @@ export const FILTERS = {
               default: false
             }
           ],
-          default: false,
+          default: true,
           color: "#1A594A",
           linestyle: "solid"
         },

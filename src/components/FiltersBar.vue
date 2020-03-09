@@ -87,6 +87,8 @@ export default {
       if (selected) {
         // since the property is validated, keep the full return
         this.primaryValue = o.selected;
+        this.secondaryValue = null;
+        this.tertiaryValue = null;
       }
 
       // take the selection object and pass it down to the secondary filter
@@ -119,6 +121,7 @@ export default {
         this.secondaryValue = o.selected;
         if (this.secondaryValue === this.secondaryFilters.filters) {
           this.colorCategory = this.secondaryFilters.id;
+          this.tertiaryValue = null;
         }
       }
       // set the tertiary filter if counts data
@@ -135,6 +138,7 @@ export default {
         this.tertiaryValue = o.selected;
         if (this.tertiaryValue === this.tertiaryFilters.filters) {
           this.colorCategory = this.tertiaryFilters.id;
+          this.secondaryValue = null;
         }
       }
     }
