@@ -117,6 +117,9 @@ export default {
       const selected = this.validateSelected(o);
       if (selected) {
         this.secondaryValue = o.selected;
+        if (this.secondaryValue === this.secondaryFilters.filters) {
+          this.colorCategory = this.secondaryFilters.id;
+        }
       }
       // set the tertiary filter if counts data
       // else it's set by the primary
@@ -130,6 +133,9 @@ export default {
       const selected = this.validateSelected(o);
       if (selected) {
         this.tertiaryValue = o.selected;
+        if (this.tertiaryValue === this.tertiaryFilters.filters) {
+          this.colorCategory = this.tertiaryFilters.id;
+        }
       }
     }
   }
