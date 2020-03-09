@@ -102,12 +102,7 @@ export default {
       occupation: null,
       cohort: null,
       activeToggle: "occupation",
-      filters: {
-        primary: null,
-        secondary: null,
-        tertiary: null,
-        colors: null
-      }
+      filters: null
     };
   },
   methods: {
@@ -121,11 +116,7 @@ export default {
       if (f == null) {
         return null;
       }
-      Object.keys(this.filters).forEach(k => {
-        if (f.hasOwnProperty(k)) {
-          this.filters[k] = f[k];
-        }
-      });
+      this.filters = f;
     }
   },
   computed: {
@@ -161,7 +152,11 @@ export default {
       );
     },
     chartColors: function() {
-      if (this.filters != null && this.filters.hasOwnProperty("colors")) {
+      if (
+        this.filters != null &&
+        this.filters.hasOwnProperty("colors") &&
+        this.filters.colors != null
+      ) {
         return this.filters.colors;
       }
     }
