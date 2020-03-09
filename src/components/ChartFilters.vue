@@ -1,5 +1,6 @@
 <template>
   <v-select
+    v-if="allFilters"
     :id="id"
     :items="allFilters"
     :label="label"
@@ -167,6 +168,9 @@ export default {
   },
   computed: {
     allFilters: function() {
+      if (this.filters == null) {
+        return null;
+      }
       if (this.multiple === true) {
         // if it's a year or earnings filter
         return [...this.filters, this.all];

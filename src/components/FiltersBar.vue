@@ -71,7 +71,20 @@ export default {
     };
   },
   methods: {
-    validateSelected(o) {
+    emitEvent: function() {
+      if (
+        this.primaryValue != null &&
+        this.secondaryValue != null &&
+        this.tertiaryValue != null &&
+        this.colors != null
+      ) {
+        this.$emit("change", {
+          filters: [this.primaryValue, this.secondaryValue, this.tertiaryValue],
+          color: this.colors
+        });
+      }
+    },
+    validateSelected: function(o) {
       if (
         !o ||
         !o.hasOwnProperty("selected") ||
@@ -192,7 +205,9 @@ export default {
         Array.isArray(this.secondaryValue) &&
         this.secondaryValue.length > 1
       ) {
-        this.tertiaryFilters = this.secondaryValue[0].filters;
+        this.tertiaryFilters = this.secondaryValue[0].filters.find(
+          o => o.id === "year"
+        );
       }
 
       // if the type is a count and only one secondary is selected
@@ -206,12 +221,13 @@ export default {
         this.tertiaryValue = this.tertiaryFilters.filters;
         this.colorCategory = this.tertiaryFilters.id;
       }
+      this.emitEvent();
     },
     tertiaryValue: function() {
       this.setDefaultColorCategory();
+      this.emitEvent();
     }
   },
-
   computed: {
     colors: function() {
       if (this.colorCategory == null) {
@@ -228,18 +244,12 @@ export default {
       } else if (this.colorCategory === "year") {
         results = this.tertiaryValue;
       }
-      console.log(results);
 
       let returnObj = {};
       results.map(o => (returnObj[o.id] = o.color));
       return returnObj;
     }
   }
-  // watch: {
-  //   colors: function() {
-  //     this.emitEvent();
-  //   }
-  // }
 };
 </script>
 
