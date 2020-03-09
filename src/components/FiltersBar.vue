@@ -210,29 +210,31 @@ export default {
     tertiaryValue: function() {
       this.setDefaultColorCategory();
     }
-  }
+  },
 
-  // computed: {
-  //   colors: function() {
-  //     if (this.dataType == null) {
-  //       return null;
-  //     } else {
-  //       if (this.isArraywMultiple(this.dataFilters.percentile)) {
-  //         // if the percentile selection is primary and displaying chips
-  //         let returnObject = {};
-  //         this.dataFilters.percentile.map(f => (returnObject[f.id] = f.color));
-  //         this.colorCategory = "percentile";
-  //         return returnObject;
-  //       } else if (this.isArraywMultiple(this.dataFilters.year)) {
-  //         // if the years selection is primary and displaying chips
-  //         let returnObject = {};
-  //         this.dataFilters.year.map(f => (returnObject[f.id] = f.color));
-  //         this.colorCategory = "year";
-  //         return returnObject;
-  //       }
-  //     }
-  //   }
-  // },
+  computed: {
+    colors: function() {
+      if (this.colorCategory == null) {
+        return null;
+      }
+      let results;
+      if (this.colorCategory === "type") {
+        results = this.primaryValue;
+      } else if (
+        this.colorCategory === "percentile" ||
+        this.colorCategory === "counts"
+      ) {
+        results = this.secondaryValue;
+      } else if (this.colorCategory === "year") {
+        results = this.tertiaryValue;
+      }
+      console.log(results);
+
+      let returnObj = {};
+      results.map(o => (returnObj[o.id] = o.color));
+      return returnObj;
+    }
+  }
   // watch: {
   //   colors: function() {
   //     this.emitEvent();
