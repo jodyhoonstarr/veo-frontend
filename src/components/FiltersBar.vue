@@ -194,6 +194,18 @@ export default {
       ) {
         this.tertiaryFilters = this.secondaryValue[0].filters;
       }
+
+      // if the type is a count and only one secondary is selected
+      // set the color grouping to be all tertiary
+      if (
+        this.secondaryFilters &&
+        this.secondaryFilters.id === "counts" &&
+        Array.isArray(this.secondaryValue) &&
+        this.secondaryValue.length === 1
+      ) {
+        this.tertiaryValue = this.tertiaryFilters.filters;
+        this.colorCategory = this.tertiaryFilters.id;
+      }
     },
     tertiaryValue: function() {
       this.setDefaultColorCategory();
