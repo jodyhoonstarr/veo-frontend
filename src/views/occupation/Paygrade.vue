@@ -56,13 +56,14 @@
         :active-toggle="activeToggle"
       >
         <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
-        <!--        <Chart-->
-        <!--          chart-type="bar"-->
-        <!--          :loading="loading"-->
-        <!--          :chart-data="chartData"-->
-        <!--          :chart-colors="chartColors"-->
-        <!--          :chart-data-type="chartDataType"-->
-        <!--        ></Chart>-->
+        <Chart
+          v-if="chartData"
+          chart-type="bar"
+          :loading="loading"
+          :chart-data="chartData"
+          :chart-colors="chartColors"
+          :chart-data-type="chartDataType"
+        ></Chart>
       </ChartCard>
     </GetData>
   </div>

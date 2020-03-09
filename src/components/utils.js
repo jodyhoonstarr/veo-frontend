@@ -70,14 +70,12 @@ export function filterRows(csvData, dataSelections) {
 }
 
 // simplify the selected rows of data
-export function simplifiyRows(
-  csvDataRows,
-  filters,
-  activeToggleProp,
-  includeCohorts = false
-) {
+export function simplifiyRows(csvDataRows, filters, activeToggleProp) {
   if (
-    arrayIsNullorEmpty(filters) ||
+    filters == null ||
+    arrayIsNullorEmpty(filters.primary) ||
+    arrayIsNullorEmpty(filters.secondary) ||
+    arrayIsNullorEmpty(filters.tertiary) ||
     arrayIsNullorEmpty(csvDataRows) ||
     activeToggleProp == null
   ) {
@@ -86,8 +84,15 @@ export function simplifiyRows(
 
   // get the set of available props
   const objKeys = Object.keys(csvDataRows[0]);
-  // prefix the filtername with an underscore e.g. [_emp, _nonemp]
-  let underscoreFilters = filters.type.map(f => `_${f.id}`);
+
+  // prefix the filtername with an underscore
+  // e.g. [_earnings, (_emp, and/or _nonemp)]
+  let underscoreFilters;
+  if (filters.primary[0].id === "earnings") {
+    underscoreFilters = ["_earnings"];
+  } else {
+    underscoreFilters = filters.secondary.map(f => `_${f.id}`);
+  }
 
   const dataTypeKeys = objKeys.filter(key => {
     return (
@@ -95,34 +100,21 @@ export function simplifiyRows(
       key.toLocaleLowerCase().indexOf("status") === -1
     );
   });
+
   // get only the props defined in the filters e.g. y5 p50
   let filterKeys = dataTypeKeys.filter(key => {
-    const f = filters.filters;
-    if (
-      f.hasOwnProperty("percentile") &&
-      !arrayIsNullorEmpty(f.percentile) &&
-      f.hasOwnProperty("year") &&
-      !arrayIsNullorEmpty(f.year)
-    ) {
-      const p = f.percentile;
-      const y = f.year;
+    if (filters.primary.find(o => o.id === "earnings")) {
       return (
-        p.some(e => key.indexOf(`${e.id}_`) > -1) &&
-        y.some(e => key.indexOf(`${e.id}_`) > -1)
+        filters.secondary.some(e => key.indexOf(`${e.id}_`) > -1) &&
+        filters.tertiary.some(e => key.indexOf(`${e.id}_`) > -1)
       );
-    } else if (f.hasOwnProperty("year") && !arrayIsNullorEmpty(f.year)) {
-      const y = f.year;
-      return y.some(e => key.indexOf(`${e.id}_`) > -1);
+    } else if (filters.primary.find(o => o.id === "counts")) {
+      return filters.tertiary.some(e => key.indexOf(`${e.id}_`) > -1);
     }
   });
 
   // keep the label for the active group
   filterKeys.push(activeToggleProp);
-
-  // keep the cohort data if parameter is set
-  if (includeCohorts) {
-    filterKeys.push("cohort");
-  }
 
   // filter out the row data to only keep usable props
   return csvDataRows.map(row => {
@@ -146,9 +138,7 @@ export function createChartData(
   if (
     arrayIsNullorEmpty(csvDataRowsSimple) ||
     activeToggleProp == null ||
-    filters == null ||
-    !filters.hasOwnProperty("filters") ||
-    filters.filters == null
+    filters == null
   ) {
     return null;
   }
@@ -163,23 +153,15 @@ export function createChartData(
     }
   });
 
-  // determine which column is the unique val
-  let variableColumn;
-  let isDataTypeGroup = false;
-  if (Array.isArray(filters.type) && filters.type.length > 1) {
-    // if there are multiple data types
-    variableColumn = 1;
-    isDataTypeGroup = true;
-  } else {
-    // if there are either percentiles or year filters
-    variableColumn =
-      filters &&
-      filters.filters.percentile &&
-      Array.isArray(filters.filters.percentile) &&
-      filters.filters.percentile.length > 1
-        ? 1
-        : 0;
-  }
+  // determine which column has the unique set of vales
+  const transposeArray = keyArray.map((col, i) => keyArray.map(row => row[i]));
+  const distinctTransposeArray = transposeArray.map(e => [...new Set(e)]);
+  let maxLen = 0;
+  distinctTransposeArray.map(a => (maxLen = Math.max(maxLen, a.length)));
+  const variableColumn = distinctTransposeArray.findIndex(
+    a => a.length === maxLen
+  );
+
   // get the strings to represent the unique column
   const useKeys = keyArray.map(k => k[variableColumn]);
 
@@ -200,8 +182,6 @@ export function createChartData(
       const propName = Object.keys(row).find(prop => {
         if (prop === "cohort") {
           return true; // if the cohort is provided, keep it
-        } else if (isDataTypeGroup) {
-          return prop.includes(`_${k}`);
         } else {
           return prop.includes(`${k}_`);
         }
@@ -217,8 +197,12 @@ export function createChartData(
 
 // determine the active datatype from the filter
 export function getChartDataType(filters) {
-  if (Array.isArray(filters.type) && filters.type[0].hasOwnProperty("id")) {
-    return filters.type[0].id;
+  if (
+    Array.isArray(filters.primary) &&
+    filters.primary.length >= 1 &&
+    filters.primary[0].hasOwnProperty("id")
+  ) {
+    return filters.primary[0].id;
   }
 }
 
