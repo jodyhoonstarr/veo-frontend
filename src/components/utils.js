@@ -166,8 +166,6 @@ export function createChartData(
   const useKeys = keyArray.map(k => k[variableColumn]);
 
   let data = [];
-  console.log(filters.primary[0].id);
-  console.log(useKeys);
   csvDataRowsSimple.map(row => {
     let result = {};
 
@@ -185,9 +183,18 @@ export function createChartData(
         if (prop === "cohort") {
           return true; // if the cohort is provided, keep it
         } else if (filters.primary.find(f => f.id === "earnings")) {
+          // if earnings filter by p50_, p75_
           return prop.includes(`${k}_`);
-        } else if (filters.primary.find(f => f.id === "counts")) {
+        } else if (
+          // if counts && grouped by emp/nonemp filter by _emp, _nonemp
+          filters.primary.find(f => f.id === "counts") &&
+          Array.isArray(filters.secondary) &&
+          filters.secondary.length > 1
+        ) {
           return prop.includes(`_${k}`);
+        } else {
+          // otherwise just default to y1_, y5_
+          return prop.includes(`${k}_`);
         }
       });
       result[k] = row[propName];
