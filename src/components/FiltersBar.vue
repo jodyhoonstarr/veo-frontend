@@ -114,6 +114,9 @@ export default {
         this.secondaryFilters = selected;
         this.tertiaryFilters = null;
       }
+
+      // set the secondary default selections
+      this.setSecondaryDefaults();
     },
     handleSecondaryFilter: function(o) {
       const selected = this.validateSelected(o);
@@ -162,11 +165,35 @@ export default {
           this.colorCategory = null;
         }
       }
+    },
+    setSecondaryDefaults: function() {
+      if (
+        this.secondaryFilters != null &&
+        Array.isArray(this.secondaryFilters.filters) &&
+        this.secondaryFilters.filters.length > 0
+      ) {
+        this.secondaryValue = this.secondaryFilters.filters;
+        this.colorCategory = this.secondaryFilters.id;
+      } else {
+        this.secondaryValue = null;
+      }
     }
   },
   watch: {
     secondaryValue: function() {
       this.setDefaultColorCategory();
+
+      // if no tertiary filter is set for the counts data, set the first one
+      if (
+        this.tertiaryFilters == null &&
+        this.secondaryFilters != null &&
+        this.secondaryValue != null &&
+        this.secondaryFilters.id === "counts" &&
+        Array.isArray(this.secondaryValue) &&
+        this.secondaryValue.length > 1
+      ) {
+        this.tertiaryFilters = this.secondaryValue[0].filters;
+      }
     },
     tertiaryValue: function() {
       this.setDefaultColorCategory();
