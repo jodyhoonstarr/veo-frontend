@@ -8,28 +8,24 @@
     outlined
     dense
     :value="selected"
-    @change="handleChange"
+    @input="handleChange"
     class="newSelect otherClass"
   >
     <template v-slot:selection="{ item }">
       <div v-if="item.id === 'all' && showChips === true" class="selection">
-        <template v-for="val in value">
+        <template v-for="val in filters">
           <v-icon v-if="chartType === 'bar'" :color="val.color"
             >mdi-checkbox-blank</v-icon
-          ><template v-if="chartType === 'line' && val.linestyle != null">
+          ><template v-else-if="chartType === 'line'">
             <v-icon v-if="val.linestyle === 'solid'">mdi-checkbox-blank</v-icon>
             <v-icon v-else-if="val.linestyle === 'dashed'"
               >mdi-minus-box-outline</v-icon
             >
           </template>
-
           <span> {{ val.short }} </span>
         </template>
       </div>
-      <div
-        v-else-if="item.color != null && showChips === true"
-        class="selection"
-      >
+      <div v-else-if="showChips === true" class="selection">
         <v-icon v-if="chartType === 'bar'" :color="item.color"
           >mdi-checkbox-blank</v-icon
         >
@@ -47,7 +43,7 @@ export default {
   name: "ChartFilters",
   props: {
     value: {
-      type: Object | Array,
+      type: Array,
       default: null
     },
     filters: {
@@ -72,7 +68,7 @@ export default {
     },
     chartType: {
       type: String,
-      default: null
+      required: true
     }
   },
   data() {

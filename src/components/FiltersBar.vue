@@ -9,6 +9,7 @@
           :chart-type="chartType"
           :filters="primaryFilters.filters"
           :showChips="primaryFilters.id === colorCategory"
+          :value="primaryValue"
           @change="handlePrimaryFilter"
         ></ChartFilters>
       </v-col>
@@ -21,6 +22,8 @@
           :chart-type="chartType"
           :filters="secondaryFilters.filters"
           :showChips="secondaryFilters.id === colorCategory"
+          :multiple="true"
+          :value="secondaryValue"
           @change="handleSecondaryFilter"
         ></ChartFilters>
       </v-col>
@@ -33,6 +36,8 @@
           :chart-type="chartType"
           :filters="tertiaryFilters.filters"
           :showChips="tertiaryFilters.id === colorCategory"
+          :multiple="true"
+          :value="tertiaryValue"
           @change="handleTertiaryFilter"
         ></ChartFilters>
       </v-col>
@@ -57,9 +62,12 @@ export default {
   data() {
     return {
       primaryFilters: FILTERS,
+      primaryValue: null,
       secondaryFilters: null,
+      secondaryValue: null,
       tertiaryFilters: null,
-      colorCategory: null
+      tertiaryValue: null,
+      colorCategory: "percentile"
     };
   },
   methods: {
@@ -76,6 +84,12 @@ export default {
     },
     handlePrimaryFilter: function(o) {
       const selected = this.validateSelected(o);
+      if (selected) {
+        // since the property is validated, keep the full return
+        this.primaryValue = o.selected;
+      }
+
+      // take the selection object and pass it down to the secondary filter
       if (
         selected &&
         selected.id === "earnings" &&
@@ -84,8 +98,10 @@ export default {
       ) {
         // if the primary filter is earnings
         // set the primary and secondary filters
-        this.secondaryFilters = selected.filters[0];
-        this.tertiaryFilters = selected.filters[1];
+        this.secondaryFilters = selected.filters.find(
+          o => o.id === "percentile"
+        );
+        this.tertiaryFilters = selected.filters.find(o => o.id === "year");
       } else if (
         selected &&
         selected.id === "counts" &&
@@ -98,16 +114,24 @@ export default {
       }
     },
     handleSecondaryFilter: function(o) {
-      // handle the secondary filter if counts is selected
-      // else it's handled by the primary
+      const selected = this.validateSelected(o);
+      if (selected) {
+        this.secondaryValue = o.selected;
+      }
+      // set the tertiary filter if counts data
+      // else it's set by the primary
       if (o.id === "counts") {
-        const selected = this.validateSelected(o);
         if (selected && Array.isArray(selected.filters)) {
-          this.tertiaryFilters = selected.filters[0];
+          this.tertiaryFilters = selected.filters.find(o => o.id === "year");
         }
       }
     },
-    handleTertiaryFilter: function() {}
+    handleTertiaryFilter: function(o) {
+      const selected = this.validateSelected(o);
+      if (selected) {
+        this.tertiaryValue = o.selected;
+      }
+    }
   }
 
   // computed: {
