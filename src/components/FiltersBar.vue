@@ -149,7 +149,18 @@ export default {
         Array.isArray(this.tertiaryValue) &&
         this.tertiaryValue.length === 1
       ) {
-        this.colorCategory = this.primaryFilters.id;
+        // earnings can be colored but all else must default to secondary group
+        if (
+          Array.isArray(this.primaryValue) &&
+          this.primaryValue.length >= 1 &&
+          this.primaryValue[0].id === "earnings"
+        ) {
+          this.colorCategory = this.primaryFilters.id;
+        } else if (this.secondaryFilters != null) {
+          this.colorCategory = this.secondaryFilters.id;
+        } else {
+          this.colorCategory = null;
+        }
       }
     }
   },
