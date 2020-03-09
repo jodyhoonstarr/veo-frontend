@@ -67,7 +67,7 @@ export default {
       secondaryValue: null,
       tertiaryFilters: null,
       tertiaryValue: null,
-      colorCategory: "percentile"
+      colorCategory: null
     };
   },
   methods: {
@@ -84,7 +84,7 @@ export default {
     },
     handlePrimaryFilter: function(o) {
       const selected = this.validateSelected(o);
-      if (selected) {
+      if (selected != null) {
         // since the property is validated, keep the full return
         this.primaryValue = o.selected;
         this.secondaryValue = null;
@@ -117,7 +117,7 @@ export default {
     },
     handleSecondaryFilter: function(o) {
       const selected = this.validateSelected(o);
-      if (selected) {
+      if (selected != null) {
         this.secondaryValue = o.selected;
         if (this.secondaryValue === this.secondaryFilters.filters) {
           this.colorCategory = this.secondaryFilters.id;
@@ -134,13 +134,31 @@ export default {
     },
     handleTertiaryFilter: function(o) {
       const selected = this.validateSelected(o);
-      if (selected) {
+      if (selected != null) {
         this.tertiaryValue = o.selected;
         if (this.tertiaryValue === this.tertiaryFilters.filters) {
           this.colorCategory = this.tertiaryFilters.id;
           this.secondaryValue = null;
         }
       }
+    },
+    setDefaultColorCategory: function() {
+      if (
+        Array.isArray(this.secondaryValue) &&
+        this.secondaryValue.length === 1 &&
+        Array.isArray(this.tertiaryValue) &&
+        this.tertiaryValue.length === 1
+      ) {
+        this.colorCategory = this.primaryFilters.id;
+      }
+    }
+  },
+  watch: {
+    secondaryValue: function() {
+      this.setDefaultColorCategory();
+    },
+    tertiaryValue: function() {
+      this.setDefaultColorCategory();
     }
   }
 

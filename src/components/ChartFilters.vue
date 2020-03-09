@@ -122,19 +122,15 @@ export default {
         }
       } else if (filters != null) {
         this.selected = filters.find(obj => obj.default === true);
+        this.emitChange(); // notify the parent that the value is set
       } else {
         this.selected = null;
       }
     },
     handleChange: function(e) {
       this.selected = e;
-    }
-  },
-  watch: {
-    filters: function() {
-      this.selectDefault(this.value, this.filters);
     },
-    selected: function() {
+    emitChange: function() {
       let emitted;
       if (this.selected && this.selected.id === "all") {
         // if all category, emit all filters as array
@@ -150,6 +146,14 @@ export default {
         id: this.id,
         selected: this.toArray(emitted) //make sure array is returned, even if multiple is false
       });
+    }
+  },
+  watch: {
+    filters: function() {
+      this.selectDefault(this.value, this.filters);
+    },
+    selected: function() {
+      this.emitChange();
     },
     value: function() {
       this.selectDefault(this.value, this.filters);
