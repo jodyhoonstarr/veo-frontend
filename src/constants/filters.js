@@ -73,7 +73,7 @@ export const FILTERS = {
         }
       ],
       default: true,
-      color: "#195083",
+      color: "#39739c",
       linestyle: "solid"
     },
     {
@@ -120,7 +120,7 @@ export const FILTERS = {
             }
           ],
           default: true,
-          color: "#1A594A",
+          color: "#558e56",
           linestyle: "solid"
         },
         {
@@ -163,7 +163,7 @@ export const FILTERS = {
             }
           ],
           default: false,
-          color: "#a63603",
+          color: "#e6550d",
           linestyle: "dashed"
         }
       ],
