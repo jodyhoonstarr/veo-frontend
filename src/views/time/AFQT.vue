@@ -35,12 +35,8 @@
         :loading="loading"
         :filters="filters"
         active-toggle="AFQT"
-        additional-string="Over Time"
       >
-        <FiltersBar
-          :chart-type="chartType"
-          @change="handleFiltersToggle"
-        ></FiltersBar>
+        <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
         <Chart
           :chart-type="chartType"
           :loading="false"
@@ -96,19 +92,11 @@ export default {
     };
   },
   methods: {
-    handleFiltersToggle: function(f) {
+    handleFilters: function(f) {
       if (f == null) {
         return null;
       }
-      if (f.hasOwnProperty("type")) {
-        this.filters.type = f.type;
-      }
-      if (f.hasOwnProperty("filters")) {
-        this.filters.filters = f.filters;
-      }
-      if (f.hasOwnProperty("colors")) {
-        this.filters.colors = f.colors;
-      }
+      this.filters = f;
     }
   },
   computed: {

@@ -1,12 +1,26 @@
 import "@mdi/font/css/materialdesignicons.css";
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
+import SolidLine from "@/assets/icons/SolidLine";
+import DashedLine from "@/assets/icons/DashedLine";
+import DottedLine from "@/assets/icons/DottedLine";
 
 Vue.use(Vuetify);
 
 export default new Vuetify({
   icons: {
-    iconfont: "mdi"
+    iconfont: "mdi",
+    values: {
+      solidline: {
+        component: SolidLine
+      },
+      dashedline: {
+        component: DashedLine
+      },
+      dottedline: {
+        component: DottedLine
+      }
+    }
   },
   theme: {
     themes: {

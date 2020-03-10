@@ -18,9 +18,14 @@
           <v-icon v-if="chartType === 'bar'" :color="val.color"
             >mdi-checkbox-blank</v-icon
           ><template v-else-if="chartType === 'line'">
-            <v-icon v-if="val.linestyle === 'solid'">mdi-checkbox-blank</v-icon>
-            <v-icon v-else-if="val.linestyle === 'dashed'"
-              >mdi-minus-box-outline</v-icon
+            <v-icon v-if="val.linestyle === 'solid'"
+              >$vuetify.icons.solidline</v-icon
+            >
+            <v-icon v-if="val.linestyle === 'dashed'"
+              >$vuetify.icons.dashedline</v-icon
+            >
+            <v-icon v-if="val.linestyle === 'dotted'"
+              >$vuetify.icons.dottedline</v-icon
             >
           </template>
           <span> {{ val.short }} </span>
@@ -191,4 +196,8 @@ export default {
   text-overflow: ellipsis;
   max-width: 90%;
 }
+/*.v-icon.outlined {*/
+/*  border: 1px solid;*/
+/*  border-radius: 3px;*/
+/*}*/
 </style>
