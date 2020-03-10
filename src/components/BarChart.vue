@@ -57,7 +57,8 @@ export default {
   data() {
     return {
       margin: { top: 26, right: 30, bottom: 48, left: 60 },
-      transitionDuration: 400
+      transitionDuration: 400,
+      labelPxShift: 4
     };
   },
   computed: {
@@ -251,9 +252,7 @@ export default {
     },
     labelTransformInit: function(d) {
       // an initial y position transform for transition
-      const rotate = 0;
-      return `translate(${this.labelXPosition(d) ||
-        0},${this.chartYBottom()}) rotate(${rotate})`;
+      return `translate(${this.labelXPosition(d) || 0},${this.chartYBottom()})`;
     },
     barTransformInit: function(d) {
       // an initial y position transform for transition
@@ -262,10 +261,8 @@ export default {
     },
     labelTransform: function(d) {
       const rotate = 0;
-      const nudgeUpMargin = 2; // slight bump to raise the text y height
       return `translate(${this.labelXPosition(d)},${this.barYPosition(d) +
-        this.validateLabelHeight(d).fontOffset -
-        nudgeUpMargin}) rotate(${rotate})`;
+        this.validateLabelHeight(d).fontOffset}) rotate(${rotate})`;
     },
     barTransform: function(d) {
       return `translate(${this.barXFullPosition(d)},${this.barYPosition(d)})`;
@@ -309,7 +306,7 @@ export default {
     },
     labelFontColor: function(d) {
       // if the label is above the bar, label it with the bar color, else white
-      return this.barHeight(d) > this.labelFontSizePx
+      return this.barHeight(d) > this.labelFontSizePx + this.labelPxShift
         ? "white"
         : this.barFill(d);
     },
@@ -321,13 +318,13 @@ export default {
       // horizontal labels
       // this handles cases where the label font is larger than the rect
       const barHeight = this.barHeight(d);
-      if (barHeight > this.labelFontSizePx) {
+      if (barHeight > this.labelFontSizePx + this.labelPxShift) {
         returnObj.fontSize = this.labelFontSizePx;
-        returnObj.fontOffset = this.labelFontSizePx;
+        returnObj.fontOffset = this.labelFontSizePx + this.labelPxShift;
       } else {
         // if the label is very tiny, move the label above the bar
         returnObj.fontSize = this.labelFontSizePx;
-        returnObj.fontOffset = 0;
+        returnObj.fontOffset = -this.labelPxShift;
       }
       return returnObj;
     },
