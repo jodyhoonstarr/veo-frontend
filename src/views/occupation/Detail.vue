@@ -42,7 +42,7 @@
         :filters="filters"
         :active-toggle="activeToggle"
       >
-        <FiltersBar chart-type="bar" @change="handleFiltersToggle"></FiltersBar>
+        <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
         <Chart
           chart-type="bar"
           :loading="loading"
@@ -102,19 +102,11 @@ export default {
         this.activeToggle = data.id;
       }
     },
-    handleFiltersToggle: function(f) {
+    handleFilters: function(f) {
       if (f == null) {
         return null;
       }
-      if (f.hasOwnProperty("type")) {
-        this.filters.type = f.type;
-      }
-      if (f.hasOwnProperty("filters")) {
-        this.filters.filters = f.filters;
-      }
-      if (f.hasOwnProperty("colors")) {
-        this.filters.colors = f.colors;
-      }
+      this.filters = f;
     }
   },
   computed: {
