@@ -70,7 +70,12 @@ export function filterRows(csvData, dataSelections) {
 }
 
 // simplify the selected rows of data
-export function simplifiyRows(csvDataRows, filters, activeToggleProp) {
+export function simplifiyRows(
+  csvDataRows,
+  filters,
+  activeToggleProp,
+  keepCohorts = false
+) {
   if (
     filters == null ||
     arrayIsNullorEmpty(filters.primary) ||
@@ -116,6 +121,11 @@ export function simplifiyRows(csvDataRows, filters, activeToggleProp) {
   // keep the label for the active group
   filterKeys.push(activeToggleProp);
 
+  // keep the cohorts if the requested
+  if (keepCohorts) {
+    filterKeys.push("cohort");
+  }
+
   // filter out the row data to only keep usable props
   return csvDataRows.map(row => {
     let result = {};
@@ -133,7 +143,8 @@ export function createChartData(
   csvDataRowsSimple,
   filters,
   activeToggleProp,
-  dataSelections
+  dataSelections,
+  keepCohorts = false
 ) {
   if (
     arrayIsNullorEmpty(csvDataRowsSimple) ||
@@ -148,7 +159,7 @@ export function createChartData(
   const topRow = csvDataRowsSimple[0];
   let keyArray = [];
   Object.keys(topRow).map(k => {
-    if (k != activeToggleProp) {
+    if (k !== activeToggleProp && k !== "cohort") {
       keyArray.push(k.split("_"));
     }
   });
@@ -163,7 +174,11 @@ export function createChartData(
   );
 
   // get the strings to represent the unique column
-  const useKeys = keyArray.map(k => k[variableColumn]);
+  let useKeys = keyArray.map(k => k[variableColumn]);
+
+  if (keepCohorts) {
+    useKeys.push("cohort");
+  }
 
   let data = [];
   csvDataRowsSimple.map(row => {

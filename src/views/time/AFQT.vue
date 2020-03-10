@@ -122,7 +122,7 @@ export default {
         this.csvDataRows,
         this.filters,
         this.dataColumn,
-        true
+        this.chartType === "line"
       );
     },
     chartData: function() {
@@ -130,7 +130,8 @@ export default {
         this.csvDataRowsSimple,
         this.filters,
         this.dataColumn,
-        this.dataSelections
+        this.dataSelections,
+        this.chartType === "line"
       );
     },
     chartColors: function() {
