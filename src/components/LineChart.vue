@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      margin: { top: 26, right: 30, bottom: 48, left: 60 },
+      margin: { top: 26, right: 60, bottom: 48, left: 60 },
       transitionDuration: 400
     };
   },
