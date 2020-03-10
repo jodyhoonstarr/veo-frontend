@@ -15,9 +15,8 @@ import { min, max } from "d3-array";
 import { transition } from "d3-transition";
 import { axisBottom, axisLeft } from "d3-axis";
 import { select, selectAll } from "d3-selection";
-import { scaleBand, scaleLinear, scaleOrdinal } from "d3-scale";
+import { scaleLinear } from "d3-scale";
 import { arrayIsNullorEmpty } from "@/components/utils";
-import { wrapLabels } from "@/components/utils";
 
 export default {
   name: "LineChart",
@@ -102,7 +101,6 @@ export default {
       let dataObject = {};
       this.d3Labels.map(l => (dataObject[l] = []));
       this.d3Data.map(o => {
-        // TODO strip label from pushed object
         dataObject[o.label].push(o);
       });
       return dataObject;
@@ -135,19 +133,45 @@ export default {
       } else {
         return "";
       }
+    },
+    cohortRange: function() {
+      return [...new Set(this.d3Data.map(d => parseInt(d.cohort)))];
+    },
+    cohortMax: function() {
+      return max(this.cohortRange);
+    },
+    cohortMin: function() {
+      return min(this.cohortRange);
+    },
+    x: function() {
+      return scaleLinear()
+        .domain([this.cohortMin, this.cohortMax + 1])
+        .range([0, this.chartWidth]);
+    },
+    y: function() {
+      if (this.d3Max == null || this.d3Min == null) {
+        return null;
+      }
+      return scaleLinear()
+        .rangeRound([this.chartHeight, 0])
+        .domain([
+          this.d3Min > 0 ? 0 : this.d3Min,
+          this.d3Max === 0 ? 1 : this.d3Max
+        ])
+        .nice();
     }
   },
   watch: {
     d3Data: function() {
       this.$nextTick(() => {
-        // this.bindXAxis();
-        // this.bindYAxis();
+        this.bindXAxis();
+        this.bindYAxis();
       });
     },
     width: function() {
       this.$nextTick(() => {
-        // this.bindXAxis();
-        // this.bindYAxis();
+        this.bindXAxis();
+        this.bindYAxis();
       });
     }
   },
@@ -164,12 +188,23 @@ export default {
       const xaxis = select(this.$refs.xaxis);
       xaxis
         .attr("transform", `translate(0,${this.chartHeight})`)
-        .call(axisBottom(this.x0))
         .transition()
         .duration(this.transitionDuration)
+        .call(axisBottom(this.x).tickFormat(format("d")))
         .selectAll(".tick text")
-        .style("font-size", "12px")
-        .call(wrapLabels, this.x0.bandwidth());
+        .style("font-size", "12px");
+
+      // only label the ticks that are even [2000, 2004, ...]
+      const tickText = select(this.$refs.xaxis).selectAll(".tick text");
+      tickText.each(function(val) {
+        if (val % 2 !== 0) select(this).remove();
+      });
+
+      // leave ticks for every year [2000, 2001, ...]
+      const tickLine = select(this.$refs.xaxis).selectAll(".tick line");
+      tickLine.each(function(val) {
+        if (val % 1 !== 0) select(this).remove();
+      });
     },
     bindYAxis: function() {
       const tickCount = 7;
@@ -209,8 +244,8 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      // this.bindXAxis();
-      // this.bindYAxis();
+      this.bindXAxis();
+      this.bindYAxis();
     });
   }
 };
