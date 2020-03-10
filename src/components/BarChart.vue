@@ -57,8 +57,7 @@ export default {
   data() {
     return {
       margin: { top: 26, right: 30, bottom: 48, left: 60 },
-      transitionDuration: 400,
-      rotateLabels: false
+      transitionDuration: 400
     };
   },
   computed: {
@@ -177,21 +176,17 @@ export default {
       return { x: this.x0, y: this.y };
     },
     textAnchor: function() {
-      return this.rotateLabels ? "end" : "middle";
+      return "middle";
     },
     labelFontSizePx: function() {
       if (this.x1 == null) {
         return 16; // default font size if not bandwidth
       }
-      if (!this.rotateLabels) {
-        // estimated "good" ratio 28px font, 108px bandwidth
-        const fontSize = Math.floor((24 / 108) * this.x1.bandwidth());
-        // minimum font size to display
-        const minFontSize = 12;
-        return fontSize >= minFontSize ? fontSize : 0;
-      } else {
-        return 26;
-      }
+      // estimated "good" ratio 28px font, 108px bandwidth
+      const fontSize = Math.floor((24 / 108) * this.x1.bandwidth());
+      // minimum font size to display
+      const minFontSize = 12;
+      return fontSize >= minFontSize ? fontSize : 0;
     },
     labelPrefix: function() {
       if (this.chartDataType === "earnings") {
@@ -237,27 +232,16 @@ export default {
       }
     },
     labelXPosition: function(d) {
-      // if labels are rotated, move to the bargroup offset, the individual bar,
-      // the center of the bar, then the center of the font size
-      if (this.rotateLabels) {
-        return (
-          this.labelGroupXOffset(d) +
-          this.barXPosition(d) +
-          Math.floor(this.barWidth() / 2) +
-          Math.floor(this.labelFontSizePx / 2)
-        );
-      } else {
-        return (
-          this.labelGroupXOffset(d) + this.barXPosition(d) + this.barWidth() / 2
-        );
-      }
+      return (
+        this.labelGroupXOffset(d) + this.barXPosition(d) + this.barWidth() / 2
+      );
     },
     barXFullPosition: function(d) {
       return this.labelGroupXOffset(d) + this.barXPosition(d);
     },
     labelTransformInit: function(d) {
       // an initial y position transform for transition
-      const rotate = this.rotateLabels ? -90 : 0;
+      const rotate = 0;
       return `translate(${this.labelXPosition(d) ||
         0},${this.chartYBottom()}) rotate(${rotate})`;
     },
@@ -267,7 +251,7 @@ export default {
         0},${this.chartYBottom()})`;
     },
     labelTransform: function(d) {
-      const rotate = this.rotateLabels ? -90 : 0;
+      const rotate = 0;
       const nudgeUpMargin = 2; // slight bump to raise the text y height
       return `translate(${this.labelXPosition(d)},${this.barYPosition(d) +
         this.validateLabelHeight(d).fontOffset -
@@ -324,21 +308,16 @@ export default {
         fontSize: 0,
         fontOffset: 0
       };
-      if (!this.rotateLabels) {
-        // horizontal labels
-        // this handles cases where the label font is larger than the rect
-        const barHeight = this.barHeight(d);
-        if (barHeight > this.labelFontSizePx) {
-          returnObj.fontSize = this.labelFontSizePx;
-          returnObj.fontOffset = this.labelFontSizePx;
-        } else {
-          // if the label is very tiny, move the label above the bar
-          returnObj.fontSize = this.labelFontSizePx;
-          returnObj.fontOffset = 0;
-        }
-      } else {
+      // horizontal labels
+      // this handles cases where the label font is larger than the rect
+      const barHeight = this.barHeight(d);
+      if (barHeight > this.labelFontSizePx) {
         returnObj.fontSize = this.labelFontSizePx;
         returnObj.fontOffset = this.labelFontSizePx;
+      } else {
+        // if the label is very tiny, move the label above the bar
+        returnObj.fontSize = this.labelFontSizePx;
+        returnObj.fontOffset = 0;
       }
       return returnObj;
     },
