@@ -186,7 +186,17 @@ export default {
       const fontSize = Math.floor((24 / 108) * this.x1.bandwidth());
       // minimum font size to display
       const minFontSize = 12;
-      return fontSize >= minFontSize ? fontSize : 0;
+      const maxFontSize = 72;
+      if (fontSize < minFontSize) {
+        // if too small, don't show any font
+        return 0;
+      } else if (fontSize > maxFontSize) {
+        // if too large, set to max pix size
+        return maxFontSize;
+      } else {
+        // otherwise just show the font
+        return fontSize;
+      }
     },
     labelPrefix: function() {
       if (this.chartDataType === "earnings") {
