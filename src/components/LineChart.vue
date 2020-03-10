@@ -97,13 +97,33 @@ export default {
       return newArr;
     },
     d3LineChartData: function() {
-      // initialize a lookup object e.g. {label = [data1, data2...]}
-      let dataObject = {};
-      this.d3Labels.map(l => (dataObject[l] = []));
-      this.d3Data.map(o => {
-        dataObject[o.label].push(o);
+      // initialize a lookup object e.g. {label = {key1 = []}, {key2 = []} ...}
+      let lookupObject = {};
+      this.d3Labels.map(
+        l =>
+          (lookupObject[l] = (() => {
+            let keysObject = {};
+            this.d3Keys.map(k => (keysObject[k] = []));
+            return keysObject;
+          })())
+      );
+
+      // the data rows
+      this.d3Data.map(d => {
+        const cohort = d.cohort;
+        const label = d.label;
+        // the data keys
+        this.d3Keys.map(k => {
+          let dataObject = {};
+          dataObject.value = d[k];
+          dataObject.cohort = cohort;
+
+          // append to the lookup object
+          lookupObject[label][k].push(dataObject);
+        });
       });
-      return dataObject;
+
+      return lookupObject;
     },
     d3Max: function() {
       if (arrayIsNullorEmpty(this.d3Data) || arrayIsNullorEmpty(this.d3Keys)) {
