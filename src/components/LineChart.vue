@@ -376,7 +376,7 @@ export default {
       // update any existing points
       pointSeriesData
         .selectAll("circle")
-        .data(d => d.data)
+        .data(d => this.addLabel(d))
         .join(
           enter =>
             enter
@@ -385,12 +385,12 @@ export default {
               .attr("cy", d => this.y(d.value))
               .attr("r", 2)
               .attr("opacity", 0)
+              .style("stroke", d => this.chartColors[d.label])
               .call(enter =>
                 enter
                   .transition()
                   .duration(pointTransitionDuration)
                   .attr("opacity", 1)
-                  .style("stroke", d => this.chartColors[d.label])
               ),
 
           update =>
