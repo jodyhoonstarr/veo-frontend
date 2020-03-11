@@ -320,11 +320,16 @@ export default {
           )
       );
     },
+    addLabel: function(d) {
+      return d.data.map(a => {
+        return { cohort: a.cohort, value: a.value, label: d.label };
+      });
+    },
     bindPoints: function() {
       // bind the sets of line data
       const pointSeriesData = select(this.$refs.chart)
         .selectAll("g.point-series")
-        .data(this.d3Lines);
+        .data(this.d3Lines, d => d.label);
 
       // create a new group for line/series and draw points
       pointSeriesData
@@ -333,7 +338,7 @@ export default {
         .attr("class", "point-series")
         .attr("id", d => `${d.label} (${d.key})`)
         .selectAll("circle")
-        .data(d => d.data)
+        .data(d => this.addLabel(d))
         .join(enter =>
           enter
             .append("circle")
@@ -346,6 +351,7 @@ export default {
                 .transition()
                 .duration(this.transitionDuration)
                 .attr("opacity", 1)
+                .style("stroke", d => this.chartColors[d.label])
             )
         );
 
@@ -366,6 +372,7 @@ export default {
                   .transition()
                   .duration(this.transitionDuration)
                   .attr("opacity", 1)
+                  .style("stroke", d => this.chartColors[d.label])
               ),
 
           update =>
@@ -373,9 +380,9 @@ export default {
               update
                 .transition()
                 .duration(this.transitionDuration)
-                .attr("opacity", 1)
                 .attr("cx", d => this.x(d.cohort))
                 .attr("cy", d => this.y(d.value))
+                .attr("opacity", 1)
             ),
 
           exit =>
