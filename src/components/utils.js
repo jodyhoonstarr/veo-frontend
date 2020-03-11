@@ -242,13 +242,13 @@ export function getColorSet(chartType, filters, data) {
   } else if (chartType === "line") {
     // line charts get the colors from the number of data items
     if (data != null && Array.isArray(data) && data.length > 0) {
-      const colorScale = scaleOrdinal()
-        .domain(data)
-        .range(schemeCategory10);
+      const values = data.map((d, i) => i);
+      const colorScale = scaleOrdinal(schemeCategory10);
+      colorScale.domain(values);
 
       let colorsLookup = {};
-      data.map(d => {
-        colorsLookup[d.label] = colorScale(d);
+      data.map((d, i) => {
+        colorsLookup[d.label] = colorScale(i);
       });
       return colorsLookup;
     }
