@@ -373,6 +373,7 @@ export default {
               update
                 .transition()
                 .duration(this.transitionDuration)
+                .attr("opacity", 1)
                 .attr("cx", d => this.x(d.cohort))
                 .attr("cy", d => this.y(d.value))
             ),
