@@ -1,6 +1,6 @@
 <template>
   <svg>
-    <line x1="5" y1="10" x2="25" y2="10" stroke="black" stroke-dasharray="2" />
+    <line x1="5" y1="10" x2="25" y2="10" stroke="black" stroke-dasharray="5" />
   </svg>
 </template>
 

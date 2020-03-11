@@ -6,7 +6,7 @@
       x2="25"
       y2="10"
       stroke="black"
-      stroke-dasharray="1 1"
+      stroke-dasharray="2 2"
     />
   </svg>
 </template>

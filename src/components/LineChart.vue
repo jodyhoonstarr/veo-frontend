@@ -280,6 +280,16 @@ export default {
       // remove the domain outline
       yaxisgrid.select(".domain").remove();
     },
+    lineType: function(d) {
+      const lineType = this.chartLineStyles[d.key];
+      if (lineType === "dashed") {
+        return "5";
+      } else if (lineType === "dotted") {
+        return "2, 2";
+      } else {
+        return "";
+      }
+    },
     bindLines: function() {
       const bound = select(this.$refs.chart)
         .attr("fill", "none")
@@ -296,6 +306,7 @@ export default {
             .append("path")
             .attr("opacity", 0)
             .style("mix-blend-mode", "multiply")
+            .attr("stroke-dasharray", d => this.lineType(d))
             .call(enter =>
               enter
                 .transition()
@@ -310,6 +321,7 @@ export default {
             update
               .transition()
               .duration(this.transitionDuration)
+              .attr("stroke-dasharray", d => this.lineType(d))
               .attr("stroke", d => this.chartColors[d.label])
               .attr("d", d => this.line(d.data))
           ),
