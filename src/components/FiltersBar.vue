@@ -76,13 +76,15 @@ export default {
         this.primaryValue != null &&
         this.secondaryValue != null &&
         this.tertiaryValue != null &&
-        this.colors != null
+        this.colors != null &&
+        this.linestyles != null
       ) {
         this.$emit("change", {
           primary: this.primaryValue,
           secondary: this.secondaryValue,
           tertiary: this.tertiaryValue,
-          colors: this.colors
+          colors: this.colors,
+          linestyles: this.linestyles
         });
       }
     },
@@ -192,6 +194,26 @@ export default {
       } else {
         this.secondaryValue = null;
       }
+    },
+    getActive: function(prop) {
+      if (this.colorCategory == null) {
+        return null;
+      }
+      let results;
+      if (this.colorCategory === "type") {
+        results = this.primaryValue;
+      } else if (
+        this.colorCategory === "percentile" ||
+        this.colorCategory === "counts"
+      ) {
+        results = this.secondaryValue;
+      } else if (this.colorCategory === "year") {
+        results = this.tertiaryValue;
+      }
+
+      let returnObj = {};
+      results.map(o => (returnObj[o.id] = o[prop]));
+      return returnObj;
     }
   },
   watch: {
@@ -232,24 +254,10 @@ export default {
   },
   computed: {
     colors: function() {
-      if (this.colorCategory == null) {
-        return null;
-      }
-      let results;
-      if (this.colorCategory === "type") {
-        results = this.primaryValue;
-      } else if (
-        this.colorCategory === "percentile" ||
-        this.colorCategory === "counts"
-      ) {
-        results = this.secondaryValue;
-      } else if (this.colorCategory === "year") {
-        results = this.tertiaryValue;
-      }
-
-      let returnObj = {};
-      results.map(o => (returnObj[o.id] = o.color));
-      return returnObj;
+      return this.getActive("color");
+    },
+    linestyles: function() {
+      return this.getActive("linestyle");
     }
   }
 };
