@@ -187,7 +187,7 @@ export default {
       const fontSize = Math.floor((24 / 108) * this.x1.bandwidth());
       // minimum font size to display
       const minFontSize = 12;
-      const maxFontSize = 72;
+      const maxFontSize = 32;
       if (fontSize < minFontSize) {
         // if too small, don't show any font
         return 0;
