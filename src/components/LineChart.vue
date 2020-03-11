@@ -213,6 +213,7 @@ export default {
         this.bindYAxis();
         this.bindLines();
         this.bindPoints();
+        this.bindLabels();
       });
     },
     notNullandHasProp: function(obj, propname) {
@@ -430,6 +431,71 @@ export default {
 
       // remove the now-empty container group
       pointSeriesData.exit().remove();
+    },
+    bindLabels: function() {
+      const labelTransitionDuration = this.transitionDuration * 2;
+
+      let labelKey;
+      if (this.d3Keys.length === 3) {
+        if (this.d3Keys[1] === "y5") {
+          labelKey = this.d3Keys[0];
+        } else {
+          labelKey = this.d3Keys[1];
+        }
+      } else {
+        labelKey = this.d3Keys[0];
+      }
+
+      const labelData = select(this.$refs.chart)
+        .selectAll("text")
+        .data(
+          this.d3Lines.filter(l => l.key === labelKey),
+          d => d.label
+        );
+
+      labelData.join(
+        enter =>
+          enter
+            .append("text")
+            .attr("opacity", 0)
+            .attr("text-anchor", "start")
+            .attr("x", d => this.x(d.data[d.data.length - 1].cohort))
+            .attr("y", d => this.y(d.data[d.data.length - 1].value))
+            .attr("stroke-width", 0)
+            .attr("fill", d => this.chartColors[d.label])
+            .attr("dy", ".3em")
+            .attr("dx", ".3em")
+            .style("font-size", "10px")
+            .text(d => d.label)
+            .call(enter =>
+              enter
+                .transition()
+                .duration(labelTransitionDuration)
+                .attr("opacity", 1)
+            ),
+
+        update =>
+          update.call(update =>
+            update
+              .attr("opacity", 0)
+              .attr("x", d => this.x(d.data[d.data.length - 1].cohort))
+              .attr("y", d => this.y(d.data[d.data.length - 1].value))
+              .attr("fill", d => this.chartColors[d.label])
+              .text(d => d.label)
+              .transition()
+              .duration(labelTransitionDuration)
+              .attr("opacity", 1)
+          ),
+
+        exit =>
+          exit.call(exit =>
+            exit
+              .transition()
+              .duration(this.transitionDuration)
+              .attr("opacity", 0)
+              .remove()
+          )
+      );
     }
   },
   mounted() {
