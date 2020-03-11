@@ -15,6 +15,7 @@ import { min, max } from "d3-array";
 import { transition } from "d3-transition";
 import { axisBottom, axisLeft } from "d3-axis";
 import { select, selectAll } from "d3-selection";
+import { line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
 import { arrayIsNullorEmpty } from "@/components/utils";
 
@@ -87,7 +88,7 @@ export default {
         let newObj = {};
 
         Object.keys(obj).map(key => {
-          return this.d3Keys.includes(key)
+          return this.d3Keys.includes(key) && obj[key] !== ""
             ? (newObj[key] = +obj[key])
             : (newObj[key] = obj[key]);
         });
@@ -114,21 +115,33 @@ export default {
         const label = d.label;
         // the data keys
         this.d3Keys.map(k => {
-          let dataObject = {};
-          dataObject.value = d[k];
-          dataObject.cohort = cohort;
+          if (d[k] !== "") {
+            let dataObject = {};
+            dataObject.value = d[k];
+            dataObject.cohort = cohort;
 
-          // append to the lookup object
-          lookupObject[label][k].push(dataObject);
+            // append to the lookup object
+            lookupObject[label][k].push(dataObject);
+          }
         });
       });
 
       return lookupObject;
     },
+    d3Lines: function() {
+      let result = [];
+      this.d3Labels.map(label => {
+        this.d3Keys.map(key => {
+          let obj = {};
+          obj.key = key;
+          obj.label = label;
+          obj.data = this.d3LineChartData[label][key];
+          result.push(obj);
+        });
+      });
+      return result;
+    },
     d3Max: function() {
-      if (arrayIsNullorEmpty(this.d3Data) || arrayIsNullorEmpty(this.d3Keys)) {
-        return null;
-      }
       const vm = this;
       return max(vm.d3Data, function(d) {
         return max(vm.d3Keys, function(key) {
@@ -137,9 +150,6 @@ export default {
       });
     },
     d3Min: function() {
-      if (arrayIsNullorEmpty(this.d3Data) || arrayIsNullorEmpty(this.d3Keys)) {
-        return null;
-      }
       const vm = this;
       return min(vm.d3Data, function(d) {
         return min(vm.d3Keys, function(key) {
@@ -169,9 +179,6 @@ export default {
         .range([0, this.chartWidth]);
     },
     y: function() {
-      if (this.d3Max == null || this.d3Min == null) {
-        return null;
-      }
       return scaleLinear()
         .rangeRound([this.chartHeight, 0])
         .domain([
@@ -179,23 +186,30 @@ export default {
           this.d3Max === 0 ? 1 : this.d3Max
         ])
         .nice();
+    },
+    line: function() {
+      return line()
+        .defined(d => !isNaN(d.value))
+        .x(d => this.x(d.cohort))
+        .y(d => this.y(d.value));
     }
   },
   watch: {
     d3Data: function() {
-      this.$nextTick(() => {
-        this.bindXAxis();
-        this.bindYAxis();
-      });
+      this.bindChartNextTick();
     },
     width: function() {
-      this.$nextTick(() => {
-        this.bindXAxis();
-        this.bindYAxis();
-      });
+      this.bindChartNextTick();
     }
   },
   methods: {
+    bindChartNextTick: function() {
+      this.$nextTick(() => {
+        this.bindXAxis();
+        this.bindYAxis();
+        this.bindLines();
+      });
+    },
     notNullandHasProp: function(obj, propname) {
       return obj != null && obj.hasOwnProperty(propname);
     },
@@ -260,13 +274,51 @@ export default {
         );
       // remove the domain outline
       yaxisgrid.select(".domain").remove();
+    },
+    bindLines: function() {
+      const bound = select(this.$refs.chart)
+        .attr("fill", "none")
+        .attr("stroke", "black")
+        .attr("stroke-width", 1.5)
+        .attr("stroke-linejoin", "round")
+        .selectAll("path")
+        .data(this.d3Lines);
+
+      bound.join(
+        enter =>
+          enter
+            .append("path")
+            .attr("opacity", 0)
+            .style("mix-blend-mode", "multiply")
+            .call(enter =>
+              enter
+                .transition()
+                .duration(this.transitionDuration)
+                .attr("opacity", 1)
+                .attr("stroke", d => this.chartColors[d.label])
+                .attr("d", d => this.line(d.data))
+            ),
+        update =>
+          update.call(enter =>
+            enter
+              .transition()
+              .duration(this.transitionDuration)
+              .attr("stroke", d => this.chartColors[d.label])
+              .attr("d", d => this.line(d.data))
+          ),
+        exit =>
+          exit.attr("stroke", "red").call(exit =>
+            exit
+              .transition()
+              .duration(this.transitionDuration)
+              .attr("opacity", 0)
+              .remove()
+          )
+      );
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.bindXAxis();
-      this.bindYAxis();
-    });
+    this.bindChartNextTick();
   }
 };
 </script>
