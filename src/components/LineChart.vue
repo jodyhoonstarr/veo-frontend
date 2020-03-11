@@ -326,6 +326,8 @@ export default {
       });
     },
     bindPoints: function() {
+      const pointTransitionDuration = this.transitionDuration * 2;
+
       // bind the sets of line data
       const pointSeriesData = select(this.$refs.chart)
         .selectAll("g.point-series")
@@ -349,7 +351,7 @@ export default {
             .call(enter =>
               enter
                 .transition()
-                .duration(this.transitionDuration)
+                .duration(pointTransitionDuration)
                 .attr("opacity", 1)
                 .style("stroke", d => this.chartColors[d.label])
             )
@@ -370,7 +372,7 @@ export default {
               .call(enter =>
                 enter
                   .transition()
-                  .duration(this.transitionDuration)
+                  .duration(pointTransitionDuration)
                   .attr("opacity", 1)
                   .style("stroke", d => this.chartColors[d.label])
               ),
