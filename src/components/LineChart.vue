@@ -281,6 +281,7 @@ export default {
         .attr("stroke", "black")
         .attr("stroke-width", 1.5)
         .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
         .selectAll("path")
         .data(this.d3Lines);
 
@@ -298,16 +299,18 @@ export default {
                 .attr("stroke", d => this.chartColors[d.label])
                 .attr("d", d => this.line(d.data))
             ),
+
         update =>
-          update.call(enter =>
-            enter
+          update.call(update =>
+            update
               .transition()
               .duration(this.transitionDuration)
               .attr("stroke", d => this.chartColors[d.label])
               .attr("d", d => this.line(d.data))
           ),
+
         exit =>
-          exit.attr("stroke", "red").call(exit =>
+          exit.call(exit =>
             exit
               .transition()
               .duration(this.transitionDuration)
@@ -315,6 +318,90 @@ export default {
               .remove()
           )
       );
+
+      // bind the sets of line data
+      const pointSeriesData = select(this.$refs.chart)
+        .selectAll("g.point-series")
+        .data(this.d3Lines);
+
+      // create a new group for line/series and draw points
+      pointSeriesData
+        .enter()
+        .append("g")
+        .attr("class", "point-series")
+        .attr("id", d => `${d.label} (${d.key})`)
+        .selectAll("circle")
+        .data(d => d.data)
+        .join(enter =>
+          enter
+            .append("circle")
+            .attr("cx", d => this.x(d.cohort))
+            .attr("cy", d => this.y(d.value))
+            .attr("r", 2)
+            .attr("opacity", 0)
+            .call(enter =>
+              enter
+                .transition()
+                .duration(this.transitionDuration)
+                .attr("opacity", 1)
+            )
+        );
+
+      // update any existing points
+      pointSeriesData
+        .selectAll("circle")
+        .data(d => d.data)
+        .join(
+          enter =>
+            enter
+              .append("circle")
+              .attr("cx", d => this.x(d.cohort))
+              .attr("cy", d => this.y(d.value))
+              .attr("r", 2)
+              .attr("opacity", 0)
+              .call(enter =>
+                enter
+                  .transition()
+                  .duration(this.transitionDuration)
+                  .attr("opacity", 1)
+              ),
+
+          update =>
+            update.call(update =>
+              update
+                .transition()
+                .duration(this.transitionDuration)
+                .attr("cx", d => this.x(d.cohort))
+                .attr("cy", d => this.y(d.value))
+            ),
+
+          exit =>
+            exit.call(exit =>
+              exit
+                .transition()
+                .duration(this.transitionDuration)
+                .attr("opacity", 0)
+                .remove()
+            )
+        );
+
+      // transition out point data that doesn't exist
+      pointSeriesData
+        .selectAll("circle")
+        .data(d => d.data)
+        .exit()
+        .join(exit =>
+          exit.call(exit =>
+            exit
+              .transition()
+              .duration(this.transitionDuration)
+              .attr("opacity", 0)
+              .remove()
+          )
+        );
+
+      // remove the now-empty container group
+      pointSeriesData.exit().remove();
     }
   },
   mounted() {
