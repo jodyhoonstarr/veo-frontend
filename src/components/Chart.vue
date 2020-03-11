@@ -26,9 +26,10 @@
       :width="width"
       :height="height"
       :max-height="maxHeight"
-      :chartData="chartData"
-      :chartColors="chartColors"
-      :chartDataType="chartDataType"
+      :chart-data="chartData"
+      :chart-colors="chartColors"
+      :chart-line-styles="chartLineStyles"
+      :chart-data-type="chartDataType"
     ></LineChart>
 
     <NotificationCard v-else-if="width" :height="height">
@@ -62,6 +63,10 @@ export default {
       default: null
     },
     chartColors: {
+      type: Object,
+      default: null
+    },
+    chartLineStyles: {
       type: Object,
       default: null
     },

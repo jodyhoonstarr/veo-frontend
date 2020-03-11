@@ -42,6 +42,7 @@
           :loading="loading"
           :chart-data="chartData"
           :chart-colors="chartColors"
+          :chart-line-styles="chartLineStyles"
           :chart-data-type="chartDataType"
         ></Chart>
       </ChartCard>
@@ -136,6 +137,12 @@ export default {
     },
     chartColors: function() {
       return getColorSet(this.chartType, this.filters, this.afqt);
+    },
+    chartLineStyles: function() {
+      if (!this.filters || !this.filters.hasOwnProperty("linestyles")) {
+        return null;
+      }
+      return this.filters.linestyles;
     }
   }
 };

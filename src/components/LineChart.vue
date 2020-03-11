@@ -42,6 +42,10 @@ export default {
       type: Object,
       default: null
     },
+    chartLineStyles: {
+      type: Object,
+      default: null
+    },
     chartDataType: {
       type: String,
       default: null
