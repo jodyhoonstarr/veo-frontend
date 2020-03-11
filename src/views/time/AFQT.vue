@@ -39,7 +39,7 @@
         <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
         <Chart
           :chart-type="chartType"
-          :loading="false"
+          :loading="loading"
           :chart-data="chartData"
           :chart-colors="chartColors"
           :chart-data-type="chartDataType"
