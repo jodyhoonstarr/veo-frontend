@@ -208,6 +208,7 @@ export default {
         this.bindXAxis();
         this.bindYAxis();
         this.bindLines();
+        this.bindPoints();
       });
     },
     notNullandHasProp: function(obj, propname) {
@@ -318,7 +319,8 @@ export default {
               .remove()
           )
       );
-
+    },
+    bindPoints: function() {
       // bind the sets of line data
       const pointSeriesData = select(this.$refs.chart)
         .selectAll("g.point-series")
