@@ -53,7 +53,7 @@ export default {
   },
   data() {
     return {
-      margin: { top: 26, right: 60, bottom: 48, left: 60 },
+      margin: { top: 26, right: 110, bottom: 48, left: 60 },
       transitionDuration: 400
     };
   },
@@ -179,7 +179,7 @@ export default {
     },
     x: function() {
       return scaleLinear()
-        .domain([this.cohortMin, this.cohortMax + 1])
+        .domain([this.cohortMin, this.cohortMax])
         .range([0, this.chartWidth]);
     },
     y: function() {
@@ -463,8 +463,8 @@ export default {
             .attr("y", d => this.y(d.data[d.data.length - 1].value))
             .attr("stroke-width", 0)
             .attr("fill", d => this.chartColors[d.label])
-            .attr("dy", ".3em")
-            .attr("dx", ".3em")
+            .attr("dy", ".30em")
+            .attr("dx", ".35em")
             .style("font-size", "10px")
             .text(d => d.label)
             .call(enter =>
