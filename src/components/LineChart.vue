@@ -224,26 +224,30 @@ export default {
         return this.y(this.chartHeight);
       }
     },
+    xAxisFormat: function(d) {
+      const dInt = parseInt(d);
+      return `${dInt}-${dInt + 1}`;
+    },
     bindXAxis: function() {
       const xaxis = select(this.$refs.xaxis);
       xaxis
         .attr("transform", `translate(0,${this.chartHeight})`)
         .transition()
         .duration(this.transitionDuration)
-        .call(axisBottom(this.x).tickFormat(format("d")))
+        .call(axisBottom(this.x).tickFormat(this.xAxisFormat))
         .selectAll(".tick text")
         .style("font-size", "12px");
 
       // only label the ticks that are even [2000, 2004, ...]
       const tickText = select(this.$refs.xaxis).selectAll(".tick text");
       tickText.each(function(val) {
-        if (val % 2 !== 0) select(this).remove();
+        if (val % 2 !== 0) {
+          select(this).remove();
+        }
       });
-
-      // leave ticks for every year [2000, 2001, ...]
       const tickLine = select(this.$refs.xaxis).selectAll(".tick line");
       tickLine.each(function(val) {
-        if (val % 1 !== 0) select(this).remove();
+        if (val % 2 !== 0) select(this).remove();
       });
     },
     bindYAxis: function() {
