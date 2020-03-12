@@ -1,106 +1,149 @@
 <template>
   <div>
-    <h1 class="text-center">This is the State page</h1>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="9">
-        <DropDown
-          label="State"
-          :items="states"
-          v-model="selectedState"
-          multiple
-          close
-          clearable
-        ></DropDown>
+      <v-col cols="12" xs="12" sm="4" class="pb-0">
+        <GetData url="/metadata/label_fipsnum.json">
+          <DropDownNoRadio
+            slot-scope="{ response, loading }"
+            :loading="loading"
+            label="State"
+            :items="response"
+            propname="labels"
+            id="state"
+            v-model="state"
+          ></DropDownNoRadio>
+        </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="3">
-        <DropDown
-          label="Cohort"
-          :items="cohorts"
-          v-model="selectedCohort"
-        ></DropDown>
+      <v-col cols="12" xs="12" sm="8" class="pb-0">
+        <GetData url="/metadata/label_2year_cohorts.json">
+          <cohort-slider
+            slot-scope="{ response, loading }"
+            :loading="loading"
+            :items="response"
+            v-model="cohort"
+          ></cohort-slider>
+        </GetData>
       </v-col>
     </SelectBar>
+    <GetData
+      url="/data/veogs.csv"
+      :emit="true"
+      @change="({ response }) => (this.csvData = response)"
+    >
+      <ChartCard
+        slot-scope="{ loading }"
+        :loading="loading"
+        :filters="filters"
+        active-toggle="State"
+      >
+        <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
+        <Chart
+          :chart-type="chartType"
+          :loading="loading"
+          :chart-data="chartData"
+          :chart-colors="chartColors"
+          :chart-line-styles="chartLineStyles"
+          :chart-data-type="chartDataType"
+        ></Chart>
+      </ChartCard>
+    </GetData>
   </div>
 </template>
 
 <script>
 import SelectBar from "@/components/SelectBar.vue";
-import DropDown from "@/components/DropDown.vue";
+import GetData from "@/components/GetData";
+import DropDownNoRadio from "@/components/DropDownNoRadio";
+import CohortSlider from "@/components/CohortSlider";
+import ChartCard from "@/components/ChartCard";
+import FiltersBar from "@/components/FiltersBar";
+import Chart from "@/components/Chart";
+import { GROUPCOLUMN } from "@/constants/lookups";
+import {
+  createChartData,
+  filterRows,
+  simplifiyRows,
+  getChartDataType,
+  getColorSet
+} from "@/components/utils";
 
 export default {
   name: "State",
   components: {
+    DropDownNoRadio,
     SelectBar,
-    DropDown
+    GetData,
+    CohortSlider,
+    ChartCard,
+    FiltersBar,
+    Chart
   },
   data() {
     return {
-      selectedState: null,
-      selectedCohort: null,
-      states: [
-        { id: "01", label: "Alabama" },
-        { id: "02", label: "Alaska" },
-        { id: "04", label: "Arizona" },
-        { id: "05", label: "Arkansas" },
-        { id: "06", label: "California" },
-        { id: "08", label: "Colorado" },
-        { id: "09", label: "Connecticut" },
-        { id: "10", label: "Delaware" },
-        { id: "11", label: "District of Columbia" },
-        { id: "12", label: "Florida" },
-        { id: "13", label: "Georgia" },
-        { id: "15", label: "Hawaii" },
-        { id: "16", label: "Idaho" },
-        { id: "17", label: "Illinois" },
-        { id: "18", label: "Indiana" },
-        { id: "19", label: "Iowa" },
-        { id: "20", label: "Kansas" },
-        { id: "21", label: "Kentucky" },
-        { id: "22", label: "Louisiana" },
-        { id: "23", label: "Maine" },
-        { id: "24", label: "Maryland" },
-        { id: "25", label: "Massachusetts" },
-        { id: "26", label: "Michigan" },
-        { id: "27", label: "Minnesota" },
-        { id: "28", label: "Mississippi" },
-        { id: "29", label: "Missouri" },
-        { id: "30", label: "Montana" },
-        { id: "31", label: "Nebraska" },
-        { id: "32", label: "Nevada" },
-        { id: "33", label: "New Hampshire" },
-        { id: "34", label: "New Jersey" },
-        { id: "35", label: "New Mexico" },
-        { id: "36", label: "New York" },
-        { id: "37", label: "North Carolina" },
-        { id: "38", label: "North Dakota" },
-        { id: "39", label: "Ohio" },
-        { id: "40", label: "Oklahoma" },
-        { id: "41", label: "Oregon" },
-        { id: "42", label: "Pennsylvania" },
-        { id: "44", label: "Rhode Island" },
-        { id: "45", label: "South Carolina" },
-        { id: "46", label: "South Dakota" },
-        { id: "47", label: "Tennessee" },
-        { id: "48", label: "Texas" },
-        { id: "49", label: "Utah" },
-        { id: "50", label: "Vermont" },
-        { id: "51", label: "Virginia" },
-        { id: "53", label: "Washington" },
-        { id: "54", label: "West Virginia" },
-        { id: "55", label: "Wisconsin" },
-        { id: "56", label: "Wyoming" }
-      ],
-      cohorts: [
-        { id: "2000", label: "2000-2001" },
-        { id: "2002", label: "2002-2003" },
-        { id: "2004", label: "2004-2005" },
-        { id: "2006", label: "2006-2007" },
-        { id: "2008", label: "2008-2009" },
-        { id: "2010", label: "2010-2011" },
-        { id: "2012", label: "2012-2013" },
-        { id: "2014", label: "2014-2015" }
-      ]
+      name: "state",
+      chartType: "line",
+      csvData: null,
+      state: null,
+      cohort: null,
+      filters: {
+        colors: null,
+        filters: null,
+        type: null
+      }
     };
+  },
+  methods: {
+    handleFilters: function(f) {
+      if (f == null) {
+        return null;
+      }
+      this.filters = f;
+    }
+  },
+  computed: {
+    dataColumn: function() {
+      // AKA activeToggleProp in the bar view
+      // in lines this is a fixed column
+      return GROUPCOLUMN[this.name];
+    },
+    dataSelections: function() {
+      return [
+        { data: this.cohort, prop: "cohort" },
+        { data: this.state, prop: this.dataColumn }
+      ];
+    },
+    chartDataType: function() {
+      return getChartDataType(this.filters);
+    },
+    csvDataRows: function() {
+      return filterRows(this.csvData, this.dataSelections);
+    },
+    csvDataRowsSimple: function() {
+      return simplifiyRows(
+        this.csvDataRows,
+        this.filters,
+        this.dataColumn,
+        this.chartType === "line"
+      );
+    },
+    chartData: function() {
+      return createChartData(
+        this.csvDataRowsSimple,
+        this.filters,
+        this.dataColumn,
+        this.dataSelections,
+        this.chartType === "line"
+      );
+    },
+    chartColors: function() {
+      return getColorSet(this.chartType, this.filters, this.state);
+    },
+    chartLineStyles: function() {
+      if (!this.filters || !this.filters.hasOwnProperty("linestyles")) {
+        return null;
+      }
+      return this.filters.linestyles;
+    }
   }
 };
 </script>
