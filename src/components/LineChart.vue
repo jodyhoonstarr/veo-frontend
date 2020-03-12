@@ -369,12 +369,13 @@ export default {
             .attr("cy", d => this.y(d.value))
             .attr("r", 2)
             .attr("opacity", 0)
+            .style("fill", "white")
+            .style("stroke", d => this.chartColors[d.label])
             .call(enter =>
               enter
                 .transition()
                 .duration(pointTransitionDuration)
                 .attr("opacity", 1)
-                .style("stroke", d => this.chartColors[d.label])
             )
         );
 
@@ -390,6 +391,7 @@ export default {
               .attr("cy", d => this.y(d.value))
               .attr("r", 2)
               .attr("opacity", 0)
+              .style("fill", "white")
               .style("stroke", d => this.chartColors[d.label])
               .call(enter =>
                 enter
