@@ -86,7 +86,7 @@ export default {
           children: [
             { route: "/time/paygrade", label: "Pay Grade" },
             { route: "/time/state", label: "State" },
-            { route: "/time/sector", label: "Sector" },
+            { route: "/time/industry", label: "Industry" },
             { route: "/time/age", label: "Age" },
             { route: "/time/sex", label: "Sex" },
             { route: "/time/raceethnicity", label: "Race/Ethnicity" },

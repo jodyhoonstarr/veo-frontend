@@ -97,10 +97,10 @@ const routes = [
           )
       },
       {
-        path: "sector",
-        name: "Sector",
+        path: "industry",
+        name: "Industry",
         component: () =>
-          import(/* webpackChunkName: "sector" */ "@/views/time/Sector.vue")
+          import(/* webpackChunkName: "industry" */ "@/views/time/Industry.vue")
       },
       {
         path: "sex",
