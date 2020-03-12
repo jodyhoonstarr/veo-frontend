@@ -17,7 +17,7 @@ import { axisBottom, axisLeft } from "d3-axis";
 import { select, selectAll } from "d3-selection";
 import { line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
-import { arrayIsNullorEmpty } from "@/components/utils";
+import { arrayIsNullorEmpty, wrapLabels } from "@/components/utils";
 
 export default {
   name: "LineChart",
@@ -185,10 +185,7 @@ export default {
     y: function() {
       return scaleLinear()
         .rangeRound([this.chartHeight, 0])
-        .domain([
-          this.d3Min > 0 ? 0 : this.d3Min,
-          this.d3Max === 0 ? 1 : this.d3Max
-        ])
+        .domain([this.d3Min, this.d3Max === 0 ? 1 : this.d3Max])
         .nice();
     },
     line: function() {
@@ -384,6 +381,10 @@ export default {
     bindLabels: function() {
       const labelTransitionDuration = this.transitionDuration * 2;
 
+      select(this.$refs.chart)
+        .selectAll("text")
+        .remove();
+
       let labelKey;
       if (this.d3Keys.length === 3) {
         if (this.d3Keys[1] === "y5") {
@@ -402,47 +403,35 @@ export default {
           d => d.label
         );
 
-      labelData.join(
-        enter =>
-          enter
-            .append("text")
-            .attr("opacity", 0)
-            .attr("text-anchor", "start")
-            .attr("x", d => this.x(d.data[d.data.length - 1].cohort))
-            .attr("y", d => this.y(d.data[d.data.length - 1].value))
-            .attr("stroke-width", 0)
-            .attr("fill", d => this.chartColors[d.label])
-            .attr("dy", ".30em")
-            .attr("dx", ".35em")
-            .style("font-size", "10px")
-            .text(d => d.label)
-            .call(enter =>
-              enter
-                .transition()
-                .duration(labelTransitionDuration)
-                .attr("opacity", 1)
-            ),
-
-        update =>
-          update.call(update =>
-            update
-              .attr("opacity", 0)
-              .attr("x", d => this.x(d.data[d.data.length - 1].cohort))
-              .attr("y", d => this.y(d.data[d.data.length - 1].value))
-              .attr("fill", d => this.chartColors[d.label])
-              .text(d => d.label)
+      labelData.join(enter =>
+        enter
+          .append("text")
+          .attr("opacity", 0)
+          .attr("text-anchor", "start")
+          .attr("x", d => this.x(d.data[d.data.length - 1].cohort))
+          .attr("y", d => this.y(d.data[d.data.length - 1].value))
+          .attr("stroke-width", 0)
+          .attr("fill", d => this.chartColors[d.label])
+          .attr("dy", ".30em")
+          .attr("dx", ".35em")
+          .style("font-size", "10px")
+          .text(d => {
+            const labelMaxLength = 24;
+            if (d.label.length < labelMaxLength) {
+              return d.label;
+            } else {
+              // ,... is ugly, if a comma is the last character remove it
+              let charOffset = 3;
+              if (d.label[d.label.length - 1] === ",")
+                charOffset = charOffset + 1;
+              return `${d.label.substring(0, labelMaxLength - charOffset)}...`;
+            }
+          })
+          .call(enter =>
+            enter
               .transition()
               .duration(labelTransitionDuration)
               .attr("opacity", 1)
-          ),
-
-        exit =>
-          exit.call(exit =>
-            exit
-              .transition()
-              .duration(this.transitionDuration)
-              .attr("opacity", 0)
-              .remove()
           )
       );
     }
