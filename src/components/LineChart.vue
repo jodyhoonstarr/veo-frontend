@@ -349,13 +349,15 @@ export default {
     bindPoints: function() {
       const pointTransitionDuration = this.transitionDuration * 2;
 
-      // bind the sets of line data
-      const pointSeriesData = select(this.$refs.chart)
+      // remove and redraw the whole point series every time
+      select(this.$refs.chart)
         .selectAll("g.point-series")
-        .data(this.d3Lines, d => d.label);
+        .remove();
 
-      // create a new group for line/series and draw points
-      pointSeriesData
+      // bind the sets of line data
+      select(this.$refs.chart)
+        .selectAll("g.point-series")
+        .data(this.d3Lines, d => d.label)
         .enter()
         .append("g")
         .attr("class", "point-series")
@@ -378,65 +380,6 @@ export default {
                 .attr("opacity", 1)
             )
         );
-
-      // update any existing points
-      pointSeriesData
-        .selectAll("circle")
-        .data(d => this.addLabel(d))
-        .join(
-          enter =>
-            enter
-              .append("circle")
-              .attr("cx", d => this.x(d.cohort))
-              .attr("cy", d => this.y(d.value))
-              .attr("r", 2)
-              .attr("opacity", 0)
-              .style("fill", "white")
-              .style("stroke", d => this.chartColors[d.label])
-              .call(enter =>
-                enter
-                  .transition()
-                  .duration(pointTransitionDuration)
-                  .attr("opacity", 1)
-              ),
-
-          update =>
-            update.call(update =>
-              update
-                .transition()
-                .duration(this.transitionDuration)
-                .attr("cx", d => this.x(d.cohort))
-                .attr("cy", d => this.y(d.value))
-                .attr("opacity", 1)
-            ),
-
-          exit =>
-            exit.call(exit =>
-              exit
-                .transition()
-                .duration(this.transitionDuration)
-                .attr("opacity", 0)
-                .remove()
-            )
-        );
-
-      // transition out point data that doesn't exist
-      pointSeriesData
-        .selectAll("circle")
-        .data(d => d.data)
-        .exit()
-        .join(exit =>
-          exit.call(exit =>
-            exit
-              .transition()
-              .duration(this.transitionDuration)
-              .attr("opacity", 0)
-              .remove()
-          )
-        );
-
-      // remove the now-empty container group
-      pointSeriesData.exit().remove();
     },
     bindLabels: function() {
       const labelTransitionDuration = this.transitionDuration * 2;
