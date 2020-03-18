@@ -76,9 +76,7 @@ class LabelSpacer {
           previousItem.hasOwnProperty("value")
         ) {
           if (
-            value.value < previousItem.value ||
-            value.value - conflictPixelRange <
-              previousItem.value + conflictPixelRange
+            this.checkPreviousConflict(value, previousItem, conflictPixelRange)
           ) {
             // if the previous item is larger (aka lower) than the current item
             // or if they're in conflicting territory
@@ -91,11 +89,7 @@ class LabelSpacer {
         // check whether there's a conflict with the next item
         const nextItem = map.get(key + 1);
         if (value.hasOwnProperty("value") && nextItem.hasOwnProperty("value")) {
-          if (
-            value.value > nextItem.value ||
-            value.value + conflictPixelRange >
-              nextItem.value - conflictPixelRange
-          ) {
+          if (this.checkNextConflict(value, nextItem, conflictPixelRange)) {
             // if the next item is smaller (aka higher) than the current item
             // or if the're in conflicting territory
             conflict = true;
@@ -104,6 +98,22 @@ class LabelSpacer {
       }
       map.set(key, { ...value, conflict: conflict });
     });
+  }
+
+  // check the for conflicts with the previous item
+  checkPreviousConflict(value, previousItem, conflictPixelRange) {
+    return (
+      value.value < previousItem.value ||
+      value.value - conflictPixelRange < previousItem.value + conflictPixelRange
+    );
+  }
+
+  // check for conflicts with the next item
+  checkNextConflict(value, nextItem, conflictPixelRange) {
+    return (
+      value.value > nextItem.value ||
+      value.value + conflictPixelRange > nextItem.value - conflictPixelRange
+    );
   }
 
   // return the height plus padding x2
