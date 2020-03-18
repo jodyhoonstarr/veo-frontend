@@ -404,9 +404,10 @@ export default {
         yValues[d.label] = this.y(d.data[d.data.length - 1].value);
       });
 
-      console.log(yValues);
+      // space out overlapping y labels
       const spacedYValues = labelSpacer(yValues);
-      // .attr("y", d => spacedYValues[d.label])
+      // .attr("y", d => spacedYValues[d.label]) // new call
+      // .attr("y", d => this.y(d.data[d.data.length - 1].value)) // original call
 
       const labelData = select(this.$refs.chart)
         .selectAll("text")
@@ -417,8 +418,8 @@ export default {
           .append("text")
           .attr("opacity", 0)
           .attr("text-anchor", "start")
-          .attr("x", d => this.chartWidth)
-          .attr("y", d => this.y(d.data[d.data.length - 1].value))
+          .attr("x", this.chartWidth)
+          .attr("y", d => spacedYValues[d.label])
           .attr("stroke-width", 0)
           .attr("fill", d => this.chartColors[d.label])
           .attr("dy", ".30em")

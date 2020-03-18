@@ -38,8 +38,21 @@ class LabelSpacer {
     // count and flag the cluster conflicts
     const numClusters = this.countAndFlagClusters(this.labelMap);
 
+    // if there's a single cluster, center around it
     if (numClusters === 1) {
-      this.handleSingleCluster(this.labelMap, this.conflictSize);
+      this.handleSingleCluster(this.labelMap, this.conflictSize, 1);
+    } else if (numClusters > 1) {
+      // pick the centermost cluster (preferring vertically highest) and use it
+      // [1,2,3...numClusters]
+      const clusterCountArray = [...Array(numClusters).keys()].map(v => v + 1);
+      const centerClusterId = Math.floor(
+        this.calculateMedian(clusterCountArray)
+      );
+      this.handleSingleCluster(
+        this.labelMap,
+        this.conflictSize,
+        centerClusterId
+      );
     }
   }
 
@@ -63,9 +76,12 @@ class LabelSpacer {
           previousItem.hasOwnProperty("value")
         ) {
           if (
+            value.value < previousItem.value ||
             value.value - conflictPixelRange <
-            previousItem.value + conflictPixelRange
+              previousItem.value + conflictPixelRange
           ) {
+            // if the previous item is larger (aka lower) than the current item
+            // or if they're in conflicting territory
             conflict = true;
           }
         }
@@ -76,9 +92,12 @@ class LabelSpacer {
         const nextItem = map.get(key + 1);
         if (value.hasOwnProperty("value") && nextItem.hasOwnProperty("value")) {
           if (
+            value.value > nextItem.value ||
             value.value + conflictPixelRange >
-            nextItem.value - conflictPixelRange
+              nextItem.value - conflictPixelRange
           ) {
+            // if the next item is smaller (aka higher) than the current item
+            // or if the're in conflicting territory
             conflict = true;
           }
         }
@@ -147,11 +166,11 @@ class LabelSpacer {
   }
 
   // handle the case where there's only a single cluster
-  handleSingleCluster(inputMap, conflictSize) {
+  handleSingleCluster(inputMap, conflictSize, clusterId = 1) {
     // create a map for this single cluster
     let thisCluster = new Map(
       [...inputMap].filter(([_, v]) => {
-        return v.hasOwnProperty("cluster") && v.cluster === 1;
+        return v.hasOwnProperty("cluster") && v.cluster === clusterId;
       })
     );
 
@@ -285,7 +304,7 @@ class LabelSpacer {
   // this indicates it's available to be moved and is in
   // conflicting space with a neighboring element
   flagAndCheckForOpenConflicts(inputMap) {
-    this.flagConflicts(inputMap);
+    this.flagConflicts(inputMap, this.conflictSize);
     return [...inputMap].find(([k, v]) => {
       return (
         v.hasOwnProperty("status") &&
@@ -297,60 +316,7 @@ class LabelSpacer {
   }
 }
 
-// // ! TEMP FOR TESTING
-// const allStates = {
-//   Alabama: 195,
-//   Alaska: 162,
-//   Arizona: 201,
-//   Arkansas: 221,
-//   California: 193,
-//   Colorado: 184,
-//   Connecticut: 187,
-//   Delaware: 170,
-//   "District of Columbia": 110,
-//   Florida: 214,
-//   Georgia: 193,
-//   Hawaii: 192,
-//   Idaho: 207,
-//   Illinois: 205,
-//   Indiana: 196,
-//   Iowa: 188,
-//   Kansas: 200,
-//   Kentucky: 185,
-//   Louisiana: 195,
-//   Maine: 211,
-//   Maryland: 128,
-//   Massachusetts: 181,
-//   Michigan: 201,
-//   Minnesota: 190,
-//   Mississippi: 201,
-//   Missouri: 204,
-//   Montana: 215,
-//   Nebraska: 200,
-//   Nevada: 206,
-//   "New Hampshire": 187,
-//   "New Jersey": 205,
-//   "New Mexico": 190,
-//   "New York": 201,
-//   "North Carolina": 191,
-//   "North Dakota": 118,
-//   Ohio: 199,
-//   Oklahoma: 196,
-//   Oregon: 198,
-//   Pennsylvania: 187,
-//   "Rhode Island": 204,
-//   "South Carolina": 193,
-//   "South Dakota": 199,
-//   Tennessee: 200,
-//   Texas: 183,
-//   Utah: 196,
-//   Vermont: 196,
-//   Virginia: 136,
-//   Washington: 189,
-//   "West Virginia": 205,
-//   Wisconsin: 197,
-//   Wyoming: 135
-// };
+// ! TEMP FOR TESTING
 // const sixStates = {
 //   Alabama: 132,
 //   Alaska: 85,
@@ -360,46 +326,22 @@ class LabelSpacer {
 //   Colorado: 116,
 //   Connecticut: 121
 // };
-// const whatsupwiththis = {
-//   Alabama: 195,
-//   Alaska: 162,
-//   Arizona: 201,
-//   Arkansas: 221,
-//   California: 193,
-//   Colorado: 184,
-//   Connecticut: 187,
-//   Delaware: 170,
-//   Florida: 214,
-//   Georgia: 193,
-//   Hawaii: 192,
-//   Idaho: 207,
-//   Illinois: 205,
-//   Indiana: 196,
-//   Iowa: 188,
-//   Kansas: 200,
-//   Kentucky: 185,
-//   Louisiana: 195,
-//   Maine: 211,
-//   Maryland: 128,
-//   Massachusetts: 181,
-//   Michigan: 201
-// };
-// const sixStatesNewConflict = { ...sixStates, FakeState: 154 };
 // const twoClusters = {
 //   ...sixStates,
 //   Alaska: 162,
 //   Delaware: 170,
 //   Massachusetts: 181
 // };
-//
-// const ls = new LabelSpacer(whatsupwiththis);
+// const ls = new LabelSpacer(twoClusters);
 // ls.print();
 
 export function labelSpacer(
   yValueObject,
   conflictHeight = 10,
-  conflictPadding = 1
+  conflictPadding = 0
 ) {
-  const ls = new LabelSpacer(yValueObject, conflictHeight, conflictPadding);
-  return ls.export();
+  if (yValueObject != null) {
+    const ls = new LabelSpacer(yValueObject, conflictHeight, conflictPadding);
+    return ls.export();
+  }
 }
