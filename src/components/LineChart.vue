@@ -18,6 +18,7 @@ import { select, selectAll } from "d3-selection";
 import { line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
 import { arrayIsNullorEmpty, wrapLabels } from "@/components/utils";
+import { labelSpacer } from "@/lib/labelspacer";
 
 export default {
   name: "LineChart",
@@ -396,19 +397,27 @@ export default {
         labelKey = this.d3Keys[0];
       }
 
+      // get only one label per set of lines
+      const linesFiltered = this.d3Lines.filter(l => l.key === labelKey);
+      let yValues = {};
+      linesFiltered.map(d => {
+        yValues[d.label] = this.y(d.data[d.data.length - 1].value);
+      });
+
+      console.log(yValues);
+      const spacedYValues = labelSpacer(yValues);
+      // .attr("y", d => spacedYValues[d.label])
+
       const labelData = select(this.$refs.chart)
         .selectAll("text")
-        .data(
-          this.d3Lines.filter(l => l.key === labelKey),
-          d => d.label
-        );
+        .data(linesFiltered, d => d.label);
 
       labelData.join(enter =>
         enter
           .append("text")
           .attr("opacity", 0)
           .attr("text-anchor", "start")
-          .attr("x", d => this.x(d.data[d.data.length - 1].cohort))
+          .attr("x", d => this.chartWidth)
           .attr("y", d => this.y(d.data[d.data.length - 1].value))
           .attr("stroke-width", 0)
           .attr("fill", d => this.chartColors[d.label])

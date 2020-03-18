@@ -138,6 +138,14 @@ class LabelSpacer {
     console.log(this.labelMap);
   }
 
+  export() {
+    const returnObject = {};
+    this.labelMap.forEach(value => {
+      returnObject[value.name] = value.value;
+    });
+    return returnObject;
+  }
+
   // handle the case where there's only a single cluster
   handleSingleCluster(inputMap, conflictSize) {
     // create a map for this single cluster
@@ -289,76 +297,109 @@ class LabelSpacer {
   }
 }
 
-// ! TEMP FOR TESTING
-const allStates = {
-  Alabama: 195,
-  Alaska: 162,
-  Arizona: 201,
-  Arkansas: 221,
-  California: 193,
-  Colorado: 184,
-  Connecticut: 187,
-  Delaware: 170,
-  "District of Columbia": 110,
-  Florida: 214,
-  Georgia: 193,
-  Hawaii: 192,
-  Idaho: 207,
-  Illinois: 205,
-  Indiana: 196,
-  Iowa: 188,
-  Kansas: 200,
-  Kentucky: 185,
-  Louisiana: 195,
-  Maine: 211,
-  Maryland: 128,
-  Massachusetts: 181,
-  Michigan: 201,
-  Minnesota: 190,
-  Mississippi: 201,
-  Missouri: 204,
-  Montana: 215,
-  Nebraska: 200,
-  Nevada: 206,
-  "New Hampshire": 187,
-  "New Jersey": 205,
-  "New Mexico": 190,
-  "New York": 201,
-  "North Carolina": 191,
-  "North Dakota": 118,
-  Ohio: 199,
-  Oklahoma: 196,
-  Oregon: 198,
-  Pennsylvania: 187,
-  "Rhode Island": 204,
-  "South Carolina": 193,
-  "South Dakota": 199,
-  Tennessee: 200,
-  Texas: 183,
-  Utah: 196,
-  Vermont: 196,
-  Virginia: 136,
-  Washington: 189,
-  "West Virginia": 205,
-  Wisconsin: 197,
-  Wyoming: 135
-};
-const sixStates = {
-  Alabama: 132,
-  Alaska: 85,
-  Arizona: 139,
-  Arkansas: 169,
-  California: 128,
-  Colorado: 116,
-  Connecticut: 121
-};
-const sixStatesNewConflict = { ...sixStates, FakeState: 154 };
-const twoClusters = {
-  ...sixStates,
-  Alaska: 162,
-  Delaware: 170,
-  Massachusetts: 181
-};
+// // ! TEMP FOR TESTING
+// const allStates = {
+//   Alabama: 195,
+//   Alaska: 162,
+//   Arizona: 201,
+//   Arkansas: 221,
+//   California: 193,
+//   Colorado: 184,
+//   Connecticut: 187,
+//   Delaware: 170,
+//   "District of Columbia": 110,
+//   Florida: 214,
+//   Georgia: 193,
+//   Hawaii: 192,
+//   Idaho: 207,
+//   Illinois: 205,
+//   Indiana: 196,
+//   Iowa: 188,
+//   Kansas: 200,
+//   Kentucky: 185,
+//   Louisiana: 195,
+//   Maine: 211,
+//   Maryland: 128,
+//   Massachusetts: 181,
+//   Michigan: 201,
+//   Minnesota: 190,
+//   Mississippi: 201,
+//   Missouri: 204,
+//   Montana: 215,
+//   Nebraska: 200,
+//   Nevada: 206,
+//   "New Hampshire": 187,
+//   "New Jersey": 205,
+//   "New Mexico": 190,
+//   "New York": 201,
+//   "North Carolina": 191,
+//   "North Dakota": 118,
+//   Ohio: 199,
+//   Oklahoma: 196,
+//   Oregon: 198,
+//   Pennsylvania: 187,
+//   "Rhode Island": 204,
+//   "South Carolina": 193,
+//   "South Dakota": 199,
+//   Tennessee: 200,
+//   Texas: 183,
+//   Utah: 196,
+//   Vermont: 196,
+//   Virginia: 136,
+//   Washington: 189,
+//   "West Virginia": 205,
+//   Wisconsin: 197,
+//   Wyoming: 135
+// };
+// const sixStates = {
+//   Alabama: 132,
+//   Alaska: 85,
+//   Arizona: 139,
+//   Arkansas: 169,
+//   California: 128,
+//   Colorado: 116,
+//   Connecticut: 121
+// };
+// const whatsupwiththis = {
+//   Alabama: 195,
+//   Alaska: 162,
+//   Arizona: 201,
+//   Arkansas: 221,
+//   California: 193,
+//   Colorado: 184,
+//   Connecticut: 187,
+//   Delaware: 170,
+//   Florida: 214,
+//   Georgia: 193,
+//   Hawaii: 192,
+//   Idaho: 207,
+//   Illinois: 205,
+//   Indiana: 196,
+//   Iowa: 188,
+//   Kansas: 200,
+//   Kentucky: 185,
+//   Louisiana: 195,
+//   Maine: 211,
+//   Maryland: 128,
+//   Massachusetts: 181,
+//   Michigan: 201
+// };
+// const sixStatesNewConflict = { ...sixStates, FakeState: 154 };
+// const twoClusters = {
+//   ...sixStates,
+//   Alaska: 162,
+//   Delaware: 170,
+//   Massachusetts: 181
+// };
+//
+// const ls = new LabelSpacer(whatsupwiththis);
+// ls.print();
 
-const ls = new LabelSpacer(sixStatesNewConflict);
-ls.print();
+export function labelSpacer(
+  yValueObject,
+  conflictHeight = 10,
+  conflictPadding = 1
+) {
+  const ls = new LabelSpacer(yValueObject, conflictHeight, conflictPadding);
+  return ls.export();
+}
