@@ -1,350 +1,378 @@
-// * CONSTANTS
-// Status Flags - these are used to determine whether an element can move or be moved
-const STATUS = {
-  open: "open", // initialized
-  set: "set", // set position by neighboring elements
-  locked: "locked" // position locked by logic (i.e. boundary of window, num units)
-};
+import { PriorityQueue } from "@/lib/priorityqueue";
+import { linSpace } from "@/lib/linspace";
 
-// * LABELSPACER
-// LabelSpacer takes a set of key-value pairs and spaces
-// them out given a set height and padding. Use the class
-// to vertically space overlapping d3 labels.
 class LabelSpacer {
-  // take a set of key-value pairs and sort them into a new map
-  constructor(yPositions, conflictHeight = 10, conflictPadding = 1) {
-    this.labelMap = new Map();
-    this.conflictSize = this.conflictHeightPx(conflictHeight, conflictPadding);
+  constructor(yPositions, heightPx = 10, paddingPx = 1, maxHeight = 400) {
+    this.labelMap = new Map(); // store the label attributes
+    this.clusters = {}; // store the attributes for clusters of labels
+    this.conflictSize = this.generateConflictSize(heightPx, paddingPx);
 
-    // fill the label map using the input
-    Object.keys(yPositions)
-      .sort((a, b) => yPositions[a] - yPositions[b])
+    // jam a 0 starting value and a max height into the positions to denote the endpoints
+    const newYPositions = { ...yPositions, start: 0, end: maxHeight };
+
+    // take a set of key-value pairs and sort them
+    // store the values in a map to lock the order
+    Object.keys(newYPositions)
+      .sort((a, b) => newYPositions[a] - newYPositions[b])
       .map((key, idx) => {
         this.labelMap.set(idx, {
           name: key,
-          value: yPositions[key],
-          status: STATUS.open
+          value: newYPositions[key],
+          ascending: {
+            distanceToNext: null,
+            distanceNeeded: null,
+            accumulator: 0
+          },
+          descending: {
+            distanceToNext: null,
+            distanceNeeded: null,
+            accumulator: 0
+          },
+          cluster: null
         });
       });
 
-    // process the main logical operations
-    this.orderOfOperations();
-  }
-
-  // the main handler of the ooo
-  orderOfOperations() {
-    // flag the conflicts
-    this.flagConflicts(this.labelMap, this.conflictSize);
-    // count and flag the cluster conflicts
-    const numClusters = this.countAndFlagClusters(this.labelMap);
-
-    // if there's a single cluster, center around it
-    if (numClusters === 1) {
-      this.handleSingleCluster(this.labelMap, this.conflictSize, 1);
-    } else if (numClusters > 1) {
-      // pick the centermost cluster (preferring vertically highest) and use it
-      // [1,2,3...numClusters]
-      const clusterCountArray = [...Array(numClusters).keys()].map(v => v + 1);
-      const centerClusterId = Math.floor(
-        this.calculateMedian(clusterCountArray)
-      );
-      this.handleSingleCluster(
-        this.labelMap,
-        this.conflictSize,
-        centerClusterId
-      );
+    this.calculateAscending();
+    this.calculateDescending();
+    this.flagClusters();
+    // if there's at least one cluster, process the space
+    if (this.clusters.hasOwnProperty("1")) {
+      this.claimNeighboringClusterSpace();
     }
   }
 
-  // * FUNCTIONS
+  // update the cluster attribute data
+  updateClusterProps(clusterID, prop, value) {
+    let clusterProps;
+    if (this.clusters.hasOwnProperty(clusterID)) {
+      clusterProps = this.clusters[clusterID];
+    } else {
+      clusterProps = { mapIDs: [], min: null, max: null };
+    }
+    clusterProps[prop] = value;
+    this.clusters[clusterID] = clusterProps;
+  }
 
-  // add new attribute to elements of the map indicating
-  // where there's a conflict with neighbors given font height
-  // and padding between each element
-  flagConflicts(inputMap, conflictSize) {
-    // assume the conflict will be half above and half below
-    const conflictPixelRange = conflictSize / 2;
+  // update the cluster count
+  updateClusterList(clusterID, key) {
+    let clusterProps;
+    if (this.clusters.hasOwnProperty(clusterID)) {
+      clusterProps = this.clusters[clusterID];
+    } else {
+      clusterProps = { mapIDs: [], min: null, max: null };
+    }
+    clusterProps.mapIDs.push(key);
+    this.clusters[clusterID] = clusterProps;
+  }
 
-    inputMap.forEach((value, key, map) => {
-      let conflict = false;
-
-      if (key !== 0) {
-        // check whether there's a conflict with the previous item
-        const previousItem = map.get(key - 1);
-        if (
-          value.hasOwnProperty("value") &&
-          previousItem.hasOwnProperty("value")
-        ) {
-          if (
-            this.checkPreviousConflict(value, previousItem, conflictPixelRange)
-          ) {
-            // if the previous item is larger (aka lower) than the current item
-            // or if they're in conflicting territory
-            conflict = true;
-          }
-        }
+  // assign a clusterID to each item
+  flagClusters() {
+    let clusterID = 0;
+    let clusterPattern = { asc: null, desc: null };
+    let clusterSum = null;
+    let clusterFlag = false;
+    this.labelMap.forEach((value, key, map) => {
+      if (value.name === "start" || value.name === "end") {
+        return; // don't flag the injected start/end as parts of the cluster
       }
 
-      if (key !== map.size - 1) {
-        // check whether there's a conflict with the next item
-        const nextItem = map.get(key + 1);
-        if (value.hasOwnProperty("value") && nextItem.hasOwnProperty("value")) {
-          if (this.checkNextConflict(value, nextItem, conflictPixelRange)) {
-            // if the next item is smaller (aka higher) than the current item
-            // or if the're in conflicting territory
-            conflict = true;
-          }
-        }
+      const next = map.get(key + 1);
+      // if the next accumulator is zero and the current one isn't, start cluster
+      if (
+        !clusterFlag &&
+        (value.ascending.accumulator !== 0 ||
+          value.descending.accumulator !== 0)
+      ) {
+        clusterFlag = true;
+        clusterID += 1;
+        clusterPattern.asc = value.ascending.accumulator;
+        clusterPattern.desc = value.descending.accumulator;
+        clusterSum = value.ascending.accumulator + value.descending.accumulator;
+        this.updateClusterProps(clusterID, "min", {
+          value: value.value,
+          needed: value.descending.accumulator,
+          available: value.descending.distanceToNext - this.conflictSize
+        });
       }
-      map.set(key, { ...value, conflict: conflict });
+
+      if (clusterFlag) {
+        value.cluster = clusterID; // assign the cluster ida
+        this.updateClusterList(clusterID, key);
+      }
+
+      // close the cluster by:
+      // 1) look for the start or end entries
+      // 2) look for the inverse pattern (e.g. asc:1 desc:0 should match asc:0 desc:1)
+      // 3) or that the sum of the asc/desc matches the start sum
+
+      if (
+        value.cluster != null &&
+        (next.name === "start" ||
+          next.name === "end" ||
+          (value.ascending.accumulator === clusterPattern.desc &&
+            value.descending.accumulator === clusterPattern.asc &&
+            (next.ascending.accumulator !== clusterPattern.desc ||
+              next.descending.accumulator !== clusterPattern.asc)) ||
+          (value.ascending.accumulator + value.descending.accumulator ===
+            clusterSum &&
+            next.ascending.accumulator + next.descending.accumulator !==
+              clusterSum))
+      ) {
+        clusterFlag = false;
+        clusterPattern.asc = null;
+        clusterPattern.desc = null;
+        clusterSum = null;
+        this.updateClusterProps(clusterID, "max", {
+          value: value.value,
+          needed: value.ascending.accumulator,
+          available: value.ascending.distanceToNext - this.conflictSize
+        });
+      }
     });
   }
 
-  // check the for conflicts with the previous item
-  checkPreviousConflict(value, previousItem, conflictPixelRange) {
-    return (
-      value.value < previousItem.value ||
-      value.value - conflictPixelRange < previousItem.value + conflictPixelRange
-    );
+  // flip min and max
+  reverseMinMax(val) {
+    if (val === "min" || val === "max") {
+      return val === "min" ? "max" : "min";
+    }
   }
 
-  // check for conflicts with the next item
-  checkNextConflict(value, nextItem, conflictPixelRange) {
-    return (
-      value.value > nextItem.value ||
-      value.value + conflictPixelRange > nextItem.value - conflictPixelRange
-    );
+  // subtract from the min, add to the max
+  minMaxOperator(val) {
+    if (val === "min" || val === "max") {
+      return val === "min" ? -1 : 1;
+    }
   }
 
-  // return the height plus padding x2
-  conflictHeightPx(height, padding) {
+  // format and space the cluster data
+  claimNeighboringClusterSpace() {
+    // get all of the available space from the cluster data
+    const availArray = Object.keys(this.clusters).flatMap(clusterID => {
+      return [
+        this.clusters[clusterID].min.available,
+        this.clusters[clusterID].max.available
+      ];
+    });
+
+    // add all distinct values to a priority queue
+    const spaceQueue = new PriorityQueue();
+    new Set(availArray).forEach(o => {
+      spaceQueue.push(o, o);
+    });
+
+    const emergencyBrake = 1000; // hard limit
+    let ctr = 0;
+
+    // claim the space available if neighboring clusters can overlap
+    // iterate through from least available -> most available space
+    while (spaceQueue.size() !== 0 && ctr < emergencyBrake) {
+      ctr += 1;
+      let v = spaceQueue.pop();
+
+      let matchedClusters = [];
+      Object.keys(this.clusters).forEach(k => {
+        if (
+          this.clusters[k].min.available === v ||
+          this.clusters[k].max.available === v
+        ) {
+          matchedClusters.push(k);
+        }
+      });
+
+      matchedClusters.forEach(m => {
+        // cluster objects have a {id: [], min: {}, max: {}} format
+        // find claim all available side on with the least space (e.g. min)
+        // then claim all on the other side (e.g. max)
+
+        // claim all available space on the current side (thisSide)
+        const matchedSide =
+          this.clusters[m].min.available === v ? "min" : "max";
+        const thisSide = this.clusters[m][matchedSide];
+        const availableOnThisSide = thisSide.available; // copy value for use below
+        const thisSpaceToClaim = Math.min(thisSide.needed, thisSide.available);
+        thisSide.value += thisSpaceToClaim * this.minMaxOperator(matchedSide); //e.g. subtract from min
+        thisSide.needed -= thisSpaceToClaim;
+        thisSide.available -= thisSpaceToClaim;
+
+        // if the values were changed then update the queue
+        if (thisSpaceToClaim > 0) {
+          // push the new value into the priority queue
+          // if it's new and not already there or zero
+          if (
+            !(
+              v === thisSide.available ||
+              spaceQueue.includes(thisSide.available)
+            )
+          ) {
+            spaceQueue.push(thisSide.available, thisSide.available);
+          }
+        }
+
+        // remove the available space from the neighbor cluster if touching
+        const neighborOnThisSide = this.clusters.hasOwnProperty(
+          parseInt(m) + this.minMaxOperator(matchedSide)
+        )
+          ? this.clusters[parseInt(m) + this.minMaxOperator(matchedSide)][
+              this.reverseMinMax(matchedSide)
+            ]
+          : null;
+        if (
+          neighborOnThisSide &&
+          neighborOnThisSide.available === availableOnThisSide
+        ) {
+          neighborOnThisSide.available -= thisSpaceToClaim;
+        }
+
+        // Remove any space claimed on the other side (thatSide)
+        const otherSide = this.reverseMinMax(matchedSide);
+        const thatSide = this.clusters[m][otherSide];
+        thatSide.needed -= thisSpaceToClaim;
+
+        // claim the rest of the needed space
+        const availableOnThatSide = thatSide.available; // copy value for use below
+        const thatSpaceToClaim = Math.min(thatSide.needed, thatSide.available);
+        thatSide.value += thatSpaceToClaim * this.minMaxOperator(otherSide);
+        thatSide.needed -= thatSpaceToClaim;
+        thatSide.available -= thatSpaceToClaim;
+
+        // if the values were changed then update queue
+        if (thatSpaceToClaim > 0) {
+          // push the new value into the priority queue
+          // if it's new and not already there
+          if (
+            !(
+              v === thatSide.available ||
+              spaceQueue.includes(thatSide.available)
+            )
+          ) {
+            spaceQueue.push(thatSide.available, thatSide.available);
+          }
+        }
+
+        // remove the available space from the neighbor cluster if touching
+        const neighborOnThatSide = this.clusters.hasOwnProperty(
+          parseInt(m) + this.minMaxOperator(otherSide)
+        )
+          ? this.clusters[parseInt(m) + this.minMaxOperator(otherSide)][
+              this.reverseMinMax(otherSide)
+            ]
+          : null;
+        if (
+          neighborOnThatSide &&
+          neighborOnThatSide.available === availableOnThatSide
+        ) {
+          neighborOnThatSide.available -= thatSpaceToClaim;
+        }
+      });
+    }
+  }
+
+  // generate the size that should be used for conflict detection
+  generateConflictSize(height, padding) {
     return height + padding * 2;
   }
 
-  // detect clusters of conflicting elements and enumerate them
-  countAndFlagClusters(inputMap) {
-    let clusterEnumerator = 0;
-    inputMap.forEach((value, key, map) => {
-      // check whether there's a conflict with the next item
-      let nextConflict = false;
+  // iterate through the logic in ascending order to get one bound
+  calculateAscending() {
+    this.labelMap.forEach((value, key, map) => {
       if (key !== map.size - 1) {
-        const nextItem = map.get(key + 1);
-        if (nextItem.hasOwnProperty("conflict") && nextItem.conflict) {
-          nextConflict = true;
-        }
-      }
-
-      // check whether there's a conflict with the previous item
-      let previousConflict = false;
-      if (key !== 0) {
-        const previousItem = map.get(key - 1);
-        if (previousItem.hasOwnProperty("conflict") && previousItem.conflict) {
-          previousConflict = true;
-        }
-      }
-
-      // check whether there's a conflict with the current item
-      let currentConflict = false;
-      if (value.hasOwnProperty("conflict") && value.conflict) {
-        currentConflict = true;
-      }
-
-      // update the cluster id/count
-      if (currentConflict && !previousConflict) {
-        clusterEnumerator += 1;
-      }
-
-      // flag the cluster in the map object
-      if (currentConflict && (nextConflict || previousConflict)) {
-        map.set(key, { ...value, cluster: clusterEnumerator });
+        const next = map.get(key + 1);
+        this.processLogic(value, next, "ascending");
       }
     });
-    return clusterEnumerator;
   }
 
-  // print the current map
-  print() {
-    console.log(this.labelMap);
+  // iterate through the logic in descending order to get the other bound
+  calculateDescending() {
+    const reversed = [...this.labelMap].reverse();
+    reversed.forEach(([key, value]) => {
+      if (key !== 0) {
+        const next = reversed.find(o => o[0] === key - 1)[1];
+        this.processLogic(value, next, "descending");
+      }
+    });
   }
 
+  // unified logic process for both ascending and descending ordering
+  processLogic(value, next, direction) {
+    if (value.name === "start" || value.name === "end") {
+      return; // don't process the injected start/end
+    }
+
+    if (direction === "ascending") {
+      value[direction].distanceToNext = next.value - value.value;
+    } else if (direction === "descending") {
+      value[direction].distanceToNext = value.value - next.value;
+    } else {
+      return;
+    }
+
+    // if the space needed is smaller than the conflict size, calculate needed space
+    if (value[direction].distanceToNext < this.conflictSize) {
+      value[direction].distanceNeeded =
+        this.conflictSize - value[direction].distanceToNext;
+    }
+
+    // reset the accumulator if the distance to next can fit
+    // all the accumulated values
+    const dtn = value[direction].distanceToNext;
+    const dn = value[direction].distanceNeeded || 0;
+    const accum = value[direction].accumulator;
+
+    if (dtn >= dn + accum + this.conflictSize) {
+      // don't touch the start/end points
+      if (next.name !== "start" && next.name !== "end") {
+        next[direction].accumulator = 0;
+      }
+    } else {
+      // don't touch the start/end points
+      if (next.name !== "start" && next.name !== "end") {
+        // set the next accumulator on the next item
+        next[direction].accumulator =
+          value[direction].accumulator + value[direction].distanceNeeded;
+      }
+    }
+  }
+
+  // export a new lookup object
   export() {
+    // generate a lookup for the linearly spaced values
+    const spacedValuesByID = {};
+    Object.keys(this.clusters).map(clusterID => {
+      const cluster = this.clusters[clusterID];
+      const clusterSpacing = linSpace(
+        cluster.min.value,
+        cluster.max.value,
+        cluster.mapIDs.length
+      );
+      cluster.mapIDs.map((mapID, idx) => {
+        spacedValuesByID[mapID] = clusterSpacing[idx];
+      });
+    });
+
+    // update the stored data
+    this.labelMap.forEach((value, key) => {
+      if (value.name === "start" || value.name === "end") {
+        value.value = undefined;
+      } else {
+        value.value = spacedValuesByID[key] || value.value;
+      }
+    });
+
+    // export the new values
     const returnObject = {};
-    this.labelMap.forEach(value => {
-      returnObject[value.name] = value.value;
+    this.labelMap.forEach(v => {
+      if (v.value) {
+        returnObject[v.name] = v.value;
+      }
     });
     return returnObject;
   }
-
-  // handle the case where there's only a single cluster
-  handleSingleCluster(inputMap, conflictSize, clusterId = 1) {
-    // create a map for this single cluster
-    let thisCluster = new Map(
-      [...inputMap].filter(([_, v]) => {
-        return v.hasOwnProperty("cluster") && v.cluster === clusterId;
-      })
-    );
-
-    this.spaceValuesByMedian(thisCluster, conflictSize); // space the values of the cluster around the median
-    this.patchMap(inputMap, thisCluster); // patch the full map with the updated values
-    this.trimMapProps(inputMap);
-    this.spaceConflictsFromSetValues(inputMap, conflictSize); // use the set values to space out open values
-    this.trimMapProps(inputMap);
-  }
-
-  // space the conflicting values around the median
-  spaceValuesByMedian(thisCluster, conflictSize) {
-    // get the cluster rank median to know where to start spacing
-    const medianRankOfCluster = this.calculateMedian(
-      [...thisCluster].map(o => o[0])
-    );
-
-    // get the center point of the cluster
-    let centerPointOfCluster;
-    if (thisCluster.get(medianRankOfCluster)) {
-      centerPointOfCluster = thisCluster.get(medianRankOfCluster).value;
-    } else {
-      centerPointOfCluster =
-        (thisCluster.get(Math.ceil(medianRankOfCluster)).value +
-          thisCluster.get(Math.floor(medianRankOfCluster)).value) /
-        2;
-    }
-
-    thisCluster.forEach((value, key) => {
-      let newValue;
-      if (key === medianRankOfCluster) {
-        // if this is the median, leave it but update the status
-        newValue = value.value;
-      } else if (key > medianRankOfCluster) {
-        // above median, linearly space above by distance from median * conflict height
-        newValue =
-          centerPointOfCluster +
-          Math.abs(key - medianRankOfCluster) * conflictSize;
-      } else if (key < medianRankOfCluster) {
-        // below median, linearly space below by distance from median * conflict height
-        newValue =
-          centerPointOfCluster -
-          Math.abs(key - medianRankOfCluster) * conflictSize;
-      }
-      thisCluster.set(key, { ...value, value: newValue, status: STATUS.set });
-    });
-  }
-
-  // calculate the median of an array
-  calculateMedian(arr) {
-    const mid = Math.floor(arr.length / 2),
-      nums = [...arr].sort((a, b) => a - b);
-    return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
-  }
-
-  // update an existing map using a new map
-  patchMap(oldMap, newMap) {
-    newMap.forEach((value, key) => {
-      oldMap.set(key, value);
-    });
-  }
-
-  // remove all the props on a map object except for the name and value
-  trimMapProps(inputMap) {
-    inputMap.forEach((value, key) => {
-      inputMap.set(key, {
-        name: value.name,
-        value: value.value,
-        status: value.status
-      });
-    });
-  }
-
-  // use the existing set values to space out any open conflicts
-  spaceConflictsFromSetValues(inputMap, conflictSize) {
-    let ctr = 0; // just in case of long-running loops
-
-    while (this.flagAndCheckForOpenConflicts(inputMap)) {
-      // move every open conflict away from the set val by the margin
-      inputMap.forEach((value, key, map) => {
-        if (
-          value &&
-          value.hasOwnProperty("status") &&
-          value.status === STATUS.open &&
-          value.hasOwnProperty("conflict") &&
-          value.conflict
-        ) {
-          // get the neighbor values
-          const previousItem = key !== 0 ? map.get(key - 1) : undefined;
-          const nextItem = key !== map.size - 1 ? map.get(key + 1) : undefined;
-
-          // find any set neighbor and update
-          if (
-            previousItem &&
-            previousItem.hasOwnProperty("status") &&
-            previousItem.status === STATUS.set
-          ) {
-            if (previousItem.hasOwnProperty("value")) {
-              // move the element down into space and update the status
-              map.set(key, {
-                ...value,
-                value: previousItem.value + conflictSize,
-                status: STATUS.set
-              });
-            }
-          } else if (
-            nextItem &&
-            nextItem.hasOwnProperty("status") &&
-            nextItem.status === STATUS.set
-          ) {
-            if (nextItem.hasOwnProperty("value")) {
-              // move the element up into space and update the status
-              map.set(key, {
-                ...value,
-                value: nextItem.value - conflictSize,
-                status: STATUS.set
-              });
-            }
-          }
-        }
-      });
-      ctr += 1;
-      if (ctr > 100) {
-        console.log("Exited early - possible inf loop");
-        return;
-      }
-    }
-  }
-
-  // find whether an open conflict exists
-  // this indicates it's available to be moved and is in
-  // conflicting space with a neighboring element
-  flagAndCheckForOpenConflicts(inputMap) {
-    this.flagConflicts(inputMap, this.conflictSize);
-    return [...inputMap].find(([k, v]) => {
-      return (
-        v.hasOwnProperty("status") &&
-        v.status === STATUS.open &&
-        v.hasOwnProperty("conflict") &&
-        v.conflict === true
-      );
-    });
-  }
 }
 
-// ! TEMP FOR TESTING
-// const sixStates = {
-//   Alabama: 132,
-//   Alaska: 85,
-//   Arizona: 139,
-//   Arkansas: 169,
-//   California: 128,
-//   Colorado: 116,
-//   Connecticut: 121
-// };
-// const twoClusters = {
-//   ...sixStates,
-//   Alaska: 162,
-//   Delaware: 170,
-//   Massachusetts: 181
-// };
-// const ls = new LabelSpacer(twoClusters);
-// ls.print();
-
+// equally space labels out given a set height and padding
+// where overlaps cant occur
 export function labelSpacer(
   yValueObject,
   conflictHeight = 10,

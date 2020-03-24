@@ -419,7 +419,7 @@ export default {
           .attr("opacity", 0)
           .attr("text-anchor", "start")
           .attr("x", this.chartWidth)
-          .attr("y", d => spacedYValues[d.label])
+          .attr("y", d => (spacedYValues ? spacedYValues[d.label] : null))
           .attr("stroke-width", 0)
           .attr("fill", d => this.chartColors[d.label])
           .attr("dy", ".30em")
