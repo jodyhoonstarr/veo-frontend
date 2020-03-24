@@ -65,7 +65,7 @@ import {
   simplifiyRows,
   getChartDataType,
   getColorSet
-} from "@/components/utils";
+} from "@/lib/utils";
 
 export default {
   name: "AFQT",

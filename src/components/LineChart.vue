@@ -17,7 +17,7 @@ import { axisBottom, axisLeft } from "d3-axis";
 import { select, selectAll } from "d3-selection";
 import { line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
-import { arrayIsNullorEmpty, wrapLabels } from "@/components/utils";
+import { arrayIsNullorEmpty, wrapLabels } from "@/lib/utils";
 import { labelSpacer } from "@/lib/labelspacer";
 
 export default {

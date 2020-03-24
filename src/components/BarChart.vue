@@ -23,8 +23,8 @@ import { transition } from "d3-transition";
 import { axisBottom, axisLeft } from "d3-axis";
 import { select, selectAll } from "d3-selection";
 import { scaleBand, scaleLinear, scaleOrdinal } from "d3-scale";
-import { arrayIsNullorEmpty } from "@/components/utils";
-import { wrapLabels } from "@/components/utils";
+import { arrayIsNullorEmpty } from "@/lib/utils";
+import { wrapLabels } from "@/lib/utils";
 
 export default {
   name: "BarChart",

@@ -83,7 +83,7 @@ import {
   filterRows,
   getChartDataType,
   simplifiyRows
-} from "@/components/utils";
+} from "@/lib/utils";
 
 export default {
   name: "OccupationByPaygrade",
