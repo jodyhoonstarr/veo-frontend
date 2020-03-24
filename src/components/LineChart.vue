@@ -158,7 +158,9 @@ export default {
       const vm = this;
       return min(vm.d3Data, function(d) {
         return min(vm.d3Keys, function(key) {
-          return d[key];
+          if (d[key] !== "") {
+            return d[key];
+          }
         });
       });
     },
@@ -184,9 +186,14 @@ export default {
         .range([0, this.chartWidth]);
     },
     y: function() {
+      // space the max if novalue to chart
+      const yMax = this.d3Max === 0 ? 1 : this.d3Max;
+      // add some bottom padding to the ymin used in the chart
+      const newYMin = this.d3Min - (this.d3Max - this.d3Min) / 10;
+      const yMin = this.d3Min === 0 ? 0 : newYMin;
       return scaleLinear()
         .rangeRound([this.chartHeight, 0])
-        .domain([this.d3Min, this.d3Max === 0 ? 1 : this.d3Max])
+        .domain([yMin, yMax])
         .nice();
     },
     line: function() {
