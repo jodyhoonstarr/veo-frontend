@@ -190,7 +190,7 @@ export default {
       const yMax = this.d3Max === 0 ? 1 : this.d3Max;
       // add some bottom padding to the ymin used in the chart
       const newYMin = this.d3Min - (this.d3Max - this.d3Min) / 10;
-      const yMin = this.d3Min === 0 ? 0 : newYMin;
+      const yMin = this.d3Min === 0 || newYMin <= 0 ? 0 : newYMin;
       return scaleLinear()
         .rangeRound([this.chartHeight, 0])
         .domain([yMin, yMax])
