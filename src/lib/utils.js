@@ -224,6 +224,7 @@ export function createChartData(
 // determine the active datatype from the filter
 export function getChartDataType(filters) {
   if (
+    filters &&
     Array.isArray(filters.primary) &&
     filters.primary.length >= 1 &&
     filters.primary[0].hasOwnProperty("id")
