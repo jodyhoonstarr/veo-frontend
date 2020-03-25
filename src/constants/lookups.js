@@ -7,5 +7,6 @@ export const GROUPCOLUMN = {
   afqt: "afqtgrp",
   race: "race",
   ethnicity: "ethnicity",
-  age: "agegrp"
+  age: "agegrp",
+  sex: "sex"
 };
