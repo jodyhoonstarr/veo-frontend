@@ -4,5 +4,7 @@ export const GROUPCOLUMN = {
   cohort: "cohort",
   industry: "industry",
   state: "geography",
-  afqt: "afqtgrp"
+  afqt: "afqtgrp",
+  race: "race",
+  ethnicity: "ethnicity"
 };

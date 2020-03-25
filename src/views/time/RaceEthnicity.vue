@@ -1,77 +1,173 @@
 <template>
   <div>
-    <h1 class="text-center">This is the Race/Ethnicity page</h1>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="5">
-        <DropDown
-          label="Race"
-          :items="races"
-          v-model="selectedRace"
-          multiple
-          close
-          clearable
-        ></DropDown>
-      </v-col>
-      <v-col cols="12" xs="12" sm="4">
-        <DropDown
-          label="Ethnicity"
-          :items="ethnicities"
-          v-model="selectedEthnicity"
-          multiple
-          close
-          clearable
-        ></DropDown>
-      </v-col>
-      <v-col cols="12" xs="12" sm="3">
-        <DropDown
-          label="Cohort"
-          :items="cohorts"
-          v-model="selectedCohort"
-        ></DropDown>
+      <v-col>
+        <v-row>
+          <v-col cols="12" xs="12" sm="6" class="pb-0">
+            <GetData url="/metadata/label_race.json">
+              <DropDownwRadio
+                slot-scope="{ response, loading }"
+                :loading="loading"
+                label="Race"
+                :items="response"
+                propname="labels"
+                id="race"
+                :toggle="activeToggle === 'race'"
+                @change="handleDropDownToggle"
+              ></DropDownwRadio>
+            </GetData>
+          </v-col>
+          <v-col cols="12" xs="12" sm="6" class="pb-0">
+            <GetData url="/metadata/label_ethnicity.json">
+              <DropDownwRadio
+                slot-scope="{ response, loading }"
+                :loading="loading"
+                label="Ethnicity"
+                :items="response"
+                propname="labels"
+                id="ethnicity"
+                :toggle="activeToggle === 'ethnicity'"
+                @change="handleDropDownToggle"
+              ></DropDownwRadio>
+            </GetData>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" xs="12" sm="12" class="pb-0">
+            <GetData url="/metadata/label_2year_cohorts.json">
+              <cohort-slider
+                slot-scope="{ response, loading }"
+                :loading="loading"
+                :items="response"
+                v-model="cohort"
+              ></cohort-slider>
+            </GetData>
+          </v-col>
+        </v-row>
       </v-col>
     </SelectBar>
+    <GetData
+      url="/data/veorh.csv"
+      :emit="true"
+      @change="({ response }) => (this.csvData = response)"
+    >
+      <ChartCard
+        slot-scope="{ loading }"
+        :loading="loading"
+        :filters="filters"
+        :active-toggle="activeToggle"
+      >
+        <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
+        <Chart
+          :chart-type="chartType"
+          :loading="loading"
+          :chart-data="chartData"
+          :chart-colors="chartColors"
+          :chart-line-styles="chartLineStyles"
+          :chart-data-type="chartDataType"
+        ></Chart>
+      </ChartCard>
+    </GetData>
   </div>
 </template>
 
 <script>
 import SelectBar from "@/components/SelectBar.vue";
-import DropDown from "@/components/DropDown.vue";
+import GetData from "@/components/GetData";
+import DropDownwRadio from "@/components/DropDownwRadio";
+import CohortSlider from "@/components/CohortSlider";
+import ChartCard from "@/components/ChartCard";
+import FiltersBar from "@/components/FiltersBar";
+import Chart from "@/components/Chart";
+import {
+  createChartData,
+  filterRows,
+  getChartDataType,
+  getColorSet,
+  simplifiyRows
+} from "@/lib/utils";
+import { GROUPCOLUMN } from "@/constants/lookups";
 
 export default {
   name: "RaceEthnicity",
   components: {
     SelectBar,
-    DropDown
+    GetData,
+    DropDownwRadio,
+    CohortSlider,
+    ChartCard,
+    FiltersBar,
+    Chart
   },
   data() {
     return {
-      selectedRace: null,
-      selectedEthnicity: null,
-      selectedCohort: null,
-      races: [
-        { id: "A1", label: "White Alone" },
-        { id: "A2", label: "Black or African American Alone" },
-        { id: "A3", label: "American Indian or Alaska Native Alone" },
-        { id: "A4", label: "Asian Alone" },
-        { id: "A5", label: "Native Hawaiian or Other Pacific Islander Alone" },
-        { id: "A6", label: "Some Other Race Alone (Not Used)" },
-        { id: "A7", label: "Two or More Race Groups" }
-      ],
-      ethnicities: [
-        { id: "A1", label: "Not Hispanic or Latino" },
-        { id: "A2", label: "Hispanic or Latino" }
-      ],
-      cohorts: [
-        { id: "2000", label: "2000-2001" },
-        { id: "2002", label: "2002-2003" },
-        { id: "2004", label: "2004-2005" },
-        { id: "2006", label: "2006-2007" },
-        { id: "2008", label: "2008-2009" },
-        { id: "2010", label: "2010-2011" },
-        { id: "2012", label: "2012-2013" },
-        { id: "2014", label: "2014-2015" }
-      ]
+      name: "raceethnicity",
+      chartType: "line",
+      csvData: null,
+      race: null,
+      ethnicity: null,
+      cohort: null,
+      activeToggle: "race",
+      filters: null
     };
+  },
+  methods: {
+    handleDropDownToggle: function(data) {
+      this[data.id] = data.selected;
+      if (data.toggle) {
+        this.activeToggle = data.id;
+      }
+    },
+    handleFilters: function(f) {
+      if (f == null) {
+        return null;
+      }
+      this.filters = f;
+    }
+  },
+  computed: {
+    dataSelections: function() {
+      return [
+        { data: this.cohort, prop: GROUPCOLUMN["cohort"] },
+        { data: this.race, prop: GROUPCOLUMN["race"] },
+        { data: this.ethnicity, prop: GROUPCOLUMN["ethnicity"] }
+      ];
+    },
+    chartDataType: function() {
+      return getChartDataType(this.filters);
+    },
+    activeToggleProp: function() {
+      return GROUPCOLUMN[this.activeToggle];
+    },
+    csvDataRows: function() {
+      return filterRows(this.csvData, this.dataSelections);
+    },
+    csvDataRowsSimple: function() {
+      return simplifiyRows(
+        this.csvDataRows,
+        this.filters,
+        this.activeToggleProp,
+        this.chartType === "line"
+      );
+    },
+    chartData: function() {
+      return createChartData(
+        this.csvDataRowsSimple,
+        this.filters,
+        this.activeToggleProp,
+        this.dataSelections,
+        this.chartType === "line"
+      );
+    },
+    chartColors: function() {
+      return getColorSet(this.chartType, this.filters, this[this.activeToggle]);
+    },
+    chartLineStyles: function() {
+      if (!this.filters || !this.filters.hasOwnProperty("linestyles")) {
+        return null;
+      }
+      return this.filters.linestyles;
+    }
   }
 };
 </script>
