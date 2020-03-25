@@ -6,5 +6,6 @@ export const GROUPCOLUMN = {
   state: "geography",
   afqt: "afqtgrp",
   race: "race",
-  ethnicity: "ethnicity"
+  ethnicity: "ethnicity",
+  age: "agegrp"
 };
