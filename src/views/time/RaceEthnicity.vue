@@ -1,8 +1,8 @@
 <template>
   <div>
     <SelectBar>
-      <v-col>
-        <v-row>
+      <v-col class="pa-0">
+        <v-row class="pa-0">
           <v-col cols="12" xs="12" sm="6" class="pb-0">
             <GetData url="/metadata/label_race.json">
               <DropDownwRadio
@@ -32,7 +32,7 @@
             </GetData>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="pa-0">
           <v-col cols="12" xs="12" sm="12" class="pb-0">
             <GetData url="/metadata/label_2year_cohorts.json">
               <cohort-slider
