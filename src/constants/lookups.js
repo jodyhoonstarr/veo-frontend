@@ -8,5 +8,6 @@ export const GROUPCOLUMN = {
   race: "race",
   ethnicity: "ethnicity",
   age: "agegrp",
-  sex: "sex"
+  sex: "sex",
+  education: "education"
 };
