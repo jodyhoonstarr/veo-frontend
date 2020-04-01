@@ -4,7 +4,7 @@
       <v-col class="pa-0">
         <v-row class="pa-0">
           <v-col cols="12" xs="12" sm="6" class="pb-0">
-            <GetData url="/metadata/label_race.json">
+            <GetData :url="dataPath('metadata/label_race.json')">
               <DropDownwRadio
                 slot-scope="{ response, loading }"
                 :loading="loading"
@@ -18,7 +18,7 @@
             </GetData>
           </v-col>
           <v-col cols="12" xs="12" sm="6" class="pb-0">
-            <GetData url="/metadata/label_ethnicity.json">
+            <GetData :url="dataPath('metadata/label_ethnicity.json')">
               <DropDownwRadio
                 slot-scope="{ response, loading }"
                 :loading="loading"
@@ -34,7 +34,7 @@
         </v-row>
         <v-row class="pa-0">
           <v-col cols="12" xs="12" sm="12" class="pb-0">
-            <GetData url="/metadata/label_2year_cohorts.json">
+            <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
               <cohort-slider
                 slot-scope="{ response, loading }"
                 :loading="loading"
@@ -47,7 +47,7 @@
       </v-col>
     </SelectBar>
     <GetData
-      url="/data/veorh.csv"
+      :url="dataPath('data/veorh.csv')"
       :emit="true"
       @change="({ response }) => (this.csvData = response)"
     >
@@ -84,6 +84,7 @@ import {
   filterRows,
   getChartDataType,
   getColorSet,
+  joinPublicPath,
   simplifiyRows
 } from "@/lib/utils";
 import { GROUPCOLUMN } from "@/constants/lookups";
@@ -117,6 +118,9 @@ export default {
       if (data.toggle) {
         this.activeToggle = data.id;
       }
+    },
+    dataPath: function(str) {
+      return joinPublicPath(str);
     },
     handleFilters: function(f) {
       if (f == null) {

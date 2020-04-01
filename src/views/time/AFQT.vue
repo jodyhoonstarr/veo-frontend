@@ -2,7 +2,7 @@
   <div>
     <SelectBar>
       <v-col cols="12" xs="12" sm="4" class="pb-0">
-        <GetData url="/metadata/label_afqtgrp.json">
+        <GetData :url="dataPath('metadata/label_afqtgrp.json')">
           <DropDownNoRadio
             slot-scope="{ response, loading }"
             :loading="loading"
@@ -15,7 +15,7 @@
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="8" class="pb-0">
-        <GetData url="/metadata/label_2year_cohorts.json">
+        <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
           <cohort-slider
             slot-scope="{ response, loading }"
             :loading="loading"
@@ -26,7 +26,7 @@
       </v-col>
     </SelectBar>
     <GetData
-      url="/data/veot.csv"
+      :url="dataPath('data/veot.csv')"
       :emit="true"
       @change="({ response }) => (this.csvData = response)"
     >
@@ -59,6 +59,8 @@ import ChartCard from "@/components/ChartCard";
 import FiltersBar from "@/components/FiltersBar";
 import Chart from "@/components/Chart";
 import { GROUPCOLUMN } from "@/constants/lookups";
+import { joinPublicPath } from "@/lib/utils";
+
 import {
   createChartData,
   filterRows,
@@ -98,6 +100,9 @@ export default {
         return null;
       }
       this.filters = f;
+    },
+    dataPath: function(str) {
+      return joinPublicPath(str);
     }
   },
   computed: {

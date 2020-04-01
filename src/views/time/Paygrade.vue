@@ -2,7 +2,7 @@
   <div>
     <SelectBar>
       <v-col cols="12" xs="12" sm="4" class="pb-0">
-        <GetData url="/metadata/label_paygrade.json">
+        <GetData :url="dataPath('metadata/label_paygrade.json')">
           <DropDownNoRadio
             slot-scope="{ response, loading }"
             :loading="loading"
@@ -15,7 +15,7 @@
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="8" class="pb-0">
-        <GetData url="/metadata/label_2year_cohorts.json">
+        <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
           <cohort-slider
             slot-scope="{ response, loading }"
             :loading="loading"
@@ -26,7 +26,7 @@
       </v-col>
     </SelectBar>
     <GetData
-      url="/data/veop.csv"
+      :url="dataPath('data/veop.csv')"
       :emit="true"
       @change="({ response }) => (this.csvData = response)"
     >
@@ -64,7 +64,8 @@ import {
   filterRows,
   simplifiyRows,
   getChartDataType,
-  getColorSet
+  getColorSet,
+  joinPublicPath
 } from "@/lib/utils";
 
 export default {
@@ -98,6 +99,9 @@ export default {
         return null;
       }
       this.filters = f;
+    },
+    dataPath: function(str) {
+      return joinPublicPath(str);
     }
   },
   computed: {

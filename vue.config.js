@@ -17,5 +17,5 @@ module.exports = {
       }
     }
   },
-  publicPath: "./"
+  publicPath: "/" // also set in src/constants/config
 };

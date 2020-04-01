@@ -2,6 +2,18 @@ import { select } from "d3-selection";
 import { active } from "d3-transition";
 import { schemeCategory10 } from "d3-scale-chromatic";
 import { scaleOrdinal } from "d3-scale";
+import { PUBLICPATH } from "@/constants/config";
+
+// prefix a path with the public path from the config
+export function joinPublicPath(str) {
+  if (PUBLICPATH === "/" && str.charAt(0) === "/") {
+    return str;
+  } else if (str.charAt(0) !== "/") {
+    return `/${str}`;
+  } else {
+    return `${PUBLICPATH}/${str}`;
+  }
+}
 
 // determine if array has contents
 export function arrayIsNullorEmpty(arr) {

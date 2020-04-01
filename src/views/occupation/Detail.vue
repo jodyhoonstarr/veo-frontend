@@ -2,7 +2,7 @@
   <div>
     <SelectBar>
       <v-col cols="12" xs="12" sm="6">
-        <GetData url="/metadata/label_dod_occ_code_detailed.json">
+        <GetData :url="dataPath('metadata/label_dod_occ_code_detailed.json')">
           <DropDownwRadio
             :detailed="true"
             slot-scope="{ response, loading }"
@@ -17,7 +17,7 @@
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="6">
-        <GetData url="/metadata/label_8year_cohorts.json">
+        <GetData :url="dataPath('metadata/label_8year_cohorts.json')">
           <DropDownwRadio
             slot-scope="{ response, loading }"
             :loading="loading"
@@ -32,7 +32,7 @@
       </v-col>
     </SelectBar>
     <GetData
-      url="/data/veoo3.csv"
+      :url="dataPath('data/veoo3.csv')"
       :emit="true"
       @change="({ response }) => (this.csvData = response)"
     >
@@ -68,6 +68,7 @@ import {
   createChartData,
   filterRows,
   getChartDataType,
+  joinPublicPath,
   simplifiyRows
 } from "@/lib/utils";
 
@@ -101,6 +102,9 @@ export default {
       if (data.toggle) {
         this.activeToggle = data.id;
       }
+    },
+    dataPath: function(str) {
+      return joinPublicPath(str);
     },
     handleFilters: function(f) {
       if (f == null) {
