@@ -83,8 +83,8 @@ export default {
           route: "/service",
           label: "Service Characteristics",
           children: [
-            { route: "/service/afqt", label: "AFQT" },
-            { route: "/service/experience", label: "Experience" },
+            { route: "/service/afqt", label: "AFQT Range" },
+            { route: "/service/yearsofservice", label: "Years of Service" },
             { route: "/service/paygrade", label: "Pay Grade" },
             { route: "/service/occupation", label: "Occupation by Paygrade" }
           ]

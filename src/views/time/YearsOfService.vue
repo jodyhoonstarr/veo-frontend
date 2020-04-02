@@ -69,7 +69,7 @@ import {
 } from "@/lib/utils";
 
 export default {
-  name: "Experience",
+  name: "YearsOfService",
   components: {
     DropDownNoRadio,
     SelectBar,

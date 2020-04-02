@@ -141,11 +141,11 @@ const routes = [
           import(/* webpackChunkName: "afqt" */ "@/views/time/AFQT.vue")
       },
       {
-        path: "experience",
-        name: "Experience",
+        path: "yearsofservice",
+        name: "YearsOfService",
         component: () =>
           import(
-            /* webpackChunkName: "experience" */ "@/views/time/Experience.vue"
+            /* webpackChunkName: "experience" */ "@/views/time/YearsOfService.vue"
           )
       },
       {
