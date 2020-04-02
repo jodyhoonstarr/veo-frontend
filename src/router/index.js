@@ -116,26 +116,6 @@ const routes = [
       }
     ]
   },
-  {
-    path: "/custom/",
-    name: "Custom",
-    component: () =>
-      import(/* webpackChunkName: "custom" */ "@/views/Custom.vue"),
-    children: [
-      {
-        path: "bubble",
-        name: "Bubble",
-        component: () =>
-          import(/* webpackChunkName: "bubble" */ "@/views/custom/Bubble.vue")
-      },
-      {
-        path: "curated",
-        name: "Curated",
-        component: () =>
-          import(/* webpackChunkName: "curated" */ "@/views/custom/Curated.vue")
-      }
-    ]
-  },
   { path: "*", redirect: "/" }
 ];
 
