@@ -69,8 +69,8 @@ export function wrapLabels(text, width) {
 // filter incoming data by an array of properties
 export function filterRows(csvData, dataSelections) {
   if (
-    dataSelections.every(o => arrayIsNullorEmpty(o.data)) ||
-    arrayIsNullorEmpty(csvData)
+    arrayIsNullorEmpty(csvData) ||
+    dataSelections.every(o => arrayIsNullorEmpty(o.data))
   ) {
     return null;
   }
