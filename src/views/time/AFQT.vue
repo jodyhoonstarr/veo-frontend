@@ -6,7 +6,7 @@
           <DropDownNoRadio
             slot-scope="{ response, loading }"
             :loading="loading"
-            label="AFQT"
+            label="AFQT Range"
             :items="response"
             propname="labels"
             id="afqt"
@@ -34,7 +34,7 @@
         slot-scope="{ loading }"
         :loading="loading"
         :filters="filters"
-        active-toggle="AFQT"
+        active-toggle="AFQT Range"
       >
         <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
         <Chart

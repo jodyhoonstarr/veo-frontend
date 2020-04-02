@@ -6,7 +6,7 @@
           <DropDownNoRadio
             slot-scope="{ response, loading }"
             :loading="loading"
-            label="Education Level"
+            label="Enlistment Education Level"
             :items="response"
             propname="labels"
             id="education"
@@ -34,7 +34,7 @@
         slot-scope="{ loading }"
         :loading="loading"
         :filters="filters"
-        active-toggle="Education"
+        active-toggle="Education Level at Enlistment"
       >
         <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
         <Chart

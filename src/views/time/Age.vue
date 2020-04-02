@@ -6,7 +6,7 @@
           <DropDownNoRadio
             slot-scope="{ response, loading }"
             :loading="loading"
-            label="Age"
+            label="Age Group"
             :items="response"
             propname="labels"
             id="age"
@@ -34,7 +34,7 @@
         slot-scope="{ loading }"
         :loading="loading"
         :filters="filters"
-        active-toggle="Age"
+        active-toggle="Age Group"
       >
         <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
         <Chart
