@@ -81,7 +81,7 @@ export default {
   },
   data() {
     return {
-      name: "experience",
+      name: "yearsofservice",
       chartType: "line",
       csvData: null,
       experience: null,

@@ -10,5 +10,5 @@ export const GROUPCOLUMN = {
   age: "agegrp",
   sex: "sex",
   education: "education",
-  experience: "yosgrp"
+  yearsofservice: "yosgrp"
 };
