@@ -80,26 +80,39 @@ export default {
           ]
         },
         {
-          route: "/time",
-          label: "Time",
+          route: "/service",
+          label: "Service Characteristics",
           children: [
-            { route: "/time/paygrade", label: "Pay Grade" },
-            { route: "/time/state", label: "State" },
-            { route: "/time/industry", label: "Industry" },
-            { route: "/time/age", label: "Age" },
-            { route: "/time/sex", label: "Sex" },
-            { route: "/time/raceethnicity", label: "Race/Ethnicity" },
-            { route: "/time/experience", label: "Experience" },
-            { route: "/time/education", label: "Education" },
-            { route: "/time/afqt", label: "AFQT" }
+            { route: "/service/afqt", label: "AFQT" },
+            { route: "/service/experience", label: "Experience" },
+            { route: "/service/paygrade", label: "Pay Grade" },
+            { route: "/service/occupation", label: "Occupation by Paygrade" }
           ]
         },
         {
-          route: "/custom",
-          label: "Custom",
+          route: "/demographics",
+          label: "Demographics",
           children: [
-            { route: "/custom/bubble", label: "Bubble Chart" },
-            { route: "/custom/curated", label: "Curated View" }
+            { route: "/demographics/age", label: "Age" },
+            { route: "/demographics/sex", label: "Sex" },
+            { route: "/demographics/raceethnicity", label: "Race/Ethnicity" },
+            { route: "/demographics/education", label: "Education" }
+          ]
+        },
+        {
+          route: "/state",
+          label: "State",
+          children: [
+            { route: "/state/time", label: "State" },
+            { route: "/state/occupation/", label: "Occupation by State" }
+          ]
+        },
+        {
+          route: "/industry",
+          label: "Industry",
+          children: [
+            { route: "/industry/time", label: "Industry" },
+            { route: "/industry/occupation", label: "Occupation by Industry" }
           ]
         }
       ],
