@@ -13,7 +13,6 @@
       thumb-color="primary"
       track-color="grey"
       track-fill-color="primary"
-      :loading="loading"
     >
       <template v-slot:thumb-label="{ value }">
         <v-icon dark>
@@ -21,6 +20,14 @@
         </v-icon>
       </template>
     </v-range-slider>
+    <v-slider v-else-if="loading" :disabled="true" value="30"></v-slider>
+    <v-slider
+      v-else-if="items === null"
+      label="Error loading data"
+      :disabled="true"
+      value="30"
+    ></v-slider>
+    <v-slider v-else :disabled="true" value="30"> </v-slider>
   </v-container>
 </template>
 
