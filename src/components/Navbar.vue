@@ -69,7 +69,6 @@ export default {
   data() {
     return {
       tabs: [
-        { route: "/", label: "Home" },
         {
           route: "/occupation",
           label: "Occupation",
