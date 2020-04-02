@@ -2,6 +2,17 @@
 import { csvParse } from "d3-dsv";
 import axios from "axios";
 
+import {
+  cacheAdapterEnhancer,
+  throttleAdapterEnhancer
+} from "axios-extensions";
+
+const http = axios.create({
+  baseURL: "/",
+  headers: { "Cache-Control": "no-cache" },
+  adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter))
+});
+
 export default {
   name: "GetData",
   props: {
@@ -61,7 +72,7 @@ export default {
       const lastExtension = urlArray[urlArray.length - 1].toLocaleLowerCase();
 
       if (lastExtension === "csv") {
-        axios.get(this.url).then(response => {
+        http.get(this.url).then(response => {
           this.loading = false;
           if (response.status === 200) {
             this.response = csvParse(response.data);
@@ -70,7 +81,7 @@ export default {
           }
         });
       } else if (lastExtension === "json") {
-        axios.get(this.url).then(response => {
+        http.get(this.url).then(response => {
           this.loading = false;
           if (response.status === 200) {
             this.response = response.data;
@@ -79,7 +90,7 @@ export default {
           }
         });
       } else {
-        axios.get(this.url).then(response => {
+        http.get(this.url).then(response => {
           this.loading = false;
           if (response.status === 200) {
             this.response = response.data;
