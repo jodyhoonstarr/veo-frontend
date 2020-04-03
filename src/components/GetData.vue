@@ -57,48 +57,30 @@ export default {
         });
       }
     },
-    randomDelay: (handler, seconds) => {
-      const plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-      const delay =
-        (Math.floor((Math.random() * seconds) / 2) + 1) * plusOrMinus;
-      return new Promise((resolve, reject) => {
-        setTimeout(handler, (seconds + delay) * 1000);
-      });
-    },
     getData: function() {
       this.loading = true;
       this.response = null;
       const urlArray = this.url.split(".");
       const lastExtension = urlArray[urlArray.length - 1].toLocaleLowerCase();
 
-      if (lastExtension === "csv") {
-        http.get(this.url).then(response => {
+      http
+        .get(this.url)
+        .then(response => {
           this.loading = false;
           if (response.status === 200) {
-            this.response = csvParse(response.data);
+            if (lastExtension === "csv") {
+              this.response = csvParse(response.data);
+            } else {
+              this.response = response.data;
+            }
           } else {
             this.response = null;
           }
-        });
-      } else if (lastExtension === "json") {
-        http.get(this.url).then(response => {
+        })
+        .catch(e => {
           this.loading = false;
-          if (response.status === 200) {
-            this.response = response.data;
-          } else {
-            this.response = null;
-          }
+          this.response = null;
         });
-      } else {
-        http.get(this.url).then(response => {
-          this.loading = false;
-          if (response.status === 200) {
-            this.response = response.data;
-          } else {
-            this.response = null;
-          }
-        });
-      }
     }
   }
 };
