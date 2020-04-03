@@ -70,7 +70,7 @@ export function wrapLabels(text, width) {
 export function filterRows(csvData, dataSelections) {
   if (
     arrayIsNullorEmpty(csvData) ||
-    dataSelections.every(o => arrayIsNullorEmpty(o.data))
+    dataSelections.some(o => arrayIsNullorEmpty(o.data))
   ) {
     return null;
   }

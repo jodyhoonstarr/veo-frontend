@@ -15,7 +15,7 @@
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="8" class="pb-0">
-        <GetData :url="dataPath('metadata/dne/label_2year_cohorts.json')">
+        <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
           <cohort-slider
             slot-scope="{ response, loading }"
             :loading="loading"

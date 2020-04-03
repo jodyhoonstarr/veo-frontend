@@ -23,7 +23,7 @@
     <v-slider v-else-if="loading" :disabled="true" value="30"></v-slider>
     <v-slider
       v-else-if="items === null"
-      label="Error loading data"
+      label="Error"
       :disabled="true"
       value="30"
     ></v-slider>
