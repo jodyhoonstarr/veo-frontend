@@ -15,7 +15,7 @@
       track-fill-color="primary"
       thumb-label="always"
       persistent-hint
-      hint="Year of discharge, start of two-year range (e.g. 2014-2016)"
+      hint="Year of discharge, two-year range"
     >
       <template v-slot:thumb-label="{ value }">
         <v-icon dark>
