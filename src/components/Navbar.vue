@@ -58,6 +58,15 @@
             </v-menu>
           </v-tab>
         </template>
+
+        <v-tab class="px-0">
+          <v-btn text target="_blank" href="https://lehd.ces.census.gov/data/">
+            <span>Help</span>
+            <v-icon color="primary" right medium
+              >mdi-help-circle-outline</v-icon
+            >
+          </v-btn>
+        </v-tab>
       </v-tabs>
     </v-toolbar>
   </nav>
