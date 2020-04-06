@@ -90,7 +90,7 @@ export default {
         },
         {
           route: "/service",
-          label: "Service Characteristics",
+          label: "Service Characteristic",
           children: [
             { route: "/service/afqt", label: "AFQT Range" },
             { route: "/service/yearsofservice", label: "Years of Service" },
@@ -100,7 +100,7 @@ export default {
         },
         {
           route: "/demographics",
-          label: "Demographics",
+          label: "Demographic",
           children: [
             { route: "/demographics/age", label: "Age" },
             { route: "/demographics/sex", label: "Sex" },
