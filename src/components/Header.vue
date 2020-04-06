@@ -18,7 +18,7 @@
       >VEO</v-toolbar-title
     >
     <v-spacer></v-spacer>
-    <v-btn text>
+    <v-btn text target="_blank" href="https://lehd.ces.census.gov/">
       <span class="white--text hidden-xs-only">LEHD Home</span>
       <v-icon color="white" right medium>mdi-home</v-icon>
     </v-btn>
