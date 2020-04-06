@@ -15,7 +15,7 @@
       track-fill-color="primary"
       thumb-label="always"
       persistent-hint
-      hint="Year of discharge, two-year range"
+      hint="Exit cohort, two-year range"
     >
       <template v-slot:thumb-label="{ value }">
         <v-icon dark>
