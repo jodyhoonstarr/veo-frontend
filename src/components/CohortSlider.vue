@@ -13,6 +13,9 @@
       thumb-color="primary"
       track-color="grey"
       track-fill-color="primary"
+      thumb-label="always"
+      persistent-hint
+      hint="Two-year discharge cohort range"
     >
       <template v-slot:thumb-label="{ value }">
         <v-icon dark>
@@ -135,5 +138,12 @@ export default {
 }
 .v-slider--horizontal .v-slider__tick:first-child .v-slider__tick-label {
   transform: translate(-50%) !important;
+}
+.v-input--range-slider
+  .v-input__control
+  .v-messages
+  .v-messages__wrapper
+  .v-messages__message {
+  transform: translate(-11px) !important;
 }
 </style>
