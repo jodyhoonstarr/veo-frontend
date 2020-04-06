@@ -6,6 +6,8 @@
       <g v-if="d3Max > 0" ref="yaxis"></g>
       <g ref="chart"></g>
     </g>
+    <g ref="xaxislabel"></g>
+    <g ref="yaxislabel"></g>
   </svg>
 </template>
 
@@ -219,6 +221,7 @@ export default {
         this.bindLines();
         this.bindPoints();
         this.bindLabels();
+        this.bindAxisLabels();
       });
     },
     notNullandHasProp: function(obj, propname) {
@@ -451,6 +454,36 @@ export default {
               .attr("opacity", 1)
           )
       );
+    },
+    bindAxisLabels: function() {
+      const xAxisLabel = select(this.$refs.xaxislabel);
+      xAxisLabel.selectAll("text").remove();
+      xAxisLabel
+        .append("text")
+        .attr("transform", `translate(${this.width / 2},${this.height - 8})`)
+        .style("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .text("Exit Cohort");
+
+      const yAxisLabel = select(this.$refs.yaxislabel);
+      yAxisLabel.selectAll("text").remove();
+
+      let yLabelText;
+      if (this.chartDataType === "earnings") {
+        yLabelText = "Annual Earnings";
+      } else {
+        yLabelText = "Count of Veterans";
+      }
+      yAxisLabel
+        .append("text")
+        .attr(
+          "transform",
+          `rotate(-90) translate(-${Math.floor(this.chartHeight / 2)},${this
+            .margin.left - 46})`
+        )
+        .style("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .text(yLabelText);
     }
   },
   mounted() {
