@@ -33,8 +33,10 @@
 export default {
   name: "ChartButton",
   props: {
-    value: Boolean,
-    default: false
+    value: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     handleClick: function() {

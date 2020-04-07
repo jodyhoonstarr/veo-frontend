@@ -16,7 +16,7 @@
         :width="width"
         :height="height"
         :max-height="maxHeight"
-        :chart-data="chartData"
+        :chart-data="processedChartData"
         :chart-colors="chartColors"
         :chart-data-type="chartDataType"
         :chart-label="chartLabel"
@@ -30,7 +30,7 @@
         :width="width"
         :height="height"
         :max-height="maxHeight"
-        :chart-data="chartData"
+        :chart-data="processedChartData"
         :chart-colors="chartColors"
         :chart-line-styles="chartLineStyles"
         :chart-data-type="chartDataType"
@@ -95,8 +95,56 @@ export default {
     };
   },
   computed: {
-    temp: function() {
-      return false;
+    processedChartData: function() {
+      if (this.normalize) {
+        // create an accumulator lookup (e.g. {alabama: {p25:xx, p50:xx, p75:xx},...}
+        const lookup = {};
+        this.chartData.forEach(d => {
+          // find the high level lookup if it exists, otherwise create a new one
+          const subLookup = lookup.hasOwnProperty(d.label)
+            ? lookup[d.label]
+            : {};
+          // keep a running total of each key by label
+          Object.keys(d).map(k => {
+            if (k !== "label" && k !== "cohort") {
+              if (subLookup.hasOwnProperty(k)) {
+                // don't use empty strings
+                if (d[k] !== "") {
+                  subLookup[k] += parseInt(d[k]);
+                }
+              } else {
+                if (d[k] !== "") {
+                  subLookup[k] = parseInt(d[k]);
+                }
+              }
+            }
+          });
+
+          lookup[d.label] = subLookup;
+        });
+
+        // update the existing data using the accumulator
+        const newArr = [];
+        this.chartData.forEach(d => {
+          const newObj = {};
+          Object.keys(d).map(k => {
+            if (k !== "label" && k !== "cohort") {
+              if (d[k] === "") {
+                newObj[k] = "";
+              } else {
+                // val = currentval / {alabama:{p75:xx} where xx is the accumulated total
+                newObj[k] = `${d[k] / lookup[d.label][k]}`;
+              }
+            } else {
+              newObj[k] = d[k];
+            }
+          });
+          newArr.push(newObj);
+        });
+        return newArr;
+      } else {
+        return this.chartData;
+      }
     },
     height: function() {
       if (this.width == null) {
