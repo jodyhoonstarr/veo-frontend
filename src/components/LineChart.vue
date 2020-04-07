@@ -56,6 +56,10 @@ export default {
     chartLabel: {
       type: String,
       default: null
+    },
+    normalized: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -481,6 +485,11 @@ export default {
       } else {
         yLabelText = "Count of Veterans";
       }
+
+      if (this.normalized) {
+        yLabelText += " - Share of Total";
+      }
+
       yAxisLabel
         .append("text")
         .attr(

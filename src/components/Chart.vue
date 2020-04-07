@@ -35,6 +35,7 @@
         :chart-line-styles="chartLineStyles"
         :chart-data-type="chartDataType"
         :chart-label="chartLabel"
+        :normalized="normalize"
       ></LineChart>
     </template>
 
