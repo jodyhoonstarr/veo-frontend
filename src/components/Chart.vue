@@ -11,28 +11,32 @@
       </v-card-text>
     </NotificationCard>
 
-    <BarChart
-      v-else-if="chartType === 'bar' && chartData != null && width"
-      :width="width"
-      :height="height"
-      :max-height="maxHeight"
-      :chart-data="chartData"
-      :chart-colors="chartColors"
-      :chart-data-type="chartDataType"
-      :chart-label="chartLabel"
-    ></BarChart>
+    <template v-else-if="chartType === 'bar' && chartData != null && width">
+      <BarChart
+        :width="width"
+        :height="height"
+        :max-height="maxHeight"
+        :chart-data="chartData"
+        :chart-colors="chartColors"
+        :chart-data-type="chartDataType"
+        :chart-label="chartLabel"
+      ></BarChart>
+    </template>
 
-    <LineChart
-      v-else-if="chartType === 'line' && chartData != null && width"
-      :width="width"
-      :height="height"
-      :max-height="maxHeight"
-      :chart-data="chartData"
-      :chart-colors="chartColors"
-      :chart-line-styles="chartLineStyles"
-      :chart-data-type="chartDataType"
-      :chart-label="chartLabel"
-    ></LineChart>
+    <template v-else-if="chartType === 'line' && chartData != null && width">
+      <ChartButton v-model="normalize"></ChartButton>
+
+      <LineChart
+        :width="width"
+        :height="height"
+        :max-height="maxHeight"
+        :chart-data="chartData"
+        :chart-colors="chartColors"
+        :chart-line-styles="chartLineStyles"
+        :chart-data-type="chartDataType"
+        :chart-label="chartLabel"
+      ></LineChart>
+    </template>
 
     <NotificationCard v-else-if="width" :height="height">
       <v-icon :size="height / 2" color="text--secondary"
@@ -49,10 +53,11 @@
 import BarChart from "@/components/BarChart.vue";
 import LineChart from "@/components/LineChart";
 import NotificationCard from "@/components/NotificationCard";
+import ChartButton from "@/components/ChartButton";
 
 export default {
   name: "Chart",
-  components: { BarChart, LineChart, NotificationCard },
+  components: { ChartButton, BarChart, LineChart, NotificationCard },
   props: {
     chartType: {
       type: String,
@@ -85,7 +90,8 @@ export default {
     return {
       width: null,
       ratio: 1.9,
-      maxHeight: 400
+      maxHeight: 400,
+      normalize: false
     };
   },
   computed: {
