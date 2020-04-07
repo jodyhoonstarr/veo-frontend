@@ -271,14 +271,7 @@ export default {
       if (this.normalized) {
         return format(".0%")(d);
       } else {
-        const dInt = parseInt(d);
-        if (dInt < 1000) {
-          return `${this.labelPrefix}${d}`;
-        } else if (dInt < 10000) {
-          return `${this.labelPrefix}${format(".2s")(d)}`;
-        } else {
-          return `${this.labelPrefix}${format(".2s")(d)}`;
-        }
+        return `${this.labelPrefix}${format("~s")(d)}`;
       }
     },
     bindYAxis: function() {
