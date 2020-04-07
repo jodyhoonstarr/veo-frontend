@@ -175,8 +175,15 @@ export default {
       });
     },
     labelPrefix: function() {
-      if (this.chartDataType === "earnings") {
+      if (this.chartDataType === "earnings" && !this.normalized) {
         return "$";
+      } else {
+        return "";
+      }
+    },
+    labelPostfix: function() {
+      if (this.normalized) {
+        return "%";
       } else {
         return "";
       }
@@ -280,11 +287,15 @@ export default {
             .tickFormat(d => {
               const dInt = parseInt(d);
               if (dInt < 1000) {
-                return d;
+                return `${this.labelPrefix}${d}${this.labelPostfix}`;
               } else if (dInt < 10000) {
-                return `${this.labelPrefix}${format(".1s")(d)}`;
+                return `${this.labelPrefix}${format(".1s")(d)}${
+                  this.labelPostfix
+                }`;
               } else {
-                return `${this.labelPrefix}${format(".2s")(d)}`;
+                return `${this.labelPrefix}${format(".2s")(d)}${
+                  this.labelPostfix
+                }`;
               }
             })
         )

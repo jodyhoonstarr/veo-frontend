@@ -134,7 +134,7 @@ export default {
                 newObj[k] = "";
               } else {
                 // val = currentval / {alabama:{p75:xx} where xx is the accumulated total
-                newObj[k] = `${d[k] / lookup[d.label][k]}`;
+                newObj[k] = `${(d[k] / lookup[d.label][k]) * 100}`;
               }
             } else {
               newObj[k] = d[k];
