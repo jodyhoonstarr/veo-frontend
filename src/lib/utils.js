@@ -4,6 +4,13 @@ import { schemeCategory10 } from "d3-scale-chromatic";
 import { scaleOrdinal } from "d3-scale";
 import { PUBLICPATH } from "@/constants/config";
 
+// titlecase a string
+export function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function(txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
 // prefix a path with the public path from the config
 export function joinPublicPath(str) {
   if (PUBLICPATH === "/" && str.charAt(0) === "/") {

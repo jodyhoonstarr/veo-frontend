@@ -49,6 +49,7 @@
           :chart-data="chartData"
           :chart-colors="chartColors"
           :chart-data-type="chartDataType"
+          :chart-label="activeToggle"
         ></Chart>
       </ChartCard>
     </GetData>

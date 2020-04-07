@@ -13,6 +13,8 @@
       :font-size="margin.top"
       text-anchor="middle"
     ></text>
+    <g ref="xaxislabel"></g>
+    <g ref="yaxislabel"></g>
   </svg>
 </template>
 
@@ -23,7 +25,7 @@ import { transition } from "d3-transition";
 import { axisBottom, axisLeft } from "d3-axis";
 import { select, selectAll } from "d3-selection";
 import { scaleBand, scaleLinear, scaleOrdinal } from "d3-scale";
-import { arrayIsNullorEmpty } from "@/lib/utils";
+import { arrayIsNullorEmpty, toTitleCase } from "@/lib/utils";
 import { wrapLabels } from "@/lib/utils";
 
 export default {
@@ -50,6 +52,10 @@ export default {
       default: null
     },
     chartDataType: {
+      type: String,
+      default: null
+    },
+    chartLabel: {
       type: String,
       default: null
     }
@@ -209,23 +215,22 @@ export default {
   },
   watch: {
     d3Data: function() {
-      this.$nextTick(() => {
-        this.bindXAxis();
-        this.bindYAxis();
-        this.bindRects();
-        this.bindLabels();
-      });
+      this.bindChartNextTick();
     },
     width: function() {
-      this.$nextTick(() => {
-        this.bindXAxis();
-        this.bindYAxis();
-        this.bindRects();
-        this.bindLabels();
-      });
+      this.bindChartNextTick();
     }
   },
   methods: {
+    bindChartNextTick: function() {
+      this.$nextTick(() => {
+        this.bindXAxis();
+        this.bindYAxis();
+        this.bindRects();
+        this.bindLabels();
+        this.bindAxisLabels();
+      });
+    },
     // TODO the function labeling here is a bit messy, clean up
     // label groups and bar groups are mixed in terminology
     // sometimes the label means the text label, other times the label prop
@@ -580,15 +585,45 @@ export default {
         );
       // remove the domain outline
       yaxisgrid.select(".domain").remove();
+    },
+    bindAxisLabels: function() {
+      const xAxisLabel = select(this.$refs.xaxislabel);
+      xAxisLabel.selectAll("text").remove();
+      xAxisLabel
+        .append("text")
+        .attr(
+          "transform",
+          `translate(${this.width / 2 + 14},${this.height - 6})`
+        )
+        .style("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .attr("fill", "grey")
+        .text(toTitleCase(this.chartLabel));
+
+      const yAxisLabel = select(this.$refs.yaxislabel);
+      yAxisLabel.selectAll("text").remove();
+
+      let yLabelText;
+      if (this.chartDataType === "earnings") {
+        yLabelText = "Annual Earnings";
+      } else {
+        yLabelText = "Count of Veterans";
+      }
+      yAxisLabel
+        .append("text")
+        .attr(
+          "transform",
+          `rotate(-90) translate(-${Math.floor(this.chartHeight / 2)},${this
+            .margin.left - 46})`
+        )
+        .style("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .attr("fill", "grey")
+        .text(yLabelText);
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.bindXAxis();
-      this.bindYAxis();
-      this.bindRects();
-      this.bindLabels();
-    });
+    this.bindChartNextTick();
   }
 };
 </script>

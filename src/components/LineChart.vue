@@ -19,7 +19,7 @@ import { axisBottom, axisLeft } from "d3-axis";
 import { select, selectAll } from "d3-selection";
 import { line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
-import { arrayIsNullorEmpty, wrapLabels } from "@/lib/utils";
+import { arrayIsNullorEmpty, toTitleCase, wrapLabels } from "@/lib/utils";
 import { labelSpacer } from "@/lib/labelspacer";
 
 export default {
@@ -50,6 +50,10 @@ export default {
       default: null
     },
     chartDataType: {
+      type: String,
+      default: null
+    },
+    chartLabel: {
       type: String,
       default: null
     }
@@ -460,10 +464,11 @@ export default {
       xAxisLabel.selectAll("text").remove();
       xAxisLabel
         .append("text")
-        .attr("transform", `translate(${this.width / 2},${this.height - 8})`)
+        .attr("transform", `translate(${this.width / 2},${this.height - 6})`)
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
-        .text("Exit Cohort");
+        .attr("fill", "grey")
+        .text(toTitleCase(this.chartLabel));
 
       const yAxisLabel = select(this.$refs.yaxislabel);
       yAxisLabel.selectAll("text").remove();
@@ -483,6 +488,7 @@ export default {
         )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
+        .attr("fill", "grey")
         .text(yLabelText);
     }
   },

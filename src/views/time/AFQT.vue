@@ -44,6 +44,7 @@
           :chart-colors="chartColors"
           :chart-line-styles="chartLineStyles"
           :chart-data-type="chartDataType"
+          chart-label="Exit Cohort"
         ></Chart>
       </ChartCard>
     </GetData>
