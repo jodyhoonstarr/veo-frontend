@@ -220,8 +220,8 @@ export default {
   methods: {
     bindChartNextTick: function() {
       this.$nextTick(() => {
-        this.bindXAxis();
         this.bindYAxis();
+        this.bindXAxis();
         this.bindLines();
         this.bindPoints();
         this.bindLabels();
@@ -246,6 +246,7 @@ export default {
         .attr("transform", `translate(0,${this.chartHeight})`)
         .transition()
         .duration(this.transitionDuration)
+        .attr("class", "axis")
         .call(axisBottom(this.x).tickFormat(this.xAxisFormat))
         .selectAll(".tick text")
         .style("font-size", "12px");
@@ -268,6 +269,7 @@ export default {
       yaxis
         .transition()
         .duration(this.transitionDuration)
+        .attr("class", "axis")
         .call(
           axisLeft(this.y)
             .ticks(tickCount)
@@ -467,7 +469,7 @@ export default {
         .attr("transform", `translate(${this.width / 2},${this.height - 6})`)
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
-        .attr("fill", "grey")
+        .attr("fill", "#555555")
         .text(toTitleCase(this.chartLabel));
 
       const yAxisLabel = select(this.$refs.yaxislabel);
@@ -488,7 +490,7 @@ export default {
         )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
-        .attr("fill", "grey")
+        .attr("fill", "#555555")
         .text(yLabelText);
     }
   },
@@ -503,5 +505,16 @@ export default {
   stroke: lightgrey;
   stroke-opacity: 0.7;
   shape-rendering: crispEdges;
+}
+.axis line {
+  stroke: #555555;
+}
+
+.axis path {
+  stroke: #555555;
+}
+
+.axis text {
+  fill: #555555;
 }
 </style>

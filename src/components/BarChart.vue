@@ -544,6 +544,7 @@ export default {
       const xaxis = select(this.$refs.xaxis);
       xaxis
         .attr("transform", `translate(0,${this.chartHeight})`)
+        .attr("class", "axis")
         .call(axisBottom(this.x0))
         .transition()
         .duration(this.transitionDuration)
@@ -557,6 +558,7 @@ export default {
       yaxis
         .transition()
         .duration(this.transitionDuration)
+        .attr("class", "axis")
         .call(
           axisLeft(this.y)
             .ticks(tickCount)
@@ -597,7 +599,7 @@ export default {
         )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
-        .attr("fill", "grey")
+        .attr("fill", "#555555")
         .text(toTitleCase(this.chartLabel));
 
       const yAxisLabel = select(this.$refs.yaxislabel);
@@ -618,7 +620,7 @@ export default {
         )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
-        .attr("fill", "grey")
+        .attr("fill", "#555555")
         .text(yLabelText);
     }
   },
@@ -633,5 +635,16 @@ export default {
   stroke: lightgrey;
   stroke-opacity: 0.7;
   shape-rendering: crispEdges;
+}
+.axis line {
+  stroke: #555555;
+}
+
+.axis path {
+  stroke: #555555;
+}
+
+.axis text {
+  fill: #555555;
 }
 </style>
