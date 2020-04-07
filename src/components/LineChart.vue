@@ -181,13 +181,6 @@ export default {
         return "";
       }
     },
-    labelPostfix: function() {
-      if (this.normalized) {
-        return "%";
-      } else {
-        return "";
-      }
-    },
     cohortRange: function() {
       return [...new Set(this.d3Data.map(d => parseInt(d.cohort)))];
     },
@@ -274,6 +267,20 @@ export default {
         if (val % 2 !== 0) select(this).remove();
       });
     },
+    processTickFormat: function(d) {
+      if (this.normalized) {
+        return format(".0%")(d);
+      } else {
+        const dInt = parseInt(d);
+        if (dInt < 1000) {
+          return `${this.labelPrefix}${d}`;
+        } else if (dInt < 10000) {
+          return `${this.labelPrefix}${format(".2s")(d)}`;
+        } else {
+          return `${this.labelPrefix}${format(".2s")(d)}`;
+        }
+      }
+    },
     bindYAxis: function() {
       const tickCount = 7;
       const yaxis = select(this.$refs.yaxis);
@@ -284,20 +291,7 @@ export default {
         .call(
           axisLeft(this.y)
             .ticks(tickCount)
-            .tickFormat(d => {
-              const dInt = parseInt(d);
-              if (dInt < 1000) {
-                return `${this.labelPrefix}${d}${this.labelPostfix}`;
-              } else if (dInt < 10000) {
-                return `${this.labelPrefix}${format(".1s")(d)}${
-                  this.labelPostfix
-                }`;
-              } else {
-                return `${this.labelPrefix}${format(".2s")(d)}${
-                  this.labelPostfix
-                }`;
-              }
-            })
+            .tickFormat(d => this.processTickFormat(d))
         )
         .style("font-size", "12px");
 
