@@ -422,9 +422,9 @@ export default {
         .attr("transform", this.labelTransform);
     },
     shoutoutClick: function(d3This, vm, d) {
-      const delayFactor = 5;
-      const strokeWidth = 5;
-      const highlightColor = "Black";
+      const delayFactor = 8;
+      const strokeWidth = 8;
+      const highlightColor = "#555555";
 
       // de-highlight every other rect
       selectAll("g.bargroup > rect")
