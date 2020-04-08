@@ -229,6 +229,28 @@ export default {
         .defined(d => !isNaN(d.value))
         .x(d => this.x(d.cohort))
         .y(d => this.y(d.value));
+    },
+    spacedLabels: function() {
+      let labelKey;
+      if (this.d3Keys.length === 3) {
+        if (this.d3Keys[1] === "y5") {
+          labelKey = this.d3Keys[0];
+        } else {
+          labelKey = this.d3Keys[1];
+        }
+      } else {
+        labelKey = this.d3Keys[0];
+      }
+
+      // get only one label per set of lines
+      const linesFiltered = this.d3Lines.filter(l => l.key === labelKey);
+      let yValues = {};
+      linesFiltered.map(d => {
+        yValues[d.label] = this.y(d.data[d.data.length - 1].value);
+      });
+
+      // space out overlapping y labels
+      return labelSpacer(yValues);
     }
   },
   watch: {
@@ -464,13 +486,7 @@ export default {
 
       // get only one label per set of lines
       const linesFiltered = this.d3Lines.filter(l => l.key === labelKey);
-      let yValues = {};
-      linesFiltered.map(d => {
-        yValues[d.label] = this.y(d.data[d.data.length - 1].value);
-      });
 
-      // space out overlapping y labels
-      const spacedYValues = labelSpacer(yValues);
       // .attr("y", d => spacedYValues[d.label]) // new call
       // .attr("y", d => this.y(d.data[d.data.length - 1].value)) // original call
 
@@ -484,11 +500,13 @@ export default {
           .attr("opacity", 0)
           .attr("text-anchor", "start")
           .attr("x", this.chartWidth)
-          .attr("y", d => (spacedYValues ? spacedYValues[d.label] : null))
+          .attr("y", d =>
+            this.spacedLabels ? this.spacedLabels[d.label] : null
+          )
           .attr("stroke-width", 0)
           .attr("fill", d => this.chartColors[d.label])
-          .attr("dy", ".30em")
-          .attr("dx", ".35em")
+          .attr("dy", "3px")
+          .attr("dx", "6px")
           .style("font-size", "10px")
           .text(d => {
             const labelMaxLength = 24;
