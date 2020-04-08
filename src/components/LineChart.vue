@@ -6,6 +6,13 @@
       <g v-if="d3Max > 0" ref="yaxis"></g>
       <g ref="chart"></g>
     </g>
+    <text
+      ref="shoutout"
+      x="50%"
+      :y="margin.top"
+      :font-size="margin.top"
+      text-anchor="middle"
+    ></text>
     <g ref="xaxislabel"></g>
     <g ref="yaxislabel"></g>
   </svg>
@@ -287,6 +294,17 @@ export default {
         return `${this.labelPrefix}${format("~s")(d)}`;
       }
     },
+    labelText: function(d) {
+      if (d.value != null && d.value !== 0) {
+        if (this.normalized) {
+          return format(".0%")(d);
+        } else {
+          return `${this.labelPrefix}${format(",.0f")(d.value)}`;
+        }
+      } else {
+        return "";
+      }
+    },
     bindYAxis: function() {
       const tickCount = 7;
       const yaxis = select(this.$refs.yaxis);
@@ -376,6 +394,7 @@ export default {
       });
     },
     bindPoints: function() {
+      const vm = this; // for use with click event in d3
       const pointTransitionDuration = this.transitionDuration * 2;
 
       // remove and redraw the whole point series every time
@@ -396,6 +415,9 @@ export default {
         .join(enter =>
           enter
             .append("circle")
+            .on("click", function(d) {
+              vm.shoutoutClick(this, vm, d);
+            })
             .attr("cx", d => this.x(d.cohort))
             .attr("cy", d => this.y(d.value))
             .attr("r", 2)
@@ -512,6 +534,34 @@ export default {
         .attr("font-size", "12px")
         .attr("fill", "#555555")
         .text(yLabelText);
+    },
+    shoutoutClick: function(d3This, vm, d) {
+      const delayFactor = 8;
+      const highlightColor = "#555555";
+
+      // shrink every other circle
+      selectAll("g.point-series > circle")
+        .transition()
+        .attr("r", 2);
+
+      // briefly show the clicked text value
+      select(vm.$refs.shoutout)
+        .text("")
+        .transition()
+        .text(vm.labelText(d))
+        .attr("fill", highlightColor)
+        .attr("opacity", 1)
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("opacity", 0);
+
+      // briefly make the dot large
+      select(d3This)
+        .transition()
+        .attr("r", 8)
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("r", 2);
     }
   },
   mounted() {

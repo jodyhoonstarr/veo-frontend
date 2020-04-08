@@ -452,7 +452,7 @@ export default {
         .attr("stroke-width", 0);
     },
     bindRects: function() {
-      let vm = this; // for use with click event in d3
+      const vm = this; // for use with click event in d3
 
       const bound = select(this.$refs.chart)
         .selectAll("g.bargroup")
