@@ -336,18 +336,20 @@ export default {
     lineType: function(d) {
       const lineType = this.chartLineStyles[d.key];
       if (lineType === "dashed") {
-        return "5";
+        return "6";
       } else if (lineType === "dotted") {
-        return "2, 2";
+        return "1, 4";
       } else {
         return "";
       }
     },
     bindLines: function() {
+      const vm = this; // for use with click event in d3
+
       const bound = select(this.$refs.chart)
         .attr("fill", "none")
         .attr("stroke", "black")
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 2)
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
         .selectAll("path")
@@ -357,6 +359,15 @@ export default {
         enter =>
           enter
             .append("path")
+            .on("click", function(d) {
+              vm.lineClick(this, vm, d);
+            })
+            .on("mouseover", function(d) {
+              vm.lineHoverOver(this, vm, d);
+            })
+            .on("mouseout", function(d) {
+              vm.lineHoverOut(this, vm, d);
+            })
             .attr("opacity", 0)
             .style("mix-blend-mode", "multiply")
             .attr("stroke-dasharray", d => this.lineType(d))
@@ -535,6 +546,42 @@ export default {
         .attr("font-size", "12px")
         .attr("fill", "#555555")
         .text(yLabelText);
+    },
+    lineHoverOver: function(d3This, vm, d) {
+      const delayFactor = 2;
+      select(d3This).attr("stroke-width", 4);
+
+      // fade every other line
+      select(vm.$refs.chart)
+        .selectAll("path")
+        .filter(function(o) {
+          return o !== d;
+        })
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("opacity", 0.2);
+    },
+    lineHoverOut: function(d3This, vm, d) {
+      const delayFactor = 1;
+
+      // return every line to its default
+      select(vm.$refs.chart)
+        .selectAll("path")
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("opacity", 1)
+        .attr("stroke-width", 2);
+    },
+    lineClick: function(d3This, vm, d) {
+      const delayFactor = 8;
+
+      // briefly make the line fat
+      select(d3This)
+        .transition()
+        .attr("stroke-width", 4)
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("stroke-width", 2);
     },
     shoutoutClick: function(d3This, vm, d) {
       const delayFactor = 8;
