@@ -76,7 +76,8 @@ export default {
   data() {
     return {
       margin: { top: 26, right: 110, bottom: 48, left: 60 },
-      transitionDuration: 400
+      transitionDuration: 400,
+      circleRadius: 3
     };
   },
   computed: {
@@ -420,7 +421,7 @@ export default {
             })
             .attr("cx", d => this.x(d.cohort))
             .attr("cy", d => this.y(d.value))
-            .attr("r", 2)
+            .attr("r", this.circleRadius)
             .attr("opacity", 0)
             .style("fill", "white")
             .style("stroke", d => this.chartColors[d.label])
@@ -542,7 +543,7 @@ export default {
       // shrink every other circle
       selectAll("g.point-series > circle")
         .transition()
-        .attr("r", 2);
+        .attr("r", this.circleRadius);
 
       // briefly show the clicked text value
       select(vm.$refs.shoutout)
@@ -561,7 +562,7 @@ export default {
         .attr("r", 8)
         .transition()
         .duration(vm.transitionDuration * delayFactor)
-        .attr("r", 2);
+        .attr("r", this.circleRadius);
     }
   },
   mounted() {
