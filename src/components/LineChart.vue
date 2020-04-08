@@ -297,7 +297,7 @@ export default {
     labelText: function(d) {
       if (d.value != null && d.value !== 0) {
         if (this.normalized) {
-          return format(".0%")(d);
+          return format(".1%")(d.value);
         } else {
           return `${this.labelPrefix}${format(",.0f")(d.value)}`;
         }
