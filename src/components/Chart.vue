@@ -33,6 +33,7 @@
         <ChartButton
           v-model="normalize"
           tooltip="Display as Share of Total"
+          nudge-tooltip="40"
           icon="mdi-percent"
         ></ChartButton>
       </ButtonContainer>

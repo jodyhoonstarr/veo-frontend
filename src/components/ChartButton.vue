@@ -1,6 +1,6 @@
 <template>
   <div v-if="this.value" class="pl-2">
-    <v-tooltip left>
+    <v-tooltip :nudge-left="parseInt(nudgeTooltip)" left>
       <template v-slot:activator="{ on }">
         <v-btn fab x-small dark color="primary" v-on="on" @click="handleClick">
           <v-icon>{{ icon }}</v-icon>
@@ -10,7 +10,7 @@
     </v-tooltip>
   </div>
   <div v-else class="pl-2">
-    <v-tooltip left>
+    <v-tooltip :nudge-left="parseInt(nudgeTooltip)" left>
       <template v-slot:activator="{ on }">
         <v-btn fab x-small dark color="white" v-on="on" @click="handleClick">
           <v-icon color="grey">{{ icon }}</v-icon>
@@ -36,6 +36,10 @@ export default {
     icon: {
       type: String,
       default: "mdi-plus"
+    },
+    nudgeTooltip: {
+      type: Number | String,
+      default: 0
     }
   },
   methods: {
