@@ -27,6 +27,7 @@
         :chart-colors="chartColors"
         :chart-data-type="chartDataType"
         :chart-label="chartLabel"
+        :normalized="normalize"
       ></BarChart>
     </template>
 

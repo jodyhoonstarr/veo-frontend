@@ -58,6 +58,10 @@ export default {
     chartLabel: {
       type: String,
       default: null
+    },
+    normalized: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -304,7 +308,11 @@ export default {
     },
     labelText: function(d) {
       if (d.value != null && d.value !== 0) {
-        return `${this.labelPrefix}${format(",.0f")(d.value)}`;
+        if (this.normalized) {
+          return format(".1%")(d.value);
+        } else {
+          return `${this.labelPrefix}${format(",.0f")(d.value)}`;
+        }
       } else {
         return "";
       }
@@ -552,6 +560,13 @@ export default {
         .style("font-size", "12px")
         .call(wrapLabels, this.x0.bandwidth());
     },
+    processTickFormat: function(d) {
+      if (this.normalized) {
+        return format(".0%")(d);
+      } else {
+        return `${this.labelPrefix}${format("~s")(d)}`;
+      }
+    },
     bindYAxis: function() {
       const tickCount = 7;
       const yaxis = select(this.$refs.yaxis);
@@ -562,16 +577,7 @@ export default {
         .call(
           axisLeft(this.y)
             .ticks(tickCount)
-            .tickFormat(d => {
-              const dInt = parseInt(d);
-              if (dInt < 1000) {
-                return d;
-              } else if (dInt < 10000) {
-                return `${this.labelPrefix}${format(".1s")(d)}`;
-              } else {
-                return `${this.labelPrefix}${format(".2s")(d)}`;
-              }
-            })
+            .tickFormat(d => this.processTickFormat(d))
         )
         .style("font-size", "12px");
 
@@ -611,6 +617,11 @@ export default {
       } else {
         yLabelText = "Count of Veterans";
       }
+
+      if (this.normalized) {
+        yLabelText += " - Share of Total";
+      }
+
       yAxisLabel
         .append("text")
         .attr(
