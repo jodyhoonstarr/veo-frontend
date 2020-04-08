@@ -1,32 +1,24 @@
 <template>
-  <v-container class="py-0 px-6 my-n4">
-    <v-row justify="end">
-      <v-tooltip v-if="this.value" left>
-        <template v-slot:activator="{ on }">
-          <v-btn
-            fab
-            x-small
-            dark
-            color="primary"
-            v-on="on"
-            @click="handleClick"
-          >
-            <v-icon>mdi-percent</v-icon>
-          </v-btn>
-        </template>
-        <span>Display as Share of Total</span>
-      </v-tooltip>
-
-      <v-tooltip v-else left>
-        <template v-slot:activator="{ on }">
-          <v-btn fab x-small dark color="white" v-on="on" @click="handleClick">
-            <v-icon color="grey">mdi-percent</v-icon>
-          </v-btn>
-        </template>
-        <span>Display as Share of Total</span>
-      </v-tooltip>
-    </v-row>
-  </v-container>
+  <div v-if="this.value" class="pl-2">
+    <v-tooltip left>
+      <template v-slot:activator="{ on }">
+        <v-btn fab x-small dark color="primary" v-on="on" @click="handleClick">
+          <v-icon>{{ icon }}</v-icon>
+        </v-btn>
+      </template>
+      <span>{{ tooltip }}</span>
+    </v-tooltip>
+  </div>
+  <div v-else class="pl-2">
+    <v-tooltip left>
+      <template v-slot:activator="{ on }">
+        <v-btn fab x-small dark color="white" v-on="on" @click="handleClick">
+          <v-icon color="grey">{{ icon }}</v-icon>
+        </v-btn>
+      </template>
+      <span>{{ tooltip }}</span>
+    </v-tooltip>
+  </div>
 </template>
 
 <script>
@@ -36,6 +28,14 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    tooltip: {
+      type: String,
+      default: ""
+    },
+    icon: {
+      type: String,
+      default: "mdi-plus"
     }
   },
   methods: {

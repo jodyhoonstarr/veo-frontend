@@ -24,7 +24,18 @@
     </template>
 
     <template v-else-if="chartType === 'line' && chartData != null && width">
-      <ChartButton v-model="normalize"></ChartButton>
+      <ButtonContainer>
+        <ChartButton
+          v-model="startAxisAtZero"
+          tooltip="Start Y-Axis Origin at Zero"
+          icon="mdi-chart-line"
+        ></ChartButton>
+        <ChartButton
+          v-model="normalize"
+          tooltip="Display as Share of Total"
+          icon="mdi-percent"
+        ></ChartButton>
+      </ButtonContainer>
 
       <LineChart
         :width="width"
@@ -55,10 +66,17 @@ import BarChart from "@/components/BarChart.vue";
 import LineChart from "@/components/LineChart";
 import NotificationCard from "@/components/NotificationCard";
 import ChartButton from "@/components/ChartButton";
+import ButtonContainer from "@/components/ButtonContainer";
 
 export default {
   name: "Chart",
-  components: { ChartButton, BarChart, LineChart, NotificationCard },
+  components: {
+    ButtonContainer,
+    ChartButton,
+    BarChart,
+    LineChart,
+    NotificationCard
+  },
   props: {
     chartType: {
       type: String,
@@ -92,7 +110,8 @@ export default {
       width: null,
       ratio: 1.9,
       maxHeight: 400,
-      normalize: false
+      normalize: false,
+      startAxisAtZero: false
     };
   },
   computed: {
