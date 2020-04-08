@@ -47,6 +47,7 @@
         :chart-data-type="chartDataType"
         :chart-label="chartLabel"
         :normalized="normalize"
+        :startAxisAtZero="startAxisAtZero"
       ></LineChart>
     </template>
 

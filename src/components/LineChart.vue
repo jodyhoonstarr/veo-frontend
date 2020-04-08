@@ -60,6 +60,10 @@ export default {
     normalized: {
       type: Boolean,
       default: false
+    },
+    startAxisAtZero: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -200,7 +204,13 @@ export default {
       const yMax = this.d3Max === 0 ? 1 : this.d3Max;
       // add some bottom padding to the ymin used in the chart
       const newYMin = this.d3Min - (this.d3Max - this.d3Min) / 10;
-      const yMin = this.d3Min === 0 || newYMin <= 0 ? 0 : newYMin;
+      // the prop startAxisAtZero says to start at 0, use zero
+      let yMin;
+      if (this.startAxisAtZero) {
+        yMin = 0;
+      } else {
+        yMin = this.d3Min === 0 || newYMin <= 0 ? 0 : newYMin;
+      }
       return scaleLinear()
         .rangeRound([this.chartHeight, 0])
         .domain([yMin, yMax])
@@ -218,6 +228,9 @@ export default {
       this.bindChartNextTick();
     },
     width: function() {
+      this.bindChartNextTick();
+    },
+    startAxisAtZero: function() {
       this.bindChartNextTick();
     }
   },
