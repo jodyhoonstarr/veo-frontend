@@ -566,7 +566,7 @@ export default {
         .text(yLabelText);
     },
     lineHoverOver: function(d3This, vm, d) {
-      const delayFactor = 2;
+      const delayFactor = 1;
       select(d3This).attr("stroke-width", 4);
 
       // fade every other line
@@ -578,6 +578,27 @@ export default {
         .transition()
         .duration(vm.transitionDuration * delayFactor)
         .attr("opacity", 0.2);
+
+      // fade every other label
+      select(this.$refs.chart)
+        .selectAll("text")
+        .filter(function(o) {
+          return o.label !== d.label;
+        })
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("opacity", 0.2);
+
+      // move the location of the matched label
+      select(this.$refs.chart)
+        .selectAll("text")
+        .filter(function(o) {
+          return o.label === d.label;
+        })
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("opacity", 1)
+        .attr("y", () => vm.y(d.data[d.data.length - 1].value));
     },
     lineHoverOut: function(d3This, vm, d) {
       const delayFactor = 1;
@@ -589,6 +610,26 @@ export default {
         .duration(vm.transitionDuration * delayFactor)
         .attr("opacity", 1)
         .attr("stroke-width", 2);
+
+      // return every line to its default
+      select(this.$refs.chart)
+        .selectAll("text")
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("opacity", 1);
+
+      // return the label to its original position
+      select(this.$refs.chart)
+        .selectAll("text")
+        .filter(function(o) {
+          return o.label === d.label;
+        })
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("opacity", 1)
+        .attr("y", () =>
+          this.spacedLabels ? this.spacedLabels[d.label] : null
+        );
     },
     lineClick: function(d3This, vm, d) {
       const delayFactor = 8;
