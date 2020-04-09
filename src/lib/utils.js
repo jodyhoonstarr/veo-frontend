@@ -15,10 +15,12 @@ export function toTitleCase(str) {
 export function joinPublicPath(str) {
   if (PUBLICPATH === "/" && str.charAt(0) === "/") {
     return str;
-  } else if (str.charAt(0) !== "/") {
-    return `/${str}`;
-  } else {
+  } else if (PUBLICPATH !== "/" && str.charAt(0) === "/") {
+    return `${PUBLICPATH}${str}`;
+  } else if (PUBLICPATH !== "/" && str.charAt(0) !== "/") {
     return `${PUBLICPATH}/${str}`;
+  } else {
+    return `/${str}`;
   }
 }
 
