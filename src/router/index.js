@@ -74,7 +74,7 @@ const routes = [
         name: "Raceethnicity",
         component: () =>
           import(
-            /* webpackChunkName: "raceethnicity */ "@/views/time/RaceEthnicity.vue"
+            /* webpackChunkName: "raceethnicity" */ "@/views/time/RaceEthnicity.vue"
           )
       },
       {
