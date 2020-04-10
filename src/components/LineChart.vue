@@ -64,10 +64,6 @@ export default {
       type: String,
       default: null
     },
-    normalized: {
-      type: Boolean,
-      default: false
-    },
     startAxisAtZero: {
       type: Boolean,
       default: false
@@ -187,7 +183,7 @@ export default {
       });
     },
     labelPrefix: function() {
-      if (this.chartDataType === "earnings" && !this.normalized) {
+      if (this.chartDataType === "earnings") {
         return "$";
       } else {
         return "";
@@ -311,19 +307,11 @@ export default {
       });
     },
     processTickFormat: function(d) {
-      if (this.normalized) {
-        return format(".0%")(d);
-      } else {
-        return `${this.labelPrefix}${format("~s")(d)}`;
-      }
+      return `${this.labelPrefix}${format("~s")(d)}`;
     },
     labelText: function(d) {
       if (d.value != null && d.value !== 0) {
-        if (this.normalized) {
-          return format(".1%")(d.value);
-        } else {
-          return `${this.labelPrefix}${format(",.0f")(d.value)}`;
-        }
+        return `${this.labelPrefix}${format(",.0f")(d.value)}`;
       } else {
         return "";
       }
@@ -547,10 +535,6 @@ export default {
         yLabelText = "Annual Earnings";
       } else {
         yLabelText = "Count of Veterans";
-      }
-
-      if (this.normalized) {
-        yLabelText += " - Share of Total";
       }
 
       yAxisLabel

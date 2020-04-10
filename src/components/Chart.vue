@@ -12,22 +12,14 @@
     </NotificationCard>
 
     <template v-else-if="chartType === 'bar' && chartData != null && width">
-      <ButtonContainer>
-        <ChartButton
-          v-model="normalize"
-          tooltip="Display as Share of Total"
-          icon="mdi-percent"
-        ></ChartButton>
-      </ButtonContainer>
       <BarChart
         :width="width"
         :height="height"
         :max-height="maxHeight"
-        :chart-data="processedChartData"
+        :chart-data="chartData"
         :chart-colors="chartColors"
         :chart-data-type="chartDataType"
         :chart-label="chartLabel"
-        :normalized="normalize"
       ></BarChart>
     </template>
 
@@ -38,24 +30,17 @@
           tooltip="Start Y-Axis Origin at Zero"
           icon="mdi-chart-line"
         ></ChartButton>
-        <ChartButton
-          v-model="normalize"
-          tooltip="Display as Share of Total"
-          nudge-tooltip="40"
-          icon="mdi-percent"
-        ></ChartButton>
       </ButtonContainer>
 
       <LineChart
         :width="width"
         :height="height"
         :max-height="maxHeight"
-        :chart-data="processedChartData"
+        :chart-data="chartData"
         :chart-colors="chartColors"
         :chart-line-styles="chartLineStyles"
         :chart-data-type="chartDataType"
         :chart-label="chartLabel"
-        :normalized="normalize"
         :startAxisAtZero="startAxisAtZero"
       ></LineChart>
     </template>
@@ -125,88 +110,6 @@ export default {
     };
   },
   computed: {
-    processedChartData: function() {
-      if (this.normalize) {
-        if (this.chartType === "line") {
-          // normalize by the line totals
-
-          // create an accumulator lookup (e.g. {alabama: {p25:xx, p50:xx, p75:xx},...}
-          const lookup = {};
-          this.chartData.forEach(d => {
-            // find the high level lookup if it exists, otherwise create a new one
-            const subLookup = lookup.hasOwnProperty(d.label)
-              ? lookup[d.label]
-              : {};
-            // keep a running total of each key by label
-            Object.keys(d).map(k => {
-              if (k !== "label" && k !== "cohort") {
-                if (subLookup.hasOwnProperty(k)) {
-                  // don't use empty strings
-                  if (d[k] !== "") {
-                    subLookup[k] += parseInt(d[k]);
-                  }
-                } else {
-                  if (d[k] !== "") {
-                    subLookup[k] = parseInt(d[k]);
-                  }
-                }
-              }
-            });
-
-            lookup[d.label] = subLookup;
-          });
-
-          // update the existing data using the accumulator
-          const newArr = [];
-          this.chartData.forEach(d => {
-            const newObj = {};
-            Object.keys(d).map(k => {
-              if (k !== "label" && k !== "cohort") {
-                if (d[k] === "") {
-                  newObj[k] = "";
-                } else {
-                  // val = currentval / {alabama:{p75:xx} where xx is the accumulated total
-                  newObj[k] = `${d[k] / lookup[d.label][k]}`;
-                }
-              } else {
-                newObj[k] = d[k];
-              }
-            });
-            newArr.push(newObj);
-          });
-          return newArr;
-        } else {
-          // normalize by the bargroup totals
-          const newChartData = [];
-          this.chartData.forEach(d => {
-            // generate the group total percent
-            let accumulator = 0;
-            Object.keys(d).forEach(k => {
-              if (k !== "label" && d[k] !== "") {
-                accumulator += parseInt(d[k]);
-              }
-            });
-
-            // if null or label, add it back to the object
-            // otherwise turn into a share percent
-            let newEntry = {};
-            Object.keys(d).forEach(k => {
-              if (k === "label" || d[k] === "") {
-                newEntry[k] = d[k];
-              } else {
-                newEntry[k] = `${d[k] / accumulator}`;
-              }
-            });
-
-            // append the entry
-            newChartData.push(newEntry);
-          });
-          return newChartData;
-        }
-      } else {
-        return this.chartData;
-      }
-    },
     height: function() {
       if (this.width == null) {
         return null;

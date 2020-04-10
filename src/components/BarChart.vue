@@ -58,10 +58,6 @@ export default {
     chartLabel: {
       type: String,
       default: null
-    },
-    normalized: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -308,11 +304,7 @@ export default {
     },
     labelText: function(d) {
       if (d.value != null && d.value !== 0) {
-        if (this.normalized) {
-          return format(".1%")(d.value);
-        } else {
-          return `${this.labelPrefix}${format(",.0f")(d.value)}`;
-        }
+        return `${this.labelPrefix}${format(",.0f")(d.value)}`;
       } else {
         return "";
       }
@@ -561,11 +553,7 @@ export default {
         .call(wrapLabels, this.x0.bandwidth());
     },
     processTickFormat: function(d) {
-      if (this.normalized) {
-        return format(".0%")(d);
-      } else {
-        return `${this.labelPrefix}${format("~s")(d)}`;
-      }
+      return `${this.labelPrefix}${format("~s")(d)}`;
     },
     bindYAxis: function() {
       const tickCount = 7;
@@ -616,10 +604,6 @@ export default {
         yLabelText = "Annual Earnings";
       } else {
         yLabelText = "Count of Veterans";
-      }
-
-      if (this.normalized) {
-        yLabelText += " - Share of Total";
       }
 
       yAxisLabel
