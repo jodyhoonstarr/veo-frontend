@@ -557,7 +557,7 @@ export default {
       select(vm.$refs.chart)
         .selectAll("path")
         .filter(function(o) {
-          return o !== d;
+          return o.label !== d.label;
         })
         .transition()
         .duration(vm.transitionDuration * delayFactor)
