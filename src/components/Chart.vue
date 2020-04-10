@@ -26,8 +26,8 @@
     <template v-else-if="chartType === 'line' && chartData != null && width">
       <ButtonContainer>
         <ChartButton
-          v-model="startAxisAtZero"
-          tooltip="Start Y-Axis Origin at Zero"
+          v-model="magnifyYAxis"
+          tooltip="Magnify Variability"
           icon="mdi-chart-line"
         ></ChartButton>
       </ButtonContainer>
@@ -41,7 +41,7 @@
         :chart-line-styles="chartLineStyles"
         :chart-data-type="chartDataType"
         :chart-label="chartLabel"
-        :startAxisAtZero="startAxisAtZero"
+        :magnifyYAxis="magnifyYAxis"
       ></LineChart>
     </template>
 
@@ -105,8 +105,7 @@ export default {
       width: null,
       ratio: 1.9,
       maxHeight: 400,
-      normalize: false,
-      startAxisAtZero: false
+      magnifyYAxis: false
     };
   },
   computed: {
