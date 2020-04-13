@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "ChartButton",
+  name: "ChartButtonToggle",
   props: {
     value: {
       type: Boolean,

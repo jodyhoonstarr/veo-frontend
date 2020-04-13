@@ -25,12 +25,12 @@
 
     <template v-else-if="chartType === 'line' && chartData != null && width">
       <ButtonContainer>
-        <ChartButton
+        <ChartButtonToggle
           v-model="magnifyYAxis"
           tooltip="Toggle Y-Axis Zoom"
           icon="mdi-magnify-plus"
           off-icon="mdi-magnify-minus"
-        ></ChartButton>
+        ></ChartButtonToggle>
       </ButtonContainer>
 
       <LineChart
@@ -61,14 +61,14 @@
 import BarChart from "@/components/BarChart.vue";
 import LineChart from "@/components/LineChart";
 import NotificationCard from "@/components/NotificationCard";
-import ChartButton from "@/components/ChartButton";
+import ChartButtonToggle from "@/components/ChartButtonToggle";
 import ButtonContainer from "@/components/ButtonContainer";
 
 export default {
   name: "Chart",
   components: {
     ButtonContainer,
-    ChartButton,
+    ChartButtonToggle,
     BarChart,
     LineChart,
     NotificationCard
