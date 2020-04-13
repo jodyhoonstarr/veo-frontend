@@ -27,8 +27,9 @@
       <ButtonContainer>
         <ChartButton
           v-model="magnifyYAxis"
-          tooltip="Magnify Variability"
-          icon="mdi-chart-line"
+          tooltip="Toggle Y-Axis Zoom"
+          icon="mdi-magnify-plus"
+          off-icon="mdi-magnify-minus"
         ></ChartButton>
       </ButtonContainer>
 
