@@ -1,19 +1,16 @@
 <template>
-  <div v-if="this.value" class="pl-2">
+  <div class="pl-2">
     <v-tooltip :nudge-left="parseInt(nudgeTooltip)" left>
       <template v-slot:activator="{ on }">
-        <v-btn fab x-small dark color="primary" v-on="on" @click="handleClick">
-          <v-icon>{{ icon }}</v-icon>
-        </v-btn>
-      </template>
-      <span>{{ tooltip }}</span>
-    </v-tooltip>
-  </div>
-  <div v-else class="pl-2">
-    <v-tooltip :nudge-left="parseInt(nudgeTooltip)" left>
-      <template v-slot:activator="{ on }">
-        <v-btn fab x-small dark color="white" v-on="on" @click="handleClick">
-          <v-icon color="grey">{{ icon }}</v-icon>
+        <v-btn
+          fab
+          x-small
+          dark
+          :color="value ? 'primary' : 'white'"
+          v-on="on"
+          @click="handleClick"
+        >
+          <v-icon :color="value ? 'white' : 'grey'">{{ icon }}</v-icon>
         </v-btn>
       </template>
       <span>{{ tooltip }}</span>
