@@ -80,7 +80,7 @@ export default {
       tabs: [
         {
           route: "/occupation",
-          label: "Military Occupation",
+          label: "Military Specialization",
           children: [
             { route: "/occupation/detail", label: "Detailed Occupation" },
             { route: "/occupation/paygrade", label: "Occupation by Paygrade" },
