@@ -1,6 +1,6 @@
 <template>
   <v-card ref="chartcard" flat>
-    <NotificationCard v-if="loading && width" :height="height">
+    <notification-card v-if="loading && width" :height="height">
       <v-progress-circular
         :size="height / 2"
         indeterminate
@@ -9,9 +9,19 @@
       <v-card-text class="py-5">
         <p class="py-0 display-1 text--secondary">Loading...</p>
       </v-card-text>
-    </NotificationCard>
+    </notification-card>
 
     <template v-else-if="chartType === 'bar' && chartData != null && width">
+      <button-container>
+        <chart-button-download
+          v-if="chartDataZip"
+          :url="chartDataZip"
+          icon="mdi-download"
+          tooltip="Download CSV Data"
+        >
+        </chart-button-download>
+      </button-container>
+
       <BarChart
         :width="width"
         :height="height"
@@ -24,16 +34,25 @@
     </template>
 
     <template v-else-if="chartType === 'line' && chartData != null && width">
-      <ButtonContainer>
-        <ChartButtonToggle
+      <button-container>
+        <chart-button-download
+          v-if="chartDataZip"
+          :url="chartDataZip"
+          icon="mdi-download"
+          tooltip="Download CSV Data"
+        >
+        </chart-button-download>
+
+        <chart-button-toggle
           v-model="magnifyYAxis"
           tooltip="Toggle Y-Axis Zoom"
           icon="mdi-magnify-plus"
           off-icon="mdi-magnify-minus"
-        ></ChartButtonToggle>
-      </ButtonContainer>
+          nudge-tooltip="40"
+        ></chart-button-toggle>
+      </button-container>
 
-      <LineChart
+      <line-chart
         :width="width"
         :height="height"
         :max-height="maxHeight"
@@ -43,17 +62,17 @@
         :chart-data-type="chartDataType"
         :chart-label="chartLabel"
         :magnifyYAxis="magnifyYAxis"
-      ></LineChart>
+      ></line-chart>
     </template>
 
-    <NotificationCard v-else-if="width" :height="height">
+    <notification-card v-else-if="width" :height="height">
       <v-icon :size="height / 2" color="text--secondary"
         >mdi-alert-outline</v-icon
       >
       <v-card-text class="py-5">
         <p class="py-0 display-1 text--secondary">Error: No Data</p>
       </v-card-text>
-    </NotificationCard>
+    </notification-card>
   </v-card>
 </template>
 
@@ -62,6 +81,7 @@ import BarChart from "@/components/BarChart.vue";
 import LineChart from "@/components/LineChart";
 import NotificationCard from "@/components/NotificationCard";
 import ChartButtonToggle from "@/components/ChartButtonToggle";
+import ChartButtonDownload from "@/components/ChartButtonDownload";
 import ButtonContainer from "@/components/ButtonContainer";
 
 export default {
@@ -69,6 +89,7 @@ export default {
   components: {
     ButtonContainer,
     ChartButtonToggle,
+    ChartButtonDownload,
     BarChart,
     LineChart,
     NotificationCard
@@ -83,6 +104,11 @@ export default {
     chartData: {
       type: Array,
       default: null
+    },
+    chartDataZip: {
+      type: String,
+      default: null,
+      required: false
     },
     chartColors: {
       type: Object,
