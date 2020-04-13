@@ -101,7 +101,7 @@ export default {
           route: "/demographics",
           label: "Demographic",
           children: [
-            { route: "/demographics/age", label: "Age" },
+            { route: "/demographics/age", label: "Age at Exit Cohort" },
             { route: "/demographics/sex", label: "Sex" },
             { route: "/demographics/raceethnicity", label: "Race/Ethnicity" },
             {
