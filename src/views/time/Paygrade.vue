@@ -45,6 +45,7 @@
           :chart-line-styles="chartLineStyles"
           :chart-data-type="chartDataType"
           chart-label="Exit Cohort"
+          :chart-data-zip="dataPath('downloads/VEO-Paygrade.zip')"
         ></Chart>
       </ChartCard>
     </GetData>

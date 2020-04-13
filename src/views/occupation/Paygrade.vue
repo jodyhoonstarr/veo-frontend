@@ -64,6 +64,7 @@
           :chart-colors="chartColors"
           :chart-data-type="chartDataType"
           :chart-label="activeToggle"
+          :chart-data-zip="dataPath('downloads/VEO-OccupationByPaygrade.zip')"
         ></Chart>
       </ChartCard>
     </GetData>
