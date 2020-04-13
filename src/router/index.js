@@ -38,14 +38,6 @@ const routes = [
           import(
             /* webpackChunkName: "occupationbyindustry" */ "@/views/occupation/Industry.vue"
           )
-      },
-      {
-        path: "state",
-        name: "OcccupationByState",
-        component: () =>
-          import(
-            /* webpackChunkName: "occupationbystate" */ "@/views/occupation/State.vue"
-          )
       }
     ]
   },
@@ -82,27 +74,6 @@ const routes = [
         name: "Sex",
         component: () =>
           import(/* webpackChunkName: "sex" */ "@/views/time/Sex.vue")
-      }
-    ]
-  },
-  {
-    path: "/state/",
-    name: "State",
-    component: () => import(/* webpackChunkName: "time" */ "@/views/State.vue"),
-    children: [
-      {
-        path: "time",
-        name: "StateByTime",
-        component: () =>
-          import(/* webpackChunkName: "state" */ "@/views/time/State.vue")
-      },
-      {
-        path: "occupation",
-        name: "StateByOccupation",
-        component: () =>
-          import(
-            /* webpackChunkName: "occupationbystate" */ "@/views/occupation/State.vue"
-          )
       }
     ]
   },

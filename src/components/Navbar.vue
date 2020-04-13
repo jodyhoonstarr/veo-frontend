@@ -84,7 +84,6 @@ export default {
           children: [
             { route: "/occupation/detail", label: "Detailed Occupation" },
             { route: "/occupation/paygrade", label: "Occupation by Paygrade" },
-            { route: "/occupation/state", label: "Occupation by State" },
             { route: "/occupation/industry", label: "Occupation by Industry" }
           ]
         },
@@ -106,14 +105,6 @@ export default {
             { route: "/demographics/sex", label: "Sex" },
             { route: "/demographics/raceethnicity", label: "Race/Ethnicity" },
             { route: "/demographics/education", label: "Education" }
-          ]
-        },
-        {
-          route: "/state",
-          label: "State",
-          children: [
-            { route: "/state/time", label: "State" },
-            { route: "/state/occupation/", label: "Occupation by State" }
           ]
         },
         {
