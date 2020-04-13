@@ -104,7 +104,10 @@ export default {
             { route: "/demographics/age", label: "Age" },
             { route: "/demographics/sex", label: "Sex" },
             { route: "/demographics/raceethnicity", label: "Race/Ethnicity" },
-            { route: "/demographics/education", label: "Education" }
+            {
+              route: "/demographics/education",
+              label: "Enlistment Education Level"
+            }
           ]
         },
         {
