@@ -17,7 +17,7 @@
           v-if="chartDataZip"
           :url="chartDataZip"
           icon="mdi-download"
-          tooltip="Download CSV Data"
+          tooltip="Download Source Data"
         >
         </chart-button-download>
       </button-container>
@@ -39,7 +39,7 @@
           v-if="chartDataZip"
           :url="chartDataZip"
           icon="mdi-download"
-          tooltip="Download CSV Data"
+          tooltip="Download Source Data"
         >
         </chart-button-download>
 
