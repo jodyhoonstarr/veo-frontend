@@ -70,7 +70,7 @@
         </template>
 
         <v-tab class="px-0">
-          <v-btn text target="_blank" href="https://lehd.ces.census.gov/data/">
+          <v-btn text target="_blank" href="/data/veo_experimental.html">
             <span>Help</span>
             <v-icon color="primary" right medium
               >mdi-help-circle-outline</v-icon
