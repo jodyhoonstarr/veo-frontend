@@ -12,7 +12,7 @@
     </a>
     <v-divider class="mx-4 divider-color" vertical></v-divider>
     <v-toolbar-title class="white--text hidden-xs-only ml-0 pl-md-3"
-      >Veterans Employment Outcomes</v-toolbar-title
+      >Veteran Employment Outcomes Explorer</v-toolbar-title
     >
     <v-toolbar-title class="white--text hidden-sm-and-up ml-0 pl-md-3"
       >VEO</v-toolbar-title
