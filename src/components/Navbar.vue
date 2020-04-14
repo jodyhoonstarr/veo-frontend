@@ -52,8 +52,14 @@
                   v-for="child in tab.children"
                   :key="child.label"
                   :to="child.route"
-                  >{{ child.label }}</v-list-item
                 >
+                  <v-list-item-icon>
+                    <v-icon v-text="child.icon"></v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title v-text="child.label"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
               </v-list>
             </v-menu>
           </v-tab>
@@ -82,31 +88,72 @@ export default {
           route: "/occupation",
           label: "Military Specialization",
           children: [
-            { route: "/occupation/detail", label: "Detailed Occupation" },
-            { route: "/occupation/paygrade", label: "Occupation by Paygrade" },
-            { route: "/occupation/industry", label: "Occupation by Industry" }
+            {
+              route: "/occupation/detail",
+              label: "Detailed Occupation",
+              icon: "mdi-chart-bar"
+            },
+            {
+              route: "/occupation/paygrade",
+              label: "Occupation by Paygrade",
+              icon: "mdi-chart-bar"
+            },
+            {
+              route: "/occupation/industry",
+              label: "Occupation by Industry",
+              icon: "mdi-chart-bar"
+            }
           ]
         },
         {
           route: "/service",
           label: "Service Characteristic",
           children: [
-            { route: "/service/afqt", label: "AFQT Range" },
-            { route: "/service/yearsofservice", label: "Years of Service" },
-            { route: "/service/paygrade", label: "Pay Grade" },
-            { route: "/service/occupation", label: "Occupation by Paygrade" }
+            {
+              route: "/service/afqt",
+              label: "AFQT Range",
+              icon: "mdi-chart-line"
+            },
+            {
+              route: "/service/yearsofservice",
+              label: "Years of Service",
+              icon: "mdi-chart-line"
+            },
+            {
+              route: "/service/paygrade",
+              label: "Pay Grade",
+              icon: "mdi-chart-line"
+            },
+            {
+              route: "/service/occupation",
+              label: "Occupation by Paygrade",
+              icon: "mdi-chart-bar"
+            }
           ]
         },
         {
           route: "/demographics",
           label: "Demographic",
           children: [
-            { route: "/demographics/age", label: "Age at Exit Cohort" },
-            { route: "/demographics/sex", label: "Sex" },
-            { route: "/demographics/raceethnicity", label: "Race/Ethnicity" },
+            {
+              route: "/demographics/age",
+              label: "Age at Exit Cohort",
+              icon: "mdi-chart-line"
+            },
+            {
+              route: "/demographics/sex",
+              label: "Sex",
+              icon: "mdi-chart-line"
+            },
+            {
+              route: "/demographics/raceethnicity",
+              label: "Race/Ethnicity",
+              icon: "mdi-chart-line"
+            },
             {
               route: "/demographics/education",
-              label: "Enlistment Education Level"
+              label: "Enlistment Education Level",
+              icon: "mdi-chart-line"
             }
           ]
         },
@@ -114,8 +161,16 @@ export default {
           route: "/industry",
           label: "Industry",
           children: [
-            { route: "/industry/time", label: "Industry" },
-            { route: "/industry/occupation", label: "Occupation by Industry" }
+            {
+              route: "/industry/time",
+              label: "Industry",
+              icon: "mdi-chart-line"
+            },
+            {
+              route: "/industry/occupation",
+              label: "Occupation by Industry",
+              icon: "mdi-chart-bar"
+            }
           ]
         }
       ],
