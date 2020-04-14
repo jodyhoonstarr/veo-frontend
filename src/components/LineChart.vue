@@ -579,6 +579,16 @@ export default {
         .duration(vm.transitionDuration * delayFactor)
         .attr("opacity", 0.2);
 
+      // fade every other circle
+      select(this.$refs.chart)
+        .selectAll("g.point-series > circle")
+        .filter(function(o) {
+          return o.label !== d.label;
+        })
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("opacity", 0.2);
+
       // move the location of the matched label
       select(this.$refs.chart)
         .selectAll("text")
@@ -604,6 +614,13 @@ export default {
       // return every line to its default
       select(this.$refs.chart)
         .selectAll("text")
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("opacity", 1);
+
+      // return every other circle to its default
+      select(this.$refs.chart)
+        .selectAll("g.point-series > circle")
         .transition()
         .duration(vm.transitionDuration * delayFactor)
         .attr("opacity", 1);
