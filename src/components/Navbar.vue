@@ -47,19 +47,23 @@
               </template>
 
               <v-list>
-                <v-list-item
-                  @click="setActiveTab(tab.route)"
-                  v-for="child in tab.children"
-                  :key="child.label"
-                  :to="child.route"
-                >
-                  <v-list-item-icon>
-                    <v-icon v-text="child.icon"></v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-content>
-                    <v-list-item-title v-text="child.label"></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
+                <v-list-item-group color="primary">
+                  <v-list-item
+                    @click="setActiveTab(tab.route)"
+                    v-for="child in tab.children"
+                    :key="child.label"
+                    :to="child.route"
+                  >
+                    <v-list-item-icon>
+                      <v-icon v-text="child.icon"></v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-text="child.label"
+                      ></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
               </v-list>
             </v-menu>
           </v-tab>
