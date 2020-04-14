@@ -17,7 +17,7 @@ export const FILTERS = {
               label: "25th Percentile",
               short: "25%",
               default: false,
-              color: "#588eaf",
+              color: "#85a067",
               linestyle: "dotted"
             },
             {
@@ -25,7 +25,7 @@ export const FILTERS = {
               label: "50th Percentile  ",
               short: "50%",
               default: true,
-              color: "#39739c",
+              color: "#558e56",
               linestyle: "solid"
             },
             {
@@ -33,7 +33,7 @@ export const FILTERS = {
               label: "75th Percentile",
               short: "75%",
               default: false,
-              color: "#1b619a",
+              color: "#155028",
               linestyle: "dashed"
             }
           ],
@@ -73,7 +73,7 @@ export const FILTERS = {
         }
       ],
       default: true,
-      color: "#39739c",
+      color: "#558e56",
       linestyle: "solid"
     },
     {
@@ -96,7 +96,7 @@ export const FILTERS = {
                   label: "1-Year After Discharge",
                   short: "1",
                   default: true,
-                  color: "#85a067",
+                  color: "#588eaf",
                   linestyle: "dotted"
                 },
                 {
@@ -104,7 +104,7 @@ export const FILTERS = {
                   label: "5-Years After Discharge",
                   short: "5",
                   default: false,
-                  color: "#558e56",
+                  color: "#39739c",
                   linestyle: "solid"
                 },
                 {
@@ -112,7 +112,7 @@ export const FILTERS = {
                   label: "10-Years After Discharge",
                   short: "10",
                   default: false,
-                  color: "#155028",
+                  color: "#1b619a",
                   linestyle: "dashed"
                 }
               ],
@@ -120,7 +120,7 @@ export const FILTERS = {
             }
           ],
           default: true,
-          color: "#558e56",
+          color: "#39739c",
           linestyle: "solid"
         },
         {
