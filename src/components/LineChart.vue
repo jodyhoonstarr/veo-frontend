@@ -438,7 +438,13 @@ export default {
           enter
             .append("circle")
             .on("click", function(d) {
-              vm.shoutoutClick(this, vm, d);
+              vm.circleClick(this, vm, d);
+            })
+            .on("mouseover", function(d) {
+              vm.circleHoverOver(this, vm, d);
+            })
+            .on("mouseout", function(d) {
+              vm.circleHoverOut(this, vm, d);
             })
             .attr("cx", d => this.x(d.cohort))
             .attr("cy", d => this.y(d.value))
@@ -626,7 +632,43 @@ export default {
         .duration(vm.transitionDuration * delayFactor)
         .attr("stroke-width", 2);
     },
-    shoutoutClick: function(d3This, vm, d) {
+    circleHoverOver: function(d3This, vm, d) {
+      const highlightColor = "#555555";
+
+      // shrink every other circle
+      selectAll("g.point-series > circle")
+        .transition()
+        .attr("r", this.circleRadius);
+
+      // fill the value in the shoutout box
+      select(vm.$refs.shoutout)
+        .text("")
+        .transition()
+        .text(vm.labelText(d))
+        .attr("fill", highlightColor)
+        .attr("opacity", 1);
+
+      // make the dot large
+      select(d3This)
+        .transition()
+        .attr("r", 8);
+    },
+    circleHoverOut: function(d3This, vm, d) {
+      const delayFactor = 4;
+
+      // fade the shoutout value
+      select(vm.$refs.shoutout)
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("opacity", 0);
+
+      // shrink the dot back
+      select(d3This)
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("r", this.circleRadius);
+    },
+    circleClick: function(d3This, vm, d) {
       const delayFactor = 8;
       const highlightColor = "#555555";
 
