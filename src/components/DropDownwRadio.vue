@@ -37,6 +37,7 @@
         :multiple="activeToggle"
         @input="emitChangeEvent"
         :persistentHint="activeToggle"
+        :selectallable="selectallable && activeToggle"
       ></DropDown>
     </v-col>
   </v-row>
@@ -78,6 +79,10 @@ export default {
       default: null
     },
     detailed: {
+      type: Boolean,
+      default: false
+    },
+    selectallable: {
       type: Boolean,
       default: false
     }

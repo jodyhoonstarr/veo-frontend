@@ -7,7 +7,8 @@
         :loading="loading"
         v-model="selected"
         :multiple="true"
-        :persistentHint="false"
+        :persistent-hint="false"
+        :selectallable="selectallable"
       ></DropDown>
     </v-col>
   </v-row>
@@ -47,6 +48,10 @@ export default {
       default: null
     },
     detailed: {
+      type: Boolean,
+      default: false
+    },
+    selectallable: {
       type: Boolean,
       default: false
     }

@@ -11,6 +11,7 @@
             propname="labels"
             id="paygrade"
             v-model="paygrade"
+            :selectallable="true"
           ></DropDownNoRadio>
         </GetData>
       </v-col>

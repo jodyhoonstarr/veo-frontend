@@ -12,6 +12,7 @@
             id="occupation"
             :toggle="activeToggle === 'occupation'"
             @change="handleDropDownToggle"
+            :selectallable="true"
           ></DropDownwRadio>
         </GetData>
       </v-col>
@@ -40,6 +41,7 @@
             propname="labels"
             :toggle="activeToggle === 'cohort'"
             @change="handleDropDownToggle"
+            :selectallable="true"
           ></DropDownwRadio>
         </GetData>
       </v-col>

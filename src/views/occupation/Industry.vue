@@ -12,6 +12,7 @@
             id="occupation"
             :toggle="activeToggle === 'occupation'"
             @change="handleDropDownToggle"
+            :selectallable="true"
           ></DropDownwRadio>
         </GetData>
       </v-col>

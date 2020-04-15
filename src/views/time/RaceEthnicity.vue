@@ -14,6 +14,7 @@
                 id="race"
                 :toggle="activeToggle === 'race'"
                 @change="handleDropDownToggle"
+                :selectallable="true"
               ></DropDownwRadio>
             </GetData>
           </v-col>
