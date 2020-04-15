@@ -556,37 +556,38 @@ export default {
         .text(yLabelText);
     },
     lineHoverOver: function(d3This, vm, d) {
-      const delayFactor = 1;
+      // fatten the current line
       select(d3This).attr("stroke-width", 4);
 
       // fade every other line
       select(vm.$refs.chart)
         .selectAll("path")
+        .attr("opacity", 1)
         .filter(function(o) {
           return o.label !== d.label;
         })
         .transition()
-        .duration(vm.transitionDuration * delayFactor)
         .attr("opacity", 0.2);
 
       // fade every other label
       select(this.$refs.chart)
         .selectAll("text")
+        .attr("opacity", 1)
         .filter(function(o) {
           return o.label !== d.label;
         })
         .transition()
-        .duration(vm.transitionDuration * delayFactor)
         .attr("opacity", 0.2);
 
       // fade every other circle
       select(this.$refs.chart)
         .selectAll("g.point-series > circle")
+        .attr("opacity", 1)
+        .attr("r", this.circleRadius)
         .filter(function(o) {
           return o.label !== d.label;
         })
         .transition()
-        .duration(vm.transitionDuration * delayFactor)
         .attr("opacity", 0.2);
 
       // move the location of the matched label
@@ -596,18 +597,14 @@ export default {
           return o.label === d.label;
         })
         .transition()
-        .duration(vm.transitionDuration * delayFactor)
         .attr("opacity", 1)
         .attr("y", () => vm.y(d.data[d.data.length - 1].value));
     },
     lineHoverOut: function(d3This, vm, d) {
-      const delayFactor = 1;
-
-      // return every line to its default
+      // line - to default
       select(vm.$refs.chart)
         .selectAll("path")
         .transition()
-        .duration(vm.transitionDuration * delayFactor)
         .attr("opacity", 1)
         .attr("stroke-width", 2);
 
@@ -615,25 +612,22 @@ export default {
       select(this.$refs.chart)
         .selectAll("text")
         .transition()
-        .duration(vm.transitionDuration * delayFactor)
         .attr("opacity", 1);
 
       // return every other circle to its default
       select(this.$refs.chart)
         .selectAll("g.point-series > circle")
         .transition()
-        .duration(vm.transitionDuration * delayFactor)
+        .attr("r", this.circleRadius)
         .attr("opacity", 1);
 
-      // return the label to its original position
+      // label - to default
       select(this.$refs.chart)
         .selectAll("text")
         .filter(function(o) {
           return o.label === d.label;
         })
         .transition()
-        .duration(vm.transitionDuration * delayFactor)
-        .attr("opacity", 1)
         .attr("y", () =>
           this.spacedLabels ? this.spacedLabels[d.label] : null
         );
@@ -652,11 +646,6 @@ export default {
     circleHoverOver: function(d3This, vm, d) {
       const highlightColor = "#555555";
 
-      // shrink every other circle
-      selectAll("g.point-series > circle")
-        .transition()
-        .attr("r", this.circleRadius);
-
       // fill the value in the shoutout box
       select(vm.$refs.shoutout)
         .text("")
@@ -665,24 +654,29 @@ export default {
         .attr("fill", highlightColor)
         .attr("opacity", 1);
 
+      // shrink every other circle
+      select(vm.$refs.chart)
+        .selectAll("g.point-series > circle")
+        .filter(function(o) {
+          return o !== d;
+        })
+        .transition()
+        .attr("r", this.circleRadius);
+
       // make the dot large
       select(d3This)
         .transition()
         .attr("r", 8);
     },
     circleHoverOut: function(d3This, vm, d) {
-      const delayFactor = 4;
-
       // fade the shoutout value
       select(vm.$refs.shoutout)
         .transition()
-        .duration(vm.transitionDuration * delayFactor)
         .attr("opacity", 0);
 
       // shrink the dot back
       select(d3This)
         .transition()
-        .duration(vm.transitionDuration * delayFactor)
         .attr("r", this.circleRadius);
     },
     circleClick: function(d3This, vm, d) {
@@ -690,7 +684,8 @@ export default {
       const highlightColor = "#555555";
 
       // shrink every other circle
-      selectAll("g.point-series > circle")
+      select(vm.$refs.chart)
+        .selectAll("g.point-series > circle")
         .transition()
         .attr("r", this.circleRadius);
 
