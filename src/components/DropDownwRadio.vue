@@ -10,10 +10,9 @@
           @click="activeToggleChange"
           class="v-input--selection-controls"
         >
-          <v-icon v-if="activeToggle" color="primary" large
-            >mdi-radiobox-marked</v-icon
-          >
-          <v-icon v-else large color="grey">mdi-radiobox-blank</v-icon>
+          <v-icon :color="activeToggle ? 'primary' : 'grey'" large>{{
+            radioIcon
+          }}</v-icon>
         </v-btn>
       </v-row>
     </v-col>
@@ -160,6 +159,9 @@ export default {
       } else {
         return this.items;
       }
+    },
+    radioIcon: function() {
+      return this.activeToggle ? "mdi-radiobox-marked" : "mdi-radiobox-blank";
     }
   },
   mounted() {
