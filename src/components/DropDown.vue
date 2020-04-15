@@ -18,15 +18,15 @@
     :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
     ref="dropdown"
   >
-    <template v-slot:prepend-item>
-      <v-btn
-        v-if="selectallable"
-        @click="selectAllProps"
-        class="my-2 ml-4"
-        color="primary"
-        >Select All</v-btn
-      >
-      <v-divider></v-divider>
+    <template v-if="selectallable" v-slot:prepend-item>
+      <v-list-item>
+        <v-col class="text-center pa-0 ma-0">
+          <v-btn @click="selectAllProps" text color="primary">
+            <v-icon left>mdi-check-all</v-icon>Select All</v-btn
+          >
+        </v-col>
+      </v-list-item>
+      <v-divider class="pb-1"></v-divider>
     </template>
 
     <template v-slot:selection="{ item, index }">
@@ -60,15 +60,15 @@
     :search-input.sync="search"
     :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
   >
-    <template v-slot:prepend-item>
-      <v-btn
-        v-if="selectallable"
-        @click="selectAllProps"
-        class="my-2 ml-4"
-        color="primary"
-        >Select All</v-btn
-      >
-      <v-divider></v-divider>
+    <template v-if="selectallable" v-slot:prepend-item>
+      <v-list-item>
+        <v-col class="text-center pa-0 ma-0">
+          <v-btn @click="selectAllProps" text color="primary">
+            <v-icon left>mdi-check-all</v-icon>Select All</v-btn
+          >
+        </v-col>
+      </v-list-item>
+      <v-divider class="pb-1"></v-divider>
     </template>
 
     <template v-slot:selection="{ item, index }">
@@ -127,7 +127,7 @@ export default {
     },
     selectallable: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   computed: {
@@ -193,8 +193,10 @@ export default {
   methods: {
     selectAllProps: function() {
       this.selected = this.items;
-      const dropdown = this.$refs.dropdown;
-      dropdown.blur();
+      this.blur();
+    },
+    blur: function() {
+      this.$refs.dropdown.blur();
     }
   }
 };
