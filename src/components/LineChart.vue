@@ -242,7 +242,16 @@ export default {
       const linesFiltered = this.d3Lines.filter(l => l.key === labelKey);
       let yValues = {};
       linesFiltered.map(d => {
-        yValues[d.label] = this.y(d.data[d.data.length - 1].value);
+        if (
+          d.data &&
+          d.data.length > 0 &&
+          d.data[d.data.length - 1].hasOwnProperty("value")
+        ) {
+          yValues[d.label] = this.y(d.data[d.data.length - 1].value);
+        } else {
+          // if the data doesn't exist, stick the label at zero
+          yValues[d.label] = this.y(0);
+        }
       });
 
       // space out overlapping y labels
