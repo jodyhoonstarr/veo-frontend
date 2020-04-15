@@ -661,6 +661,7 @@ export default {
           return o !== d;
         })
         .transition()
+        .attr("opacity", 1)
         .attr("r", this.circleRadius);
 
       // make the dot large
