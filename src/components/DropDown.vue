@@ -16,7 +16,19 @@
     v-model="selected"
     :search-input.sync="search"
     :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
+    ref="dropdown"
   >
+    <template v-slot:prepend-item>
+      <v-btn
+        v-if="selectallable"
+        @click="selectAllProps"
+        class="my-2 ml-4"
+        color="primary"
+        >Select All</v-btn
+      >
+      <v-divider></v-divider>
+    </template>
+
     <template v-slot:selection="{ item, index }">
       <div class="selection" v-if="index === 0 && itemCount === 1">
         {{ item.label }}
@@ -48,6 +60,17 @@
     :search-input.sync="search"
     :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
   >
+    <template v-slot:prepend-item>
+      <v-btn
+        v-if="selectallable"
+        @click="selectAllProps"
+        class="my-2 ml-4"
+        color="primary"
+        >Select All</v-btn
+      >
+      <v-divider></v-divider>
+    </template>
+
     <template v-slot:selection="{ item, index }">
       <div class="selection" v-if="index === 0 && itemCount === 1">
         {{ item }}
@@ -101,6 +124,10 @@ export default {
     clearable: {
       type: Boolean,
       default: false
+    },
+    selectallable: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -137,6 +164,7 @@ export default {
       return Pluralize(this.label, this.itemCount, true);
     }
   },
+
   data() {
     return {
       selected: this.value,
@@ -160,6 +188,13 @@ export default {
       } else {
         this.$emit("input", newSelected);
       }
+    }
+  },
+  methods: {
+    selectAllProps: function() {
+      this.selected = this.items;
+      const dropdown = this.$refs.dropdown;
+      dropdown.blur();
     }
   }
 };
