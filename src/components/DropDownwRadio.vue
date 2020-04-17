@@ -10,7 +10,7 @@
           @click="activeToggleChange"
           class="v-input--selection-controls"
         >
-          <v-icon :color="activeToggle ? 'primary' : 'grey'" large>{{
+          <v-icon :color="toggle ? 'primary' : 'grey'" large>{{
             radioIcon
           }}</v-icon>
         </v-btn>
@@ -23,9 +23,8 @@
         :label="label"
         :loading="loading"
         v-model="selected"
-        :multiple="activeToggle"
-        @input="emitChangeEvent"
-        :persistentHint="activeToggle"
+        :multiple="toggle"
+        :persistentHint="toggle"
         close
       ></DetailDropDown>
       <DropDown
@@ -34,10 +33,9 @@
         :label="label"
         :loading="loading"
         v-model="selected"
-        :multiple="activeToggle"
-        @input="emitChangeEvent"
-        :persistentHint="activeToggle"
-        :selectallable="selectallable && activeToggle"
+        :multiple="toggle"
+        :persistentHint="toggle"
+        :selectallable="selectallable && toggle"
       ></DropDown>
     </v-col>
   </v-row>
@@ -54,10 +52,6 @@ export default {
     DetailDropDown
   },
   props: {
-    id: {
-      type: String | Number,
-      default: null
-    },
     items: {
       type: Object | Array,
       default: null
@@ -68,10 +62,6 @@ export default {
     },
     label: {
       type: String,
-      default: null
-    },
-    toggle: {
-      type: Boolean,
       default: null
     },
     loading: {
@@ -85,41 +75,52 @@ export default {
     selectallable: {
       type: Boolean,
       default: false
+    },
+    value: {
+      type: Object,
+      default: function() {
+        return { selected: null, toggle: false };
+      },
+      validator: function(obj) {
+        return obj.hasOwnProperty("selected") && obj.hasOwnProperty("toggle");
+      }
     }
   },
   data() {
     return {
       selected: null,
-      activeToggle: null
+      toggle: null
     };
   },
   watch: {
-    toggle: function() {
-      this.activeToggle = this.toggle;
-      this.changeArraytoObj();
-      this.changeObjtoArray();
-    },
-    activeToggle: function() {
-      this.changeArraytoObj();
-      this.changeObjtoArray();
+    value: {
+      handler(val) {
+        this.toggle = val.toggle;
+        this.changeArraytoObj();
+        this.changeObjtoArray();
+      },
+      deep: true
     },
     items: function() {
       if (this.selected == null && this.items != null) {
       }
       if (this.dropDownItems != null) {
         // if it's the active toggle and there are 2 options available, select both
-        if (this.activeToggle && this.dropDownItems.length >= 2) {
+        if (this.toggle && this.dropDownItems.length >= 2) {
           this.selected = [this.dropDownItems[0], this.dropDownItems[1]];
           // if its the active toggle but only one option is available, select it
-        } else if (this.activeToggle && this.dropDownItems.length >= 1) {
+        } else if (this.toggle && this.dropDownItems.length >= 1) {
           this.selected = [this.dropDownItems[0]];
           // if it's not the active toggle and there's at least one option, select it as an object
-        } else if (!this.activeToggle && this.dropDownItems.length >= 1) {
+        } else if (!this.toggle && this.dropDownItems.length >= 1) {
           this.selected = this.dropDownItems[0];
         }
       }
     },
     selected: function() {
+      this.emitChangeEvent();
+    },
+    toggle: function() {
       this.emitChangeEvent();
     }
   },
@@ -127,24 +128,23 @@ export default {
     emitChangeEvent() {
       this.changeArraytoObj();
       this.changeObjtoArray();
-      this.$emit("change", {
-        id: this.id,
+      this.$emit("input", {
         selected: this.toArray(this.selected), //always return array
-        toggle: this.activeToggle
+        toggle: this.toggle
       });
     },
     toArray: function(obj) {
       return !Array.isArray(obj) ? [obj] : obj;
     },
     activeToggleChange() {
-      if (this.activeToggle === false) {
-        this.activeToggle = true;
+      if (this.toggle !== true) {
+        this.toggle = true;
         this.emitChangeEvent();
       }
     },
     changeArraytoObj() {
       if (
-        this.activeToggle === false &&
+        this.toggle === false &&
         Array.isArray(this.selected) &&
         this.selected.length >= 1
       ) {
@@ -152,7 +152,7 @@ export default {
       }
     },
     changeObjtoArray() {
-      if (this.activeToggle && this.selected && !Array.isArray(this.selected)) {
+      if (this.toggle && this.selected && !Array.isArray(this.selected)) {
         this.selected = [this.selected];
       }
     }
@@ -166,11 +166,11 @@ export default {
       }
     },
     radioIcon: function() {
-      return this.activeToggle ? "mdi-radiobox-marked" : "mdi-radiobox-blank";
+      return this.toggle ? "mdi-radiobox-marked" : "mdi-radiobox-blank";
     }
   },
   mounted() {
-    this.activeToggle = this.toggle;
+    this.toggle = this.value.toggle;
   }
 };
 </script>

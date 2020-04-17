@@ -10,9 +10,8 @@
             :items="response"
             propname="labels"
             id="occupation"
-            :toggle="activeToggle === 'occupation'"
-            @change="handleDropDownToggle"
             :selectallable="true"
+            v-model="occupationObj"
           ></DropDownwRadio>
         </GetData>
       </v-col>
@@ -24,9 +23,7 @@
             label="Industry"
             :items="response"
             propname="labels"
-            id="industry"
-            :toggle="activeToggle === 'industry'"
-            @change="handleDropDownToggle"
+            v-model="industryObj"
           ></DropDownwRadio>
         </GetData>
       </v-col>
@@ -39,8 +36,7 @@
             id="cohort"
             :items="response"
             propname="labels"
-            :toggle="activeToggle === 'cohort'"
-            @change="handleDropDownToggle"
+            v-model="cohortObj"
           ></DropDownwRadio>
         </GetData>
       </v-col>
@@ -102,9 +98,9 @@ export default {
   data() {
     return {
       csvData: null,
-      industry: null,
-      occupation: null,
-      cohort: null,
+      occupationObj: { selected: null, toggle: true },
+      industryObj: { selected: null, toggle: false },
+      cohortObj: { selected: null, toggle: false },
       activeToggle: "occupation",
       filters: {
         colors: null,
@@ -128,9 +124,38 @@ export default {
         return null;
       }
       this.filters = f;
+    },
+    setActiveToggle: function(changedObj, changedStr) {
+      if (changedObj.toggle) {
+        this.activeToggle = changedStr;
+        // set all the other toggles to false if this one got switched on
+        [this.industryObj, this.occupationObj, this.cohortObj]
+          .filter(o => o !== changedObj)
+          .forEach(o => (o.toggle = false));
+      }
+    }
+  },
+  watch: {
+    industryObj: function() {
+      this.setActiveToggle(this.industryObj, "industry");
+    },
+    occupationObj: function() {
+      this.setActiveToggle(this.occupationObj, "occupation");
+    },
+    cohortObj: function() {
+      this.setActiveToggle(this.cohortObj, "cohort");
     }
   },
   computed: {
+    industry: function() {
+      return this.industryObj.selected;
+    },
+    occupation: function() {
+      return this.occupationObj.selected;
+    },
+    cohort: function() {
+      return this.cohortObj.selected;
+    },
     dataSelections: function() {
       return [
         { data: this.cohort, prop: "cohort" },
