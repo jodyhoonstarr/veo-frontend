@@ -11,8 +11,7 @@
             :items="response"
             propname="labels"
             id="occupation"
-            :toggle="activeToggle === 'occupation'"
-            @change="handleDropDownToggle"
+            v-model="occupationObj"
           ></DropDownwRadio>
         </GetData>
       </v-col>
@@ -25,8 +24,7 @@
             id="cohort"
             :items="response"
             propname="labels"
-            :toggle="activeToggle === 'cohort'"
-            @change="handleDropDownToggle"
+            v-model="cohortObj"
           ></DropDownwRadio>
         </GetData>
       </v-col>
@@ -88,8 +86,8 @@ export default {
   data() {
     return {
       csvData: null,
-      occupation: null,
-      cohort: null,
+      occupationObj: { selected: null, toggle: true },
+      cohortObj: { selected: null, toggle: false },
       activeToggle: "occupation",
       filters: {
         colors: null,
@@ -99,12 +97,6 @@ export default {
     };
   },
   methods: {
-    handleDropDownToggle: function(data) {
-      this[data.id] = data.selected;
-      if (data.toggle) {
-        this.activeToggle = data.id;
-      }
-    },
     dataPath: function(str) {
       return joinPublicPath(str);
     },
@@ -113,9 +105,32 @@ export default {
         return null;
       }
       this.filters = f;
+    },
+    setActiveToggle: function(changedObj, changedStr) {
+      if (changedObj.toggle) {
+        this.activeToggle = changedStr;
+        // set all the other toggles to false if this one got switched on
+        [this.occupationObj, this.cohortObj]
+          .filter(o => o !== changedObj)
+          .forEach(o => (o.toggle = false));
+      }
+    }
+  },
+  watch: {
+    occupationObj: function() {
+      this.setActiveToggle(this.occupationObj, "occupation");
+    },
+    cohortObj: function() {
+      this.setActiveToggle(this.cohortObj, "cohort");
     }
   },
   computed: {
+    occupation: function() {
+      return this.occupationObj.selected;
+    },
+    cohort: function() {
+      return this.cohortObj.selected;
+    },
     dataSelections: function() {
       return [
         { data: this.cohort, prop: "cohort" },

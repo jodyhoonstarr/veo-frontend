@@ -110,12 +110,6 @@ export default {
     };
   },
   methods: {
-    handleDropDownToggle: function(data) {
-      this[data.id] = data.selected;
-      if (data.toggle) {
-        this.activeToggle = data.id;
-      }
-    },
     dataPath: function(str) {
       return joinPublicPath(str);
     },
