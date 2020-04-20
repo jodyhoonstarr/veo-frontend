@@ -102,9 +102,19 @@ export default {
       deep: true
     },
     items: function() {
-      if (this.selected == null && this.items != null) {
-      }
-      if (this.dropDownItems != null) {
+      this.selectDefaults();
+    },
+    selected: function() {
+      this.emitChangeEvent();
+    },
+    toggle: function() {
+      this.selectDefaults();
+      this.emitChangeEvent();
+    }
+  },
+  methods: {
+    selectDefaults() {
+      if (this.dropDownItems != null && this.items != null) {
         // if it's the active toggle and there are 2 options available, select both
         if (this.toggle && this.dropDownItems.length >= 2) {
           this.selected = [this.dropDownItems[0], this.dropDownItems[1]];
@@ -117,14 +127,6 @@ export default {
         }
       }
     },
-    selected: function() {
-      this.emitChangeEvent();
-    },
-    toggle: function() {
-      this.emitChangeEvent();
-    }
-  },
-  methods: {
     emitChangeEvent() {
       this.changeArraytoObj();
       this.changeObjtoArray();
