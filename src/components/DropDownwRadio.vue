@@ -109,7 +109,6 @@ export default {
     },
     toggle: function() {
       this.selectDefaults();
-      this.emitChangeEvent();
     }
   },
   methods: {
