@@ -57,6 +57,19 @@ export default {
       type: String,
       required: true,
       validator: val => ["bar", "line"].includes(val)
+    },
+    initialValues: {
+      type: Object,
+      default: function() {
+        return { primary: null, secondary: null, tertiary: null };
+      },
+      validator: function(obj) {
+        return (
+          obj.hasOwnProperty("primary") &&
+          obj.hasOwnProperty("secondary") &&
+          obj.hasOwnProperty("tertiary")
+        );
+      }
     }
   },
   data() {
@@ -158,7 +171,9 @@ export default {
         this.tertiaryValue = o.selected;
         if (this.tertiaryValue === this.tertiaryFilters.filters) {
           this.colorCategory = this.tertiaryFilters.id;
-          this.secondaryValue = null;
+          if (this.colorCategory === "year") {
+            this.secondaryValue = null;
+          }
         }
       }
     },
@@ -258,6 +273,28 @@ export default {
     },
     linestyles: function() {
       return this.getActive("linestyle");
+    }
+  },
+  mounted() {
+    // if there are initial values set, assign and reset all filters
+    if (
+      this.initialValues.primary != null ||
+      this.initialValues.secondary != null ||
+      this.initialValues.tertiary != null
+    ) {
+      // this is an annoying workaround because of how the filter decisions are linked
+      const vm = this;
+      vm.$nextTick(() => {
+        vm.primaryValue = vm.initialValues.primary;
+
+        vm.$nextTick(() => {
+          vm.secondaryValue = vm.initialValues.secondary;
+
+          vm.$nextTick(() => {
+            vm.tertiaryValue = vm.initialValues.tertiary;
+          });
+        });
+      });
     }
   }
 };

@@ -8,8 +8,7 @@
     return-object
     outlined
     dense
-    :value="selected"
-    @input="handleChange"
+    v-model="selected"
     class="newSelect otherClass"
   >
     <template v-slot:selection="{ item }">
@@ -101,6 +100,11 @@ export default {
       // [false true true] should return false since the ids dont match
       return !matches.includes(false);
     },
+    selectDefaultFilters: function() {
+      // select the default values using the filter json
+      this.selected = this.filters.find(obj => obj.default === true);
+      this.emitChange(); // notify the parent that the value is set
+    },
     selectDefault: function(value, filters) {
       if (value) {
         if (this.multiple && Array.isArray(value)) {
@@ -127,14 +131,10 @@ export default {
           this.selected = value;
         }
       } else if (filters != null) {
-        this.selected = filters.find(obj => obj.default === true);
-        this.emitChange(); // notify the parent that the value is set
+        this.selectDefaultFilters(filters);
       } else {
         this.selected = null;
       }
-    },
-    handleChange: function(e) {
-      this.selected = e;
     },
     emitChange: function() {
       let emitted;

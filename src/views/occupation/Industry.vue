@@ -52,7 +52,11 @@
         :filters="filters"
         :active-toggle="activeToggle"
       >
-        <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          :initial-values="initialFilters"
+          chart-type="bar"
+          @change="handleFilters"
+        ></FiltersBar>
         <Chart
           chart-type="bar"
           :loading="loading"
@@ -83,6 +87,7 @@ import {
   joinPublicPath,
   simplifiyRows
 } from "@/lib/utils";
+import { filterSelect } from "@/lib/filterselect";
 
 export default {
   name: "OccupationByIndustry",
@@ -102,6 +107,14 @@ export default {
       industryObj: { selected: null, toggle: false },
       cohortObj: { selected: null, toggle: false },
       activeToggle: "occupation",
+      initialFilters: {
+        primary: filterSelect("counts", "primary"),
+        secondary: filterSelect("counts", "secondary", "all"),
+        tertiary: filterSelect("counts", "tertiary", "y10")
+        // primary: filterSelect("earnings", "primary"),
+        // secondary: filterSelect("earnings", "secondary", "p75"),
+        // tertiary: filterSelect("earnings", "tertiary", "y10")
+      },
       filters: {
         colors: null,
         filters: null,
