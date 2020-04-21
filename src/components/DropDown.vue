@@ -175,19 +175,8 @@ export default {
     value(input) {
       this.selected = input;
     },
-    selected(newSelected, oldSelected) {
-      // hacky way to block deselection of the last item in a list
-      if (Array.isArray(newSelected) && newSelected.length === 0) {
-        this.selected = newSelected;
-        // allow the children to update but then revert the state
-        this.$nextTick(() => {
-          this.selected = oldSelected;
-        });
-        // never alert the parent about the empty state change
-        this.$emit("input", oldSelected);
-      } else {
-        this.$emit("input", newSelected);
-      }
+    selected(newSelected) {
+      this.$emit("input", newSelected);
     }
   },
   methods: {
