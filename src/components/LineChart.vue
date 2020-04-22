@@ -437,9 +437,35 @@ export default {
         return { cohort: a.cohort, value: a.value, label: d.label };
       });
     },
+    bindPointTransitions: function() {
+      const vm = this; // for use with click event in d3
+      select(this.$refs.chart)
+        .selectAll("g.point-series")
+        .selectAll("circle")
+        .on("click", function(d) {
+          vm.circleClick(this, vm, d);
+        })
+        .on("mouseover", function(d) {
+          vm.circleHoverOver(this, vm, d);
+        })
+        .on("mouseout", function(d) {
+          vm.circleHoverOut(this, vm, d);
+        });
+    },
     bindPoints: function() {
+      // remove and redraw the whole point series every time so it renders on top
+
       const vm = this; // for use with click event in d3
       const pointTransitionDuration = this.transitionDuration * 2;
+
+      // remove any existing point events and remove circles
+      select(this.$refs.chart)
+        .selectAll("g.point-series")
+        .selectAll("circle")
+        .on("click", null)
+        .on("mouseover", null)
+        .on("mouseout", null)
+        .remove();
 
       // remove and redraw the whole point series every time
       select(this.$refs.chart)
@@ -459,15 +485,6 @@ export default {
         .join(enter =>
           enter
             .append("circle")
-            .on("click", function(d) {
-              vm.circleClick(this, vm, d);
-            })
-            .on("mouseover", function(d) {
-              vm.circleHoverOver(this, vm, d);
-            })
-            .on("mouseout", function(d) {
-              vm.circleHoverOut(this, vm, d);
-            })
             .attr("cx", d => this.x(d.cohort))
             .attr("cy", d => this.y(d.value))
             .attr("r", this.circleRadius)
@@ -479,6 +496,7 @@ export default {
                 .transition()
                 .duration(pointTransitionDuration)
                 .attr("opacity", 1)
+                .on("end", this.bindPointTransitions)
             )
         );
     },
