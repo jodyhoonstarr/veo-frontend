@@ -25,6 +25,7 @@
         v-model="selected"
         :multiple="toggle"
         :persistentHint="toggle"
+        :selectallable="selectallable && toggle"
         close
       ></DetailDropDown>
       <DropDown
