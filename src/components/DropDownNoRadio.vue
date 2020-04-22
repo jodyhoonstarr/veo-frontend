@@ -53,7 +53,7 @@ export default {
     },
     selectallable: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data() {

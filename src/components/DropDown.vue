@@ -18,12 +18,28 @@
     :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
     ref="dropdown"
   >
-    <template v-if="selectallable" v-slot:prepend-item>
+    <template v-slot:prepend-item>
       <v-list-item>
-        <v-col class="text-center pa-0 ma-0">
-          <v-btn @click="selectAllProps" text color="primary">
-            <v-icon left>mdi-check-all</v-icon>Select All</v-btn
-          >
+        <v-col class="pa-0 ma-0">
+          <v-row class="text-center pa-0 ma-0">
+            <v-btn
+              v-if="selectallable"
+              @click="selectAllProps"
+              text
+              color="primary"
+            >
+              <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>Select
+              All</v-btn
+            >
+            <v-btn
+              v-if="selectallable"
+              @click="selectNoneProps"
+              text
+              color="primary"
+              ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
+              >Clear</v-btn
+            >
+          </v-row>
         </v-col>
       </v-list-item>
       <v-divider class="pb-1"></v-divider>
@@ -60,12 +76,28 @@
     :search-input.sync="search"
     :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
   >
-    <template v-if="selectallable" v-slot:prepend-item>
+    <template v-slot:prepend-item>
       <v-list-item>
-        <v-col class="text-center pa-0 ma-0">
-          <v-btn @click="selectAllProps" text color="primary">
-            <v-icon left>mdi-check-all</v-icon>Select All</v-btn
-          >
+        <v-col class="pa-0 ma-0">
+          <v-row class="text-center pa-0 ma-0">
+            <v-btn
+              v-if="selectallable"
+              @click="selectAllProps"
+              text
+              color="primary"
+            >
+              <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>Select
+              All</v-btn
+            >
+            <v-btn
+              v-if="selectallable"
+              @click="selectNoneProps"
+              text
+              color="primary"
+              ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
+              >Clear</v-btn
+            >
+          </v-row>
         </v-col>
       </v-list-item>
       <v-divider class="pb-1"></v-divider>
@@ -182,6 +214,10 @@ export default {
   methods: {
     selectAllProps: function() {
       this.selected = this.items;
+      this.blur();
+    },
+    selectNoneProps: function() {
+      this.selected = null;
       this.blur();
     },
     blur: function() {

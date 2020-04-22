@@ -10,7 +10,6 @@
             :items="response"
             propname="labels"
             id="occupation"
-            :selectallable="true"
             v-model="occupationObj"
           ></DropDownwRadio>
         </GetData>
