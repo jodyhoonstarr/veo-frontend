@@ -19,30 +19,35 @@
     ref="dropdown"
   >
     <template v-slot:prepend-item>
-      <v-list-item>
-        <v-col class="pa-0 ma-0">
-          <v-row class="text-center pa-0 ma-0 text-no-wrap">
-            <v-btn
-              v-if="selectallable"
-              @click="selectAllProps"
-              text
-              color="primary"
-            >
-              <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>Select
-              All</v-btn
-            >
-            <v-btn
-              v-if="selectallable"
-              @click="selectNoneProps"
-              text
-              color="primary"
-              ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
-              >Clear</v-btn
-            >
-            <v-btn text color="primary"><v-icon>mdi-close</v-icon>Close</v-btn>
-          </v-row>
-        </v-col>
-      </v-list-item>
+      <v-col class="pa-0 ma-0">
+        <v-row class="text-center pa-0 ma-0 one-line">
+          <v-btn
+            v-if="selectallable"
+            @click="selectAllProps"
+            color="primary"
+            text
+            small
+            :disabled="allSelected"
+          >
+            <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>Select
+            All</v-btn
+          >
+          <v-btn
+            v-if="selectallable"
+            @click="selectNoneProps"
+            color="primary"
+            text
+            small
+            :disabled="noneSelected"
+            ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
+            >Clear</v-btn
+          >
+          <v-divider></v-divider>
+          <v-btn @click="close" color="primary" text small
+            ><v-icon>mdi-close</v-icon></v-btn
+          >
+        </v-row>
+      </v-col>
       <v-divider class="pb-1"></v-divider>
     </template>
 
@@ -195,6 +200,12 @@ export default {
     },
     pluralLabels: function() {
       return Pluralize(this.label, this.itemCount, true);
+    },
+    allSelected: function() {
+      return this.selected === this.items;
+    },
+    noneSelected: function() {
+      return this.selected == null;
     }
   },
 
@@ -221,6 +232,9 @@ export default {
       this.selected = null;
       this.blur();
     },
+    close: function() {
+      this.blur();
+    },
     blur: function() {
       this.$refs.dropdown.blur();
     }
@@ -236,5 +250,8 @@ export default {
   position: relative;
   max-width: 80%;
   padding: 4px 4px 2px 0px;
+}
+.one-line {
+  white-space: nowrap;
 }
 </style>

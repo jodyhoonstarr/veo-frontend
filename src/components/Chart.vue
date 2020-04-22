@@ -70,7 +70,7 @@
         >mdi-alert-outline</v-icon
       >
       <v-card-text class="py-5">
-        <p class="py-0 display-1 text--secondary">Error: No Data</p>
+        <p class="py-0 display-1 text--secondary">No Data Available</p>
       </v-card-text>
     </notification-card>
   </v-card>
