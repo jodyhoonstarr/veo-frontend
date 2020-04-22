@@ -424,7 +424,7 @@ export default {
     },
     shoutoutClick: function(d3This, vm, d) {
       const delayFactor = 8;
-      const strokeWidth = 8;
+      const strokeWidth = 4;
       const highlightColor = "#555555";
 
       // de-highlight every other rect
