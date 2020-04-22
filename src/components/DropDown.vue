@@ -21,7 +21,7 @@
     <template v-slot:prepend-item>
       <v-list-item>
         <v-col class="pa-0 ma-0">
-          <v-row class="text-center pa-0 ma-0">
+          <v-row class="text-center pa-0 ma-0 text-no-wrap">
             <v-btn
               v-if="selectallable"
               @click="selectAllProps"
