@@ -259,6 +259,7 @@ export default {
       // an initial y position transform for transition
       return `translate(${this.labelXPosition(d) || 0},${this.chartYBottom()})`;
     },
+
     barTransformInit: function(d) {
       // an initial y position transform for transition
       return `translate(${this.barXFullPosition(d) ||
@@ -466,7 +467,6 @@ export default {
         .duration(this.transitionDuration)
         .style("opacity", 0)
         .attr("height", 0)
-        .attr("transform", this.barTransformInit)
         .remove();
       // exit the g.bargroup
       bound
@@ -488,10 +488,10 @@ export default {
         })
         .style("opacity", 0)
         .attr("height", 0)
-        .attr("width", this.barWidth)
-        .attr("fill", this.barFill)
         .attr("transform", this.barTransformInit)
+        .attr("width", this.barWidth)
         .transition()
+        .attr("fill", this.barFill)
         .delay(this.transitionDuration / 2)
         .style("opacity", 1)
         .attr("transform", this.barTransform)
