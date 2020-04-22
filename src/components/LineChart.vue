@@ -362,6 +362,20 @@ export default {
         return "";
       }
     },
+    bindLineTransitions: function() {
+      const vm = this; // for use with click event in d3
+      select(this.$refs.chart)
+        .selectAll("path")
+        .on("click", function(d) {
+          vm.lineClick(this, vm, d);
+        })
+        .on("mouseover", function(d) {
+          vm.lineHoverOver(this, vm, d);
+        })
+        .on("mouseout", function(d) {
+          vm.lineHoverOut(this, vm, d);
+        });
+    },
     bindLines: function() {
       const vm = this; // for use with click event in d3
 
@@ -378,15 +392,6 @@ export default {
         enter =>
           enter
             .append("path")
-            .on("click", function(d) {
-              vm.lineClick(this, vm, d);
-            })
-            .on("mouseover", function(d) {
-              vm.lineHoverOver(this, vm, d);
-            })
-            .on("mouseout", function(d) {
-              vm.lineHoverOut(this, vm, d);
-            })
             .attr("opacity", 0)
             .style("mix-blend-mode", "multiply")
             .attr("stroke-dasharray", d => this.lineType(d))
@@ -397,21 +402,29 @@ export default {
                 .attr("opacity", 1)
                 .attr("stroke", d => this.chartColors[d.label])
                 .attr("d", d => this.line(d.data))
+                .on("end", this.bindLineTransitions)
             ),
 
         update =>
           update.call(update =>
             update
+              .on("click", null)
+              .on("mouseover", null)
+              .on("mouseout", null)
               .transition()
               .duration(this.transitionDuration)
               .attr("stroke-dasharray", d => this.lineType(d))
               .attr("stroke", d => this.chartColors[d.label])
               .attr("d", d => this.line(d.data))
+              .on("end", this.bindLineTransitions)
           ),
 
         exit =>
           exit.call(exit =>
             exit
+              .on("click", null)
+              .on("mouseover", null)
+              .on("mouseout", null)
               .transition()
               .duration(this.transitionDuration)
               .attr("opacity", 0)
