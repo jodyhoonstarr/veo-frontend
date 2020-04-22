@@ -39,6 +39,7 @@
               ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
               >Clear</v-btn
             >
+            <v-btn text color="primary"><v-icon>mdi-close</v-icon>Close</v-btn>
           </v-row>
         </v-col>
       </v-list-item>
