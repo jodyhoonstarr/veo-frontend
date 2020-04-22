@@ -40,7 +40,7 @@
             ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
             >Clear</v-btn
           >
-          <v-divider></v-divider>
+          <v-spacer></v-spacer>
           <v-btn @click="close" color="primary" text small
             ><v-icon>mdi-close</v-icon></v-btn
           >
