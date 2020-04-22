@@ -144,6 +144,6 @@ export default {
   .v-messages
   .v-messages__wrapper
   .v-messages__message {
-  transform: translate(-11px) !important;
+  transform: translate(-11px, 4px) !important;
 }
 </style>
