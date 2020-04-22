@@ -86,7 +86,13 @@ export function filterRows(csvData, dataSelections) {
 
   // filter the selected rows from the data
   return csvData.filter(row => {
-    return dataSelections.every(o => o.data.some(e => e.id === row[o.prop]));
+    return dataSelections.every(o =>
+      o.data.some(e => {
+        if (e && e.hasOwnProperty("id")) {
+          return e.id === row[o.prop];
+        }
+      })
+    );
   });
 }
 
