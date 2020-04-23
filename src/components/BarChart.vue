@@ -422,7 +422,43 @@ export default {
         .attr("fill", this.labelFontColor)
         .attr("transform", this.labelTransform);
     },
-    shoutoutClick: function(d3This, vm, d) {
+    barHoverOver: function(d3This, vm, d) {
+      const strokeWidth = 4;
+      const highlightColor = "#555555";
+
+      // de-highlight every other rect
+      selectAll("g.bargroup > rect")
+        .transition()
+        .attr("stroke-width", 0);
+
+      // show the clicked text value
+      select(vm.$refs.shoutout)
+        .text("")
+        .transition()
+        .text(`${vm.labelText(d)} - ${d.label.split(/[ ,]+/)[0]} (${d.key})`)
+        .attr("fill", highlightColor)
+        .attr("opacity", 1);
+
+      // outline the bar
+      select(d3This)
+        .transition()
+        .attr("stroke", highlightColor)
+        .attr("stroke-width", strokeWidth);
+    },
+    barHoverOut: function(d3This, vm, d) {
+      // fade the shoutout
+      select(vm.$refs.shoutout)
+        .transition()
+        .duration(vm.transitionDuration)
+        .attr("opacity", 0);
+
+      // fade the bar outline
+      select(d3This)
+        .transition()
+        .duration(vm.transitionDuration)
+        .attr("stroke-width", 0);
+    },
+    barClick: function(d3This, vm, d) {
       const delayFactor = 8;
       const strokeWidth = 4;
       const highlightColor = "#555555";
@@ -452,6 +488,21 @@ export default {
         .duration(vm.transitionDuration * delayFactor)
         .attr("stroke-width", 0);
     },
+    bindBarTransitions: function() {
+      const vm = this; // for use with click event in d3
+      select(this.$refs.chart)
+        .selectAll("g.bargroup")
+        .selectAll("rect")
+        .on("click", function(d) {
+          vm.barClick(this, vm, d);
+        })
+        .on("mouseover", function(d) {
+          vm.barHoverOver(this, vm, d);
+        })
+        .on("mouseout", function(d) {
+          vm.barHoverOut(this, vm, d);
+        });
+    },
     bindRects: function() {
       const vm = this; // for use with click event in d3
 
@@ -463,6 +514,9 @@ export default {
       bound
         .exit()
         .selectAll("rect")
+        .on("click", null)
+        .on("mouseover", null)
+        .on("mouseout", null)
         .transition()
         .duration(this.transitionDuration)
         .style("opacity", 0)
@@ -483,9 +537,6 @@ export default {
         .data(this.barData)
         .enter()
         .append("rect")
-        .on("click", function(d) {
-          vm.shoutoutClick(this, vm, d);
-        })
         .style("opacity", 0)
         .attr("height", 0)
         .attr("transform", this.barTransformInit)
@@ -495,7 +546,8 @@ export default {
         .delay(this.transitionDuration / 2)
         .style("opacity", 1)
         .attr("transform", this.barTransform)
-        .attr("height", this.barHeight);
+        .attr("height", this.barHeight)
+        .on("end", this.bindBarTransitions);
 
       // update
       const boundBars = bound.selectAll("rect").data(this.barData);
@@ -503,6 +555,9 @@ export default {
       //if there are less bars than the previous
       boundBars
         .exit()
+        .on("click", null)
+        .on("mouseover", null)
+        .on("mouseout", null)
         .transition()
         .duration(this.transitionDuration)
         .style("opacity", 0)
@@ -514,9 +569,6 @@ export default {
       boundBars
         .enter()
         .append("rect")
-        .on("click", function(d) {
-          vm.shoutoutClick(this, vm, d);
-        })
         .attr("transform", this.barTransformInit)
         .attr("width", this.barWidth)
         .attr("height", 0)
@@ -525,20 +577,22 @@ export default {
         .style("opacity", 1)
         .attr("height", this.barHeight)
         .attr("fill", this.barFill)
-        .attr("transform", this.barTransform);
+        .attr("transform", this.barTransform)
+        .on("end", this.bindBarTransitions);
 
       // if there are the same number of bars as previous
       boundBars
-        .on("click", function(d) {
-          vm.shoutoutClick(this, vm, d);
-        })
+        .on("click", null)
+        .on("mouseover", null)
+        .on("mouseout", null)
         .transition()
         .duration(this.transitionDuration)
         .style("opacity", 1)
         .attr("height", this.barHeight)
         .attr("width", this.barWidth)
         .attr("fill", this.barFill)
-        .attr("transform", this.barTransform);
+        .attr("transform", this.barTransform)
+        .on("end", this.bindBarTransitions);
     },
     xLabelOpacity: function() {
       if (this.x0) {
