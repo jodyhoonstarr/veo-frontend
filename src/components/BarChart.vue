@@ -443,16 +443,23 @@ export default {
       return str.substr(0, minSeparator);
     },
     formatShoutoutText: function(d) {
-      const charMax = 20;
+      // format the shout text
 
-      let label;
-      if (d.label.length > charMax) {
-        label = `${this.shortenString(d.label, charMax)}`;
+      // if the labels are hidden, add them to the shoutout
+      if (this.xLabelOpacity() === 0) {
+        const charMax = 20;
+
+        let label;
+        if (d.label.length > charMax) {
+          label = `${this.shortenString(d.label, charMax)}`;
+        } else {
+          label = d.label;
+        }
+        return `${label} (${KEYTEXT[d.key]}): ${this.labelText(d)}`;
       } else {
-        label = d.label;
+        // if not hidde, show the number
+        return `${this.labelText(d)}`;
       }
-
-      return `${label} (${KEYTEXT[d.key]}): ${this.labelText(d)}`;
     },
     barHoverOver: function(d3This, vm, d) {
       const strokeWidth = 4;
