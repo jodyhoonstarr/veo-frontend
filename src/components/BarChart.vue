@@ -432,8 +432,6 @@ export default {
         .transition()
         .attr("stroke-width", 0);
 
-      console.log(d);
-
       // briefly show the clicked text value
       select(vm.$refs.shoutout)
         .text("")
@@ -596,6 +594,18 @@ export default {
     bindAxisLabels: function() {
       const xAxisLabel = select(this.$refs.xaxislabel);
       xAxisLabel.selectAll("text").remove();
+
+      let xLabelText;
+      const clab = toTitleCase(this.chartLabel);
+      if (this.x0) {
+        xLabelText =
+          this.x0.bandwidth() < this.labelWidthThreshold
+            ? `${clab} (Labels Hidden, Click on Bar to Show)`
+            : clab;
+      } else {
+        xLabelText = clab;
+      }
+
       xAxisLabel
         .append("text")
         .attr(
@@ -605,7 +615,7 @@ export default {
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
         .attr("fill", "#555555")
-        .text(toTitleCase(this.chartLabel));
+        .text(xLabelText);
 
       const yAxisLabel = select(this.$refs.yaxislabel);
       yAxisLabel.selectAll("text").remove();
