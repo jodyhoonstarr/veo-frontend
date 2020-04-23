@@ -35,14 +35,6 @@
 
     <template v-else-if="chartType === 'line' && chartData != null && width">
       <button-container>
-        <chart-button-download
-          v-if="chartDataZip"
-          :url="chartDataZip"
-          icon="mdi-download"
-          tooltip="Download Source Data"
-        >
-        </chart-button-download>
-
         <chart-button-toggle
           v-model="magnifyYAxis"
           tooltip="Toggle Y-Axis Zoom"
@@ -50,6 +42,14 @@
           off-icon="mdi-magnify-minus"
           nudge-tooltip="40"
         ></chart-button-toggle>
+
+        <chart-button-download
+          v-if="chartDataZip"
+          :url="chartDataZip"
+          icon="mdi-download"
+          tooltip="Download Source Data"
+        >
+        </chart-button-download>
       </button-container>
 
       <line-chart
