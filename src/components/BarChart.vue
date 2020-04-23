@@ -436,11 +436,26 @@ export default {
         .substr(0, maxLen)
         .replace(/,+$/, "")
         .replace(/\s+$/, "");
-
       let minSeparator = Math.min(
-        ...separators.map(s => strippedString.lastIndexOf(s, maxLen))
+        ...separators.map(s => {
+          const idx = strippedString.lastIndexOf(s, maxLen);
+          if (idx === -1) {
+            return maxLen;
+          } else {
+            return idx;
+          }
+        })
       );
-      return str.substr(0, minSeparator);
+
+      // remove trailing and/or
+      const trimmedWord = str.substr(0, minSeparator);
+      const trimmedArray = trimmedWord.split(" ");
+      if (["and", "or"].includes(trimmedArray[trimmedArray.length - 1])) {
+        let lastIndex = trimmedWord.lastIndexOf(" ");
+        return trimmedWord.substring(0, lastIndex);
+      } else {
+        return trimmedWord;
+      }
     },
     formatShoutoutText: function(d) {
       // format the shout text
