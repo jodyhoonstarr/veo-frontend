@@ -102,8 +102,16 @@ export default {
   data() {
     return {
       csvData: null,
-      occupationObj: { selected: null, toggle: true },
-      industryObj: { selected: null, toggle: false },
+      occupationObj: { selected: null, toggle: false },
+      industryObj: {
+        selected: [
+          { id: "11", label: "Agriculture, Forestry, Fishing and Hunting" },
+          { id: "21", label: "Mining, Quarrying, and Oil and Gas Extraction" },
+          { id: "22", label: "Utilities" },
+          { id: "23", label: "Construction" }
+        ],
+        toggle: true
+      },
       cohortObj: { selected: null, toggle: false },
       activeToggle: "occupation",
       initialFilters: {
