@@ -12,3 +12,14 @@ export const GROUPCOLUMN = {
   education: "education",
   yearsofservice: "yosgrp"
 };
+
+export const KEYTEXT = {
+  p25: "25%",
+  p50: "50%",
+  p75: "75%",
+  y1: "1-year",
+  y5: "5-years",
+  y10: "10-years",
+  emp: "Employed",
+  nonemp: "Nonemployed"
+};

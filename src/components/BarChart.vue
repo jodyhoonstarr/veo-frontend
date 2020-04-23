@@ -27,6 +27,7 @@ import { select, selectAll } from "d3-selection";
 import { scaleBand, scaleLinear, scaleOrdinal } from "d3-scale";
 import { arrayIsNullorEmpty, toTitleCase } from "@/lib/utils";
 import { wrapLabels } from "@/lib/utils";
+import { KEYTEXT } from "@/constants/lookups";
 
 export default {
   name: "BarChart",
@@ -423,7 +424,9 @@ export default {
         .attr("transform", this.labelTransform);
     },
     formatShoutoutText: function(d) {
-      return `${this.labelText(d)} - ${d.label.split(/[ ,]+/)[0]} (${d.key})`;
+      return `${this.labelText(d)} - ${d.label.split(/[ ,]+/)[0]} (${
+        KEYTEXT[d.key]
+      })`;
     },
     barHoverOver: function(d3This, vm, d) {
       const strokeWidth = 4;
