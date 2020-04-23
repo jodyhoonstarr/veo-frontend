@@ -422,6 +422,9 @@ export default {
         .attr("fill", this.labelFontColor)
         .attr("transform", this.labelTransform);
     },
+    formatShoutoutText: function(d) {
+      return `${this.labelText(d)} - ${d.label.split(/[ ,]+/)[0]} (${d.key})`;
+    },
     barHoverOver: function(d3This, vm, d) {
       const strokeWidth = 4;
       const highlightColor = "#555555";
@@ -435,7 +438,7 @@ export default {
       select(vm.$refs.shoutout)
         .text("")
         .transition()
-        .text(`${vm.labelText(d)} - ${d.label.split(/[ ,]+/)[0]} (${d.key})`)
+        .text(vm.formatShoutoutText(d))
         .attr("fill", highlightColor)
         .attr("opacity", 1);
 
@@ -472,7 +475,7 @@ export default {
       select(vm.$refs.shoutout)
         .text("")
         .transition()
-        .text(`${vm.labelText(d)} - ${d.label.split(/[ ,]+/)[0]} (${d.key})`)
+        .text(vm.formatShoutoutText(d))
         .attr("fill", highlightColor)
         .attr("opacity", 1)
         .transition()
