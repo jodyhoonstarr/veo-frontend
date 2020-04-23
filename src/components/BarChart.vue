@@ -64,7 +64,8 @@ export default {
     return {
       margin: { top: 26, right: 30, bottom: 48, left: 60 },
       transitionDuration: 400,
-      labelPxShift: 4
+      labelPxShift: 4,
+      labelWidthThreshold: 70
     };
   },
   computed: {
@@ -259,7 +260,6 @@ export default {
       // an initial y position transform for transition
       return `translate(${this.labelXPosition(d) || 0},${this.chartYBottom()})`;
     },
-
     barTransformInit: function(d) {
       // an initial y position transform for transition
       return `translate(${this.barXFullPosition(d) ||
@@ -540,6 +540,13 @@ export default {
         .attr("fill", this.barFill)
         .attr("transform", this.barTransform);
     },
+    xLabelOpacity: function() {
+      if (this.x0) {
+        return this.x0.bandwidth() < this.labelWidthThreshold ? 0 : 1;
+      } else {
+        return 1;
+      }
+    },
     bindXAxis: function() {
       const xaxis = select(this.$refs.xaxis);
       xaxis
@@ -550,7 +557,9 @@ export default {
         .duration(this.transitionDuration)
         .selectAll(".tick text")
         .style("font-size", "12px")
-        .call(wrapLabels, this.x0.bandwidth());
+        .attr("opacity", this.xLabelOpacity())
+        .call(wrapLabels, this.x0.bandwidth())
+        .selectAll("text");
     },
     processTickFormat: function(d) {
       return `${this.labelPrefix}${format("~s")(d)}`;
