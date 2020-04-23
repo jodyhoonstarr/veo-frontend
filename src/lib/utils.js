@@ -58,18 +58,24 @@ export function wrapLabels(text, width) {
     while ((word = words.pop())) {
       line.push(word);
       tspan.text(line.join(" "));
-      if (tspan.node().getComputedTextLength() > width) {
+      // don't wrap if the line is a single long word
+      if (tspan.node().getComputedTextLength() > width && line.length > 1) {
         line.pop();
-        tspan.text(line.join(" "));
-        line = [word];
-        tspan = text
-          .append("tspan")
-          .attr("x", 0)
-          .attr("y", y)
-          .attr("dy", function() {
-            return ++lineNumber * lineHeight + dy + "em";
-          })
-          .text(word);
+        // if more than two lines append ... at end of line 2
+        if (lineNumber < 1) {
+          tspan.text(line.join(" "));
+          line = [word];
+          tspan = text
+            .append("tspan")
+            .attr("x", 0)
+            .attr("y", y)
+            .attr("dy", function() {
+              return ++lineNumber * lineHeight + dy + "em";
+            })
+            .text(word);
+        } else if (lineNumber === 1) {
+          tspan.text(`${line.join(" ")}...`);
+        }
       }
     }
   });
