@@ -40,7 +40,6 @@
           tooltip="Toggle Y-Axis Zoom"
           icon="mdi-magnify-plus"
           off-icon="mdi-magnify-minus"
-          nudge-tooltip="40"
         ></chart-button-toggle>
 
         <chart-button-download
@@ -48,6 +47,7 @@
           :url="chartDataZip"
           icon="mdi-download"
           tooltip="Download Source Data"
+          nudge-tooltip="40"
         >
         </chart-button-download>
       </button-container>
