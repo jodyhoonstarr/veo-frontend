@@ -423,10 +423,34 @@ export default {
         .attr("fill", this.labelFontColor)
         .attr("transform", this.labelTransform);
     },
+    shortenString: function(str, maxLen, separators = [" ", ","]) {
+      if (str.length <= maxLen) {
+        return str;
+      } else if (str.split(" ").length === 1) {
+        return str;
+      }
+
+      let strippedString = str
+        .substr(0, maxLen)
+        .replace(/,+$/, "")
+        .replace(/\s+$/, "");
+
+      let minSeparator = Math.min(
+        ...separators.map(s => strippedString.lastIndexOf(s, maxLen))
+      );
+      return str.substr(0, minSeparator);
+    },
     formatShoutoutText: function(d) {
-      return `${this.labelText(d)} - ${d.label.split(/[ ,]+/)[0]} (${
-        KEYTEXT[d.key]
-      })`;
+      const charMax = 20;
+
+      let label;
+      if (d.label.length > charMax) {
+        label = `${this.shortenString(d.label, charMax)}`;
+      } else {
+        label = d.label;
+      }
+
+      return `${label} (${KEYTEXT[d.key]}): ${this.labelText(d)}`;
     },
     barHoverOver: function(d3This, vm, d) {
       const strokeWidth = 4;
