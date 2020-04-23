@@ -423,7 +423,9 @@ export default {
         .attr("fill", this.labelFontColor)
         .attr("transform", this.labelTransform);
     },
-    shortenString: function(str, maxLen, separators = [" ", ","]) {
+    shortenString: function(str, maxLen) {
+      // shorten a string using whole words up to a space or comma
+      const separators = [" ", ","];
       if (str.length <= maxLen) {
         return str;
       } else if (str.split(" ").length === 1) {
