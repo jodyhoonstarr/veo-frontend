@@ -9,8 +9,8 @@
     <text
       ref="shoutout"
       x="50%"
-      :y="margin.top"
-      :font-size="margin.top"
+      :y="margin.top - 6"
+      :font-size="margin.top - 6"
       text-anchor="middle"
     ></text>
     <g ref="xaxislabel"></g>
@@ -432,11 +432,13 @@ export default {
         .transition()
         .attr("stroke-width", 0);
 
+      console.log(d);
+
       // briefly show the clicked text value
       select(vm.$refs.shoutout)
         .text("")
         .transition()
-        .text(vm.labelText(d))
+        .text(`${vm.labelText(d)} - ${d.label.split(/[ ,]+/)[0]} (${d.key})`)
         .attr("fill", highlightColor)
         .attr("opacity", 1)
         .transition()

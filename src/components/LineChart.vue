@@ -9,8 +9,8 @@
     <text
       ref="shoutout"
       x="50%"
-      :y="margin.top"
-      :font-size="margin.top"
+      :y="margin.top - 6"
+      :font-size="margin.top - 6"
       text-anchor="middle"
     ></text>
     <g ref="xaxislabel"></g>
