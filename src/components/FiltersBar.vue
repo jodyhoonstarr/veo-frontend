@@ -208,7 +208,13 @@ export default {
       }
     },
     setSecondaryDefaults: function() {
+      // if a bar chart is used,
+      // and the data type is earnings
+      // set the secondary default to show "all"
+      // otherwise default to what's defined in the properties
       if (
+        this.chartType === "bar" &&
+        this.primaryValue[0].id !== "counts" &&
         this.secondaryFilters != null &&
         Array.isArray(this.secondaryFilters.filters) &&
         this.secondaryFilters.filters.length > 0
@@ -217,6 +223,23 @@ export default {
         this.colorCategory = this.secondaryFilters.id;
       } else {
         this.secondaryValue = null;
+      }
+    },
+    setTertiaryDefaults: function() {
+      // for a bar chart
+      // if the type is a count and only one secondary is selected
+      // set the color grouping to be all tertiary
+      if (
+        this.chartType === "bar" &&
+        this.secondaryFilters != null &&
+        this.secondaryFilters.id === "counts" &&
+        Array.isArray(this.secondaryValue) &&
+        this.secondaryValue.length === 1
+      ) {
+        this.tertiaryValue = this.tertiaryFilters.filters;
+        this.colorCategory = this.tertiaryFilters.id;
+      } else {
+        this.tertiaryValue = null;
       }
     },
     getActive: function(prop) {
@@ -258,17 +281,7 @@ export default {
         );
       }
 
-      // if the type is a count and only one secondary is selected
-      // set the color grouping to be all tertiary
-      if (
-        this.secondaryFilters &&
-        this.secondaryFilters.id === "counts" &&
-        Array.isArray(this.secondaryValue) &&
-        this.secondaryValue.length === 1
-      ) {
-        this.tertiaryValue = this.tertiaryFilters.filters;
-        this.colorCategory = this.tertiaryFilters.id;
-      }
+      this.setTertiaryDefaults();
       this.emitEvent();
     },
     tertiaryValue: function() {
