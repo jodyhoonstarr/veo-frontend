@@ -54,7 +54,7 @@
         {{ item.label }}
       </div>
       <div class="selection" v-else-if="index === 1">
-        {{ pluralLabels }}
+        {{ pluralLabels }} Selected
       </div>
     </template>
 
