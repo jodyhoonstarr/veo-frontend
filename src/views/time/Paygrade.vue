@@ -37,7 +37,11 @@
         :filters="filters"
         active-toggle="Paygrade"
       >
-        <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          :initial-values="initialFilters"
+          chart-type="line"
+          @change="handleFilters"
+        ></FiltersBar>
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -70,6 +74,7 @@ import {
   getColorSet,
   joinPublicPath
 } from "@/lib/utils";
+import { filterSelect } from "@/lib/filterselect";
 
 export default {
   name: "Paygrade",
@@ -87,8 +92,25 @@ export default {
       name: "paygrade",
       chartType: "line",
       csvData: null,
-      paygrade: null,
+      paygrade: [
+        { id: "E1", label: "Private" },
+        { id: "E2", label: "Private (PV2)" },
+        { id: "E3", label: "Private First Class (PFC)" },
+        { id: "E4", label: "Corporal (CPL) or Specialist (SPC)" },
+        { id: "E5", label: "Sergeant (SGT)" },
+        { id: "E6", label: "Staff Sergeant (SSG)" },
+        {
+          id: "E79",
+          label:
+            "Sergeant First Class (SFC), Master Sergeant (MSG) or First Sergeant (1SG), and Sergeant Major (SGM), Command Sergeant Major (CSM), or Sergeant Major of the Army (SMA)"
+        }
+      ],
       cohort: null,
+      initialFilters: {
+        primary: filterSelect("earnings", "primary"),
+        secondary: filterSelect("earnings", "secondary", "p50"),
+        tertiary: filterSelect("earinings", "tertiary", "all")
+      },
       filters: {
         colors: null,
         filters: null,

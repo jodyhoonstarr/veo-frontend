@@ -36,7 +36,11 @@
         :filters="filters"
         active-toggle="Industry"
       >
-        <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          :initial-values="initialFilters"
+          chart-type="line"
+          @change="handleFilters"
+        ></FiltersBar>
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -69,6 +73,7 @@ import {
   getColorSet,
   joinPublicPath
 } from "@/lib/utils";
+import { filterSelect } from "@/lib/filterselect";
 
 export default {
   name: "Industry",
@@ -86,8 +91,24 @@ export default {
       name: "industry",
       chartType: "line",
       csvData: null,
-      industry: null,
+      industry: [
+        { id: "11", label: "Agriculture, Forestry, Fishing and Hunting" },
+        { id: "21", label: "Mining, Quarrying, and Oil and Gas Extraction" },
+        { id: "22", label: "Utilities" },
+        { id: "23", label: "Construction" },
+        { id: "31-33", label: "Manufacturing" },
+        { id: "42", label: "Wholesale Trade" },
+        { id: "44-45", label: "Retail Trade" },
+        { id: "48-49", label: "Transportation and Warehousing" },
+        { id: "51", label: "Information" },
+        { id: "52", label: "Finance and Insurance" }
+      ],
       cohort: null,
+      initialFilters: {
+        primary: filterSelect("earnings", "primary"),
+        secondary: filterSelect("earnings", "secondary", "p50"),
+        tertiary: filterSelect("earinings", "tertiary", "all")
+      },
       filters: {
         colors: null,
         filters: null,

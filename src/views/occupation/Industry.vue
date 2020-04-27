@@ -51,11 +51,7 @@
         :filters="filters"
         :active-toggle="activeToggle"
       >
-        <FiltersBar
-          :initial-values="initialFilters"
-          chart-type="bar"
-          @change="handleFilters"
-        ></FiltersBar>
+        <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
         <Chart
           chart-type="bar"
           :loading="loading"
@@ -107,18 +103,12 @@ export default {
         selected: [
           { id: "11", label: "Agriculture, Forestry, Fishing and Hunting" },
           { id: "21", label: "Mining, Quarrying, and Oil and Gas Extraction" },
-          { id: "22", label: "Utilities" },
-          { id: "23", label: "Construction" }
+          { id: "22", label: "Utilities" }
         ],
         toggle: true
       },
       cohortObj: { selected: null, toggle: false },
       activeToggle: "occupation",
-      initialFilters: {
-        primary: filterSelect("counts", "primary"),
-        secondary: filterSelect("counts", "secondary", "nonemp"),
-        tertiary: filterSelect("counts", "tertiary", "y5", "nonemp")
-      },
       filters: {
         colors: null,
         filters: null,

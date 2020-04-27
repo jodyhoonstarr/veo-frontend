@@ -36,7 +36,11 @@
         :filters="filters"
         active-toggle="Years of Service"
       >
-        <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          :initial-values="initialFilters"
+          chart-type="line"
+          @change="handleFilters"
+        ></FiltersBar>
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -69,6 +73,7 @@ import {
   getColorSet,
   joinPublicPath
 } from "@/lib/utils";
+import { filterSelect } from "@/lib/filterselect";
 
 export default {
   name: "YearsOfService",
@@ -86,8 +91,17 @@ export default {
       name: "yearsofservice",
       chartType: "line",
       csvData: null,
-      experience: null,
+      experience: [
+        { id: "A1", label: "0-5 years" },
+        { id: "A2", label: "6-19 years" },
+        { id: "A3", label: "20+ years" }
+      ],
       cohort: null,
+      initialFilters: {
+        primary: filterSelect("earnings", "primary"),
+        secondary: filterSelect("earnings", "secondary", "p50"),
+        tertiary: filterSelect("earinings", "tertiary", "all")
+      },
       filters: {
         colors: null,
         filters: null,

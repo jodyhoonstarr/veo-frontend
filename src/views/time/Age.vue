@@ -36,7 +36,11 @@
         :filters="filters"
         active-toggle="Age Group"
       >
-        <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          :initial-values="initialFilters"
+          chart-type="line"
+          @change="handleFilters"
+        ></FiltersBar>
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -69,6 +73,7 @@ import {
   getColorSet,
   joinPublicPath
 } from "@/lib/utils";
+import { filterSelect } from "@/lib/filterselect";
 
 export default {
   name: "Age",
@@ -86,8 +91,16 @@ export default {
       name: "age",
       chartType: "line",
       csvData: null,
-      age: null,
+      age: [
+        { id: "E01", label: "<25" },
+        { id: "E02", label: "25+" }
+      ],
       cohort: null,
+      initialFilters: {
+        primary: filterSelect("earnings", "primary"),
+        secondary: filterSelect("earnings", "secondary", "p50"),
+        tertiary: filterSelect("earinings", "tertiary", "all")
+      },
       filters: {
         colors: null,
         filters: null,

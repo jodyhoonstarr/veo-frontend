@@ -12,9 +12,7 @@
                 :items="response"
                 propname="labels"
                 id="race"
-                :toggle="activeToggle === 'race'"
-                @change="handleDropDownToggle"
-                :selectallable="true"
+                v-model="raceObj"
               ></DropDownwRadio>
             </GetData>
           </v-col>
@@ -27,8 +25,7 @@
                 :items="response"
                 propname="labels"
                 id="ethnicity"
-                :toggle="activeToggle === 'ethnicity'"
-                @change="handleDropDownToggle"
+                v-model="ethnicityObj"
               ></DropDownwRadio>
             </GetData>
           </v-col>
@@ -58,7 +55,11 @@
         :filters="filters"
         :active-toggle="activeToggle"
       >
-        <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          :initial-values="initialFilters"
+          chart-type="line"
+          @change="handleFilters"
+        ></FiltersBar>
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -91,6 +92,7 @@ import {
   simplifiyRows
 } from "@/lib/utils";
 import { GROUPCOLUMN } from "@/constants/lookups";
+import { filterSelect } from "@/lib/filterselect";
 
 export default {
   name: "RaceEthnicity",
@@ -108,20 +110,33 @@ export default {
       name: "raceethnicity",
       chartType: "line",
       csvData: null,
-      race: null,
-      ethnicity: null,
+      raceObj: {
+        selected: [
+          { id: "A1", label: "White Alone" },
+          { id: "A2", label: "Black or African American Alone" },
+          { id: "A3", label: "American Indian or Alaska Native Alone" },
+          { id: "A4", label: "Asian Alone" },
+          {
+            id: "A5",
+            label: "Native Hawaiian or Other Pacific Islander Alone"
+          },
+          { id: "A6", label: "Some Other Race Alone (Not Used)" },
+          { id: "A7", label: "Two or More Race Groups" }
+        ],
+        toggle: true
+      },
+      ethnicityObj: { selected: null, toggle: false },
       cohort: null,
       activeToggle: "race",
+      initialFilters: {
+        primary: filterSelect("earnings", "primary"),
+        secondary: filterSelect("earnings", "secondary", "p50"),
+        tertiary: filterSelect("earinings", "tertiary", "all")
+      },
       filters: null
     };
   },
   methods: {
-    handleDropDownToggle: function(data) {
-      this[data.id] = data.selected;
-      if (data.toggle) {
-        this.activeToggle = data.id;
-      }
-    },
     dataPath: function(str) {
       return joinPublicPath(str);
     },
@@ -130,9 +145,24 @@ export default {
         return null;
       }
       this.filters = f;
+    },
+    setActiveToggle: function(changedObj, changedStr) {
+      if (changedObj.toggle) {
+        this.activeToggle = changedStr;
+        // set all the other toggles to false if this one got switched on
+        [this.raceObj, this.ethnicityObj]
+          .filter(o => o !== changedObj)
+          .forEach(o => (o.toggle = false));
+      }
     }
   },
   computed: {
+    race: function() {
+      return this.raceObj.selected;
+    },
+    ethnicity: function() {
+      return this.ethnicityObj.selected;
+    },
     dataSelections: function() {
       return [
         { data: this.cohort, prop: GROUPCOLUMN["cohort"] },
@@ -174,6 +204,14 @@ export default {
         return null;
       }
       return this.filters.linestyles;
+    }
+  },
+  watch: {
+    raceObj: function() {
+      this.setActiveToggle(this.raceObj, "race");
+    },
+    ethnicityObj: function() {
+      this.setActiveToggle(this.ethnicityObj, "ethnicity");
     }
   }
 };

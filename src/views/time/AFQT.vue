@@ -36,7 +36,11 @@
         :filters="filters"
         active-toggle="AFQT Range"
       >
-        <FiltersBar chart-type="line" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          :initial-values="initialFilters"
+          chart-type="line"
+          @change="handleFilters"
+        ></FiltersBar>
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -62,7 +66,7 @@ import FiltersBar from "@/components/FiltersBar";
 import Chart from "@/components/Chart";
 import { GROUPCOLUMN } from "@/constants/lookups";
 import { joinPublicPath } from "@/lib/utils";
-
+import { filterSelect } from "@/lib/filterselect";
 import {
   createChartData,
   filterRows,
@@ -87,8 +91,17 @@ export default {
       name: "afqt",
       chartType: "line",
       csvData: null,
-      afqt: null,
+      afqt: [
+        { id: "A1", label: "Score range: 0-33" },
+        { id: "A2", label: "Score range: 34-66" },
+        { id: "A3", label: "Score range: 67-100" }
+      ],
       cohort: null,
+      initialFilters: {
+        primary: filterSelect("earnings", "primary"),
+        secondary: filterSelect("earnings", "secondary", "p50"),
+        tertiary: filterSelect("earinings", "tertiary", "all")
+      },
       filters: {
         colors: null,
         filters: null,
