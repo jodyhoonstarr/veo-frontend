@@ -97,13 +97,13 @@ export default {
     value: {
       handler(val) {
         this.toggle = val.toggle;
-        this.changeArraytoObj();
-        this.changeObjtoArray();
       },
       deep: true
     },
     items: function() {
-      this.selectDefaults();
+      if (this.value.selected == null) {
+        this.selectDefaults();
+      }
     },
     selected: function() {
       this.emitChangeEvent();
@@ -173,6 +173,7 @@ export default {
   },
   mounted() {
     this.toggle = this.value.toggle;
+    this.selected = this.value.selected;
   }
 };
 </script>
