@@ -171,7 +171,16 @@ export default {
         this.tertiaryValue = o.selected;
         if (this.tertiaryValue === this.tertiaryFilters.filters) {
           this.colorCategory = this.tertiaryFilters.id;
-          if (this.colorCategory === "year") {
+
+          // if the 3rd dropdown is now set to the "all" category, aka > 1
+          // and the 2nd dropdown was previously the all, aka > 1
+          // reset the secondary group and let it default
+          if (
+            Array.isArray(this.tertiaryValue) &&
+            this.tertiaryValue.length > 1 &&
+            Array.isArray(this.secondaryValue) &&
+            this.secondaryValue.length > 1
+          ) {
             this.secondaryValue = null;
           }
         }
