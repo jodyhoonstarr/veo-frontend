@@ -116,11 +116,8 @@ export default {
       activeToggle: "occupation",
       initialFilters: {
         primary: filterSelect("counts", "primary"),
-        secondary: filterSelect("counts", "secondary", "all"),
-        tertiary: filterSelect("counts", "tertiary", "y10")
-        // primary: filterSelect("earnings", "primary"),
-        // secondary: filterSelect("earnings", "secondary", "p75"),
-        // tertiary: filterSelect("earnings", "tertiary", "y10")
+        secondary: filterSelect("counts", "secondary", "nonemp"),
+        tertiary: filterSelect("counts", "tertiary", "y5", "nonemp")
       },
       filters: {
         colors: null,

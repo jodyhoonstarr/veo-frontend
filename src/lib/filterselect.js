@@ -1,11 +1,19 @@
 import { FILTERS } from "@/constants/filters";
 
 // provides shortcut functions to selecting options in the filers bar
-export function filterSelect(datatype, dropdown, selection = "") {
+export function filterSelect(
+  datatype,
+  dropdown,
+  selection = "",
+  options = "emp"
+) {
   // selection options can be
   // primary secondary tertiary
   // earnings [25, 50, 75, all] [y1, y5, y10, all]
   // counts [emp, nonemp, all] [y1, y5, y10, all]
+
+  // options is necessary when filtering by counts and the tertiary filter needs
+  // to know whether the data used is from emp or nonemp, emp default
 
   if (dropdown === "primary") {
     if (["earnings", "counts"].includes(datatype)) {
@@ -35,7 +43,7 @@ export function filterSelect(datatype, dropdown, selection = "") {
     if (
       datatypeFilters &&
       datatype === "counts" &&
-      ["emp", "all"].includes(selection)
+      ["emp", "nonemp", "all"].includes(selection)
     ) {
       if (selection === "all") {
         return datatypeFilters.filters;
@@ -65,7 +73,7 @@ export function filterSelect(datatype, dropdown, selection = "") {
       datatype === "counts" &&
       ["y1", "y5", "y10", "all"].includes(selection)
     ) {
-      const empFilters = datatypeFilters.filters.find(o => o.id === "emp");
+      const empFilters = datatypeFilters.filters.find(o => o.id === options);
       const countsFilters = empFilters.filters.find(o => o.id === "year");
       if (selection === "all") {
         return countsFilters.filters;
