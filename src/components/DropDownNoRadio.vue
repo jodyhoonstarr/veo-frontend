@@ -73,8 +73,9 @@ export default {
     items: function() {
       // select the first two items by default
       if (
-        this.value == null ||
-        (Array.isArray(this.items.labels) && this.items.labels.length >= 2)
+        this.value == null &&
+        Array.isArray(this.items.labels) &&
+        this.items.labels.length >= 2
       ) {
         this.selected = this.items.labels.slice(0, 2);
       }
@@ -88,6 +89,9 @@ export default {
         return this.items;
       }
     }
+  },
+  mounted() {
+    this.selected = this.value;
   }
 };
 </script>
