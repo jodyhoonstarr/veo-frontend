@@ -254,7 +254,7 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   position: relative;
-  max-width: 80%;
+  max-width: 90%;
   padding: 4px 4px 2px 0px;
 }
 .one-line {

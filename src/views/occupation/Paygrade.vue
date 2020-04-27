@@ -101,8 +101,8 @@ export default {
   data() {
     return {
       csvData: null,
-      occupationObj: { selected: null, toggle: true },
-      paygradeObj: { selected: null, toggle: false },
+      occupationObj: { selected: null, toggle: false },
+      paygradeObj: { selected: null, toggle: true },
       cohortObj: { selected: null, toggle: false },
       activeToggle: "occupation",
       filters: null
