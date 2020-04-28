@@ -582,9 +582,14 @@ export default {
       xAxisLabel.selectAll("text").remove();
       xAxisLabel
         .append("text")
-        .attr("transform", `translate(${this.width / 2},${this.height - 6})`)
+        .attr(
+          "transform",
+          `translate(${(this.width - this.margin.right - this.margin.left) / 2 +
+            this.margin.left},${this.height - 6})`
+        )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
+        .attr("font-style", "italic")
         .attr("fill", "#555555")
         .text(toTitleCase(this.chartLabel));
 
@@ -602,11 +607,13 @@ export default {
         .append("text")
         .attr(
           "transform",
-          `rotate(-90) translate(-${Math.floor(this.chartHeight / 2)},${this
-            .margin.left - 46})`
+          `rotate(-90) translate(-${Math.floor(
+            (this.chartHeight - this.margin.top) / 2 + this.margin.top
+          )},${this.margin.left - 46})`
         )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
+        .attr("font-style", "italic")
         .attr("fill", "#555555")
         .text(yLabelText);
     },
