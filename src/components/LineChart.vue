@@ -71,7 +71,7 @@ export default {
   },
   data() {
     return {
-      margin: { top: 26, right: 110, bottom: 48, left: 60 },
+      margin: { top: 26, right: 120, bottom: 48, left: 60 },
       transitionDuration: 400,
       circleRadius: 3
     };
@@ -269,6 +269,9 @@ export default {
       this.bindChartNextTick();
     },
     magnifyYAxis: function() {
+      this.bindChartNextTick();
+    },
+    breakPoint: function() {
       this.bindChartNextTick();
     }
   },
@@ -510,6 +513,7 @@ export default {
     },
     bindLabels: function() {
       const labelTransitionDuration = this.transitionDuration * 2;
+      const vm = this;
 
       select(this.$refs.chart)
         .selectAll("text")
@@ -551,7 +555,7 @@ export default {
           .attr("dx", "6px")
           .style("font-size", "10px")
           .text(d => {
-            const labelMaxLength = 24;
+            const labelMaxLength = 22;
             if (d.label.length < labelMaxLength) {
               return d.label;
             } else {
@@ -567,6 +571,9 @@ export default {
               .transition("label")
               .duration(labelTransitionDuration)
               .attr("opacity", 1)
+              .on("end", function() {
+                vm.bindLineTransitions(this, vm);
+              })
           )
       );
     },
@@ -604,12 +611,21 @@ export default {
         .text(yLabelText);
     },
     lineHoverOver: function(d3This, vm, d) {
+      const lines = select(vm.$refs.chart).selectAll("path");
+
+      const text = select(this.$refs.chart).selectAll("text");
+
       // fatten the current line
-      select(d3This).attr("stroke-width", 4);
+      lines
+        .attr("opacity", 1)
+        .filter(function(o) {
+          return o.label === d.label;
+        })
+        .transition("linewidth")
+        .attr("stroke-width", 4);
 
       // fade every other line
-      select(vm.$refs.chart)
-        .selectAll("path")
+      lines
         .attr("opacity", 1)
         .filter(function(o) {
           return o.label !== d.label;
@@ -618,8 +634,7 @@ export default {
         .attr("opacity", 0.2);
 
       // fade every other label
-      select(this.$refs.chart)
-        .selectAll("text")
+      text
         .attr("opacity", 1)
         .filter(function(o) {
           return o.label !== d.label;
@@ -639,8 +654,7 @@ export default {
         .attr("opacity", 0.2);
 
       // move the location of the matched label
-      select(this.$refs.chart)
-        .selectAll("text")
+      text
         .filter(function(o) {
           return o.label === d.label;
         })
@@ -684,7 +698,12 @@ export default {
       const delayFactor = 8;
 
       // briefly make the line fat
-      select(d3This)
+      select(vm.$refs.chart)
+        .selectAll("path")
+        .attr("opacity", 1)
+        .filter(function(o) {
+          return o.label === d.label;
+        })
         .transition("linewidth")
         .attr("stroke-width", 4)
         .transition()
