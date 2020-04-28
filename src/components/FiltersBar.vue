@@ -8,7 +8,7 @@
           :label="primaryFilters.label"
           :chart-type="chartType"
           :filters="primaryFilters.filters"
-          :showChips="primaryFilters.id === colorCategory"
+          :show-chips="primaryFilters.id === colorCategory"
           :value="primaryValue"
           @change="handlePrimaryFilter"
         ></ChartFilters>
@@ -21,7 +21,7 @@
           :label="secondaryFilters.label"
           :chart-type="chartType"
           :filters="secondaryFilters.filters"
-          :showChips="secondaryFilters.id === colorCategory"
+          :show-chips="secondaryFilters.id === colorCategory"
           :multiple="true"
           :value="secondaryValue"
           @change="handleSecondaryFilter"
@@ -35,7 +35,7 @@
           :label="tertiaryFilters.label"
           :chart-type="chartType"
           :filters="tertiaryFilters.filters"
-          :showChips="tertiaryFilters.id === colorCategory"
+          :show-chips="tertiaryFilters.id === colorCategory"
           :multiple="true"
           :value="tertiaryValue"
           @change="handleTertiaryFilter"
@@ -238,8 +238,6 @@ export default {
       ) {
         this.tertiaryValue = this.tertiaryFilters.filters;
         this.colorCategory = this.tertiaryFilters.id;
-      } else {
-        this.tertiaryValue = null;
       }
     },
     getActive: function(prop) {
