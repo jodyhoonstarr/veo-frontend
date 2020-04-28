@@ -395,7 +395,7 @@ export default {
             .attr("stroke-dasharray", d => this.lineType(d))
             .call(enter =>
               enter
-                .transition()
+                .transition("lineenter")
                 .duration(this.transitionDuration)
                 .attr("opacity", 1)
                 .attr("stroke", d => this.chartColors[d.label])
@@ -411,7 +411,7 @@ export default {
               .on("click", null)
               .on("mouseover", null)
               .on("mouseout", null)
-              .transition()
+              .transition("lineupdate")
               .duration(this.transitionDuration)
               .attr("stroke-dasharray", d => this.lineType(d))
               .attr("stroke", d => this.chartColors[d.label])
@@ -427,7 +427,7 @@ export default {
               .on("click", null)
               .on("mouseover", null)
               .on("mouseout", null)
-              .transition()
+              .transition("lineexit")
               .duration(this.transitionDuration)
               .attr("opacity", 0)
               .remove()
