@@ -362,10 +362,8 @@ export default {
         return "";
       }
     },
-    bindLineTransitions: function() {
-      const vm = this; // for use with click event in d3
-      select(this.$refs.chart)
-        .selectAll("path")
+    bindLineTransitions: function(d3This, vm) {
+      select(d3This)
         .on("click", function(d) {
           vm.lineClick(this, vm, d);
         })
@@ -402,7 +400,9 @@ export default {
                 .attr("opacity", 1)
                 .attr("stroke", d => this.chartColors[d.label])
                 .attr("d", d => this.line(d.data))
-                .on("end", this.bindLineTransitions)
+                .on("end", function() {
+                  vm.bindLineTransitions(this, vm);
+                })
             ),
 
         update =>
@@ -416,7 +416,9 @@ export default {
               .attr("stroke-dasharray", d => this.lineType(d))
               .attr("stroke", d => this.chartColors[d.label])
               .attr("d", d => this.line(d.data))
-              .on("end", this.bindLineTransitions)
+              .on("end", function() {
+                vm.bindLineTransitions(this, vm);
+              })
           ),
 
         exit =>
@@ -437,11 +439,8 @@ export default {
         return { cohort: a.cohort, value: a.value, label: d.label };
       });
     },
-    bindPointTransitions: function() {
-      const vm = this; // for use with click event in d3
-      select(this.$refs.chart)
-        .selectAll("g.point-series")
-        .selectAll("circle")
+    bindPointTransitions: function(d3this, vm) {
+      select(d3this)
         .on("click", function(d) {
           vm.circleClick(this, vm, d);
         })
@@ -493,10 +492,12 @@ export default {
             .style("stroke", d => this.chartColors[d.label])
             .call(enter =>
               enter
-                .transition()
+                .transition("point")
                 .duration(pointTransitionDuration)
                 .attr("opacity", 1)
-                .on("end", this.bindPointTransitions)
+                .on("end", function() {
+                  vm.bindPointTransitions(this, vm);
+                })
             )
         );
     },
@@ -556,7 +557,7 @@ export default {
           })
           .call(enter =>
             enter
-              .transition()
+              .transition("label")
               .duration(labelTransitionDuration)
               .attr("opacity", 1)
           )
@@ -606,7 +607,7 @@ export default {
         .filter(function(o) {
           return o.label !== d.label;
         })
-        .transition()
+        .transition("lineopacity")
         .attr("opacity", 0.2);
 
       // fade every other label
@@ -616,7 +617,7 @@ export default {
         .filter(function(o) {
           return o.label !== d.label;
         })
-        .transition()
+        .transition("labelopacity")
         .attr("opacity", 0.2);
 
       // fade every other circle
@@ -627,7 +628,7 @@ export default {
         .filter(function(o) {
           return o.label !== d.label;
         })
-        .transition()
+        .transition("circlesizeopacity")
         .attr("opacity", 0.2);
 
       // move the location of the matched label
@@ -636,7 +637,7 @@ export default {
         .filter(function(o) {
           return o.label === d.label;
         })
-        .transition()
+        .transition("labelposition")
         .attr("opacity", 1)
         .attr("y", () => vm.y(d.data[d.data.length - 1].value));
     },
@@ -644,20 +645,20 @@ export default {
       // line - to default
       select(vm.$refs.chart)
         .selectAll("path")
-        .transition()
+        .transition("lineopacity")
         .attr("opacity", 1)
         .attr("stroke-width", 2);
 
-      // return every line to its default
+      // return every text to its default
       select(this.$refs.chart)
         .selectAll("text")
-        .transition()
+        .transition("labelopacity")
         .attr("opacity", 1);
 
       // return every other circle to its default
       select(this.$refs.chart)
         .selectAll("g.point-series > circle")
-        .transition()
+        .transition("circlesizeopacity")
         .attr("r", this.circleRadius)
         .attr("opacity", 1);
 
@@ -667,7 +668,7 @@ export default {
         .filter(function(o) {
           return o.label === d.label;
         })
-        .transition()
+        .transition("labelposition")
         .attr("y", () =>
           this.spacedLabels ? this.spacedLabels[d.label] : null
         );
@@ -677,7 +678,7 @@ export default {
 
       // briefly make the line fat
       select(d3This)
-        .transition()
+        .transition("linewidth")
         .attr("stroke-width", 4)
         .transition()
         .duration(vm.transitionDuration * delayFactor)
@@ -689,7 +690,7 @@ export default {
       // fill the value in the shoutout box
       select(vm.$refs.shoutout)
         .text("")
-        .transition()
+        .transition("shoutouttext")
         .text(vm.labelText(d))
         .attr("fill", highlightColor)
         .attr("opacity", 1);
@@ -700,24 +701,24 @@ export default {
         .filter(function(o) {
           return o !== d;
         })
-        .transition()
+        .transition("circlesizeopacity")
         .attr("opacity", 1)
         .attr("r", this.circleRadius);
 
       // make the dot large
       select(d3This)
-        .transition()
+        .transition("thiscirclesize")
         .attr("r", 8);
     },
     circleHoverOut: function(d3This, vm, d) {
       // fade the shoutout value
       select(vm.$refs.shoutout)
-        .transition()
+        .transition("shoutouttext")
         .attr("opacity", 0);
 
       // shrink the dot back
       select(d3This)
-        .transition()
+        .transition("thiscirclesize")
         .attr("r", this.circleRadius);
     },
     circleClick: function(d3This, vm, d) {
@@ -727,13 +728,14 @@ export default {
       // shrink every other circle
       select(vm.$refs.chart)
         .selectAll("g.point-series > circle")
-        .transition()
+        .transition("circlesizeopacity")
+        .attr("opacity", 1)
         .attr("r", this.circleRadius);
 
       // briefly show the clicked text value
       select(vm.$refs.shoutout)
         .text("")
-        .transition()
+        .transition("shoutouttext")
         .text(vm.labelText(d))
         .attr("fill", highlightColor)
         .attr("opacity", 1)
@@ -743,7 +745,7 @@ export default {
 
       // briefly make the dot large
       select(d3This)
-        .transition()
+        .transition("thiscirclesize")
         .attr("r", 8)
         .transition()
         .duration(vm.transitionDuration * delayFactor)
