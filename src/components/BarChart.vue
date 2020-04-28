@@ -240,8 +240,10 @@ export default {
       return obj != null && obj.hasOwnProperty(propname);
     },
     chartYBottom: function() {
-      if (this.y) {
-        return this.y(this.chartHeight);
+      if (this.chartHeight) {
+        return this.chartHeight;
+      } else {
+        return 0;
       }
     },
     labelGroupXOffset: function(d) {
