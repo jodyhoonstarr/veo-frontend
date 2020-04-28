@@ -7,6 +7,7 @@
         prev-icon="mdi-arrow-left-bold-box-outline"
         show-arrows
         v-model="activeTab"
+        :hide-slider="hideSlider"
       >
         <v-tabs-slider></v-tabs-slider>
 
@@ -178,7 +179,7 @@ export default {
           ]
         }
       ],
-      activeTab: null
+      activeTab: 4
     };
   },
   methods: {
@@ -199,6 +200,11 @@ export default {
       this.activeTab = parentTab.route;
     } else if (this.$route.path !== "/") {
       this.$router.push("/");
+    }
+  },
+  computed: {
+    hideSlider: function() {
+      return this.activeTab === 4;
     }
   }
 };
