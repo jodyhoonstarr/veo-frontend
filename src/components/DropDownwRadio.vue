@@ -8,7 +8,10 @@
           :ripple="false"
           color="primary"
           @click="activeToggleChange"
-          class="v-input--selection-controls"
+          :class="{
+            'v-input--selection-controls': true,
+            'mt-0': $vuetify.breakpoint.xs
+          }"
         >
           <v-icon :color="toggle ? 'primary' : 'grey'" large>{{
             radioIcon
