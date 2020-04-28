@@ -256,6 +256,9 @@ export default {
 
       // space out overlapping y labels
       return labelSpacer(yValues);
+    },
+    breakPoint: function() {
+      return this.$vuetify.breakpoint.name;
     }
   },
   watch: {
@@ -290,7 +293,11 @@ export default {
     },
     xAxisFormat: function(d) {
       const dInt = parseInt(d);
-      return `${dInt}-${dInt + 1}`;
+      if (this.breakPoint === "xs") {
+        return `${dInt}`;
+      } else {
+        return `${dInt}-${dInt + 1}`;
+      }
     },
     bindXAxis: function() {
       const xaxis = select(this.$refs.xaxis);
