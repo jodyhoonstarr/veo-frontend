@@ -710,7 +710,7 @@ export default {
       if (this.x0) {
         xLabelText =
           this.x0.bandwidth() < this.labelWidthThreshold
-            ? `${clab} (Labels Hidden, Click on Bar to Show)`
+            ? `${clab} (Click on Bar to Show)`
             : clab;
       } else {
         xLabelText = clab;
