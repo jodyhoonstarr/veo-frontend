@@ -551,6 +551,7 @@ export default {
 
       labelData.join(enter =>
         enter
+          .filter(d => this.spacedLabels.hasOwnProperty(d.label))
           .append("text")
           .attr("opacity", 0)
           .attr("text-anchor", "start")
