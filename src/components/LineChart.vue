@@ -10,7 +10,7 @@
       ref="shoutout"
       :x="(width - margin.right - margin.left) / 2 + margin.left"
       :y="margin.top - 6"
-      :font-size="margin.top - 6"
+      font-size="16"
       text-anchor="middle"
     ></text>
     <g ref="xaxislabel"></g>
