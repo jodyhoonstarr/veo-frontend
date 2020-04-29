@@ -248,9 +248,6 @@ export default {
           d.data[d.data.length - 1].hasOwnProperty("value")
         ) {
           yValues[d.label] = this.y(d.data[d.data.length - 1].value);
-        } else {
-          // if the data doesn't exist, stick the label at zero
-          yValues[d.label] = this.y(0);
         }
       });
 
@@ -582,7 +579,9 @@ export default {
             enter
               .transition("label")
               .duration(labelTransitionDuration)
-              .attr("opacity", 1)
+              .attr("opacity", d =>
+                this.spacedLabels.hasOwnProperty(d.label) ? 1 : 0
+              )
               .on("end", function() {
                 vm.bindLabelTransitions(this, vm);
               })
