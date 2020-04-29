@@ -444,6 +444,18 @@ export default {
           )
       );
     },
+    bindLabelTransitions: function(d3This, vm) {
+      select(d3This)
+        .on("click", function(d) {
+          vm.labelClick(this, vm, d);
+        })
+        .on("mouseover", function(d) {
+          vm.labelHoverOver(this, vm, d);
+        })
+        .on("mouseout", function(d) {
+          vm.labelHoverOut(this, vm, d);
+        });
+    },
     addLabel: function(d) {
       return d.data.map(a => {
         return { cohort: a.cohort, value: a.value, label: d.label };
@@ -572,7 +584,7 @@ export default {
               .duration(labelTransitionDuration)
               .attr("opacity", 1)
               .on("end", function() {
-                vm.bindLineTransitions(this, vm);
+                vm.bindLabelTransitions(this, vm);
               })
           )
       );
@@ -783,6 +795,86 @@ export default {
         .transition()
         .duration(vm.transitionDuration * delayFactor)
         .attr("r", this.circleRadius);
+    },
+    labelHoverOver: function(d3This, vm, d) {
+      const lines = select(vm.$refs.chart).selectAll("path");
+
+      const text = select(this.$refs.chart).selectAll("text");
+
+      // fatten the current line
+      lines
+        .attr("opacity", 1)
+        .filter(function(o) {
+          return o.label === d.label;
+        })
+        .transition("linewidth")
+        .attr("stroke-width", 4);
+
+      // fade every other line
+      lines
+        .attr("opacity", 1)
+        .filter(function(o) {
+          return o.label !== d.label;
+        })
+        .transition("lineopacity")
+        .attr("opacity", 0.2);
+
+      // fade every other label
+      text
+        .attr("opacity", 1)
+        .filter(function(o) {
+          return o.label !== d.label;
+        })
+        .transition("labelopacity")
+        .attr("opacity", 0.2);
+
+      // fade every other circle
+      select(this.$refs.chart)
+        .selectAll("g.point-series > circle")
+        .attr("opacity", 1)
+        .attr("r", this.circleRadius)
+        .filter(function(o) {
+          return o.label !== d.label;
+        })
+        .transition("circlesizeopacity")
+        .attr("opacity", 0.2);
+    },
+    labelHoverOut: function(d3This, vm, d) {
+      // line - to default
+      select(vm.$refs.chart)
+        .selectAll("path")
+        .transition("lineopacity")
+        .attr("opacity", 1)
+        .attr("stroke-width", 2);
+
+      // return every text to its default
+      select(this.$refs.chart)
+        .selectAll("text")
+        .transition("labelopacity")
+        .attr("opacity", 1);
+
+      // return every other circle to its default
+      select(this.$refs.chart)
+        .selectAll("g.point-series > circle")
+        .transition("circlesizeopacity")
+        .attr("r", this.circleRadius)
+        .attr("opacity", 1);
+    },
+    labelClick: function(d3This, vm, d) {
+      const delayFactor = 8;
+
+      // briefly make the line fat
+      select(vm.$refs.chart)
+        .selectAll("path")
+        .attr("opacity", 1)
+        .filter(function(o) {
+          return o.label === d.label;
+        })
+        .transition("linewidth")
+        .attr("stroke-width", 4)
+        .transition()
+        .duration(vm.transitionDuration * delayFactor)
+        .attr("stroke-width", 2);
     }
   },
   mounted() {
