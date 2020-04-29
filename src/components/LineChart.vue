@@ -585,7 +585,7 @@ export default {
         .attr(
           "transform",
           `translate(${(this.width - this.margin.right - this.margin.left) / 2 +
-            this.margin.left},${this.height - 6})`
+            this.margin.left},${this.height - 2})`
         )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")

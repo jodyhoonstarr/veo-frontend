@@ -720,7 +720,7 @@ export default {
         .append("text")
         .attr(
           "transform",
-          `translate(${this.width / 2 + 14},${this.height - 6})`
+          `translate(${this.width / 2 + 14},${this.height - 2})`
         )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
