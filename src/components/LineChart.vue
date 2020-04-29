@@ -8,7 +8,7 @@
     </g>
     <text
       ref="shoutout"
-      x="50%"
+      :x="(width - margin.right - margin.left) / 2 + margin.left"
       :y="margin.top - 6"
       :font-size="margin.top - 6"
       text-anchor="middle"
