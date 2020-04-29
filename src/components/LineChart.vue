@@ -580,9 +580,7 @@ export default {
             enter
               .transition("label")
               .duration(labelTransitionDuration)
-              .attr("opacity", d =>
-                this.spacedLabels.hasOwnProperty(d.label) ? 1 : 0
-              )
+              .attr("opacity", 1)
               .on("end", function() {
                 vm.bindLabelTransitions(this, vm);
               })
