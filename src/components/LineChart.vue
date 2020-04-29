@@ -714,7 +714,7 @@ export default {
         );
     },
     lineClick: function(d3This, vm, d) {
-      const delayFactor = 8;
+      const delayFactor = 12;
 
       // briefly make the line fat
       select(vm.$refs.chart)
@@ -767,7 +767,7 @@ export default {
         .attr("r", this.circleRadius);
     },
     circleClick: function(d3This, vm, d) {
-      const delayFactor = 8;
+      const delayFactor = 12;
       const highlightColor = "#555555";
 
       // shrink every other circle
@@ -861,7 +861,7 @@ export default {
         .attr("opacity", 1);
     },
     labelClick: function(d3This, vm, d) {
-      const delayFactor = 8;
+      const delayFactor = 12;
 
       // briefly make the line fat
       select(vm.$refs.chart)

@@ -515,7 +515,7 @@ export default {
         .attr("stroke-width", 0);
     },
     barClick: function(d3This, vm, d) {
-      const delayFactor = 8;
+      const delayFactor = 12;
       const strokeWidth = 4;
       const highlightColor = "#555555";
 
