@@ -42,7 +42,12 @@
                   class="align-self-center"
                   v-on="on"
                 >
-                  {{ tab.label }}
+                  <template v-if="isXs">
+                    {{ tab.short }}
+                  </template>
+                  <template v-else>
+                    {{ tab.label }}
+                  </template>
                   <v-icon right>mdi-menu-down</v-icon>
                 </v-btn>
               </template>
@@ -92,6 +97,7 @@ export default {
         {
           route: "/occupation",
           label: "Military Specialization",
+          short: "Specialization",
           children: [
             {
               route: "/occupation/detail",
@@ -113,6 +119,7 @@ export default {
         {
           route: "/service",
           label: "Service Characteristic",
+          short: "Characteristic",
           children: [
             {
               route: "/service/afqt",
@@ -139,6 +146,7 @@ export default {
         {
           route: "/demographics",
           label: "Demographic",
+          short: "Demographic",
           children: [
             {
               route: "/demographics/age",
@@ -165,6 +173,7 @@ export default {
         {
           route: "/industry",
           label: "Industry",
+          short: "Industry",
           children: [
             {
               route: "/industry/time",
@@ -203,6 +212,9 @@ export default {
     }
   },
   computed: {
+    isXs: function() {
+      return this.$vuetify.breakpoint.name === "xs";
+    },
     hideSlider: function() {
       return this.activeTab === 4;
     }
