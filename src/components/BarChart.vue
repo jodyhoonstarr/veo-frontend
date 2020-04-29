@@ -724,6 +724,7 @@ export default {
         )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
+        .attr("font-style", "italic")
         .attr("fill", "#555555")
         .text(xLabelText);
 
@@ -746,6 +747,7 @@ export default {
         )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
+        .attr("font-style", "italic")
         .attr("fill", "#555555")
         .text(yLabelText);
     }
