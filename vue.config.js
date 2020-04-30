@@ -8,7 +8,11 @@ module.exports = {
       }
     }
   },
-  transpileDependencies: ["vuetify"],
+  transpileDependencies: [
+    "vuetify",
+    /\/node_modules\/d3-array\//,
+    /\/node_modules\/d3-scale\//
+  ],
   configureWebpack: {
     optimization: {
       splitChunks: {
