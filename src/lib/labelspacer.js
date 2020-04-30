@@ -185,9 +185,18 @@ class LabelSpacer {
         // find claim all available side on with the least space (e.g. min)
         // then claim all on the other side (e.g. max)
 
-        // claim all available space on the current side (thisSide)
-        const matchedSide =
-          this.clusters[m].min.available === v ? "min" : "max";
+        // claim all available space on the minimum side if v is matched, or min (thisSide)
+        let matchedSide;
+        if (this.clusters[m].min.available === v) {
+          matchedSide = "min";
+        } else if (this.clusters[m].max.available === v) {
+          matchedSide = "max";
+        } else {
+          matchedSide =
+            this.clusters[m].min.available < this.clusters[m].max.available
+              ? "min"
+              : "max";
+        }
 
         const thisSide = this.clusters[m][matchedSide];
         const otherSide = this.reverseMinMax(matchedSide);
@@ -209,6 +218,10 @@ class LabelSpacer {
         thisSide.value += thisSpaceToClaim * this.minMaxOperator(matchedSide); //e.g. subtract from min
         thisSide.needed -= thisSpaceToClaim;
         thisSide.available -= thisSpaceToClaim;
+
+        // if all the needed space is taken from one side, set the other needed to zero
+        // otherwise set the other needed side to the remainder needed
+        thatSide.needed = thisSide.needed;
 
         // if the values were changed then update the queue
         if (thisSpaceToClaim > 0) {
