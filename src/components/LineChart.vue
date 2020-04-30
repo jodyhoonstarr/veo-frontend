@@ -252,7 +252,7 @@ export default {
       });
 
       // space out overlapping y labels
-      return labelSpacer(yValues);
+      return labelSpacer(yValues, 10, 0, this.y(this.height));
     },
     breakPoint: function() {
       return this.$vuetify.breakpoint.name;

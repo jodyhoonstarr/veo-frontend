@@ -188,9 +188,24 @@ class LabelSpacer {
         // claim all available space on the current side (thisSide)
         const matchedSide =
           this.clusters[m].min.available === v ? "min" : "max";
+
         const thisSide = this.clusters[m][matchedSide];
+        const otherSide = this.reverseMinMax(matchedSide);
+        const thatSide = this.clusters[m][otherSide];
+
         const availableOnThisSide = thisSide.available; // copy value for use below
-        const thisSpaceToClaim = Math.min(thisSide.needed, thisSide.available);
+
+        // take half the space on each side of the cluster if available
+        // otherwise take all of the minimum side
+        let thisSpaceToClaim;
+        const spaceToTake = Math.min(thisSide.needed, thisSide.available);
+        const spaceToCenter = Math.floor(spaceToTake / 2);
+        if (thatSide.available >= spaceToCenter) {
+          thisSpaceToClaim = spaceToCenter;
+        } else {
+          thisSpaceToClaim = spaceToTake;
+        }
+
         thisSide.value += thisSpaceToClaim * this.minMaxOperator(matchedSide); //e.g. subtract from min
         thisSide.needed -= thisSpaceToClaim;
         thisSide.available -= thisSpaceToClaim;
@@ -225,8 +240,6 @@ class LabelSpacer {
         }
 
         // Remove any space claimed on the other side (thatSide)
-        const otherSide = this.reverseMinMax(matchedSide);
-        const thatSide = this.clusters[m][otherSide];
         thatSide.needed -= thisSpaceToClaim;
 
         // claim the rest of the needed space
@@ -376,10 +389,16 @@ class LabelSpacer {
 export function labelSpacer(
   yValueObject,
   conflictHeight = 10,
-  conflictPadding = 0
+  conflictPadding = 0,
+  maxHeight = 400
 ) {
   if (yValueObject != null) {
-    const ls = new LabelSpacer(yValueObject, conflictHeight, conflictPadding);
+    const ls = new LabelSpacer(
+      yValueObject,
+      conflictHeight,
+      conflictPadding,
+      maxHeight
+    );
     return ls.export();
   }
 }
