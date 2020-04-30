@@ -146,4 +146,11 @@ export default {
   .v-messages__message {
   transform: translate(-11px, 4px) !important;
 }
+@media screen and (-ms-high-contrast: active),
+  screen and (-ms-high-contrast: none) {
+  .v-slider__ticks-container {
+    position: absolute;
+    top: 15px !important;
+  }
+}
 </style>
