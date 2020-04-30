@@ -106,6 +106,7 @@ class LabelSpacer {
       // 3) or that the sum of the asc/desc matches the start sum
 
       if (
+        next != null &&
         value.cluster != null &&
         (next.name === "start" ||
           next.name === "end" ||
