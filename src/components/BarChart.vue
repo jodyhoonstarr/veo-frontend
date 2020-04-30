@@ -742,8 +742,9 @@ export default {
         .append("text")
         .attr(
           "transform",
-          `rotate(-90) translate(-${Math.floor(this.chartHeight / 2)},${this
-            .margin.left - 46})`
+          `rotate(-90) translate(-${Math.floor(
+            (this.chartHeight - this.margin.top) / 2 + this.margin.top
+          )},${this.margin.left - 46})`
         )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
