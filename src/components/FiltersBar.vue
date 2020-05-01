@@ -152,12 +152,17 @@ export default {
       const selected = this.validateSelected(o);
       if (selected != null) {
         this.secondaryValue = o.selected;
-        if (this.secondaryValue === this.secondaryFilters.filters) {
+        if (
+          this.secondaryValue.every(v =>
+            this.secondaryFilters.filters.some(f => f.id === v.id)
+          )
+        ) {
           this.colorCategory = this.secondaryFilters.id;
           // if the secondary value is a group, and the tertiary is still a group
           // reset the tertiary
           if (
-            Array.isArray(this.tertiaryValue && this.tertiaryValue.length > 1)
+            Array.isArray(this.tertiaryValue) &&
+            this.tertiaryValue.length > 1
           ) {
             this.tertiaryValue = null;
           }
