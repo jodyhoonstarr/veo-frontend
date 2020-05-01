@@ -154,7 +154,13 @@ export default {
         this.secondaryValue = o.selected;
         if (this.secondaryValue === this.secondaryFilters.filters) {
           this.colorCategory = this.secondaryFilters.id;
-          this.tertiaryValue = null;
+          // if the secondary value is a group, and the tertiary is still a group
+          // reset the tertiary
+          if (
+            Array.isArray(this.tertiaryValue && this.tertiaryValue.length > 1)
+          ) {
+            this.tertiaryValue = null;
+          }
         }
       }
       // set the tertiary filter if counts data
