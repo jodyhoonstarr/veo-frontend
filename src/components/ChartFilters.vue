@@ -157,6 +157,7 @@ export default {
   watch: {
     filters: function() {
       this.selectDefault(this.value, this.filters);
+      this.emitChange(); // keep - input 'all' filters can change while this.value statys static
     },
     selected: function() {
       this.emitChange();
