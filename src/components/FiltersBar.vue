@@ -153,8 +153,8 @@ export default {
       if (selected != null) {
         this.secondaryValue = o.selected;
         if (
-          this.secondaryValue.every(v =>
-            this.secondaryFilters.filters.some(f => f.id === v.id)
+          this.secondaryFilters.filters.every(f =>
+            this.secondaryValue.some(v => v.id === f.id)
           )
         ) {
           this.colorCategory = this.secondaryFilters.id;
