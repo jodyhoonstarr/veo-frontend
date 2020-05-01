@@ -257,7 +257,7 @@ export default {
         yValues,
         10,
         0,
-        this.y(this.chartHeight + this.margin.top) + 5
+        this.y(this.chartHeight) + this.margin.top
       );
     },
     breakPoint: function() {
