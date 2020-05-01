@@ -241,6 +241,7 @@ export default {
       // if the type is a count and only one secondary is selected
       // set the color grouping to be all tertiary
       if (
+        this.tertiaryValue == null &&
         this.chartType === "bar" &&
         this.secondaryFilters != null &&
         this.secondaryFilters.id === "counts" &&
