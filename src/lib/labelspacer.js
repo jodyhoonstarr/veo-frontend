@@ -7,17 +7,15 @@ class LabelSpacer {
     this.clusters = {}; // store the attributes for clusters of labels
     this.conflictSize = this.generateConflictSize(heightPx, paddingPx);
 
-    const filteredYPositons = Object.keys(yPositions)
-      .filter(key => yPositions[key] < maxHeight)
-      .reduce((obj, key) => {
-        return {
-          ...obj,
-          [key]: yPositions[key]
-        };
-      }, {});
-
+    // if d3 decides the maxheight should be out of range, set it to max +1
+    const maxYVal = Math.max(
+      ...Object.keys(yPositions).map(k => yPositions[k])
+    );
+    if (maxYVal > maxHeight) {
+      maxHeight = maxYVal + this.conflictSize / 2;
+    }
     // jam a 0 starting value and a max height into the positions to denote the endpoints
-    const newYPositions = { ...filteredYPositons, start: 0, end: maxHeight };
+    const newYPositions = { ...yPositions, start: 0, end: maxHeight };
 
     // take a set of key-value pairs and sort them
     // store the values in a map to lock the order

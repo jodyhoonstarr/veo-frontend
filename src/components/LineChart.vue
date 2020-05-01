@@ -253,12 +253,7 @@ export default {
 
       // space out overlapping y labels
       // maxheight gets an extra 1/2 of the expected font height
-      return labelSpacer(
-        yValues,
-        10,
-        0,
-        this.y(this.chartHeight) + this.margin.top
-      );
+      return labelSpacer(yValues, 10, 1, this.y(this.chartHeight));
     },
     breakPoint: function() {
       return this.$vuetify.breakpoint.name;
