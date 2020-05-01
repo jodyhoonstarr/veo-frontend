@@ -7,8 +7,17 @@ class LabelSpacer {
     this.clusters = {}; // store the attributes for clusters of labels
     this.conflictSize = this.generateConflictSize(heightPx, paddingPx);
 
+    const filteredYPositons = Object.keys(yPositions)
+      .filter(key => yPositions[key] < maxHeight)
+      .reduce((obj, key) => {
+        return {
+          ...obj,
+          [key]: yPositions[key]
+        };
+      }, {});
+
     // jam a 0 starting value and a max height into the positions to denote the endpoints
-    const newYPositions = { ...yPositions, start: 0, end: maxHeight };
+    const newYPositions = { ...filteredYPositons, start: 0, end: maxHeight };
 
     // take a set of key-value pairs and sort them
     // store the values in a map to lock the order
@@ -104,9 +113,7 @@ class LabelSpacer {
       // 1) look for the start or end entries
       // 2) look for the inverse pattern (e.g. asc:1 desc:0 should match asc:0 desc:1)
       // 3) or that the sum of the asc/desc matches the start sum
-
       if (
-        next != null &&
         value.cluster != null &&
         (next.name === "start" ||
           next.name === "end" ||

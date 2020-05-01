@@ -252,7 +252,13 @@ export default {
       });
 
       // space out overlapping y labels
-      return labelSpacer(yValues, 10, 0, this.y(this.height));
+      // maxheight gets an extra 1/2 of the expected font height
+      return labelSpacer(
+        yValues,
+        10,
+        0,
+        this.y(this.chartHeight + this.margin.top) + 5
+      );
     },
     breakPoint: function() {
       return this.$vuetify.breakpoint.name;
