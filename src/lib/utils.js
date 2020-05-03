@@ -282,7 +282,9 @@ export function getColorSet(chartType, filters, data) {
 
       let colorsLookup = {};
       data.map((d, i) => {
-        colorsLookup[d.label] = colorScale(i);
+        if (d != null && d.hasOwnProperty("label")) {
+          colorsLookup[d.label] = colorScale(i);
+        }
       });
       return colorsLookup;
     }
