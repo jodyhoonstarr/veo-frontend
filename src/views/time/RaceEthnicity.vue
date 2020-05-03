@@ -120,7 +120,6 @@ export default {
             id: "A5",
             label: "Native Hawaiian or Other Pacific Islander Alone"
           },
-          { id: "A6", label: "Some Other Race Alone (Not Used)" },
           { id: "A7", label: "Two or More Race Groups" }
         ],
         toggle: true
