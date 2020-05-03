@@ -15,7 +15,7 @@
       >Veteran Employment Outcomes Explorer</v-toolbar-title
     >
     <v-toolbar-title class="white--text hidden-sm-and-up ml-0 pl-md-3"
-      >VEO</v-toolbar-title
+      >VEO Explorer</v-toolbar-title
     >
     <v-spacer></v-spacer>
     <v-btn text target="_blank" href="https://lehd.ces.census.gov/">
