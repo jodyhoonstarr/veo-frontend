@@ -20,8 +20,8 @@
             "
             :key="tab.label"
             :to="tab.route"
-            >{{ tab.label }}</v-tab
-          >
+            >{{ tab.label }}
+          </v-tab>
 
           <!-- tab with children/dropdown -->
           <v-tab
@@ -79,8 +79,8 @@
           <v-btn text target="_blank" href="/data/veo_experimental.html">
             <span>Help</span>
             <v-icon color="primary" right medium
-              >mdi-help-circle-outline</v-icon
-            >
+              >mdi-help-circle-outline
+            </v-icon>
           </v-btn>
         </v-tab>
       </v-tabs>
@@ -112,6 +112,11 @@ export default {
             {
               route: "/occupation/industry",
               label: "Occupation by Industry",
+              icon: "mdi-chart-bar"
+            },
+            {
+              route: "/occupation/state",
+              label: "Occupation by State",
               icon: "mdi-chart-bar"
             }
           ]
