@@ -49,7 +49,7 @@
           :chart-line-styles="chartLineStyles"
           :chart-data-type="chartDataType"
           chart-label="Exit Cohort"
-          :chart-data-zip="dataPath('downloads/VEO-Sex.zip')"
+          :chart-data-zip="dataPath('downloads/VEO-State.zip')"
         ></Chart>
       </ChartCard>
     </GetData>
