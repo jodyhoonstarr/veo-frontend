@@ -191,6 +191,23 @@ export default {
               icon: "mdi-chart-bar"
             }
           ]
+        },
+        {
+          route: "/State",
+          label: "State",
+          short: "State",
+          children: [
+            {
+              route: "/state/time",
+              label: "State",
+              icon: "mdi-chart-line"
+            },
+            {
+              route: "/state/occupation",
+              label: "Occupation by State",
+              icon: "mdi-chart-bar"
+            }
+          ]
         }
       ],
       activeTab: 4

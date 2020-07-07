@@ -107,6 +107,28 @@ const routes = [
       }
     ]
   },
+
+  {
+    path: "/state/",
+    name: "State",
+    component: () => import(/* webpackChunkName: "time" */ "@/views/State.vue"),
+    children: [
+      {
+        path: "time",
+        name: "StateByTime",
+        component: () =>
+          import(/* webpackChunkName: "industry" */ "@/views/time/State.vue")
+      },
+      {
+        path: "occupation",
+        name: "IndustryByOccupation",
+        component: () =>
+          import(
+            /* webpackChunkName: "occupationbyindustry" */ "@/views/occupation/Industry.vue"
+          )
+      }
+    ]
+  },
   {
     path: "/service/",
     name: "Service",
