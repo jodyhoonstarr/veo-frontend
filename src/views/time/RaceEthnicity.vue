@@ -6,26 +6,26 @@
           <v-col cols="12" xs="12" sm="6" class="pb-0">
             <GetData :url="dataPath('metadata/label_race.json')">
               <DropDownwRadio
+                id="race"
+                v-model="raceObj"
                 slot-scope="{ response, loading }"
                 :loading="loading"
                 label="Race"
                 :items="response"
                 propname="labels"
-                id="race"
-                v-model="raceObj"
               ></DropDownwRadio>
             </GetData>
           </v-col>
           <v-col cols="12" xs="12" sm="6" class="pb-0">
             <GetData :url="dataPath('metadata/label_ethnicity.json')">
               <DropDownwRadio
+                id="ethnicity"
+                v-model="ethnicityObj"
                 slot-scope="{ response, loading }"
                 :loading="loading"
                 label="Ethnicity"
                 :items="response"
                 propname="labels"
-                id="ethnicity"
-                v-model="ethnicityObj"
               ></DropDownwRadio>
             </GetData>
           </v-col>
@@ -34,10 +34,10 @@
           <v-col cols="12" xs="12" sm="12" class="pb-0">
             <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
               <cohort-slider
+                v-model="cohort"
                 slot-scope="{ response, loading }"
                 :loading="loading"
                 :items="response"
-                v-model="cohort"
               ></cohort-slider>
             </GetData>
           </v-col>
@@ -135,26 +135,6 @@ export default {
       filters: null
     };
   },
-  methods: {
-    dataPath: function(str) {
-      return joinPublicPath(str);
-    },
-    handleFilters: function(f) {
-      if (f == null) {
-        return null;
-      }
-      this.filters = f;
-    },
-    setActiveToggle: function(changedObj, changedStr) {
-      if (changedObj.toggle) {
-        this.activeToggle = changedStr;
-        // set all the other toggles to false if this one got switched on
-        [this.raceObj, this.ethnicityObj]
-          .filter(o => o !== changedObj)
-          .forEach(o => (o.toggle = false));
-      }
-    }
-  },
   computed: {
     race: function() {
       return this.raceObj.selected;
@@ -199,7 +179,10 @@ export default {
       return getColorSet(this.chartType, this.filters, this[this.activeToggle]);
     },
     chartLineStyles: function() {
-      if (!this.filters || !this.filters.hasOwnProperty("linestyles")) {
+      if (
+        !this.filters ||
+        !Object.prototype.hasOwnProperty.call(this.filters, "linestyles")
+      ) {
         return null;
       }
       return this.filters.linestyles;
@@ -211,6 +194,26 @@ export default {
     },
     ethnicityObj: function() {
       this.setActiveToggle(this.ethnicityObj, "ethnicity");
+    }
+  },
+  methods: {
+    dataPath: function(str) {
+      return joinPublicPath(str);
+    },
+    handleFilters: function(f) {
+      if (f == null) {
+        return null;
+      }
+      this.filters = f;
+    },
+    setActiveToggle: function(changedObj, changedStr) {
+      if (changedObj.toggle) {
+        this.activeToggle = changedStr;
+        // set all the other toggles to false if this one got switched on
+        [this.raceObj, this.ethnicityObj]
+          .filter(o => o !== changedObj)
+          .forEach(o => (o.toggle = false));
+      }
     }
   }
 };

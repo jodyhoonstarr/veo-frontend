@@ -4,23 +4,23 @@
       <v-col cols="12" xs="12" sm="4" class="pb-0">
         <GetData :url="dataPath('metadata/label_industry.json')">
           <DropDownNoRadio
+            id="industry"
+            v-model="industry"
             slot-scope="{ response, loading }"
             :loading="loading"
             label="Industry"
             :items="response"
             propname="labels"
-            id="industry"
-            v-model="industry"
           ></DropDownNoRadio>
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="8" class="pb-0">
         <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
           <cohort-slider
+            v-model="cohort"
             slot-scope="{ response, loading }"
             :loading="loading"
             :items="response"
-            v-model="cohort"
           ></cohort-slider>
         </GetData>
       </v-col>
@@ -68,10 +68,10 @@ import { GROUPCOLUMN } from "@/constants/lookups";
 import {
   createChartData,
   filterRows,
-  simplifiyRows,
   getChartDataType,
   getColorSet,
-  joinPublicPath
+  joinPublicPath,
+  simplifiyRows
 } from "@/lib/utils";
 import { filterSelect } from "@/lib/filterselect";
 
@@ -116,17 +116,6 @@ export default {
       }
     };
   },
-  methods: {
-    handleFilters: function(f) {
-      if (f == null) {
-        return null;
-      }
-      this.filters = f;
-    },
-    dataPath: function(str) {
-      return joinPublicPath(str);
-    }
-  },
   computed: {
     dataColumn: function() {
       // AKA activeToggleProp in the bar view
@@ -166,10 +155,24 @@ export default {
       return getColorSet(this.chartType, this.filters, this.industry);
     },
     chartLineStyles: function() {
-      if (!this.filters || !this.filters.hasOwnProperty("linestyles")) {
+      if (
+        !this.filters ||
+        !Object.prototype.hasOwnProperty.call(this.filters, "linestyles")
+      ) {
         return null;
       }
       return this.filters.linestyles;
+    }
+  },
+  methods: {
+    handleFilters: function(f) {
+      if (f == null) {
+        return null;
+      }
+      this.filters = f;
+    },
+    dataPath: function(str) {
+      return joinPublicPath(str);
     }
   }
 };
