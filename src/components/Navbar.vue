@@ -2,11 +2,11 @@
   <nav>
     <v-toolbar>
       <v-tabs
+        v-model="activeTab"
         centered
         next-icon="mdi-arrow-right-bold-box-outline"
         prev-icon="mdi-arrow-left-bold-box-outline"
         show-arrows
-        v-model="activeTab"
         :hide-slider="hideSlider"
       >
         <v-tabs-slider></v-tabs-slider>
@@ -14,22 +14,22 @@
         <template v-for="tab in tabs">
           <!-- tab with no children/dropdown -->
           <v-tab
-            @click="setActiveTab(tab.route)"
             v-if="
               typeof tab.children === 'undefined' || tab.children.length === 0
             "
             :key="tab.label"
             :to="tab.route"
+            @click="setActiveTab(tab.route)"
             >{{ tab.label }}
           </v-tab>
 
           <!-- tab with children/dropdown -->
           <v-tab
-            @click.capture="$event.preventDefault()"
             v-else
             :key="tab.label"
             :to="tab.route"
             class="px-0"
+            @click.capture="$event.preventDefault()"
           >
             <v-menu bottom left offset-y transition="slide-y-transition">
               <template v-slot:activator="{ on }">
@@ -55,10 +55,10 @@
               <v-list>
                 <v-list-item-group color="primary">
                   <v-list-item
-                    @click="setActiveTab(tab.route)"
                     v-for="child in tab.children"
                     :key="child.label"
                     :to="child.route"
+                    @click="setActiveTab(tab.route)"
                   >
                     <v-list-item-icon>
                       <v-icon v-text="child.icon"></v-icon>
@@ -193,7 +193,7 @@ export default {
           ]
         },
         {
-          route: "/State",
+          route: "/state",
           label: "State",
           short: "State",
           children: [
@@ -213,9 +213,12 @@ export default {
       activeTab: 4
     };
   },
-  methods: {
-    setActiveTab: function(tab) {
-      this.activeTab = tab;
+  computed: {
+    isXs: function() {
+      return this.$vuetify.breakpoint.name === "xs";
+    },
+    hideSlider: function() {
+      return this.activeTab === 4;
     }
   },
   mounted() {
@@ -233,12 +236,9 @@ export default {
       this.$router.push("/");
     }
   },
-  computed: {
-    isXs: function() {
-      return this.$vuetify.breakpoint.name === "xs";
-    },
-    hideSlider: function() {
-      return this.activeTab === 4;
+  methods: {
+    setActiveTab: function(tab) {
+      this.activeTab = tab;
     }
   }
 };

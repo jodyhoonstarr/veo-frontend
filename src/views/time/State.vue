@@ -4,23 +4,23 @@
       <v-col cols="12" xs="12" sm="4" class="pb-0">
         <GetData :url="dataPath('metadata/label_fipsnum.json')">
           <DropDownNoRadio
+            id="state"
+            v-model="state"
             slot-scope="{ response, loading }"
             :loading="loading"
             label="State"
             :items="response"
             propname="labels"
-            id="state"
-            v-model="state"
           ></DropDownNoRadio>
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="8" class="pb-0">
         <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
           <cohort-slider
+            v-model="cohort"
             slot-scope="{ response, loading }"
             :loading="loading"
             :items="response"
-            v-model="cohort"
           ></cohort-slider>
         </GetData>
       </v-col>
@@ -112,17 +112,6 @@ export default {
       }
     };
   },
-  methods: {
-    handleFilters: function(f) {
-      if (f == null) {
-        return null;
-      }
-      this.filters = f;
-    },
-    dataPath: function(str) {
-      return joinPublicPath(str);
-    }
-  },
   computed: {
     dataColumn: function() {
       // AKA activeToggleProp in the bar view
@@ -166,6 +155,17 @@ export default {
         return null;
       }
       return this.filters.linestyles;
+    }
+  },
+  methods: {
+    handleFilters: function(f) {
+      if (f == null) {
+        return null;
+      }
+      this.filters = f;
+    },
+    dataPath: function(str) {
+      return joinPublicPath(str);
     }
   }
 };

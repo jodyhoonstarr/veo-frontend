@@ -121,10 +121,10 @@ const routes = [
       },
       {
         path: "occupation",
-        name: "IndustryByOccupation",
+        name: "IndustryByState",
         component: () =>
           import(
-            /* webpackChunkName: "occupationbyindustry" */ "@/views/occupation/Industry.vue"
+            /* webpackChunkName: "occupationbyindustry" */ "@/views/occupation/State.vue"
           )
       }
     ]
