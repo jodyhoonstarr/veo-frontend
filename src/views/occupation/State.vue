@@ -56,7 +56,6 @@
       >
         <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
         <Chart
-          v-if="chartData"
           chart-type="bar"
           :loading="loading"
           :chart-data="chartData"
