@@ -4,41 +4,41 @@
       <v-col cols="12" xs="12" sm="4" class="pb-0">
         <GetData :url="dataPath('metadata/label_dod_occ_code.json')">
           <DropDownwRadio
+            id="occupation"
+            v-model="occupationObj"
             slot-scope="{ response, loading }"
             :loading="loading"
             label="Occupation"
             :items="response"
             propname="labels"
-            id="occupation"
             :selectallable="true"
-            v-model="occupationObj"
           ></DropDownwRadio>
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="4" class="pb-0">
         <GetData :url="dataPath('metadata/label_paygrade_groups.json')">
           <DropDownwRadio
+            id="paygrade"
+            v-model="paygradeObj"
             slot-scope="{ response, loading }"
             :loading="loading"
             label="Paygrade"
             :items="response"
             propname="labels"
-            id="paygrade"
-            v-model="paygradeObj"
           ></DropDownwRadio>
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="4" class="pb-0">
         <GetData :url="dataPath('metadata/label_4year_cohorts.json')">
           <DropDownwRadio
+            id="cohort"
+            v-model="cohortObj"
             slot-scope="{ response, loading }"
             :loading="loading"
             label="Cohort"
-            id="cohort"
             :items="response"
             propname="labels"
             :selectallable="true"
-            v-model="cohortObj"
           ></DropDownwRadio>
         </GetData>
       </v-col>
@@ -71,7 +71,6 @@
 
 <script>
 import SelectBar from "@/components/SelectBar.vue";
-import DropDown from "@/components/DropDown.vue";
 import DropDownwRadio from "@/components/DropDownwRadio.vue";
 import FiltersBar from "@/components/FiltersBar.vue";
 import ChartCard from "@/components/ChartCard.vue";
@@ -90,7 +89,6 @@ export default {
   name: "OccupationByPaygrade",
   components: {
     SelectBar,
-    DropDown,
     DropDownwRadio,
     FiltersBar,
     ChartCard,
@@ -106,37 +104,6 @@ export default {
       activeToggle: "occupation",
       filters: null
     };
-  },
-  methods: {
-    dataPath: function(str) {
-      return joinPublicPath(str);
-    },
-    handleFilters: function(f) {
-      if (f == null) {
-        return null;
-      }
-      this.filters = f;
-    },
-    setActiveToggle: function(changedObj, changedStr) {
-      if (changedObj.toggle) {
-        this.activeToggle = changedStr;
-        // set all the other toggles to false if this one got switched on
-        [this.paygradeObj, this.occupationObj, this.cohortObj]
-          .filter(o => o !== changedObj)
-          .forEach(o => (o.toggle = false));
-      }
-    }
-  },
-  watch: {
-    paygradeObj: function() {
-      this.setActiveToggle(this.paygradeObj, "paygrade");
-    },
-    occupationObj: function() {
-      this.setActiveToggle(this.occupationObj, "occupation");
-    },
-    cohortObj: function() {
-      this.setActiveToggle(this.cohortObj, "cohort");
-    }
   },
   computed: {
     occupation: function() {
@@ -182,10 +149,42 @@ export default {
     chartColors: function() {
       if (
         this.filters != null &&
-        this.filters.hasOwnProperty("colors") &&
+        Object.prototype.hasOwnProperty.call(this.filters, "colors") &&
         this.filters.colors != null
       ) {
         return this.filters.colors;
+      }
+      return null;
+    }
+  },
+  watch: {
+    paygradeObj: function() {
+      this.setActiveToggle(this.paygradeObj, "paygrade");
+    },
+    occupationObj: function() {
+      this.setActiveToggle(this.occupationObj, "occupation");
+    },
+    cohortObj: function() {
+      this.setActiveToggle(this.cohortObj, "cohort");
+    }
+  },
+  methods: {
+    dataPath: function(str) {
+      return joinPublicPath(str);
+    },
+    handleFilters: function(f) {
+      if (f == null) {
+        return null;
+      }
+      this.filters = f;
+    },
+    setActiveToggle: function(changedObj, changedStr) {
+      if (changedObj.toggle) {
+        this.activeToggle = changedStr;
+        // set all the other toggles to false if this one got switched on
+        [this.paygradeObj, this.occupationObj, this.cohortObj]
+          .filter(o => o !== changedObj)
+          .forEach(o => (o.toggle = false));
       }
     }
   }

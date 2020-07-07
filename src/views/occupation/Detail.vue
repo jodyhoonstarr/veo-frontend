@@ -4,27 +4,27 @@
       <v-col cols="12" xs="12" sm="6">
         <GetData :url="dataPath('metadata/label_dod_occ_code_detailed.json')">
           <DropDownwRadio
-            :detailed="true"
+            id="occupation"
+            v-model="occupationObj"
             slot-scope="{ response, loading }"
+            :detailed="true"
             :loading="loading"
             label="Occupation"
             :items="response"
             propname="labels"
-            id="occupation"
-            v-model="occupationObj"
           ></DropDownwRadio>
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="6">
         <GetData :url="dataPath('metadata/label_8year_cohorts.json')">
           <DropDownwRadio
+            id="cohort"
+            v-model="cohortObj"
             slot-scope="{ response, loading }"
             :loading="loading"
             label="Cohort"
-            id="cohort"
             :items="response"
             propname="labels"
-            v-model="cohortObj"
           ></DropDownwRadio>
         </GetData>
       </v-col>
@@ -57,7 +57,6 @@
 
 <script>
 import SelectBar from "@/components/SelectBar.vue";
-import DropDown from "@/components/DropDown.vue";
 import DropDownwRadio from "@/components/DropDownwRadio.vue";
 import FiltersBar from "@/components/FiltersBar.vue";
 import ChartCard from "@/components/ChartCard.vue";
@@ -76,7 +75,6 @@ export default {
   name: "DetailedOcccupation",
   components: {
     SelectBar,
-    DropDown,
     DropDownwRadio,
     FiltersBar,
     ChartCard,
@@ -95,34 +93,6 @@ export default {
         type: null
       }
     };
-  },
-  methods: {
-    dataPath: function(str) {
-      return joinPublicPath(str);
-    },
-    handleFilters: function(f) {
-      if (f == null) {
-        return null;
-      }
-      this.filters = f;
-    },
-    setActiveToggle: function(changedObj, changedStr) {
-      if (changedObj.toggle) {
-        this.activeToggle = changedStr;
-        // set all the other toggles to false if this one got switched on
-        [this.occupationObj, this.cohortObj]
-          .filter(o => o !== changedObj)
-          .forEach(o => (o.toggle = false));
-      }
-    }
-  },
-  watch: {
-    occupationObj: function() {
-      this.setActiveToggle(this.occupationObj, "occupation");
-    },
-    cohortObj: function() {
-      this.setActiveToggle(this.cohortObj, "cohort");
-    }
   },
   computed: {
     occupation: function() {
@@ -162,8 +132,40 @@ export default {
       );
     },
     chartColors: function() {
-      if (this.filters != null && this.filters.hasOwnProperty("colors")) {
+      if (
+        this.filters != null &&
+        Object.prototype.hasOwnProperty.call(this.filters, "colors")
+      ) {
         return this.filters.colors;
+      }
+      return null;
+    }
+  },
+  watch: {
+    occupationObj: function() {
+      this.setActiveToggle(this.occupationObj, "occupation");
+    },
+    cohortObj: function() {
+      this.setActiveToggle(this.cohortObj, "cohort");
+    }
+  },
+  methods: {
+    dataPath: function(str) {
+      return joinPublicPath(str);
+    },
+    handleFilters: function(f) {
+      if (f == null) {
+        return null;
+      }
+      this.filters = f;
+    },
+    setActiveToggle: function(changedObj, changedStr) {
+      if (changedObj.toggle) {
+        this.activeToggle = changedStr;
+        // set all the other toggles to false if this one got switched on
+        [this.occupationObj, this.cohortObj]
+          .filter(o => o !== changedObj)
+          .forEach(o => (o.toggle = false));
       }
     }
   }
