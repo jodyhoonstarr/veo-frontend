@@ -2,10 +2,10 @@
   <v-row>
     <v-col>
       <DropDown
+        v-model="selected"
         :items="dropDownItems"
         :label="label"
         :loading="loading"
-        v-model="selected"
         :multiple="true"
         :persistent-hint="false"
         :selectallable="selectallable"
@@ -61,6 +61,15 @@ export default {
       selected: null
     };
   },
+  computed: {
+    dropDownItems: function() {
+      if (this.items != null && this.items.hasOwnProperty(this.propname)) {
+        return this.items[this.propname];
+      } else {
+        return this.items;
+      }
+    }
+  },
   watch: {
     selected: function() {
       this.$emit("input", this.selected);
@@ -78,15 +87,6 @@ export default {
         this.items.labels.length >= 2
       ) {
         this.selected = this.items.labels.slice(0, 2);
-      }
-    }
-  },
-  computed: {
-    dropDownItems: function() {
-      if (this.items != null && this.items.hasOwnProperty(this.propname)) {
-        return this.items[this.propname];
-      } else {
-        return this.items;
       }
     }
   },

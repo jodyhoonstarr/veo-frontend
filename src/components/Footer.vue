@@ -9,8 +9,8 @@
     >
       <template v-for="(link, index) in links">
         <a
-          :href="link.url"
           :key="link.label"
+          :href="link.url"
           class="white--text xs-12 text-left"
           text-xs-left
           >{{ link.label }}</a

@@ -61,7 +61,7 @@
         :chart-line-styles="chartLineStyles"
         :chart-data-type="chartDataType"
         :chart-label="chartLabel"
-        :magnifyYAxis="magnifyYAxis"
+        :magnify-y-axis="magnifyYAxis"
       ></line-chart>
     </template>
 
@@ -146,17 +146,17 @@ export default {
         : this.maxHeight;
     }
   },
-  methods: {
-    handleResize: function() {
-      this.width = Math.floor(this.$refs.chartcard.$el.clientWidth);
-    }
-  },
   mounted() {
     this.$nextTick(this.handleResize());
     window.addEventListener("resize", this.handleResize);
   },
   beforeDestroy: function() {
     window.removeEventListener("resize", this.handleResize);
+  },
+  methods: {
+    handleResize: function() {
+      this.width = Math.floor(this.$refs.chartcard.$el.clientWidth);
+    }
   }
 };
 </script>

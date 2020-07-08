@@ -83,6 +83,62 @@ export default {
       colorCategory: null
     };
   },
+  computed: {
+    colors: function() {
+      return this.getActive("color");
+    },
+    linestyles: function() {
+      return this.getActive("linestyle");
+    }
+  },
+  watch: {
+    secondaryValue: function() {
+      this.setDefaultColorCategory();
+
+      // if no tertiary filter is set for the counts data, set the first one
+      if (
+        this.tertiaryFilters == null &&
+        this.secondaryFilters != null &&
+        this.secondaryValue != null &&
+        this.secondaryFilters.id === "counts" &&
+        Array.isArray(this.secondaryValue) &&
+        this.secondaryValue.length > 1
+      ) {
+        this.tertiaryFilters = this.secondaryValue[0].filters.find(
+          o => o.id === "year"
+        );
+      }
+
+      this.setTertiaryDefaults();
+      this.emitEvent();
+    },
+    tertiaryValue: function() {
+      this.setDefaultColorCategory();
+      this.emitEvent();
+    }
+  },
+  mounted() {
+    // if there are initial values set, assign and reset all filters
+    if (
+      this.initialValues.primary != null ||
+      this.initialValues.secondary != null ||
+      this.initialValues.tertiary != null
+    ) {
+      // this is an annoying workaround because of how the filter decisions are linked
+      const vm = this;
+      vm.$nextTick(() => {
+        vm.primaryValue = vm.initialValues.primary;
+
+        vm.$nextTick(() => {
+          vm.secondaryValue = vm.initialValues.secondary;
+
+          vm.$nextTick(() => {
+            vm.tertiaryValue = vm.initialValues.tertiary;
+          });
+        });
+      });
+    }
+  },
   methods: {
     emitEvent: function() {
       if (
@@ -271,62 +327,6 @@ export default {
       let returnObj = {};
       results.map(o => (returnObj[o.id] = o[prop]));
       return returnObj;
-    }
-  },
-  watch: {
-    secondaryValue: function() {
-      this.setDefaultColorCategory();
-
-      // if no tertiary filter is set for the counts data, set the first one
-      if (
-        this.tertiaryFilters == null &&
-        this.secondaryFilters != null &&
-        this.secondaryValue != null &&
-        this.secondaryFilters.id === "counts" &&
-        Array.isArray(this.secondaryValue) &&
-        this.secondaryValue.length > 1
-      ) {
-        this.tertiaryFilters = this.secondaryValue[0].filters.find(
-          o => o.id === "year"
-        );
-      }
-
-      this.setTertiaryDefaults();
-      this.emitEvent();
-    },
-    tertiaryValue: function() {
-      this.setDefaultColorCategory();
-      this.emitEvent();
-    }
-  },
-  computed: {
-    colors: function() {
-      return this.getActive("color");
-    },
-    linestyles: function() {
-      return this.getActive("linestyle");
-    }
-  },
-  mounted() {
-    // if there are initial values set, assign and reset all filters
-    if (
-      this.initialValues.primary != null ||
-      this.initialValues.secondary != null ||
-      this.initialValues.tertiary != null
-    ) {
-      // this is an annoying workaround because of how the filter decisions are linked
-      const vm = this;
-      vm.$nextTick(() => {
-        vm.primaryValue = vm.initialValues.primary;
-
-        vm.$nextTick(() => {
-          vm.secondaryValue = vm.initialValues.secondary;
-
-          vm.$nextTick(() => {
-            vm.tertiaryValue = vm.initialValues.tertiary;
-          });
-        });
-      });
     }
   }
 };

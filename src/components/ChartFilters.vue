@@ -2,13 +2,13 @@
   <v-select
     v-if="allFilters"
     :id="id"
+    v-model="selected"
     :items="allFilters"
     :label="label"
     item-text="label"
     return-object
     outlined
     dense
-    v-model="selected"
     class="newSelect otherClass"
   >
     <template v-slot:selection="{ item }">
@@ -82,6 +82,38 @@ export default {
       all: { id: "all", short: "All", label: `All ${this.label}` }
     };
   },
+  computed: {
+    allFilters: function() {
+      if (this.filters == null) {
+        return null;
+      }
+      if (this.multiple === true) {
+        // if it's a year or earnings filter
+        return [...this.filters, this.all];
+      } else {
+        // otherwise default
+        return this.filters;
+      }
+    }
+  },
+  watch: {
+    filters: function() {
+      this.selectDefault(this.value, this.filters);
+      this.emitChange(); // keep - input 'all' filters can change while this.value statys static
+    },
+    selected: function() {
+      this.emitChange();
+    },
+    value: function() {
+      this.selectDefault(this.value, this.filters);
+    },
+    label: function() {
+      this.all.label = `All ${this.label}`;
+    }
+  },
+  mounted() {
+    this.selectDefault(this.value, this.filters);
+  },
   methods: {
     toArray: function(obj) {
       return !Array.isArray(obj) ? [obj] : obj;
@@ -152,38 +184,6 @@ export default {
         id: this.id,
         selected: this.toArray(emitted) //make sure array is returned, even if multiple is false
       });
-    }
-  },
-  watch: {
-    filters: function() {
-      this.selectDefault(this.value, this.filters);
-      this.emitChange(); // keep - input 'all' filters can change while this.value statys static
-    },
-    selected: function() {
-      this.emitChange();
-    },
-    value: function() {
-      this.selectDefault(this.value, this.filters);
-    },
-    label: function() {
-      this.all.label = `All ${this.label}`;
-    }
-  },
-  mounted() {
-    this.selectDefault(this.value, this.filters);
-  },
-  computed: {
-    allFilters: function() {
-      if (this.filters == null) {
-        return null;
-      }
-      if (this.multiple === true) {
-        // if it's a year or earnings filter
-        return [...this.filters, this.all];
-      } else {
-        // otherwise default
-        return this.filters;
-      }
     }
   }
 };

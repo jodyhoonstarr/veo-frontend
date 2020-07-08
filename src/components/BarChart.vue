@@ -223,6 +223,9 @@ export default {
       this.bindChartNextTick();
     }
   },
+  mounted() {
+    this.bindChartNextTick();
+  },
   methods: {
     bindChartNextTick: function() {
       this.$nextTick(() => {
@@ -752,9 +755,6 @@ export default {
         .attr("fill", "#555555")
         .text(yLabelText);
     }
-  },
-  mounted() {
-    this.bindChartNextTick();
   }
 };
 </script>

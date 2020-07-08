@@ -3,47 +3,47 @@
     v-if="itemIsObject"
     :loading="loading"
     :disabled="loading"
+    v-model="selected"
     item-text="label"
     return-object
+    ref="dropdown"
     :items="items"
     :label="label"
     :multiple="multiple"
     dense
     :outlined="outlined"
     :hint="hintText"
-    :persistentHint="persistentHint"
+    :persistent-hint="persistentHint"
     :clearable="clearable"
-    v-model="selected"
     :search-input.sync="search"
     :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
-    ref="dropdown"
   >
     <template v-slot:prepend-item>
       <v-col class="pa-0 ma-0">
         <v-row class="text-center pa-0 ma-0 one-line">
           <v-btn
             v-if="selectallable"
-            @click="selectAllProps"
             color="primary"
             text
             small
             :disabled="allSelected"
+            @click="selectAllProps"
           >
             <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>Select
             All</v-btn
           >
           <v-btn
             v-if="selectallable"
-            @click="selectNoneProps"
             color="primary"
             text
             small
             :disabled="noneSelected"
+            @click="selectNoneProps"
             ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
             >Clear</v-btn
           >
           <v-spacer></v-spacer>
-          <v-btn @click="close" color="primary" text small
+          <v-btn color="primary" text small @click="close"
             ><v-icon>mdi-close</v-icon></v-btn
           >
         </v-row>
@@ -52,15 +52,15 @@
     </template>
 
     <template v-slot:selection="{ item, index }">
-      <div class="selection" v-if="index === 0 && itemCount === 1">
+      <div v-if="index === 0 && itemCount === 1" class="selection">
         {{ item.label }}
       </div>
-      <div class="selection" v-else-if="index === 1">
+      <div v-else-if="index === 1" class="selection">
         {{ pluralLabels }} Selected
       </div>
     </template>
 
-    <template three-line v-slot:item="{ item }">
+    <template v-slot:item="{ item }" three-line>
       <v-list-item-content class="py-0">
         <v-list-item-title class="pt-1" v-html="item.label"></v-list-item-title>
       </v-list-item-content>
@@ -68,6 +68,7 @@
   </v-autocomplete>
   <v-autocomplete
     v-else
+    v-model="selected"
     :loading="loading"
     :disabled="loading"
     :items="items"
@@ -76,9 +77,8 @@
     dense
     :outlined="outlined"
     :hint="hintText"
-    :persistentHint="persistentHint"
+    :persistent-hint="persistentHint"
     :clearable="clearable"
-    v-model="selected"
     :search-input.sync="search"
     :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
   >
@@ -87,27 +87,27 @@
         <v-row class="text-center pa-0 ma-0 one-line">
           <v-btn
             v-if="selectallable"
-            @click="selectAllProps"
             color="primary"
             text
             small
             :disabled="allSelected"
+            @click="selectAllProps"
           >
             <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>Select
             All</v-btn
           >
           <v-btn
             v-if="selectallable"
-            @click="selectNoneProps"
             color="primary"
             text
             small
             :disabled="noneSelected"
+            @click="selectNoneProps"
             ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
             >Clear</v-btn
           >
           <v-spacer></v-spacer>
-          <v-btn @click="close" color="primary" text small
+          <v-btn color="primary" text small @click="close"
             ><v-icon>mdi-close</v-icon></v-btn
           >
         </v-row>
@@ -116,15 +116,15 @@
     </template>
 
     <template v-slot:selection="{ item, index }">
-      <div class="selection" v-if="index === 0 && itemCount === 1">
+      <div v-if="index === 0 && itemCount === 1" class="selection">
         {{ item }}
       </div>
-      <div class="selection" v-else-if="index === 1">
+      <div v-else-if="index === 1" class="selection">
         {{ pluralLabels }} Selected
       </div>
     </template>
 
-    <template three-line v-slot:item="{ item }">
+    <template v-slot:item="{ item }" three-line>
       <v-list-item-content class="py-0">
         <v-list-item-title class="pt-1" v-html="item"></v-list-item-title>
       </v-list-item-content>
@@ -174,6 +174,13 @@ export default {
       default: false
     }
   },
+
+  data() {
+    return {
+      selected: this.value,
+      search: null
+    };
+  },
   computed: {
     itemsAreEmpty: function() {
       return (
@@ -213,13 +220,6 @@ export default {
     noneSelected: function() {
       return this.selected == null;
     }
-  },
-
-  data() {
-    return {
-      selected: this.value,
-      search: null
-    };
   },
   watch: {
     value(input) {

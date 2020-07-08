@@ -3,7 +3,6 @@
     <v-range-slider
       v-if="textLabels"
       :value="range"
-      @input="handleRange"
       :tick-labels="textLabels"
       min="0"
       :max="labelCountZeroIdx"
@@ -14,6 +13,7 @@
       track-color="grey"
       track-fill-color="primary"
       thumb-label="always"
+      @input="handleRange"
       persistent-hint
       hint="Exit cohort, two-year range"
     >
@@ -56,24 +56,6 @@ export default {
       rangeMin: null,
       rangeMax: null
     };
-  },
-  methods: {
-    icon: function(value) {
-      const iconLeft = "mdi-ray-start-arrow";
-      const iconRight = "mdi-ray-end-arrow";
-      const iconWarn = "mdi-alert-circle-outline";
-      if (this.rangeMax === this.rangeMin) {
-        return iconWarn;
-      } else if (value === this.rangeMax) {
-        return iconRight;
-      } else {
-        return iconLeft;
-      }
-    },
-    handleRange: function(r) {
-      this.rangeMin = Math.min(...r);
-      this.rangeMax = Math.max(...r);
-    }
   },
   computed: {
     range: function() {
@@ -127,6 +109,24 @@ export default {
           e => e.id === this.value[this.value.length - 1].id
         );
       }
+    }
+  },
+  methods: {
+    icon: function(value) {
+      const iconLeft = "mdi-ray-start-arrow";
+      const iconRight = "mdi-ray-end-arrow";
+      const iconWarn = "mdi-alert-circle-outline";
+      if (this.rangeMax === this.rangeMin) {
+        return iconWarn;
+      } else if (value === this.rangeMax) {
+        return iconRight;
+      } else {
+        return iconLeft;
+      }
+    },
+    handleRange: function(r) {
+      this.rangeMin = Math.min(...r);
+      this.rangeMax = Math.max(...r);
     }
   }
 };

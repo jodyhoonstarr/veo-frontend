@@ -43,11 +43,6 @@ export default {
       default: 0
     }
   },
-  methods: {
-    handleClick: function() {
-      this.$emit("input", !this.value);
-    }
-  },
 
   computed: {
     computedIcon: function() {
@@ -60,6 +55,11 @@ export default {
       } else {
         return this.icon;
       }
+    }
+  },
+  methods: {
+    handleClick: function() {
+      this.$emit("input", !this.value);
     }
   }
 };

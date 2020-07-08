@@ -2,7 +2,9 @@
   <v-autocomplete
     :loading="loading"
     :disabled="loading"
+    v-model="selected"
     item-text="label"
+    ref="dropdown"
     return-object
     :items="items"
     :label="label"
@@ -10,38 +12,36 @@
     dense
     :filter="filterFullObject"
     :hint="hintText"
-    :persistentHint="persistentHint"
-    v-model="selected"
+    :persistent-hint="persistentHint"
     :search-input.sync="search"
     :class="{ 'my-1 py-3': !$vuetify.breakpoint.xs }"
-    ref="dropdown"
   >
     <template v-slot:prepend-item>
       <v-col class="pa-0 ma-0">
         <v-row class="text-center pa-0 ma-0 one-line">
           <v-btn
             v-if="selectallable"
-            @click="selectAllProps"
             color="primary"
             text
             small
             :disabled="allSelected"
+            @click="selectAllProps"
           >
             <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>Select
             All</v-btn
           >
           <v-btn
             v-if="selectallable"
-            @click="selectNoneProps"
             color="primary"
             text
             small
             :disabled="noneSelected"
+            @click="selectNoneProps"
             ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
             >Clear</v-btn
           >
           <v-spacer></v-spacer>
-          <v-btn @click="close" color="primary" text small
+          <v-btn color="primary" text small @click="close"
             ><v-icon>mdi-close</v-icon></v-btn
           >
         </v-row>
@@ -50,15 +50,15 @@
     </template>
 
     <template v-slot:selection="{ item, index }">
-      <div class="selection" v-if="index === 0 && itemCount === 1">
+      <div v-if="index === 0 && itemCount === 1" class="selection">
         {{ item.label }}
       </div>
-      <div class="selection" v-else-if="index === 1">
+      <div v-else-if="index === 1" class="selection">
         {{ pluralLabels }} Selected
       </div>
     </template>
 
-    <template three-line v-slot:item="{ parent, item }">
+    <template v-slot:item="{ parent, item }" three-line>
       <v-list-item-content class="py-0">
         <v-list-item-title
           v-if="
@@ -83,8 +83,8 @@
                 .indexOf(search.toLocaleLowerCase()) > -1
           "
           class="grey--text caption mb-0 pb-1"
-          v-html="parent.genFilteredText(item.details)"
           wrap
+          v-html="parent.genFilteredText(item.details)"
         ></p>
         <v-list-item-subtitle
           v-else
@@ -136,6 +136,12 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      search: null,
+      selected: this.value
+    };
+  },
   computed: {
     itemsAreEmpty: function() {
       return Array.isArray(this.items) && this.items.length === 0;
@@ -173,12 +179,6 @@ export default {
     noneSelected: function() {
       return this.selected == null;
     }
-  },
-  data() {
-    return {
-      search: null,
-      selected: this.value
-    };
   },
   watch: {
     value(input) {

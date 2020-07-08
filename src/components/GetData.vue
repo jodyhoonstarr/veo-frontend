@@ -31,15 +31,6 @@ export default {
       loading: true
     };
   },
-  created() {
-    this.getData();
-  },
-  render() {
-    return this.$scopedSlots.default({
-      response: this.response,
-      loading: this.loading
-    });
-  },
   watch: {
     response: function() {
       this.emitEvent();
@@ -47,6 +38,9 @@ export default {
     url: function() {
       this.getData();
     }
+  },
+  created() {
+    this.getData();
   },
   methods: {
     emitEvent: function() {
@@ -82,6 +76,12 @@ export default {
           this.response = null;
         });
     }
+  },
+  render() {
+    return this.$scopedSlots.default({
+      response: this.response,
+      loading: this.loading
+    });
   }
 };
 </script>

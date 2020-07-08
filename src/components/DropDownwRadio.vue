@@ -7,11 +7,11 @@
           :loading="loading"
           :ripple="false"
           color="primary"
-          @click="activeToggleChange"
           :class="{
             'v-input--selection-controls': true,
             'mt-0': $vuetify.breakpoint.xs
           }"
+          @click="activeToggleChange"
         >
           <v-icon :color="toggle ? 'primary' : 'grey'" large>{{
             radioIcon
@@ -22,23 +22,23 @@
     <v-col cols="10">
       <DetailDropDown
         v-if="detailed"
+        v-model="selected"
         :items="dropDownItems"
         :label="label"
         :loading="loading"
-        v-model="selected"
         :multiple="toggle"
-        :persistentHint="toggle"
+        :persistent-hint="toggle"
         :selectallable="selectallable && toggle"
         close
       ></DetailDropDown>
       <DropDown
         v-else
+        v-model="selected"
         :items="dropDownItems"
         :label="label"
         :loading="loading"
-        v-model="selected"
         :multiple="toggle"
-        :persistentHint="toggle"
+        :persistent-hint="toggle"
         :selectallable="selectallable && toggle"
       ></DropDown>
     </v-col>
@@ -96,6 +96,18 @@ export default {
       toggle: null
     };
   },
+  computed: {
+    dropDownItems: function() {
+      if (this.items != null && this.items.hasOwnProperty(this.propname)) {
+        return this.items[this.propname];
+      } else {
+        return this.items;
+      }
+    },
+    radioIcon: function() {
+      return this.toggle ? "mdi-radiobox-marked" : "mdi-radiobox-blank";
+    }
+  },
   watch: {
     value: {
       handler(val) {
@@ -114,6 +126,10 @@ export default {
     toggle: function() {
       this.selectDefaults();
     }
+  },
+  mounted() {
+    this.toggle = this.value.toggle;
+    this.selected = this.value.selected;
   },
   methods: {
     selectDefaults() {
@@ -161,22 +177,6 @@ export default {
         this.selected = [this.selected];
       }
     }
-  },
-  computed: {
-    dropDownItems: function() {
-      if (this.items != null && this.items.hasOwnProperty(this.propname)) {
-        return this.items[this.propname];
-      } else {
-        return this.items;
-      }
-    },
-    radioIcon: function() {
-      return this.toggle ? "mdi-radiobox-marked" : "mdi-radiobox-blank";
-    }
-  },
-  mounted() {
-    this.toggle = this.value.toggle;
-    this.selected = this.value.selected;
   }
 };
 </script>

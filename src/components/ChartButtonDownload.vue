@@ -7,9 +7,9 @@
           x-small
           dark
           color="white"
-          v-on="on"
           target="_blank"
           :href="url"
+          v-on="on"
         >
           <v-icon color="grey">{{ icon }}</v-icon>
         </v-btn>

@@ -273,6 +273,9 @@ export default {
       this.bindChartNextTick();
     }
   },
+  mounted() {
+    this.bindChartNextTick();
+  },
   methods: {
     bindChartNextTick: function() {
       this.$nextTick(() => {
@@ -875,9 +878,6 @@ export default {
         .duration(vm.transitionDuration * delayFactor)
         .attr("stroke-width", 2);
     }
-  },
-  mounted() {
-    this.bindChartNextTick();
   }
 };
 </script>
