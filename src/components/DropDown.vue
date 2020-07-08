@@ -29,9 +29,9 @@
             :disabled="allSelected"
             @click="selectAllProps"
           >
-            <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>Select
-            All</v-btn
-          >
+            <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>
+            Select All
+          </v-btn>
           <v-btn
             v-if="selectallable"
             color="primary"
@@ -39,13 +39,14 @@
             small
             :disabled="noneSelected"
             @click="selectNoneProps"
-            ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
-            >Clear</v-btn
           >
+            <v-icon left>mdi-checkbox-multiple-blank-outline </v-icon>
+            Clear
+          </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text small @click="close"
-            ><v-icon>mdi-close</v-icon></v-btn
-          >
+          <v-btn color="primary" text small @click="close">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
         </v-row>
       </v-col>
       <v-divider class="pb-1"></v-divider>
@@ -93,9 +94,9 @@
             :disabled="allSelected"
             @click="selectAllProps"
           >
-            <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>Select
-            All</v-btn
-          >
+            <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>
+            Select All
+          </v-btn>
           <v-btn
             v-if="selectallable"
             color="primary"
@@ -103,13 +104,14 @@
             small
             :disabled="noneSelected"
             @click="selectNoneProps"
-            ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
-            >Clear</v-btn
           >
+            <v-icon left>mdi-checkbox-multiple-blank-outline </v-icon>
+            Clear
+          </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text small @click="close"
-            ><v-icon>mdi-close</v-icon></v-btn
-          >
+          <v-btn color="primary" text small @click="close">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
         </v-row>
       </v-col>
       <v-divider class="pb-1"></v-divider>
@@ -257,7 +259,9 @@ export default {
   max-width: 90%;
   padding: 4px 4px 2px 0px;
 }
+
 .one-line {
   white-space: nowrap;
+  flex-wrap: nowrap;
 }
 </style>
