@@ -29,15 +29,9 @@
             :key="tab.label"
             :to="tab.route"
             class="px-0"
-            @click.capture.prevent="activateDropdown(tab.label)"
+            @click.capture="$event.preventDefault()"
           >
-            <v-menu
-              :value="activeDropdown === tab.label"
-              bottom
-              left
-              offset-y
-              transition="slide-y-transition"
-            >
+            <v-menu left bottom offset-y transition="slide-y-transition">
               <template v-slot:activator="{ on }">
                 <v-btn
                   tile
@@ -216,8 +210,7 @@ export default {
           ]
         }
       ],
-      activeTab: 4,
-      activeDropdown: null
+      activeTab: 4
     };
   },
   computed: {
@@ -246,9 +239,6 @@ export default {
   methods: {
     setActiveTab: function(tab) {
       this.activeTab = tab;
-    },
-    activateDropdown: function(tabLabel) {
-      this.activeDropdown = tabLabel;
     }
   }
 };
