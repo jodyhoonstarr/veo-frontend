@@ -36,7 +36,11 @@ This must be done before building the application files.
 ### Build and minify for production
 Bundle all project files in the dist/ directory. 
 ```
+# if vue cli installed globally
 vue-cli-service build --modern
+
+# else
+npx vue-cli-service build --modern
 ```
 
 ### Zip all project files in dist/ and deliver to webserver
