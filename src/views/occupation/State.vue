@@ -29,7 +29,7 @@
         </GetData>
       </v-col>
       <v-col cols="12" xs="12" sm="4" class="pb-0">
-        <GetData :url="dataPath('metadata/label_4year_cohorts.json')">
+        <GetData :url="dataPath('metadata/label_8year_cohorts.json')">
           <DropDownwRadio
             id="cohort"
             v-model="cohortObj"
