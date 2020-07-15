@@ -65,9 +65,9 @@ export default {
       },
       validator: function(obj) {
         return (
-          obj.hasOwnProperty("primary") &&
-          obj.hasOwnProperty("secondary") &&
-          obj.hasOwnProperty("tertiary")
+          Object.prototype.hasOwnProperty.call(obj, "primary") &&
+          Object.prototype.hasOwnProperty.call(obj, "secondary") &&
+          Object.prototype.hasOwnProperty.call(obj, "tertiary")
         );
       }
     }
@@ -160,7 +160,7 @@ export default {
     validateSelected: function(o) {
       if (
         !o ||
-        !o.hasOwnProperty("selected") ||
+        !Object.prototype.hasOwnProperty.call(o, "selected") ||
         !Array.isArray(o.selected) ||
         !o.selected.length >= 1
       ) {
