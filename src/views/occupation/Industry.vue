@@ -51,7 +51,11 @@
         :filters="filters"
         :active-toggle="activeToggle"
       >
-        <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          chart-type="bar"
+          :disable-nonemp-counts="true"
+          @change="handleFilters"
+        ></FiltersBar>
         <Chart
           chart-type="bar"
           :loading="loading"
