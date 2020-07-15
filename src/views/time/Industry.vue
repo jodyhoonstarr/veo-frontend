@@ -39,6 +39,7 @@
         <FiltersBar
           :initial-values="initialFilters"
           chart-type="line"
+          :disable-nonemp-counts="true"
           @change="handleFilters"
         ></FiltersBar>
         <Chart
