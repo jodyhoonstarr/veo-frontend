@@ -10,6 +10,7 @@
     outlined
     dense
     class="newSelect otherClass"
+    item-disabled="disabled"
   >
     <template v-slot:selection="{ item }">
       <div v-if="item.id === 'all' && showChips === true" class="selection">

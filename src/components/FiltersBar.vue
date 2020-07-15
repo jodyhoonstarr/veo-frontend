@@ -15,8 +15,26 @@
       </v-col>
 
       <v-col cols="12" xs="12" sm="4" class="pb-0">
+        <!-- If the counts nonemp data is disabled -->
         <ChartFilters
-          v-if="secondaryFilters"
+          v-if="
+            secondaryFilters &&
+              secondaryFilters.id === 'counts' &&
+              disableNonempCounts
+          "
+          :id="secondaryFilters.id"
+          :label="secondaryFilters.label"
+          :chart-type="chartType"
+          :filters="disabledNonempSecondaryFilters.filters"
+          :show-chips="secondaryFilters.id === colorCategory"
+          :multiple="false"
+          :value="secondaryValue"
+          @change="handleSecondaryFilter"
+        ></ChartFilters>
+
+        <!-- If the second option is a standard filter -->
+        <ChartFilters
+          v-else-if="secondaryFilters"
           :id="secondaryFilters.id"
           :label="secondaryFilters.label"
           :chart-type="chartType"
@@ -70,6 +88,10 @@ export default {
           Object.prototype.hasOwnProperty.call(obj, "tertiary")
         );
       }
+    },
+    disableNonempCounts: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -89,6 +111,26 @@ export default {
     },
     linestyles: function() {
       return this.getActive("linestyle");
+    },
+    disabledNonempSecondaryFilters: function() {
+      if (this.disableNonempCounts) {
+        // create a copy of the secondary filters
+        let disabledSecondaryFilters = Object.assign({}, this.secondaryFilters);
+
+        // add a disabled flag on the nonemp category
+        disabledSecondaryFilters.filters = disabledSecondaryFilters.filters.map(
+          f => {
+            if (f.id === "nonemp") {
+              f.disabled = true;
+            }
+            return f;
+          }
+        );
+
+        return disabledSecondaryFilters;
+      }
+      // if this is earnings then use the secondary filters
+      return null;
     }
   },
   watch: {
