@@ -152,7 +152,10 @@ export default {
       return getColorSet(this.chartType, this.filters, this.state);
     },
     chartLineStyles: function() {
-      if (!this.filters || !this.filters.hasOwnProperty("linestyles")) {
+      if (
+        !this.filters ||
+        !Object.prototype.hasOwnProperty.call(this.filters, "linestyles")
+      ) {
         return null;
       }
       return this.filters.linestyles;
