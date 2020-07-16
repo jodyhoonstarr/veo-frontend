@@ -42,6 +42,21 @@
         <span> {{ item.short }}</span>
       </div>
     </template>
+
+    <template v-slot:item="{ item }">
+      <template v-if="item.disabled">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon class="pr-1" v-bind="attrs" v-on="on"
+              >mdi-help-circle</v-icon
+            >
+          </template>
+          <span>{{ disabledText }}</span>
+        </v-tooltip>
+      </template>
+
+      {{ item.label }}
+    </template>
   </v-select>
 </template>
 
@@ -76,6 +91,10 @@ export default {
     chartType: {
       type: String,
       required: true
+    },
+    disabledText: {
+      type: String,
+      default: "?"
     }
   },
   data() {
@@ -198,6 +217,10 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 90%;
+}
+
+.v-list-item--disabled > i {
+  pointer-events: auto !important;
 }
 
 /*.v-icon.outlined {*/

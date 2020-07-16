@@ -26,6 +26,7 @@
           :label="secondaryFilters.label"
           :chart-type="chartType"
           :filters="disabledNonempSecondaryFilters.filters"
+          :disabled-text="disabledText"
           :show-chips="secondaryFilters.id === colorCategory"
           :multiple="false"
           :value="secondaryValue"
@@ -92,6 +93,10 @@ export default {
     disableNonempCounts: {
       type: Boolean,
       default: false
+    },
+    disabledText: {
+      type: String,
+      default: "Disabled"
     }
   },
   data() {

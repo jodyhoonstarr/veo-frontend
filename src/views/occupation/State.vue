@@ -57,6 +57,7 @@
         <FiltersBar
           chart-type="bar"
           :disable-nonemp-counts="true"
+          disabled-text="This option has been suppressed from the output data"
           @change="handleFilters"
         ></FiltersBar>
         <Chart
