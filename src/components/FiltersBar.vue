@@ -113,21 +113,23 @@ export default {
       return this.getActive("linestyle");
     },
     disabledNonempSecondaryFilters: function() {
-      if (this.disableNonempCounts) {
-        // create a copy of the secondary filters
-        let disabledSecondaryFilters = Object.assign({}, this.secondaryFilters);
-
-        // add a disabled flag on the nonemp category
-        disabledSecondaryFilters.filters = disabledSecondaryFilters.filters.map(
-          f => {
-            if (f.id === "nonemp") {
-              f.disabled = true;
-            }
-            return f;
-          }
+      // this function adds a "disabled: true" property to the
+      // counts x nonemp object so that it's disabled from the dropdown
+      if (this.disableNonempCounts && this.secondaryFilters.id === "counts") {
+        // create a deep copy of the secondary filters
+        let secondayFiltersCopy = JSON.parse(
+          JSON.stringify(this.secondaryFilters)
         );
 
-        return disabledSecondaryFilters;
+        // add a disabled flag on the nonemp category
+        secondayFiltersCopy.filters = secondayFiltersCopy.filters.map(f => {
+          if (f.id === "nonemp") {
+            f.disabled = true;
+          }
+          return f;
+        });
+
+        return secondayFiltersCopy;
       }
       // if this is earnings then use the secondary filters
       return null;
