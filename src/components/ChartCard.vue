@@ -37,9 +37,14 @@ export default {
   },
   computed: {
     byString: function() {
-      return (
-        this.activeToggle.charAt(0).toUpperCase() + this.activeToggle.slice(1)
-      );
+      let textLabel =
+        this.activeToggle.charAt(0).toUpperCase() + this.activeToggle.slice(1);
+
+      if (textLabel === "State") {
+        return "State of Employment";
+      } else {
+        return textLabel;
+      }
     }
   }
 };
