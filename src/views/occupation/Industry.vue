@@ -54,6 +54,7 @@
         <FiltersBar
           chart-type="bar"
           :disable-nonemp-counts="true"
+          disabled-text="Not available by job characteristics"
           @change="handleFilters"
         ></FiltersBar>
         <Chart

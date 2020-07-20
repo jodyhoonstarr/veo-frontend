@@ -40,6 +40,7 @@
           :initial-values="initialFilters"
           chart-type="line"
           :disable-nonemp-counts="true"
+          disabled-text="Not available by job characteristics"
           @change="handleFilters"
         ></FiltersBar>
         <Chart
