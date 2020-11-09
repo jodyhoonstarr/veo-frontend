@@ -13,13 +13,13 @@
       track-color="grey"
       track-fill-color="primary"
       thumb-label="always"
-      @input="handleRange"
       persistent-hint
       hint="Exit cohort, two-year range"
+      @input="handleRange"
     >
-      <template v-slot:thumb-label="{ value }">
+      <template v-slot:thumb-label="{ value: iconname }">
         <v-icon dark>
-          {{ icon(value) }}
+          {{ icon(iconname) }}
         </v-icon>
       </template>
     </v-range-slider>
@@ -30,7 +30,7 @@
       :disabled="true"
       value="30"
     ></v-slider>
-    <v-slider v-else :disabled="true" value="30"> </v-slider>
+    <v-slider v-else :disabled="true" value="30"></v-slider>
   </v-container>
 </template>
 
@@ -67,11 +67,16 @@ export default {
           return val.id; // label with the short for now
         });
       }
+      return null;
     },
     fullLabels: function() {
-      if (this.items != null && this.items.hasOwnProperty("labels")) {
+      if (
+        this.items != null &&
+        Object.prototype.hasOwnProperty.call(this.items, "labels")
+      ) {
         return this.items.labels;
       }
+      return null;
     },
     labelCountZeroIdx: function() {
       if (this.fullLabels != null && this.fullLabels.length > 1) {
@@ -136,9 +141,11 @@ export default {
 .v-slider--horizontal .v-slider__tick:last-child .v-slider__tick-label {
   transform: translate(-50%) !important;
 }
+
 .v-slider--horizontal .v-slider__tick:first-child .v-slider__tick-label {
   transform: translate(-50%) !important;
 }
+
 .v-input--range-slider
   .v-input__control
   .v-messages
@@ -146,6 +153,7 @@ export default {
   .v-messages__message {
   transform: translate(-11px, 4px) !important;
 }
+
 @media screen and (-ms-high-contrast: active),
   screen and (-ms-high-contrast: none) {
   .v-slider__ticks-container {
