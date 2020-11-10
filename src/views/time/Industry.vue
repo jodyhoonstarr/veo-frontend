@@ -21,7 +21,7 @@
             slot-scope="{ response, loading }"
             :loading="loading"
             :items="response"
-            :hide-margins="true"
+            :hide-margins="hasMargins"
           ></cohort-slider>
         </GetData>
       </v-col>
@@ -53,6 +53,7 @@
           :chart-data-type="chartDataType"
           chart-label="Exit Cohort"
           :chart-data-zip="dataPath('downloads/VEO-Industry.zip')"
+          :has-margins="hasMargins"
         ></Chart>
       </ChartCard>
     </GetData>
@@ -116,7 +117,8 @@ export default {
         colors: null,
         filters: null,
         type: null
-      }
+      },
+      hasMargins: true
     };
   },
   computed: {

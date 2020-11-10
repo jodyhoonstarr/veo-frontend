@@ -36,10 +36,19 @@
     <template v-else-if="chartType === 'line' && chartData != null && width">
       <button-container>
         <chart-button-toggle
+          v-if="hasMargins"
+          v-model="showMargins"
+          tooltip="Show Cohort Margins"
+          icon="mdi-checkbox-multiple-blank-circle"
+          off-icon="mdi-checkbox-multiple-blank-circle-outline"
+        ></chart-button-toggle>
+
+        <chart-button-toggle
           v-model="magnifyYAxis"
           tooltip="Toggle Y-Axis Zoom"
           icon="mdi-magnify-plus"
           off-icon="mdi-magnify-minus"
+          :nudge-tooltip="hasMargins ? 40 : 0"
         ></chart-button-toggle>
 
         <chart-button-download
@@ -47,7 +56,7 @@
           :url="chartDataZip"
           icon="mdi-download"
           tooltip="Download Source Data"
-          nudge-tooltip="40"
+          :nudge-tooltip="hasMargins ? 80 : 40"
         >
         </chart-button-download>
       </button-container>
@@ -125,6 +134,10 @@ export default {
     chartLabel: {
       type: String,
       default: null
+    },
+    hasMargins: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -132,7 +145,8 @@ export default {
       width: null,
       ratio: 1.9,
       maxHeight: 400,
-      magnifyYAxis: false
+      magnifyYAxis: false,
+      showMargins: false
     };
   },
   computed: {
