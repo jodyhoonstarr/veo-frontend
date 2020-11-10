@@ -2,7 +2,7 @@
   <v-container>
     <!-- A slider bar and tick box when there's an aggregate over time -->
     <v-range-slider
-      v-if="textLabels && returnMargins"
+      v-if="textLabels && hideMargins"
       :value="range"
       :tick-labels="textLabels"
       :min="labelCountZeroIdxMarginStart"
@@ -80,7 +80,7 @@ export default {
     },
     // indicates whether the cohort data contains a margin entry and whether it should be returned
     // this flag hides the margin entry (id = 0) from the UI but returns it's data
-    returnMargins: {
+    hideMargins: {
       type: Boolean,
       default: false
     }
@@ -101,7 +101,7 @@ export default {
           return val.id; // label with the short for now
         });
 
-        if (this.returnMargins) {
+        if (this.hideMargins) {
           labels = labels.filter(x => x !== "0");
         }
         return labels;
@@ -125,7 +125,7 @@ export default {
       }
     },
     labelCountZeroIdxMarginStart: function() {
-      return this.returnMargins ? 1 : 0;
+      return this.hideMargins ? 1 : 0;
     }
   },
   watch: {
@@ -138,13 +138,13 @@ export default {
         Array.isArray(this.fullLabels)
       ) {
         // this assumes that the first index is the margin value
-        this.rangeMin = this.returnMargins ? 1 : 0;
+        this.rangeMin = this.hideMargins ? 1 : 0;
         this.rangeMax = this.fullLabels.length - 1;
       }
     },
     range: function() {
       let labels = this.fullLabels.slice(this.rangeMin, this.rangeMax + 1);
-      if (this.returnMargins) {
+      if (this.hideMargins) {
         // this assumes that the first index is the margin value
         let marginEntry = this.fullLabels.filter(x => x.id === "0");
         this.$emit("input", marginEntry.concat(labels));
@@ -155,7 +155,7 @@ export default {
     value: function() {
       if (Array.isArray(this.value)) {
         // this assumes that the first index is the margin value
-        let minIndex = this.returnMargins ? 1 : 0;
+        let minIndex = this.hideMargins ? 1 : 0;
 
         this.rangeMin = this.fullLabels.findIndex(
           e => e.id === this.value[minIndex].id
