@@ -1,30 +1,29 @@
 <template>
   <v-container>
-    <div v-if="textLabels && cohortMargins">
-      <!-- A slider bar and tick box when there's an aggregate over time -->
-      <v-range-slider
-        :value="range"
-        :tick-labels="textLabels"
-        :min="labelCountZeroIdxMarginStart"
-        :max="labelCountZeroIdx"
-        ticks="always"
-        tick-size="4"
-        color="primary"
-        thumb-color="primary"
-        track-color="grey"
-        track-fill-color="primary"
-        thumb-label="always"
-        persistent-hint
-        hint="Exit cohort, two-year range"
-        @input="handleRange"
-      >
-        <template v-slot:thumb-label="{ value: iconname }">
-          <v-icon dark>
-            {{ icon(iconname) }}
-          </v-icon>
-        </template>
-      </v-range-slider>
-    </div>
+    <!-- A slider bar and tick box when there's an aggregate over time -->
+    <v-range-slider
+      v-if="textLabels && returnMargins"
+      :value="range"
+      :tick-labels="textLabels"
+      :min="labelCountZeroIdxMarginStart"
+      :max="labelCountZeroIdx"
+      ticks="always"
+      tick-size="4"
+      color="primary"
+      thumb-color="primary"
+      track-color="grey"
+      track-fill-color="primary"
+      thumb-label="always"
+      persistent-hint
+      hint="Exit cohort, two-year range"
+      @input="handleRange"
+    >
+      <template v-slot:thumb-label="{ value: iconname }">
+        <v-icon dark>
+          {{ icon(iconname) }}
+        </v-icon>
+      </template>
+    </v-range-slider>
     <!-- A slider bar when there are individual time units, no aggregates -->
     <v-range-slider
       v-else-if="textLabels"
@@ -79,9 +78,11 @@ export default {
       type: Array,
       default: null
     },
-    cohortMargins: {
+    // indicates whether the cohort data contains a margin entry and whether it should be returned
+    // this flag hides the margin entry (id = 0) from the UI but returns it's data
+    returnMargins: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {
@@ -100,7 +101,7 @@ export default {
           return val.id; // label with the short for now
         });
 
-        if (this.cohortMargins) {
+        if (this.returnMargins) {
           labels = labels.filter(x => x !== "0");
         }
         return labels;
@@ -124,7 +125,7 @@ export default {
       }
     },
     labelCountZeroIdxMarginStart: function() {
-      return this.cohortMargins ? 1 : 0;
+      return this.returnMargins ? 1 : 0;
     }
   },
   watch: {
@@ -136,20 +137,28 @@ export default {
         this.fullLabels != null &&
         Array.isArray(this.fullLabels)
       ) {
-        this.rangeMin = this.cohortMargins ? 1 : 0;
+        // this assumes that the first index is the margin value
+        this.rangeMin = this.returnMargins ? 1 : 0;
         this.rangeMax = this.fullLabels.length - 1;
       }
     },
     range: function() {
-      this.$emit(
-        "input",
-        this.fullLabels.slice(this.rangeMin, this.rangeMax + 1)
-      );
+      let labels = this.fullLabels.slice(this.rangeMin, this.rangeMax + 1);
+      if (this.returnMargins) {
+        // this assumes that the first index is the margin value
+        let marginEntry = this.fullLabels.filter(x => x.id === "0");
+        this.$emit("input", marginEntry.concat(labels));
+      } else {
+        this.$emit("input", labels);
+      }
     },
     value: function() {
       if (Array.isArray(this.value)) {
+        // this assumes that the first index is the margin value
+        let minIndex = this.returnMargins ? 1 : 0;
+
         this.rangeMin = this.fullLabels.findIndex(
-          e => e.id === this.value[0].id
+          e => e.id === this.value[minIndex].id
         );
         this.rangeMax = this.fullLabels.findIndex(
           e => e.id === this.value[this.value.length - 1].id
