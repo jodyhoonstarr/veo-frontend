@@ -53,20 +53,20 @@ const routes = [
     path: "/demographics/",
     name: "Demographics",
     component: () =>
-      import(/* webpackChunkName: "time" */ "@/views/Demographics.vue"),
+      import(/* webpackChunkName: "line" */ "@/views/Demographics.vue"),
     children: [
       {
         path: "age",
         name: "Age",
         component: () =>
-          import(/* webpackChunkName: "age" */ "@/views/time/Age.vue")
+          import(/* webpackChunkName: "age" */ "@/views/line/Age.vue")
       },
       {
         path: "education",
         name: "Education",
         component: () =>
           import(
-            /* webpackChunkName: "education" */ "@/views/time/Education.vue"
+            /* webpackChunkName: "education" */ "@/views/line/Education.vue"
           )
       },
       {
@@ -74,14 +74,14 @@ const routes = [
         name: "Raceethnicity",
         component: () =>
           import(
-            /* webpackChunkName: "raceethnicity" */ "@/views/time/RaceEthnicity.vue"
+            /* webpackChunkName: "raceethnicity" */ "@/views/line/RaceEthnicity.vue"
           )
       },
       {
         path: "sex",
         name: "Sex",
         component: () =>
-          import(/* webpackChunkName: "sex" */ "@/views/time/Sex.vue")
+          import(/* webpackChunkName: "sex" */ "@/views/line/Sex.vue")
       }
     ]
   },
@@ -89,13 +89,13 @@ const routes = [
     path: "/industry/",
     name: "Industry",
     component: () =>
-      import(/* webpackChunkName: "time" */ "@/views/Industry.vue"),
+      import(/* webpackChunkName: "line" */ "@/views/Industry.vue"),
     children: [
       {
-        path: "time",
-        name: "IndustryByTime",
+        path: "line",
+        name: "IndustryLine",
         component: () =>
-          import(/* webpackChunkName: "industry" */ "@/views/time/Industry.vue")
+          import(/* webpackChunkName: "industry" */ "@/views/line/Industry.vue")
       },
       {
         path: "occupation",
@@ -111,13 +111,13 @@ const routes = [
   {
     path: "/state/",
     name: "State",
-    component: () => import(/* webpackChunkName: "time" */ "@/views/State.vue"),
+    component: () => import(/* webpackChunkName: "line" */ "@/views/State.vue"),
     children: [
       {
-        path: "time",
-        name: "StateByTime",
+        path: "line",
+        name: "StateLine",
         component: () =>
-          import(/* webpackChunkName: "industry" */ "@/views/time/State.vue")
+          import(/* webpackChunkName: "industry" */ "@/views/line/State.vue")
       },
       {
         path: "occupation",
@@ -133,27 +133,27 @@ const routes = [
     path: "/service/",
     name: "Service",
     component: () =>
-      import(/* webpackChunkName: "time" */ "@/views/Service.vue"),
+      import(/* webpackChunkName: "line" */ "@/views/Service.vue"),
     children: [
       {
         path: "afqt",
         name: "AFQT",
         component: () =>
-          import(/* webpackChunkName: "afqt" */ "@/views/time/AFQT.vue")
+          import(/* webpackChunkName: "afqt" */ "@/views/line/AFQT.vue")
       },
       {
         path: "yearsofservice",
         name: "YearsOfService",
         component: () =>
           import(
-            /* webpackChunkName: "experience" */ "@/views/time/YearsOfService.vue"
+            /* webpackChunkName: "experience" */ "@/views/line/YearsOfService.vue"
           )
       },
       {
         path: "paygrade",
         name: "Paygrade",
         component: () =>
-          import(/* webpackChunkName: "paygrade" */ "@/views/time/Paygrade.vue")
+          import(/* webpackChunkName: "paygrade" */ "@/views/line/Paygrade.vue")
       },
       {
         path: "occupation",

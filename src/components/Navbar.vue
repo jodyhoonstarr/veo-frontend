@@ -127,19 +127,34 @@ export default {
           short: "Characteristic",
           children: [
             {
-              route: "/service/afqt",
-              label: "AFQT Range",
+              route: "/service/afqt/line",
+              label: "AFQT Range (Line)",
               icon: "mdi-chart-line"
             },
             {
-              route: "/service/yearsofservice",
-              label: "Years of Service",
+              route: "/service/afqt/bar",
+              label: "AFQT Range (Bar)",
+              icon: "mdi-chart-bar"
+            },
+            {
+              route: "/service/yearsofservice/line",
+              label: "Years of Service (Line)",
               icon: "mdi-chart-line"
             },
             {
-              route: "/service/paygrade",
-              label: "Pay Grade",
+              route: "/service/yearsofservice/bar",
+              label: "Years of Service (Bar)",
+              icon: "mdi-chart-bar"
+            },
+            {
+              route: "/service/paygrade/line",
+              label: "Pay Grade (Line)",
               icon: "mdi-chart-line"
+            },
+            {
+              route: "/service/paygrade/bar",
+              label: "Pay Grad (Bar)",
+              icon: "mdi-chart-bar"
             },
             {
               route: "/service/occupation",
@@ -154,24 +169,44 @@ export default {
           short: "Demographic",
           children: [
             {
-              route: "/demographics/age",
-              label: "Age at Exit Cohort",
+              route: "/demographics/age/line",
+              label: "Age at Exit Cohort (Line)",
               icon: "mdi-chart-line"
             },
             {
-              route: "/demographics/sex",
-              label: "Sex",
+              route: "/demographics/age/bar",
+              label: "Age at Exit Cohort (Bar)",
+              icon: "mdi-chart-bar"
+            },
+            {
+              route: "/demographics/sex/line",
+              label: "Sex (Line)",
               icon: "mdi-chart-line"
             },
             {
-              route: "/demographics/raceethnicity",
-              label: "Race/Ethnicity",
+              route: "/demographics/sex/bar",
+              label: "Sex (Bar)",
+              icon: "mdi-chart-bar"
+            },
+            {
+              route: "/demographics/raceethnicity/line",
+              label: "Race/Ethnicity (Line)",
               icon: "mdi-chart-line"
             },
             {
-              route: "/demographics/education",
-              label: "Enlistment Education Level",
+              route: "/demographics/raceethnicity/bar",
+              label: "Race/Ethnicity (Bar)",
+              icon: "mdi-chart-bar"
+            },
+            {
+              route: "/demographics/education/line",
+              label: "Enlistment Education Level (Line)",
               icon: "mdi-chart-line"
+            },
+            {
+              route: "/demographics/education/bar",
+              label: "Enlistment Education Level (Bar)",
+              icon: "mdi-chart-bar"
             }
           ]
         },
@@ -181,9 +216,14 @@ export default {
           short: "Industry",
           children: [
             {
-              route: "/industry/time",
-              label: "Industry",
+              route: "/industry/line",
+              label: "Industry (Line)",
               icon: "mdi-chart-line"
+            },
+            {
+              route: "/industry/bar",
+              label: "Industry (Bar)",
+              icon: "mdi-chart-bar"
             },
             {
               route: "/industry/occupation",
@@ -198,9 +238,14 @@ export default {
           short: "State",
           children: [
             {
-              route: "/state/time",
-              label: "State",
+              route: "/state/line",
+              label: "State (Line)",
               icon: "mdi-chart-line"
+            },
+            {
+              route: "/state/bar",
+              label: "State (Bar)",
+              icon: "mdi-chart-bar"
             },
             {
               route: "/state/occupation",
