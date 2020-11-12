@@ -2,12 +2,11 @@
 import "../../setup.js";
 
 // Libraries
-
 // Components
 import Header from "@/components/Header";
 
 // Utilities
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 
 describe("Header.vue", () => {
   let wrapper;
@@ -27,7 +26,7 @@ describe("Header.vue", () => {
 
   it("should have title text on sm+", () => {
     const title = wrapper.find("v-toolbar-title-stub.hidden-xs-only");
-    expect(title.text()).toBe("Veterans Employment Outcomes");
+    expect(title.text()).toBe("Veteran Employment Outcomes (VEO) Explorer");
   });
 
   it("should have title abbrev on xs", () => {
