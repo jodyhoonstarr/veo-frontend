@@ -20,12 +20,13 @@
 
 <script>
 import { format } from "d3-format";
-import { max, min } from "d3-array";
+import { min, max } from "d3-array";
+import { transition } from "d3-transition";
 import { axisBottom, axisLeft } from "d3-axis";
-import { select } from "d3-selection";
+import { select, selectAll } from "d3-selection";
 import { line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
-import { arrayIsNullorEmpty, toTitleCase } from "@/lib/utils";
+import { arrayIsNullorEmpty, toTitleCase, wrapLabels } from "@/lib/utils";
 import { labelSpacer } from "@/lib/labelspacer";
 
 export default {

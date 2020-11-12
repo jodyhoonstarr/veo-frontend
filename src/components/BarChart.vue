@@ -20,11 +20,13 @@
 
 <script>
 import { format } from "d3-format";
-import { max, min } from "d3-array";
+import { min, max } from "d3-array";
+import { transition } from "d3-transition";
 import { axisBottom, axisLeft } from "d3-axis";
 import { select, selectAll } from "d3-selection";
 import { scaleBand, scaleLinear, scaleOrdinal } from "d3-scale";
-import { arrayIsNullorEmpty, toTitleCase, wrapLabels } from "@/lib/utils";
+import { arrayIsNullorEmpty, toTitleCase } from "@/lib/utils";
+import { wrapLabels } from "@/lib/utils";
 import { KEYTEXT } from "@/constants/lookups";
 
 export default {
