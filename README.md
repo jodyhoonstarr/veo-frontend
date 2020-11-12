@@ -69,6 +69,6 @@ Using the example deploy directory of ```/project/app``` the following block mus
       RewriteCond %{REQUEST_URI} ^/project/app/. [NC]
       RewriteCond %{REQUEST_FILENAME} !-f
       RewriteCond %{REQUEST_FILENAME} !-d
-      RewriteRule . /project/app/index.html [L]
+      RewriteRule . /project/app/index.html [R,L]
     </IfModule>
 ```
