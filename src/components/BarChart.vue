@@ -20,13 +20,11 @@
 
 <script>
 import { format } from "d3-format";
-import { min, max } from "d3-array";
-import { transition } from "d3-transition";
+import { max, min } from "d3-array";
 import { axisBottom, axisLeft } from "d3-axis";
 import { select, selectAll } from "d3-selection";
 import { scaleBand, scaleLinear, scaleOrdinal } from "d3-scale";
-import { arrayIsNullorEmpty, toTitleCase } from "@/lib/utils";
-import { wrapLabels } from "@/lib/utils";
+import { arrayIsNullorEmpty, toTitleCase, wrapLabels } from "@/lib/utils";
 import { KEYTEXT } from "@/constants/lookups";
 
 export default {
@@ -723,7 +721,7 @@ export default {
         .append("text")
         .attr(
           "transform",
-          `translate(${this.width / 2 + 14},${this.height - 2})`
+          `translate(${this.width / 2 + 14},${this.height - 4})`
         )
         .style("text-anchor", "middle")
         .attr("font-size", "12px")
