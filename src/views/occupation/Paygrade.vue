@@ -99,7 +99,16 @@ export default {
     return {
       csvData: null,
       occupationObj: { selected: null, toggle: false },
-      paygradeObj: { selected: null, toggle: true },
+      paygradeObj: {
+        selected: [
+          {
+            id: "E1-E5",
+            label: "Pay grade bins E1-E5"
+          },
+          { id: "E6-E9", label: "Pay grade bins E6 and E79" }
+        ],
+        toggle: true
+      },
       cohortObj: { selected: null, toggle: false },
       activeToggle: "occupation",
       filters: null

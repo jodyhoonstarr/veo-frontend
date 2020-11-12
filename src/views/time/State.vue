@@ -95,6 +95,7 @@ export default {
       chartType: "line",
       csvData: null,
       state: [
+        { id: "00", label: "National (50 states + DC)" },
         { id: "24", label: "Maryland" },
         { id: "11", label: "District of Columbia" },
         {
@@ -102,6 +103,7 @@ export default {
           label: "Virginia"
         }
       ],
+
       cohort: null,
       initialFilters: {
         primary: filterSelect("earnings", "primary"),

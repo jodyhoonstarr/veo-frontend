@@ -113,15 +113,25 @@ export default {
       csvData: null,
       raceObj: {
         selected: [
-          { id: "A1", label: "White Alone" },
-          { id: "A2", label: "Black or African American Alone" },
-          { id: "A3", label: "American Indian or Alaska Native Alone" },
-          { id: "A4", label: "Asian Alone" },
+          { id: "A1", label: "White alone" },
+          {
+            id: "A2",
+            label: "Black or African American alone"
+          },
+          { id: "A3", label: "American Indian or Alaska Native alone" },
+          {
+            id: "A4",
+            label: "Asian alone"
+          },
           {
             id: "A5",
-            label: "Native Hawaiian or Other Pacific Islander Alone"
+            label: "Native Hawaiian or Other Pacific Islander alone"
           },
-          { id: "A7", label: "Two or More Race Groups" }
+          {
+            id: "A6",
+            label: "Some other race alone (Not used)"
+          },
+          { id: "A7", label: "Two or more race groups" }
         ],
         toggle: true
       },

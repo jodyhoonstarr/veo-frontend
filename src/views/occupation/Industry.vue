@@ -103,9 +103,12 @@ export default {
       occupationObj: { selected: null, toggle: false },
       industryObj: {
         selected: [
+          { id: "00", label: "All NAICS sectors" },
           { id: "11", label: "Agriculture, Forestry, Fishing and Hunting" },
-          { id: "21", label: "Mining, Quarrying, and Oil and Gas Extraction" },
-          { id: "22", label: "Utilities" }
+          {
+            id: "21",
+            label: "Mining, Quarrying, and Oil and Gas Extraction"
+          }
         ],
         toggle: true
       },
