@@ -78,8 +78,8 @@ export default {
       type: Array,
       default: null
     },
-    // indicates whether the cohort data contains a margin entry and whether it should be returned
-    // this flag hides the margin entry (id = 0) from the UI but returns it's data
+    // indicates whether the cohort data contains a margin entry
+    // this flag hides the margin entry (id = 0) from the UI
     hideMargins: {
       type: Boolean,
       default: false
@@ -144,21 +144,12 @@ export default {
     },
     range: function() {
       let labels = this.fullLabels.slice(this.rangeMin, this.rangeMax + 1);
-      if (this.hideMargins) {
-        // this assumes that the first index is the margin value
-        let marginEntry = this.fullLabels.filter(x => x.id === "0");
-        this.$emit("input", marginEntry.concat(labels));
-      } else {
-        this.$emit("input", labels);
-      }
+      this.$emit("input", labels);
     },
     value: function() {
       if (Array.isArray(this.value)) {
-        // this assumes that the first index is the margin value
-        let minIndex = this.hideMargins ? 1 : 0;
-
         this.rangeMin = this.fullLabels.findIndex(
-          e => e.id === this.value[minIndex].id
+          e => e.id === this.value[0].id
         );
         this.rangeMax = this.fullLabels.findIndex(
           e => e.id === this.value[this.value.length - 1].id

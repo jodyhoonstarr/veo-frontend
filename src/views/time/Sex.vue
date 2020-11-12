@@ -21,6 +21,7 @@
             slot-scope="{ response, loading }"
             :loading="loading"
             :items="response"
+            :hide-margins="true"
           ></cohort-slider>
         </GetData>
       </v-col>
