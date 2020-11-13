@@ -180,11 +180,19 @@ const routes = [
           import(/* webpackChunkName: "afqt" */ "@/views/bar/AFQT.vue")
       },
       {
-        path: "yearsofservice",
-        name: "YearsOfService",
+        path: "yearsofservice/line",
+        name: "YearsOfServiceLine",
         component: () =>
           import(
             /* webpackChunkName: "experience" */ "@/views/line/YearsOfService.vue"
+          )
+      },
+      {
+        path: "yearsofservice/bar",
+        name: "YearsOfServiceBar",
+        component: () =>
+          import(
+            /* webpackChunkName: "experience" */ "@/views/bar/YearsOfService.vue"
           )
       },
       {

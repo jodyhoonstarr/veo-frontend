@@ -10,7 +10,8 @@ export const GROUPCOLUMN = {
   age: "agegrp",
   sex: "sex",
   education: "education",
-  yearsofservice: "yosgrp"
+  yearsofservice: "yosgrp",
+  "years of service": "yosgrp"
 };
 
 export const KEYTEXT = {
