@@ -2,13 +2,13 @@
   <div>
     <SelectBar>
       <v-col cols="12" xs="12" sm="6" class="pb-0">
-        <GetData :url="dataPath('metadata/label_industry.json')">
+        <GetData :url="dataPath('metadata/label_afqtgrp.json')">
           <DropDownwRadio
-            id="industry"
-            v-model="industryObj"
+            id="afqt"
+            v-model="afqtObj"
             slot-scope="{ response, loading }"
             :loading="loading"
-            label="Industry"
+            label="AFQT Range"
             :items="response"
             propname="labels"
           ></DropDownwRadio>
@@ -29,7 +29,7 @@
       </v-col>
     </SelectBar>
     <GetData
-      :url="dataPath('data/veons.csv')"
+      :url="dataPath('data/veot.csv')"
       :emit="true"
       @change="({ response }) => (this.csvData = response)"
     >
@@ -47,7 +47,7 @@
           :chart-colors="chartColors"
           :chart-data-type="chartDataType"
           chart-label="Exit Cohort"
-          :chart-data-zip="dataPath('downloads/VEO-State.zip')"
+          :chart-data-zip="dataPath('downloads/VEO-AFQT.zip')"
         ></Chart>
       </ChartCard>
     </GetData>
@@ -72,7 +72,7 @@ import {
 import { filterSelect } from "@/lib/filterselect";
 
 export default {
-  name: "Industry",
+  name: "AFQT",
   components: {
     DropDownwRadio,
     SelectBar,
@@ -83,22 +83,20 @@ export default {
   },
   data() {
     return {
-      name: "industry",
+      name: "afqt",
       chartType: "bar",
       csvData: null,
-      industryObj: {
+      afqtObj: {
         selected: [
-          { id: "00", label: "All NAICS sectors" },
+          { id: "A1", label: "Score tercile: 0-33" },
           {
-            id: "11",
-            label: "Agriculture, Forestry, Fishing and Hunting"
+            id: "A2",
+            label: "Score tercile: 34-66"
           },
-          { id: "21", label: "Mining, Quarrying, and Oil and Gas Extraction" },
-          { id: "22", label: "Utilities" }
+          { id: "A3", label: "Score tercile: 67-100" }
         ],
         toggle: true
       },
-
       cohortObj: { selected: null, toggle: false },
       initialFilters: {
         primary: filterSelect("earnings", "primary"),
@@ -110,12 +108,12 @@ export default {
         filters: null,
         type: null
       },
-      activeToggle: "industry"
+      activeToggle: "afqt"
     };
   },
   computed: {
-    industry: function() {
-      return this.industryObj.selected;
+    afqt: function() {
+      return this.afqtObj.selected;
     },
     cohort: function() {
       return this.cohortObj.selected;
@@ -123,7 +121,7 @@ export default {
     dataSelections: function() {
       return [
         { data: this.cohort, prop: "cohort" },
-        { data: this.industry, prop: "industry" }
+        { data: this.afqt, prop: "afqtgrp" }
       ];
     },
     chartDataType: function() {
@@ -161,8 +159,8 @@ export default {
     }
   },
   watch: {
-    industryObj: function() {
-      this.setActiveToggle(this.industryObj, "industry");
+    afqtObj: function() {
+      this.setActiveToggle(this.afqtObj, "afqt");
     },
     cohortObj: function() {
       this.setActiveToggle(this.cohortObj, "cohort");
@@ -182,7 +180,7 @@ export default {
       if (changedObj.toggle) {
         this.activeToggle = changedStr;
         // set all the other toggles to false if this one got switched on
-        [this.industryObj, this.cohortObj]
+        [this.afqtObj, this.cohortObj]
           .filter(o => o !== changedObj)
           .forEach(o => (o.toggle = false));
       }

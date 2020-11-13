@@ -47,7 +47,7 @@
           :chart-colors="chartColors"
           :chart-data-type="chartDataType"
           chart-label="Exit Cohort"
-          :chart-data-zip="dataPath('downloads/VEO-State.zip')"
+          :chart-data-zip="dataPath('downloads/VEO-Industry.zip')"
         ></Chart>
       </ChartCard>
     </GetData>

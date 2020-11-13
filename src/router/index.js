@@ -147,10 +147,17 @@ const routes = [
       import(/* webpackChunkName: "line" */ "@/views/Service.vue"),
     children: [
       {
-        path: "afqt",
-        name: "AFQT",
+        path: "afqt/line",
+        name: "AFQTLine",
         component: () =>
           import(/* webpackChunkName: "afqt" */ "@/views/line/AFQT.vue")
+      },
+
+      {
+        path: "afqt/bar",
+        name: "AFQTBar",
+        component: () =>
+          import(/* webpackChunkName: "afqt" */ "@/views/bar/AFQT.vue")
       },
       {
         path: "yearsofservice",
