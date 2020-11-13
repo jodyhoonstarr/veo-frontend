@@ -92,10 +92,16 @@ const routes = [
           )
       },
       {
-        path: "sex",
-        name: "Sex",
+        path: "sex/line",
+        name: "SexLine",
         component: () =>
           import(/* webpackChunkName: "sex" */ "@/views/line/Sex.vue")
+      },
+      {
+        path: "sex/bar",
+        name: "SexBar",
+        component: () =>
+          import(/* webpackChunkName: "sex" */ "@/views/bar/Sex.vue")
       }
     ]
   },
