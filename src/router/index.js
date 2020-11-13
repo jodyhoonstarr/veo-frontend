@@ -182,10 +182,16 @@ const routes = [
           )
       },
       {
-        path: "paygrade",
-        name: "Paygrade",
+        path: "paygrade/line",
+        name: "PaygradeLine",
         component: () =>
           import(/* webpackChunkName: "paygrade" */ "@/views/line/Paygrade.vue")
+      },
+      {
+        path: "paygrade/bar",
+        name: "PaygradeBar",
+        component: () =>
+          import(/* webpackChunkName: "paygrade" */ "@/views/bar/Paygrade.vue")
       },
       {
         path: "occupation",

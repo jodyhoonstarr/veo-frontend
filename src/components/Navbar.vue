@@ -153,7 +153,7 @@ export default {
             },
             {
               route: "/service/paygrade/bar",
-              label: "Pay Grad",
+              label: "Pay Grade",
               icon: "mdi-chart-bar"
             },
             {
