@@ -56,7 +56,7 @@
                 <v-list-item-group color="primary">
                   <v-list-item
                     v-for="child in tab.children"
-                    :key="child.label"
+                    :key="child.label + child.icon"
                     :to="child.route"
                     @click="setActiveTab(tab.route)"
                   >
@@ -128,32 +128,32 @@ export default {
           children: [
             {
               route: "/service/afqt/line",
-              label: "AFQT Range (Line)",
+              label: "AFQT Range",
               icon: "mdi-chart-line"
             },
             {
               route: "/service/afqt/bar",
-              label: "AFQT Range (Bar)",
+              label: "AFQT Range",
               icon: "mdi-chart-bar"
             },
             {
               route: "/service/yearsofservice/line",
-              label: "Years of Service (Line)",
+              label: "Years of Service",
               icon: "mdi-chart-line"
             },
             {
               route: "/service/yearsofservice/bar",
-              label: "Years of Service (Bar)",
+              label: "Years of Service",
               icon: "mdi-chart-bar"
             },
             {
               route: "/service/paygrade/line",
-              label: "Pay Grade (Line)",
+              label: "Pay Grade",
               icon: "mdi-chart-line"
             },
             {
               route: "/service/paygrade/bar",
-              label: "Pay Grad (Bar)",
+              label: "Pay Grad",
               icon: "mdi-chart-bar"
             },
             {
@@ -170,42 +170,42 @@ export default {
           children: [
             {
               route: "/demographics/age/line",
-              label: "Age at Exit Cohort (Line)",
+              label: "Age at Exit Cohort",
               icon: "mdi-chart-line"
             },
             {
               route: "/demographics/age/bar",
-              label: "Age at Exit Cohort (Bar)",
+              label: "Age at Exit Cohort",
               icon: "mdi-chart-bar"
             },
             {
               route: "/demographics/sex/line",
-              label: "Sex (Line)",
+              label: "Sex",
               icon: "mdi-chart-line"
             },
             {
               route: "/demographics/sex/bar",
-              label: "Sex (Bar)",
+              label: "Sex",
               icon: "mdi-chart-bar"
             },
             {
               route: "/demographics/raceethnicity/line",
-              label: "Race/Ethnicity (Line)",
+              label: "Race/Ethnicity",
               icon: "mdi-chart-line"
             },
             {
               route: "/demographics/raceethnicity/bar",
-              label: "Race/Ethnicity (Bar)",
+              label: "Race/Ethnicity",
               icon: "mdi-chart-bar"
             },
             {
               route: "/demographics/education/line",
-              label: "Enlistment Education Level (Line)",
+              label: "Enlistment Education Level",
               icon: "mdi-chart-line"
             },
             {
               route: "/demographics/education/bar",
-              label: "Enlistment Education Level (Bar)",
+              label: "Enlistment Education Level",
               icon: "mdi-chart-bar"
             }
           ]
@@ -217,12 +217,12 @@ export default {
           children: [
             {
               route: "/industry/line",
-              label: "Industry (Line)",
+              label: "Industry",
               icon: "mdi-chart-line"
             },
             {
               route: "/industry/bar",
-              label: "Industry (Bar)",
+              label: "Industry",
               icon: "mdi-chart-bar"
             },
             {
@@ -239,12 +239,12 @@ export default {
           children: [
             {
               route: "/state/line",
-              label: "State (Line)",
+              label: "State",
               icon: "mdi-chart-line"
             },
             {
               route: "/state/bar",
-              label: "State (Bar)",
+              label: "State",
               icon: "mdi-chart-bar"
             },
             {
