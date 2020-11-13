@@ -1,28 +1,30 @@
 <template>
   <div>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="4" class="pb-0">
+      <v-col cols="12" xs="12" sm="6" class="pb-0">
         <GetData :url="dataPath('metadata/label_industry.json')">
-          <DropDownNoRadio
+          <DropDownwRadio
             id="industry"
-            v-model="industry"
+            v-model="industryObj"
             slot-scope="{ response, loading }"
             :loading="loading"
             label="Industry"
             :items="response"
             propname="labels"
-          ></DropDownNoRadio>
+          ></DropDownwRadio>
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="8" class="pb-0">
+      <v-col cols="12" xs="12" sm="6" class="pb-0">
         <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
-          <cohort-slider
-            v-model="cohort"
+          <DropDownwRadio
+            id="cohort"
+            v-model="cohortObj"
             slot-scope="{ response, loading }"
             :loading="loading"
+            label="Cohort"
             :items="response"
-            :hide-margins="true"
-          ></cohort-slider>
+            propname="labels"
+          ></DropDownwRadio>
         </GetData>
       </v-col>
     </SelectBar>
@@ -35,24 +37,17 @@
         slot-scope="{ loading }"
         :loading="loading"
         :filters="filters"
-        active-toggle="Industry"
+        :active-toggle="activeToggle"
       >
-        <FiltersBar
-          :initial-values="initialFilters"
-          chart-type="line"
-          :disable-nonemp-counts="true"
-          disabled-text="Not available by job characteristics"
-          @change="handleFilters"
-        ></FiltersBar>
+        <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
         <Chart
           :chart-type="chartType"
           :loading="loading"
           :chart-data="chartData"
           :chart-colors="chartColors"
-          :chart-line-styles="chartLineStyles"
           :chart-data-type="chartDataType"
           chart-label="Exit Cohort"
-          :chart-data-zip="dataPath('downloads/VEO-Industry.zip')"
+          :chart-data-zip="dataPath('downloads/VEO-State.zip')"
         ></Chart>
       </ChartCard>
     </GetData>
@@ -62,8 +57,7 @@
 <script>
 import SelectBar from "@/components/SelectBar.vue";
 import GetData from "@/components/GetData";
-import DropDownNoRadio from "@/components/DropDownNoRadio";
-import CohortSlider from "@/components/CohortSlider";
+import DropDownwRadio from "@/components/DropDownwRadio";
 import ChartCard from "@/components/ChartCard";
 import FiltersBar from "@/components/FiltersBar";
 import Chart from "@/components/Chart";
@@ -72,7 +66,6 @@ import {
   createChartData,
   filterRows,
   getChartDataType,
-  getColorSet,
   joinPublicPath,
   simplifiyRows
 } from "@/lib/utils";
@@ -81,10 +74,9 @@ import { filterSelect } from "@/lib/filterselect";
 export default {
   name: "Industry",
   components: {
-    DropDownNoRadio,
+    DropDownwRadio,
     SelectBar,
     GetData,
-    CohortSlider,
     ChartCard,
     FiltersBar,
     Chart
@@ -92,18 +84,22 @@ export default {
   data() {
     return {
       name: "industry",
-      chartType: "line",
+      chartType: "bar",
       csvData: null,
-      industry: [
-        { id: "00", label: "All NAICS sectors" },
-        {
-          id: "11",
-          label: "Agriculture, Forestry, Fishing and Hunting"
-        },
-        { id: "21", label: "Mining, Quarrying, and Oil and Gas Extraction" },
-        { id: "22", label: "Utilities" }
-      ],
-      cohort: null,
+      industryObj: {
+        selected: [
+          { id: "00", label: "All NAICS sectors" },
+          {
+            id: "11",
+            label: "Agriculture, Forestry, Fishing and Hunting"
+          },
+          { id: "21", label: "Mining, Quarrying, and Oil and Gas Extraction" },
+          { id: "22", label: "Utilities" }
+        ],
+        toggle: true
+      },
+
+      cohortObj: { selected: null, toggle: false },
       initialFilters: {
         primary: filterSelect("earnings", "primary"),
         secondary: filterSelect("earnings", "secondary", "p50"),
@@ -113,23 +109,28 @@ export default {
         colors: null,
         filters: null,
         type: null
-      }
+      },
+      activeToggle: "industry"
     };
   },
   computed: {
-    dataColumn: function() {
-      // AKA activeToggleProp in the bar view
-      // in lines this is a fixed column
-      return GROUPCOLUMN[this.name];
+    industry: function() {
+      return this.industryObj.selected;
+    },
+    cohort: function() {
+      return this.cohortObj.selected;
     },
     dataSelections: function() {
       return [
         { data: this.cohort, prop: "cohort" },
-        { data: this.industry, prop: this.dataColumn }
+        { data: this.industry, prop: "industry" }
       ];
     },
     chartDataType: function() {
       return getChartDataType(this.filters);
+    },
+    activeToggleProp: function() {
+      return GROUPCOLUMN[this.activeToggle];
     },
     csvDataRows: function() {
       return filterRows(this.csvData, this.dataSelections);
@@ -138,41 +139,53 @@ export default {
       return simplifiyRows(
         this.csvDataRows,
         this.filters,
-        this.dataColumn,
-        this.chartType === "line"
+        this.activeToggleProp
       );
     },
     chartData: function() {
       return createChartData(
         this.csvDataRowsSimple,
         this.filters,
-        this.dataColumn,
-        this.dataSelections,
-        this.chartType === "line"
+        this.activeToggleProp,
+        this.dataSelections
       );
     },
     chartColors: function() {
-      return getColorSet(this.chartType, this.filters, this.industry);
-    },
-    chartLineStyles: function() {
       if (
-        !this.filters ||
-        !Object.prototype.hasOwnProperty.call(this.filters, "linestyles")
+        this.filters != null &&
+        Object.prototype.hasOwnProperty.call(this.filters, "colors")
       ) {
-        return null;
+        return this.filters.colors;
       }
-      return this.filters.linestyles;
+      return null;
+    }
+  },
+  watch: {
+    industryObj: function() {
+      this.setActiveToggle(this.industryObj, "industry");
+    },
+    cohortObj: function() {
+      this.setActiveToggle(this.cohortObj, "cohort");
     }
   },
   methods: {
+    dataPath: function(str) {
+      return joinPublicPath(str);
+    },
     handleFilters: function(f) {
       if (f == null) {
         return null;
       }
       this.filters = f;
     },
-    dataPath: function(str) {
-      return joinPublicPath(str);
+    setActiveToggle: function(changedObj, changedStr) {
+      if (changedObj.toggle) {
+        this.activeToggle = changedStr;
+        // set all the other toggles to false if this one got switched on
+        [this.industryObj, this.cohortObj]
+          .filter(o => o !== changedObj)
+          .forEach(o => (o.toggle = false));
+      }
     }
   }
 };

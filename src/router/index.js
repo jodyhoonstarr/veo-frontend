@@ -98,6 +98,12 @@ const routes = [
           import(/* webpackChunkName: "industry" */ "@/views/line/Industry.vue")
       },
       {
+        path: "bar",
+        name: "IndustryBar",
+        component: () =>
+          import(/* webpackChunkName: "industry" */ "@/views/bar/Industry.vue")
+      },
+      {
         path: "occupation",
         name: "IndustryByOccupation",
         component: () =>
@@ -107,7 +113,6 @@ const routes = [
       }
     ]
   },
-
   {
     path: "/state/",
     name: "State",
