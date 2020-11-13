@@ -88,9 +88,12 @@ export default {
       csvData: null,
       educationObj: {
         selected: [
-          { id: "F1", label: "General Educational Development (GED) test" },
-          { id: "F2", label: "High school diploma" },
-          { id: "F3", label: "Some college or higher" }
+          { id: "F2", label: "High School Diploma" },
+          {
+            id: "F1",
+            label: "General Educational Development (GED) Test"
+          },
+          { id: "F3", label: "Some College or Higher" }
         ],
         toggle: true
       },

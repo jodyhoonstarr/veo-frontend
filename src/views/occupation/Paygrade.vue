@@ -101,12 +101,13 @@ export default {
       occupationObj: { selected: null, toggle: false },
       paygradeObj: {
         selected: [
+          { id: "E1-E5", label: "Pay Grade Bins E1-E5" },
           {
-            id: "E1-E5",
-            label: "Pay grade bins E1-E5"
-          },
-          { id: "E6-E9", label: "Pay grade bins E6 and E79" }
+            id: "E6-E9",
+            label: "Pay Grade Bins E6 and E79"
+          }
         ],
+
         toggle: true
       },
       cohortObj: { selected: null, toggle: false },

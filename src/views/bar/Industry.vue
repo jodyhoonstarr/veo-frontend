@@ -88,7 +88,7 @@ export default {
       csvData: null,
       industryObj: {
         selected: [
-          { id: "00", label: "All NAICS sectors" },
+          { id: "00", label: "All NAICS Sectors" },
           {
             id: "11",
             label: "Agriculture, Forestry, Fishing and Hunting"

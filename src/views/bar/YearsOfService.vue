@@ -94,9 +94,12 @@ export default {
       csvData: null,
       experienceObj: {
         selected: [
-          { id: "A1", label: "0-5 years" },
-          { id: "A2", label: "6-19 years" },
-          { id: "A3", label: "20+ years" }
+          { id: "A1", label: "0-5 Years" },
+          { id: "A2", label: "6-19 Years" },
+          {
+            id: "A3",
+            label: "20+ Years"
+          }
         ],
         toggle: true
       },

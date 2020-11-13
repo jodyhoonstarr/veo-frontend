@@ -106,13 +106,13 @@ export default {
       occupationObj: { selected: null, toggle: false },
       stateObj: {
         selected: [
-          { id: "00", label: "National (50 states + DC)" },
-          { id: "11", label: "District of Columbia" },
+          { id: "00", label: "National (50 States + DC)" },
           { id: "24", label: "Maryland" },
           {
-            id: "51",
-            label: "Virginia"
-          }
+            id: "11",
+            label: "District of Columbia"
+          },
+          { id: "51", label: "Virginia" }
         ],
         toggle: true
       },

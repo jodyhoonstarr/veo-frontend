@@ -93,9 +93,12 @@ export default {
       chartType: "line",
       csvData: null,
       afqt: [
-        { id: "A1", label: "Score range: 0-33" },
-        { id: "A2", label: "Score range: 34-66" },
-        { id: "A3", label: "Score range: 67-100" }
+        { id: "A1", label: "Score Tercile: 0-33" },
+        { id: "A2", label: "Score Tercile: 34-66" },
+        {
+          id: "A3",
+          label: "Score Tercile: 67-100"
+        }
       ],
       cohort: null,
       initialFilters: {

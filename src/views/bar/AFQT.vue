@@ -88,12 +88,12 @@ export default {
       csvData: null,
       afqtObj: {
         selected: [
-          { id: "A1", label: "Score tercile: 0-33" },
+          { id: "A1", label: "Score Tercile: 0-33" },
+          { id: "A2", label: "Score Tercile: 34-66" },
           {
-            id: "A2",
-            label: "Score tercile: 34-66"
-          },
-          { id: "A3", label: "Score tercile: 67-100" }
+            id: "A3",
+            label: "Score Tercile: 67-100"
+          }
         ],
         toggle: true
       },
