@@ -56,10 +56,16 @@ const routes = [
       import(/* webpackChunkName: "line" */ "@/views/Demographics.vue"),
     children: [
       {
-        path: "age",
-        name: "Age",
+        path: "age/line",
+        name: "AgeLine",
         component: () =>
           import(/* webpackChunkName: "age" */ "@/views/line/Age.vue")
+      },
+      {
+        path: "age/bar",
+        name: "AgeBar",
+        component: () =>
+          import(/* webpackChunkName: "age" */ "@/views/bar/Age.vue")
       },
       {
         path: "education",
