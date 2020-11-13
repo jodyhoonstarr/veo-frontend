@@ -120,6 +120,12 @@ const routes = [
           import(/* webpackChunkName: "industry" */ "@/views/line/State.vue")
       },
       {
+        path: "bar",
+        name: "StateBar",
+        component: () =>
+          import(/* webpackChunkName: "industry" */ "@/views/bar/State.vue")
+      },
+      {
         path: "occupation",
         name: "IndustryByState",
         component: () =>
