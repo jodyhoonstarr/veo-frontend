@@ -37,7 +37,7 @@
         slot-scope="{ loading }"
         :loading="loading"
         :filters="filters"
-        :active-toggle="activeToggle"
+        :active-toggle="activeToggle === 'afqt' ? 'AFQT Range' : activeToggle"
       >
         <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
         <Chart
@@ -46,7 +46,7 @@
           :chart-data="chartData"
           :chart-colors="chartColors"
           :chart-data-type="chartDataType"
-          chart-label="Exit Cohort"
+          :chart-label="activeToggle === 'afqt' ? 'AFQT Range' : activeToggle"
           :chart-data-zip="dataPath('downloads/VEO-AFQT.zip')"
         ></Chart>
       </ChartCard>

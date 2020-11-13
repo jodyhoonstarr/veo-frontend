@@ -46,7 +46,7 @@
           :chart-data="chartData"
           :chart-colors="chartColors"
           :chart-data-type="chartDataType"
-          chart-label="Exit Cohort"
+          :chart-label="activeToggle"
           :chart-data-zip="dataPath('downloads/VEO-Sex.zip')"
         ></Chart>
       </ChartCard>

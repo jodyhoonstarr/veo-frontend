@@ -48,7 +48,11 @@
           :chart-data="chartData"
           :chart-colors="chartColors"
           :chart-data-type="chartDataType"
-          chart-label="Exit Cohort"
+          :chart-label="
+            activeToggle === 'yearsofservice'
+              ? 'Years of Service'
+              : activeToggle
+          "
           :chart-data-zip="dataPath('downloads/VEO-YearsOfService.zip')"
         ></Chart>
       </ChartCard>
