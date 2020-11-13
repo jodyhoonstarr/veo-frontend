@@ -84,11 +84,19 @@ const routes = [
           )
       },
       {
-        path: "raceethnicity",
-        name: "Raceethnicity",
+        path: "raceethnicity/line",
+        name: "RaceethnicityLine",
         component: () =>
           import(
             /* webpackChunkName: "raceethnicity" */ "@/views/line/RaceEthnicity.vue"
+          )
+      },
+      {
+        path: "raceethnicity/bar",
+        name: "RaceethnicityBar",
+        component: () =>
+          import(
+            /* webpackChunkName: "raceethnicity" */ "@/views/bar/RaceEthnicity.vue"
           )
       },
       {
