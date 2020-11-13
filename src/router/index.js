@@ -68,11 +68,19 @@ const routes = [
           import(/* webpackChunkName: "age" */ "@/views/bar/Age.vue")
       },
       {
-        path: "education",
-        name: "Education",
+        path: "education/line",
+        name: "EducationLine",
         component: () =>
           import(
             /* webpackChunkName: "education" */ "@/views/line/Education.vue"
+          )
+      },
+      {
+        path: "education/bar",
+        name: "EducationBar",
+        component: () =>
+          import(
+            /* webpackChunkName: "education" */ "@/views/bar/Education.vue"
           )
       },
       {
