@@ -174,6 +174,18 @@ export function simplifiyRows(
   usablePropsData.sort((a, b) =>
     a[activeToggleProp] > b[activeToggleProp] ? 1 : -1
   );
+
+  // put "E1-E9" first for paygrade/paygrade groups
+  if (
+    usablePropsData &&
+    Object.prototype.hasOwnProperty.call(usablePropsData[0], "paygrade")
+  ) {
+    const allPaygrades = usablePropsData.find(o => o.paygrade === "E1-E9");
+    if (allPaygrades) {
+      usablePropsData = usablePropsData.filter(o => o !== allPaygrades);
+      usablePropsData.unshift(allPaygrades);
+    }
+  }
   return usablePropsData;
 }
 
