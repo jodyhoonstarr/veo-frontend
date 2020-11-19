@@ -39,7 +39,12 @@
         :filters="filters"
         :active-toggle="activeToggle"
       >
-        <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          chart-type="bar"
+          :disable-nonemp-counts="true"
+          disabled-text="Not available by job characteristics"
+          @change="handleFilters"
+        ></FiltersBar>
         <Chart
           :chart-type="chartType"
           :loading="loading"
