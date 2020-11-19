@@ -94,7 +94,7 @@ export function filterRows(csvData, dataSelections) {
   return csvData.filter(row => {
     return dataSelections.every(o =>
       o.data.some(e => {
-        if (e && e.hasOwnProperty("id")) {
+        if (e && Object.prototype.hasOwnProperty.call(e, "id")) {
           return e.id === row[o.prop];
         }
       })
@@ -160,15 +160,21 @@ export function simplifiyRows(
   }
 
   // filter out the row data to only keep usable props
-  return csvDataRows.map(row => {
+  let usablePropsData = csvDataRows.map(row => {
     let result = {};
     filterKeys.forEach(function(key) {
-      if (row.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(row, key)) {
         result[key] = row[key];
       }
     });
     return result;
   });
+
+  // order by grouped prop
+  usablePropsData.sort((a, b) =>
+    a[activeToggleProp] > b[activeToggleProp] ? 1 : -1
+  );
+  return usablePropsData;
 }
 
 // format the chart data
@@ -260,7 +266,7 @@ export function getChartDataType(filters) {
     filters &&
     Array.isArray(filters.primary) &&
     filters.primary.length >= 1 &&
-    filters.primary[0].hasOwnProperty("id")
+    Object.prototype.hasOwnProperty.call(filters.primary[0], "id")
   ) {
     return filters.primary[0].id;
   }
@@ -270,7 +276,10 @@ export function getChartDataType(filters) {
 export function getColorSet(chartType, filters, data) {
   if (chartType === "bar") {
     // bar charts get the color set from the active filters
-    if (filters != null && filters.hasOwnProperty("colors")) {
+    if (
+      filters != null &&
+      Object.prototype.hasOwnProperty.call(filters, "colors")
+    ) {
       return filters.colors;
     }
   } else if (chartType === "line") {
@@ -282,7 +291,7 @@ export function getColorSet(chartType, filters, data) {
 
       let colorsLookup = {};
       data.map((d, i) => {
-        if (d != null && d.hasOwnProperty("label")) {
+        if (d != null && Object.prototype.hasOwnProperty.call(d, "label")) {
           colorsLookup[d.label] = colorScale(i);
         }
       });

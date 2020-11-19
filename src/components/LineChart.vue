@@ -242,12 +242,12 @@ export default {
       const linesFiltered = this.d3Lines.filter(l => l.key === labelKey);
       let yValues = {};
       linesFiltered.map(d => {
-        if (
-          d.data &&
-          d.data.length > 0 &&
-          d.data[d.data.length - 1].hasOwnProperty("value")
-        ) {
-          yValues[d.label] = this.y(d.data[d.data.length - 1].value);
+        if (d.data && d.data.length > 0) {
+          const maxCohort = Math.max(...d.data.map(o => o.cohort), 0);
+          const lineEndPoint = d.data.find(
+            o => o.cohort === maxCohort.toString()
+          );
+          yValues[d.label] = this.y(lineEndPoint.value);
         }
       });
 
