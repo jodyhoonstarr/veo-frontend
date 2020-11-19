@@ -681,7 +681,14 @@ export default {
         })
         .transition("labelposition")
         .attr("opacity", 1)
-        .attr("y", () => vm.y(d.data[d.data.length - 1].value));
+        .attr("y", d => {
+          // find the last cohort on the timeline and use it's y pos
+          const maxCohort = Math.max(...d.data.map(o => o.cohort), 0);
+          const lineEndPoint = d.data.find(
+            o => o.cohort === maxCohort.toString()
+          );
+          return vm.y(lineEndPoint.value);
+        });
     },
     lineHoverOut: function(d3This, vm, d) {
       // line - to default
