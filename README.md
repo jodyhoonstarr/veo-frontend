@@ -44,22 +44,38 @@ npx vue-cli-service build --modern
 ```
 
 ### Pull to production
-Some config variables exist that change across servers. These should be configured better but until then, when pulling new code, run the following.
+
+Some config variables exist that change across servers. These should be configured better but until then, when pulling
+new code, run the following.
+
 ```
 git stash
 git pull
 git stash pop
 ```
 
+### Push to all servers
+
+```shell
+rsync -avz  /path/to/veo servername:/path/to/veo
+```
+
 ### Zip all project files in dist/ and deliver to webserver
-This process can vary depending on work-flow. Project files are not large but corporate email clients will flag them as malicious and block delivery if sent as an attachment. A good alternative is to upload the zip archive to a [s3 bucket](https://aws.amazon.com/s3/), set the zip file to be "public" in d3, download directly to the webserver, and unzip the archive.
+
+This process can vary depending on work-flow. Project files are not large but corporate email clients will flag them as
+malicious and block delivery if sent as an attachment. A good alternative is to upload the zip archive to
+a [s3 bucket](https://aws.amazon.com/s3/), set the zip file to be "public" in d3, download directly to the webserver,
+and unzip the archive.
 
 Once files are available on the server, you should be able to view the app.
 
 ### Apache config (if deployed to a subdirectory)
-The last configuration option is handling the application level routing. Configure apache as follows if not deployed to the webserver root directory.
 
-Using the example deploy directory of ```/project/app``` the following block must be added to the apache vhost for the parent site.
+The last configuration option is handling the application level routing. Configure apache as follows if not deployed to
+the webserver root directory.
+
+Using the example deploy directory of ```/project/app``` the following block must be added to the apache vhost for the
+parent site.
 ```
     <IfModule mod_rewrite.c>
       RewriteEngine On
