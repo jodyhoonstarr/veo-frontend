@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="primary" elevation="0">
+  <v-toolbar color="primary" elevation="0">
     <a class="ml-0 px-md-3" href="https://www.census.gov">
       <v-img
         alt="Census Logo"
@@ -22,7 +22,7 @@
       <span class="white--text hidden-xs-only">LEHD Home</span>
       <v-icon color="white" right medium>mdi-home</v-icon>
     </v-btn>
-  </v-app-bar>
+  </v-toolbar>
 </template>
 
 <script>
