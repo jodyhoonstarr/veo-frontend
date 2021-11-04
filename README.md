@@ -88,3 +88,11 @@ parent site.
       RewriteRule . /project/app/index.html [R,L]
     </IfModule>
 ```
+
+### USWDS Header
+The USWDS header is set in to reference `./assets/uswds...` files. 
+When using the vue router these links don't resolve at the url routing scheme (e.g. `/occupation/detail`)
+but should work when properly configured in apache to redirect any virtual directories created by
+vue router back to the root index page.
+
+In practive this means the header may look broken in dev mode when navigating directly to a URL but should work in production.
