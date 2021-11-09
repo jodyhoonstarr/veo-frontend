@@ -1,3 +1,6 @@
+// ***THE DEPLOY DIRECTORY***
+const publicPath = "/applications/veo/";
+
 module.exports = {
   css: {
     loaderOptions: {
@@ -29,5 +32,5 @@ module.exports = {
       .use("eslint-loader")
       .tap(opts => ({ ...opts, emitWarning: true }));
   },
-  publicPath: "/" // also set in src/constants/config
+  publicPath: publicPath
 };
