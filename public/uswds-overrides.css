@@ -1,0 +1,6 @@
+.usa-banner__inner {
+  /* important matters when expanded */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 15px !important /* match padding on Census logo */;
+}
