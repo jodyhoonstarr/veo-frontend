@@ -5,10 +5,6 @@ This is the repostory containing the VEO Explorer application vue2 project.
 ### Prereqs
 Install [nodejs](https://nodejs.org/en/) and [vue cli](https://cli.vuejs.org/guide/installation.html) and configure for your own environment.
 
-``` 
-npm install -g @vue/cli
-```
-
 ### Install Packages
 Install the project dependencies.
 ```
@@ -19,39 +15,39 @@ npm install
 ### Compiles and hot reload for development
 To work on the project locally run a development server on localhost.
 ```
-vue-cli-service serve
+npm run serve
 ```
 
 ### Prepare deployment
 The application uses vue router which passes the URL path to the application for handling. This works as expected when served from the root website directory (e.g. ```www.website.com```) but requires some configuration if depoloyed elsewhere.
 
-In vue.config.js and src/constants/config set the public path to be the home project directory. If this application is to be served from the root directory then set
-```publicPath = "/"``` and ```PUBLICPATH = "/"```. 
+In vue.config.js set the public path to be the home project directory. If this application is to be served from the root directory then set
+```publicPath = "/"``` 
 
 If deployment is in a subdirectory, such as ```www.website.com/project/app``` then the path variables should use 
-```publicPath = "/project/app"``` and ```PUBLICPATH = "/project/app"```. 
+```publicPath = "/project/app"``` 
 
 This must be done before building the application files.
 
 ### Build and minify for production
-Bundle all project files in the dist/ directory. 
+Bundle all project files into the `dist/` directory. 
 ```
-# if vue cli installed globally
-vue-cli-service build --modern
-
-# else
-npx vue-cli-service build --modern
+npm run build
 ```
+At this point all files exist and need to be copied into place
+```shell
+cp dist/ /tmp/ -r
+chmod 755 /tmp/dist -R
 
-### Pull to production
+# copy into place
+sudo su - lehdadm
+cd /data/website/applications/veo
+rm -rf *
+cp /tmp/dist/* .
 
-Some config variables exist that change across servers. These should be configured better but until then, when pulling
-new code, run the following.
-
-```
-git stash
-git pull
-git stash pop
+# cleanup
+logout
+rm -rf /tmp/dist
 ```
 
 ### Push to all servers
@@ -59,15 +55,6 @@ git stash pop
 ```shell
 rsync -avz  /path/to/veo servername:/path/to/veo
 ```
-
-### Zip all project files in dist/ and deliver to webserver
-
-This process can vary depending on work-flow. Project files are not large but corporate email clients will flag them as
-malicious and block delivery if sent as an attachment. A good alternative is to upload the zip archive to
-a [s3 bucket](https://aws.amazon.com/s3/), set the zip file to be "public" in d3, download directly to the webserver,
-and unzip the archive.
-
-Once files are available on the server, you should be able to view the app.
 
 ### Apache config (if deployed to a subdirectory)
 
@@ -90,9 +77,7 @@ parent site.
 ```
 
 ### USWDS Header
-The USWDS header is set in to reference `./assets/uswds...` files. 
+The USWDS header is set in to reference `${publicPath}/assets/uswds...` files. 
 When using the vue router these links don't resolve at the url routing scheme (e.g. `/occupation/detail`)
 but should work when properly configured in apache to redirect any virtual directories created by
 vue router back to the root index page.
-
-In practive this means the header may look broken in dev mode when navigating directly to a URL but should work in production.
