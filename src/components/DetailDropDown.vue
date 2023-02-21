@@ -104,11 +104,11 @@ export default {
   name: "DetailDropDown",
   props: {
     value: {
-      type: Object | Array,
+      type: [Object, Array],
       default: null
     },
     items: {
-      type: Object | Array,
+      type: [Object, Array],
       default: null
     },
     label: {
@@ -168,6 +168,8 @@ export default {
       if (!this.loading && this.persistentHint) {
         return "Select Multiple Characteristics";
       }
+
+      return "";
     },
     pluralLabels: function() {
       return Pluralize(this.label, this.itemCount, true);
@@ -189,7 +191,7 @@ export default {
     }
   },
   methods: {
-    filterFullObject(item, queryText, itemText) {
+    filterFullObject(item, queryText) {
       return (
         item.label.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) >
           -1 ||

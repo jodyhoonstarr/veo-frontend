@@ -140,7 +140,7 @@ import Pluralize from "pluralize";
 export default {
   props: {
     value: {
-      type: Object | Array,
+      type: [Object, Array],
       default: null
     },
     items: {
@@ -212,6 +212,8 @@ export default {
       if (!this.loading && this.persistentHint) {
         return "Select Multiple Characteristics";
       }
+
+      return "";
     },
     pluralLabels: function() {
       return Pluralize(this.label, this.itemCount, true);
