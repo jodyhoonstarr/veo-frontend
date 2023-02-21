@@ -1,10 +1,10 @@
 <template>
   <v-autocomplete
+    ref="dropdown"
+    v-model="selected"
     :loading="loading"
     :disabled="loading"
-    v-model="selected"
     item-text="label"
-    ref="dropdown"
     return-object
     :items="items"
     :label="label"

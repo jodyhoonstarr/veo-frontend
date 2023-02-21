@@ -1,12 +1,12 @@
 <template>
   <v-autocomplete
     v-if="itemIsObject"
+    ref="dropdown"
+    v-model="selected"
     :loading="loading"
     :disabled="loading"
-    v-model="selected"
     item-text="label"
     return-object
-    ref="dropdown"
     :items="items"
     :label="label"
     :multiple="multiple"
