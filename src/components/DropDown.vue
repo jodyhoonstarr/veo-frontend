@@ -7,7 +7,7 @@
     :disabled="loading"
     item-text="label"
     return-object
-    :items="items"
+    :items="items || {}"
     :label="label"
     :multiple="multiple"
     dense
@@ -72,7 +72,7 @@
     v-model="selected"
     :loading="loading"
     :disabled="loading"
-    :items="items"
+    :items="items || []"
     :label="label"
     :multiple="multiple"
     dense
@@ -141,11 +141,11 @@ export default {
   props: {
     value: {
       type: [Object, Array],
-      default: null
+      default: () => {}
     },
     items: {
       type: Array,
-      default: null
+      default: () => []
     },
     label: {
       type: String,

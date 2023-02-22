@@ -6,7 +6,7 @@
     :disabled="loading"
     item-text="label"
     return-object
-    :items="items"
+    :items="items || []"
     :label="label"
     :multiple="multiple"
     dense
@@ -105,11 +105,11 @@ export default {
   props: {
     value: {
       type: [Object, Array],
-      default: null
+      default: () => {}
     },
     items: {
       type: [Object, Array],
-      default: null
+      default: () => {}
     },
     label: {
       type: String,
@@ -134,12 +134,12 @@ export default {
     selectallable: {
       type: Boolean,
       default: false
-    }
+    },
   },
   data() {
     return {
       search: null,
-      selected: this.value
+      selected: this.value,
     };
   },
   computed: {
@@ -180,7 +180,7 @@ export default {
     },
     noneSelected: function() {
       return this.selected == null;
-    }
+    },
   },
   watch: {
     value(input) {
@@ -213,7 +213,7 @@ export default {
     },
     blur: function() {
       this.$refs.dropdown.blur();
-    }
+    },
   }
 };
 </script>
