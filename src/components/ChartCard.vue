@@ -1,7 +1,10 @@
 <template>
   <v-card :loading="loading">
     <v-system-bar color="primary">
-      <span v-if="loading" class="white--text">Loading...</span>
+      <span
+        v-if="loading"
+        class="white--text"
+      >Loading...</span>
       <span
         v-else-if="
           filters &&
@@ -10,11 +13,10 @@
             filters.primary.length === 1
         "
         class="white--text"
-        >{{ filters.primary[0].label }} by {{ byString }}</span
-      >
-      <v-spacer></v-spacer>
+      >{{ filters.primary[0].label }} by {{ byString }}</span>
+      <v-spacer />
     </v-system-bar>
-    <slot></slot>
+    <slot />
   </v-card>
 </template>
 

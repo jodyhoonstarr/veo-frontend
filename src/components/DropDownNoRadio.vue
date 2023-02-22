@@ -9,7 +9,7 @@
         :multiple="true"
         :persistent-hint="false"
         :selectallable="selectallable"
-      ></DropDown>
+      />
     </v-col>
   </v-row>
 </template>

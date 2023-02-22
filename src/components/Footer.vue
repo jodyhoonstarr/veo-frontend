@@ -13,21 +13,22 @@
           :href="link.url"
           class="white--text xs-12 text-left"
           text-xs-left
-          >{{ link.label }}</a
-        >
-        <br class="hidden-sm-and-up" />
+        >{{ link.label }}</a>
+        <br class="hidden-sm-and-up">
         <v-divider
           v-if="index !== links.length - 1"
           class="mx-1 shift-down hidden-xs-only"
           vertical
           color="white"
-        ></v-divider>
+        />
       </template>
-      <v-divider class="my-4 divider-color"></v-divider>
+      <v-divider class="my-4 divider-color" />
 
-      <v-card-text class="white--text quote py-0 text-center"
-        >Measuring America's People, Places and Economy</v-card-text
+      <v-card-text
+        class="white--text quote py-0 text-center"
       >
+        Measuring America's People, Places and Economy
+      </v-card-text>
     </v-card>
   </v-footer>
 </template>

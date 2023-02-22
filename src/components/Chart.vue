@@ -1,13 +1,21 @@
 <template>
-  <v-card ref="chartcard" flat>
-    <notification-card v-if="loading && width" :height="height">
+  <v-card
+    ref="chartcard"
+    flat
+  >
+    <notification-card
+      v-if="loading && width"
+      :height="height"
+    >
       <v-progress-circular
         :size="height / 2"
         indeterminate
         color="primary"
-      ></v-progress-circular>
+      />
       <v-card-text class="py-5">
-        <p class="py-0 display-1 text--secondary">Loading...</p>
+        <p class="py-0 display-1 text--secondary">
+          Loading...
+        </p>
       </v-card-text>
     </notification-card>
 
@@ -18,8 +26,7 @@
           :url="chartDataZip"
           icon="mdi-download"
           tooltip="Download Source Data"
-        >
-        </chart-button-download>
+        />
       </button-container>
 
       <BarChart
@@ -30,7 +37,7 @@
         :chart-colors="chartColors"
         :chart-data-type="chartDataType"
         :chart-label="chartLabel"
-      ></BarChart>
+      />
     </template>
 
     <template v-else-if="chartType === 'line' && chartData != null && width">
@@ -41,7 +48,7 @@
           icon="mdi-magnify-plus"
           off-icon="mdi-magnify-minus"
           :nudge-tooltip="0"
-        ></chart-button-toggle>
+        />
 
         <chart-button-download
           v-if="chartDataZip"
@@ -49,8 +56,7 @@
           icon="mdi-download"
           tooltip="Download Source Data"
           :nudge-tooltip="40"
-        >
-        </chart-button-download>
+        />
       </button-container>
 
       <line-chart
@@ -63,15 +69,23 @@
         :chart-data-type="chartDataType"
         :chart-label="chartLabel"
         :magnify-y-axis="magnifyYAxis"
-      ></line-chart>
+      />
     </template>
 
-    <notification-card v-else-if="width" :height="height">
-      <v-icon :size="height / 2" color="text--secondary"
-        >mdi-alert-outline</v-icon
+    <notification-card
+      v-else-if="width"
+      :height="height"
+    >
+      <v-icon
+        :size="height / 2"
+        color="text--secondary"
       >
+        mdi-alert-outline
+      </v-icon>
       <v-card-text class="py-5">
-        <p class="py-0 display-1 text--secondary">No Data Available</p>
+        <p class="py-0 display-1 text--secondary">
+          No Data Available
+        </p>
       </v-card-text>
     </notification-card>
   </v-card>

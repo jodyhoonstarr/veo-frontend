@@ -27,9 +27,11 @@
             :disabled="allSelected"
             @click="selectAllProps"
           >
-            <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>Select
-            All</v-btn
-          >
+            <v-icon left>
+              mdi-checkbox-multiple-marked-outline
+            </v-icon>Select
+            All
+          </v-btn>
           <v-btn
             v-if="selectallable"
             color="primary"
@@ -37,28 +39,44 @@
             small
             :disabled="noneSelected"
             @click="selectNoneProps"
-            ><v-icon left>mdi-checkbox-multiple-blank-outline</v-icon
-            >Clear</v-btn
           >
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text small @click="close"
-            ><v-icon>mdi-close</v-icon></v-btn
+            <v-icon left>
+              mdi-checkbox-multiple-blank-outline
+            </v-icon>Clear
+          </v-btn>
+          <v-spacer />
+          <v-btn
+            color="primary"
+            text
+            small
+            @click="close"
           >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
         </v-row>
       </v-col>
-      <v-divider class="pb-1"></v-divider>
+      <v-divider class="pb-1" />
     </template>
 
     <template v-slot:selection="{ item, index }">
-      <div v-if="index === 0 && itemCount === 1" class="selection">
+      <div
+        v-if="index === 0 && itemCount === 1"
+        class="selection"
+      >
         {{ item.label }}
       </div>
-      <div v-else-if="index === 1" class="selection">
+      <div
+        v-else-if="index === 1"
+        class="selection"
+      >
         {{ pluralLabels }} Selected
       </div>
     </template>
 
-    <template v-slot:item="{ parent, item }" three-line>
+    <template
+      v-slot:item="{ parent, item }"
+      three-line
+    >
       <v-list-item-content class="py-0">
         <v-list-item-title
           v-if="
@@ -69,12 +87,12 @@
           "
           class="pt-1"
           v-html="parent.genFilteredText(item.label)"
-        ></v-list-item-title>
+        />
         <v-list-item-title
           v-else
           class="pt-1"
           v-html="item.label"
-        ></v-list-item-title>
+        />
         <p
           v-if="
             search &&
@@ -85,13 +103,13 @@
           class="grey--text caption mb-0 pb-1"
           wrap
           v-html="parent.genFilteredText(item.details)"
-        ></p>
+        />
         <v-list-item-subtitle
           v-else
           class="grey--text caption mb-0 pb-1"
           v-html="item.details"
-        ></v-list-item-subtitle>
-        <v-divider></v-divider>
+        />
+        <v-divider />
       </v-list-item-content>
     </template>
   </v-autocomplete>
@@ -134,12 +152,12 @@ export default {
     selectallable: {
       type: Boolean,
       default: false
-    },
+    }
   },
   data() {
     return {
       search: null,
-      selected: this.value,
+      selected: this.value
     };
   },
   computed: {
@@ -180,7 +198,7 @@ export default {
     },
     noneSelected: function() {
       return this.selected == null;
-    },
+    }
   },
   watch: {
     value(input) {
@@ -213,7 +231,7 @@ export default {
     },
     blur: function() {
       this.$refs.dropdown.blur();
-    },
+    }
   }
 };
 </script>

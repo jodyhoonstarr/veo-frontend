@@ -1,10 +1,21 @@
 <template>
-  <svg :width="width" :height="height" :max-height="maxHeight">
+  <svg
+    :width="width"
+    :height="height"
+    :max-height="maxHeight"
+  >
     <g :transform="chartTransform">
-      <g ref="xaxis"></g>
-      <g v-if="d3Max > 0" ref="yaxisgrid" class="ygrid"></g>
-      <g v-if="d3Max > 0" ref="yaxis"></g>
-      <g ref="chart"></g>
+      <g ref="xaxis" />
+      <g
+        v-if="d3Max > 0"
+        ref="yaxisgrid"
+        class="ygrid"
+      />
+      <g
+        v-if="d3Max > 0"
+        ref="yaxis"
+      />
+      <g ref="chart" />
     </g>
     <text
       ref="shoutout"
@@ -12,9 +23,9 @@
       :y="margin.top - 6"
       font-size="16"
       text-anchor="middle"
-    ></text>
-    <g ref="xaxislabel"></g>
-    <g ref="yaxislabel"></g>
+    />
+    <g ref="xaxislabel" />
+    <g ref="yaxislabel" />
   </svg>
 </template>
 

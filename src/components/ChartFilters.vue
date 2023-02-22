@@ -13,32 +13,57 @@
     item-disabled="disabled"
   >
     <template v-slot:selection="{ item }">
-      <div v-if="item.id === 'all' && showChips === true" class="selection">
+      <div
+        v-if="item.id === 'all' && showChips === true"
+        class="selection"
+      >
         <template v-for="val in filters">
-          <v-icon v-if="chartType === 'bar'" :key="val.id" :color="val.color"
-            >mdi-checkbox-blank
+          <v-icon
+            v-if="chartType === 'bar'"
+            :key="val.id"
+            :color="val.color"
+          >
+            mdi-checkbox-blank
           </v-icon>
           <template v-else-if="chartType === 'line'">
-            <v-icon v-if="val.linestyle === 'solid'" :key="val.id"
-              >$vuetify.icons.solidline
+            <v-icon
+              v-if="val.linestyle === 'solid'"
+              :key="val.id"
+            >
+              $vuetify.icons.solidline
             </v-icon>
-            <v-icon v-if="val.linestyle === 'dashed'" :key="val.id"
-              >$vuetify.icons.dashedline
+            <v-icon
+              v-if="val.linestyle === 'dashed'"
+              :key="val.id"
+            >
+              $vuetify.icons.dashedline
             </v-icon>
-            <v-icon v-if="val.linestyle === 'dotted'" :key="val.id"
-              >$vuetify.icons.dottedline
+            <v-icon
+              v-if="val.linestyle === 'dotted'"
+              :key="val.id"
+            >
+              $vuetify.icons.dottedline
             </v-icon>
           </template>
           <span :key="val.short"> {{ val.short }} </span>
         </template>
       </div>
-      <div v-else-if="showChips === true" class="selection">
-        <v-icon v-if="chartType === 'bar'" :color="item.color"
-          >mdi-checkbox-blank
+      <div
+        v-else-if="showChips === true"
+        class="selection"
+      >
+        <v-icon
+          v-if="chartType === 'bar'"
+          :color="item.color"
+        >
+          mdi-checkbox-blank
         </v-icon>
         <span> {{ item.short }} </span>
       </div>
-      <div v-else class="selection">
+      <div
+        v-else
+        class="selection"
+      >
         <span> {{ item.short }}</span>
       </div>
     </template>
@@ -47,9 +72,13 @@
       <template v-if="item.disabled">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
-            <v-icon class="pr-1" v-bind="attrs" v-on="on"
-              >mdi-help-circle</v-icon
+            <v-icon
+              class="pr-1"
+              v-bind="attrs"
+              v-on="on"
             >
+              mdi-help-circle
+            </v-icon>
           </template>
           <span>{{ disabledText }}</span>
         </v-tooltip>

@@ -3,7 +3,12 @@
     <SelectBar>
       <v-col class="pa-0">
         <v-row class="pa-0">
-          <v-col cols="12" xs="12" sm="6" class="pb-0">
+          <v-col
+            cols="12"
+            xs="12"
+            sm="6"
+            class="pb-0"
+          >
             <GetData :url="dataPath('metadata/label_race.json')">
               <DropDownwRadio
                 id="race"
@@ -13,10 +18,15 @@
                 label="Race"
                 :items="response"
                 propname="labels"
-              ></DropDownwRadio>
+              />
             </GetData>
           </v-col>
-          <v-col cols="12" xs="12" sm="6" class="pb-0">
+          <v-col
+            cols="12"
+            xs="12"
+            sm="6"
+            class="pb-0"
+          >
             <GetData :url="dataPath('metadata/label_ethnicity.json')">
               <DropDownwRadio
                 id="ethnicity"
@@ -26,12 +36,17 @@
                 label="Ethnicity"
                 :items="response"
                 propname="labels"
-              ></DropDownwRadio>
+              />
             </GetData>
           </v-col>
         </v-row>
         <v-row class="pa-0">
-          <v-col cols="12" xs="12" sm="12" class="pb-0">
+          <v-col
+            cols="12"
+            xs="12"
+            sm="12"
+            class="pb-0"
+          >
             <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
               <cohort-slider
                 v-model="cohort"
@@ -39,7 +54,7 @@
                 :loading="loading"
                 :items="response"
                 :hide-margins="true"
-              ></cohort-slider>
+              />
             </GetData>
           </v-col>
         </v-row>
@@ -60,7 +75,7 @@
           :initial-values="initialFilters"
           chart-type="line"
           @change="handleFilters"
-        ></FiltersBar>
+        />
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -70,7 +85,7 @@
           :chart-data-type="chartDataType"
           chart-label="Exit Cohort"
           :chart-data-zip="dataPath('downloads/VEO-RaceEthnicity.zip')"
-        ></Chart>
+        />
       </ChartCard>
     </GetData>
   </div>

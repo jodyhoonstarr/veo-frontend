@@ -1,7 +1,12 @@
 <template>
   <div>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="4" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="4"
+        class="pb-0"
+      >
         <GetData :url="dataPath('metadata/label_fipsnum.json')">
           <DropDownNoRadio
             id="state"
@@ -11,10 +16,15 @@
             label="State"
             :items="response"
             propname="labels"
-          ></DropDownNoRadio>
+          />
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="8" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="8"
+        class="pb-0"
+      >
         <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
           <cohort-slider
             v-model="cohort"
@@ -22,7 +32,7 @@
             :loading="loading"
             :items="response"
             :hide-margins="true"
-          ></cohort-slider>
+          />
         </GetData>
       </v-col>
     </SelectBar>
@@ -43,7 +53,7 @@
           :disable-nonemp-counts="true"
           disabled-text="Not available by job characteristics"
           @change="handleFilters"
-        ></FiltersBar>
+        />
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -53,7 +63,7 @@
           :chart-data-type="chartDataType"
           chart-label="Exit Cohort"
           :chart-data-zip="dataPath('downloads/VEO-State.zip')"
-        ></Chart>
+        />
       </ChartCard>
     </GetData>
   </div>

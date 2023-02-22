@@ -1,7 +1,12 @@
 <template>
   <div>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="4" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="4"
+        class="pb-0"
+      >
         <GetData :url="dataPath('metadata/label_dod_occ_code.json')">
           <DropDownwRadio
             id="occupation"
@@ -12,10 +17,15 @@
             :items="response"
             propname="labels"
             :selectallable="true"
-          ></DropDownwRadio>
+          />
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="4" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="4"
+        class="pb-0"
+      >
         <GetData :url="dataPath('metadata/label_fipsnum.json')">
           <DropDownwRadio
             id="state"
@@ -25,10 +35,15 @@
             label="State"
             :items="response"
             propname="labels"
-          ></DropDownwRadio>
+          />
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="4" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="4"
+        class="pb-0"
+      >
         <GetData :url="dataPath('metadata/label_8year_cohorts.json')">
           <DropDownwRadio
             id="cohort"
@@ -39,7 +54,7 @@
             :items="response"
             propname="labels"
             :selectallable="true"
-          ></DropDownwRadio>
+          />
         </GetData>
       </v-col>
     </SelectBar>
@@ -59,7 +74,7 @@
           :disable-nonemp-counts="true"
           disabled-text="Not available by job characteristics"
           @change="handleFilters"
-        ></FiltersBar>
+        />
         <Chart
           chart-type="bar"
           :loading="loading"
@@ -68,7 +83,7 @@
           :chart-data-type="chartDataType"
           :chart-label="activeToggle"
           :chart-data-zip="dataPath('downloads/VEO-OccupationByState.zip')"
-        ></Chart>
+        />
       </ChartCard>
     </GetData>
   </div>

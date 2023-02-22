@@ -13,9 +13,14 @@
           }"
           @click="activeToggleChange"
         >
-          <v-icon :color="toggle ? 'primary' : 'grey'" large>{{
-            radioIcon
-          }}</v-icon>
+          <v-icon
+            :color="toggle ? 'primary' : 'grey'"
+            large
+          >
+            {{
+              radioIcon
+            }}
+          </v-icon>
         </v-btn>
       </v-row>
     </v-col>
@@ -30,7 +35,7 @@
         :persistent-hint="toggle"
         :selectallable="selectallable && toggle"
         close
-      ></DetailDropDown>
+      />
       <DropDown
         v-else
         v-model="selected"
@@ -40,7 +45,7 @@
         :multiple="toggle"
         :persistent-hint="toggle"
         :selectallable="selectallable && toggle"
-      ></DropDown>
+      />
     </v-col>
   </v-row>
 </template>

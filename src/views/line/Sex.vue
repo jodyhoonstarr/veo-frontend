@@ -1,7 +1,12 @@
 <template>
   <div>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="4" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="4"
+        class="pb-0"
+      >
         <GetData :url="dataPath('metadata/label_sex.json')">
           <DropDownNoRadio
             id="sex"
@@ -11,10 +16,15 @@
             label="Sex"
             :items="response"
             propname="labels"
-          ></DropDownNoRadio>
+          />
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="8" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="8"
+        class="pb-0"
+      >
         <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
           <cohort-slider
             v-model="cohort"
@@ -22,7 +32,7 @@
             :loading="loading"
             :items="response"
             :hide-margins="true"
-          ></cohort-slider>
+          />
         </GetData>
       </v-col>
     </SelectBar>
@@ -41,7 +51,7 @@
           :initial-values="initialFilters"
           chart-type="line"
           @change="handleFilters"
-        ></FiltersBar>
+        />
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -51,7 +61,7 @@
           :chart-data-type="chartDataType"
           chart-label="Exit Cohort"
           :chart-data-zip="dataPath('downloads/VEO-Sex.zip')"
-        ></Chart>
+        />
       </ChartCard>
     </GetData>
   </div>

@@ -1,6 +1,9 @@
 <template>
   <div class="pl-2">
-    <v-tooltip :nudge-left="parseInt(nudgeTooltip)" left>
+    <v-tooltip
+      :nudge-left="parseInt(nudgeTooltip)"
+      left
+    >
       <template v-slot:activator="{ on }">
         <v-btn
           fab
@@ -10,7 +13,9 @@
           v-on="on"
           @click="handleClick"
         >
-          <v-icon :color="value ? 'white' : 'grey'">{{ computedIcon }}</v-icon>
+          <v-icon :color="value ? 'white' : 'grey'">
+            {{ computedIcon }}
+          </v-icon>
         </v-btn>
       </template>
       <span>{{ tooltip }}</span>

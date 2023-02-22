@@ -1,7 +1,7 @@
 <template>
   <v-container class="pb-0">
     <v-row wrap>
-      <slot></slot>
+      <slot />
     </v-row>
   </v-container>
 </template>

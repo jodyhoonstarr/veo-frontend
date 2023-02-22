@@ -1,7 +1,12 @@
 <template>
   <v-container class="py-0">
     <v-row>
-      <v-col cols="12" xs="12" sm="4" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="4"
+        class="pb-0"
+      >
         <ChartFilters
           v-if="primaryFilters"
           :id="primaryFilters.id"
@@ -11,10 +16,15 @@
           :show-chips="primaryFilters.id === colorCategory"
           :value="primaryValue"
           @change="handlePrimaryFilter"
-        ></ChartFilters>
+        />
       </v-col>
 
-      <v-col cols="12" xs="12" sm="4" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="4"
+        class="pb-0"
+      >
         <!-- If the counts nonemp data is disabled -->
         <ChartFilters
           v-if="
@@ -31,7 +41,7 @@
           :multiple="false"
           :value="secondaryValue"
           @change="handleSecondaryFilter"
-        ></ChartFilters>
+        />
 
         <!-- If the second option is a standard filter -->
         <ChartFilters
@@ -44,10 +54,15 @@
           :multiple="true"
           :value="secondaryValue"
           @change="handleSecondaryFilter"
-        ></ChartFilters>
+        />
       </v-col>
 
-      <v-col cols="12" xs="12" sm="4" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="4"
+        class="pb-0"
+      >
         <ChartFilters
           v-if="tertiaryFilters"
           :id="tertiaryFilters.id"
@@ -58,7 +73,7 @@
           :multiple="true"
           :value="tertiaryValue"
           @change="handleTertiaryFilter"
-        ></ChartFilters>
+        />
       </v-col>
     </v-row>
   </v-container>

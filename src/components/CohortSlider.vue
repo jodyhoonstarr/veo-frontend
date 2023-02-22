@@ -49,16 +49,24 @@
       </template>
     </v-range-slider>
     <!-- A loading indicator -->
-    <v-slider v-else-if="loading" :disabled="true" value="30"></v-slider>
+    <v-slider
+      v-else-if="loading"
+      :disabled="true"
+      value="30"
+    />
     <!-- A visual cue if data fails to load -->
     <v-slider
       v-else-if="items === null"
       label="Error"
       :disabled="true"
       value="30"
-    ></v-slider>
+    />
     <!-- A visual placeholder for any other case -->
-    <v-slider v-else :disabled="true" value="30"></v-slider>
+    <v-slider
+      v-else
+      :disabled="true"
+      value="30"
+    />
   </v-container>
 </template>
 

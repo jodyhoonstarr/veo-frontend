@@ -3,7 +3,12 @@
     <SelectBar>
       <v-col class="pa-0">
         <v-row class="pa-0">
-          <v-col cols="12" xs="12" sm="4" class="pb-0">
+          <v-col
+            cols="12"
+            xs="12"
+            sm="4"
+            class="pb-0"
+          >
             <GetData :url="dataPath('metadata/label_race.json')">
               <DropDownwRadio
                 id="race"
@@ -13,10 +18,15 @@
                 label="Race"
                 :items="response"
                 propname="labels"
-              ></DropDownwRadio>
+              />
             </GetData>
           </v-col>
-          <v-col cols="12" xs="12" sm="4" class="pb-0">
+          <v-col
+            cols="12"
+            xs="12"
+            sm="4"
+            class="pb-0"
+          >
             <GetData :url="dataPath('metadata/label_ethnicity.json')">
               <DropDownwRadio
                 id="ethnicity"
@@ -26,10 +36,15 @@
                 label="Ethnicity"
                 :items="response"
                 propname="labels"
-              ></DropDownwRadio>
+              />
             </GetData>
           </v-col>
-          <v-col cols="12" xs="12" sm="4" class="pb-0">
+          <v-col
+            cols="12"
+            xs="12"
+            sm="4"
+            class="pb-0"
+          >
             <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
               <DropDownwRadio
                 id="cohort"
@@ -39,7 +54,7 @@
                 label="Cohort"
                 :items="response"
                 propname="labels"
-              ></DropDownwRadio>
+              />
             </GetData>
           </v-col>
         </v-row>
@@ -56,7 +71,10 @@
         :filters="filters"
         :active-toggle="activeToggle"
       >
-        <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          chart-type="bar"
+          @change="handleFilters"
+        />
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -65,7 +83,7 @@
           :chart-data-type="chartDataType"
           :chart-label="activeToggle"
           :chart-data-zip="dataPath('downloads/VEO-RaceEthnicity.zip')"
-        ></Chart>
+        />
       </ChartCard>
     </GetData>
   </div>

@@ -1,9 +1,16 @@
 <template>
-  <v-card flat class="pa-md-4 mx-lg-auto text-center" :height="height">
+  <v-card
+    flat
+    class="pa-md-4 mx-lg-auto text-center"
+    :height="height"
+  >
     <v-container fill-height>
-      <v-row align="center" justify="center">
+      <v-row
+        align="center"
+        justify="center"
+      >
         <v-col>
-          <slot></slot>
+          <slot />
         </v-col>
       </v-row>
     </v-container>

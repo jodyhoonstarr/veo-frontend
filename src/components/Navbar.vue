@@ -9,7 +9,7 @@
         show-arrows
         :hide-slider="hideSlider"
       >
-        <v-tabs-slider></v-tabs-slider>
+        <v-tabs-slider />
 
         <template v-for="tab in tabs">
           <!-- tab with no children/dropdown -->
@@ -20,7 +20,8 @@
             :key="tab.label"
             :to="tab.route"
             @click="setActiveTab(tab.route)"
-            >{{ tab.label }}
+          >
+            {{ tab.label }}
           </v-tab>
 
           <!-- tab with children/dropdown -->
@@ -31,7 +32,12 @@
             class="px-0"
             @click.capture="$event.preventDefault()"
           >
-            <v-menu left bottom offset-y transition="slide-y-transition">
+            <v-menu
+              left
+              bottom
+              offset-y
+              transition="slide-y-transition"
+            >
               <template v-slot:activator="{ on }">
                 <v-btn
                   tile
@@ -48,7 +54,9 @@
                   <template v-else>
                     {{ tab.label }}
                   </template>
-                  <v-icon right>mdi-menu-down</v-icon>
+                  <v-icon right>
+                    mdi-menu-down
+                  </v-icon>
                 </v-btn>
               </template>
 
@@ -61,12 +69,12 @@
                     @click="setActiveTab(tab.route)"
                   >
                     <v-list-item-icon>
-                      <v-icon v-text="child.icon"></v-icon>
+                      <v-icon v-text="child.icon" />
                     </v-list-item-icon>
                     <v-list-item-content>
                       <v-list-item-title
                         v-text="child.label"
-                      ></v-list-item-title>
+                      />
                     </v-list-item-content>
                   </v-list-item>
                 </v-list-item-group>
@@ -76,10 +84,18 @@
         </template>
 
         <v-tab class="px-0">
-          <v-btn text target="_blank" href="/data/veo_experimental.html">
+          <v-btn
+            text
+            target="_blank"
+            href="/data/veo_experimental.html"
+          >
             <span>Help</span>
-            <v-icon color="primary" right medium
-              >mdi-help-circle-outline
+            <v-icon
+              color="primary"
+              right
+              medium
+            >
+              mdi-help-circle-outline
             </v-icon>
           </v-btn>
         </v-tab>

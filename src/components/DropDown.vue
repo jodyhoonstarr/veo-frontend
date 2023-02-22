@@ -29,7 +29,9 @@
             :disabled="allSelected"
             @click="selectAllProps"
           >
-            <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>
+            <v-icon left>
+              mdi-checkbox-multiple-marked-outline
+            </v-icon>
             Select All
           </v-btn>
           <v-btn
@@ -40,30 +42,49 @@
             :disabled="noneSelected"
             @click="selectNoneProps"
           >
-            <v-icon left>mdi-checkbox-multiple-blank-outline </v-icon>
+            <v-icon left>
+              mdi-checkbox-multiple-blank-outline
+            </v-icon>
             Clear
           </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text small @click="close">
+          <v-spacer />
+          <v-btn
+            color="primary"
+            text
+            small
+            @click="close"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
       </v-col>
-      <v-divider class="pb-1"></v-divider>
+      <v-divider class="pb-1" />
     </template>
 
     <template v-slot:selection="{ item, index }">
-      <div v-if="index === 0 && itemCount === 1" class="selection">
+      <div
+        v-if="index === 0 && itemCount === 1"
+        class="selection"
+      >
         {{ item.label }}
       </div>
-      <div v-else-if="index === 1" class="selection">
+      <div
+        v-else-if="index === 1"
+        class="selection"
+      >
         {{ pluralLabels }} Selected
       </div>
     </template>
 
-    <template v-slot:item="{ item }" three-line>
+    <template
+      v-slot:item="{ item }"
+      three-line
+    >
       <v-list-item-content class="py-0">
-        <v-list-item-title class="pt-1" v-html="item.label"></v-list-item-title>
+        <v-list-item-title
+          class="pt-1"
+          v-html="item.label"
+        />
       </v-list-item-content>
     </template>
   </v-autocomplete>
@@ -94,7 +115,9 @@
             :disabled="allSelected"
             @click="selectAllProps"
           >
-            <v-icon left>mdi-checkbox-multiple-marked-outline</v-icon>
+            <v-icon left>
+              mdi-checkbox-multiple-marked-outline
+            </v-icon>
             Select All
           </v-btn>
           <v-btn
@@ -105,30 +128,49 @@
             :disabled="noneSelected"
             @click="selectNoneProps"
           >
-            <v-icon left>mdi-checkbox-multiple-blank-outline </v-icon>
+            <v-icon left>
+              mdi-checkbox-multiple-blank-outline
+            </v-icon>
             Clear
           </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text small @click="close">
+          <v-spacer />
+          <v-btn
+            color="primary"
+            text
+            small
+            @click="close"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
       </v-col>
-      <v-divider class="pb-1"></v-divider>
+      <v-divider class="pb-1" />
     </template>
 
     <template v-slot:selection="{ item, index }">
-      <div v-if="index === 0 && itemCount === 1" class="selection">
+      <div
+        v-if="index === 0 && itemCount === 1"
+        class="selection"
+      >
         {{ item }}
       </div>
-      <div v-else-if="index === 1" class="selection">
+      <div
+        v-else-if="index === 1"
+        class="selection"
+      >
         {{ pluralLabels }} Selected
       </div>
     </template>
 
-    <template v-slot:item="{ item }" three-line>
+    <template
+      v-slot:item="{ item }"
+      three-line
+    >
       <v-list-item-content class="py-0">
-        <v-list-item-title class="pt-1" v-html="item"></v-list-item-title>
+        <v-list-item-title
+          class="pt-1"
+          v-html="item"
+        />
       </v-list-item-content>
     </template>
   </v-autocomplete>

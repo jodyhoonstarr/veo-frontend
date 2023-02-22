@@ -1,7 +1,12 @@
 <template>
   <div>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="6" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="6"
+        class="pb-0"
+      >
         <GetData :url="dataPath('metadata/label_yosgrp.json')">
           <DropDownwRadio
             id="experience"
@@ -11,10 +16,15 @@
             label="Years of Service Group"
             :items="response"
             propname="labels"
-          ></DropDownwRadio>
+          />
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="6" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="6"
+        class="pb-0"
+      >
         <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
           <DropDownwRadio
             id="cohort"
@@ -24,7 +34,7 @@
             label="Cohort"
             :items="response"
             propname="labels"
-          ></DropDownwRadio>
+          />
         </GetData>
       </v-col>
     </SelectBar>
@@ -41,7 +51,10 @@
           activeToggle === 'yearsofservice' ? 'Years of Service' : activeToggle
         "
       >
-        <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          chart-type="bar"
+          @change="handleFilters"
+        />
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -54,7 +67,7 @@
               : activeToggle
           "
           :chart-data-zip="dataPath('downloads/VEO-YearsOfService.zip')"
-        ></Chart>
+        />
       </ChartCard>
     </GetData>
   </div>

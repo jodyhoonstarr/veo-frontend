@@ -1,7 +1,12 @@
 <template>
   <div>
     <SelectBar>
-      <v-col cols="12" xs="12" sm="6" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="6"
+        class="pb-0"
+      >
         <GetData :url="dataPath('metadata/label_paygrade.json')">
           <DropDownwRadio
             id="paygrade"
@@ -12,10 +17,15 @@
             :items="response"
             propname="labels"
             :selectallable="true"
-          ></DropDownwRadio>
+          />
         </GetData>
       </v-col>
-      <v-col cols="12" xs="12" sm="6" class="pb-0">
+      <v-col
+        cols="12"
+        xs="12"
+        sm="6"
+        class="pb-0"
+      >
         <GetData :url="dataPath('metadata/label_2year_cohorts.json')">
           <DropDownwRadio
             id="cohort"
@@ -25,7 +35,7 @@
             label="Cohort"
             :items="response"
             propname="labels"
-          ></DropDownwRadio>
+          />
         </GetData>
       </v-col>
     </SelectBar>
@@ -40,7 +50,10 @@
         :filters="filters"
         :active-toggle="activeToggle"
       >
-        <FiltersBar chart-type="bar" @change="handleFilters"></FiltersBar>
+        <FiltersBar
+          chart-type="bar"
+          @change="handleFilters"
+        />
         <Chart
           :chart-type="chartType"
           :loading="loading"
@@ -49,7 +62,7 @@
           :chart-data-type="chartDataType"
           :chart-label="activeToggle"
           :chart-data-zip="dataPath('downloads/VEO-Paygrade.zip')"
-        ></Chart>
+        />
       </ChartCard>
     </GetData>
   </div>

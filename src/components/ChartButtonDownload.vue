@@ -1,6 +1,9 @@
 <template>
   <div class="pl-2">
-    <v-tooltip :nudge-left="parseInt(nudgeTooltip)" left>
+    <v-tooltip
+      :nudge-left="parseInt(nudgeTooltip)"
+      left
+    >
       <template v-slot:activator="{ on }">
         <v-btn
           fab
@@ -11,7 +14,9 @@
           :href="url"
           v-on="on"
         >
-          <v-icon color="grey">{{ icon }}</v-icon>
+          <v-icon color="grey">
+            {{ icon }}
+          </v-icon>
         </v-btn>
       </template>
       <span>{{ tooltip }}</span>
