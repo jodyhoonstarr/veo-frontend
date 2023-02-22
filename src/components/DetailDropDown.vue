@@ -85,13 +85,13 @@
                 .toLocaleLowerCase()
                 .indexOf(search.toLocaleLowerCase()) > -1
           "
+          v-sane-html="parent.genFilteredText(item.label)"
           class="pt-1"
-          v-html="parent.genFilteredText(item.label)"
         />
         <v-list-item-title
           v-else
+          v-sane-html="item.label"
           class="pt-1"
-          v-html="item.label"
         />
         <p
           v-if="
@@ -100,14 +100,14 @@
                 .toLocaleLowerCase()
                 .indexOf(search.toLocaleLowerCase()) > -1
           "
+          v-sane-html="parent.genFilteredText(item.details)"
           class="grey--text caption mb-0 pb-1"
           wrap
-          v-html="parent.genFilteredText(item.details)"
         />
         <v-list-item-subtitle
           v-else
+          v-sane-html="item.details"
           class="grey--text caption mb-0 pb-1"
-          v-html="item.details"
         />
         <v-divider />
       </v-list-item-content>

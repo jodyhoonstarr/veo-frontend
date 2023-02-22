@@ -82,8 +82,8 @@
     >
       <v-list-item-content class="py-0">
         <v-list-item-title
+          v-sane-html="item.label"
           class="pt-1"
-          v-html="item.label"
         />
       </v-list-item-content>
     </template>
@@ -168,8 +168,8 @@
     >
       <v-list-item-content class="py-0">
         <v-list-item-title
+          v-sane-html="item"
           class="pt-1"
-          v-html="item"
         />
       </v-list-item-content>
     </template>
