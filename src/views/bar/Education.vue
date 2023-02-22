@@ -41,7 +41,7 @@
     <GetData
       :url="dataPath('data/veoe.csv')"
       :emit="true"
-      @change="({ response }) => (this.csvData = response)"
+      @change="({ response }) => (csvData = response)"
     >
       <ChartCard
         slot-scope="{ loading }"

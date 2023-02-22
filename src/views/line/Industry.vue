@@ -39,7 +39,7 @@
     <GetData
       :url="dataPath('data/veons.csv')"
       :emit="true"
-      @change="({ response }) => (this.csvData = response)"
+      @change="({ response }) => (csvData = response)"
     >
       <ChartCard
         slot-scope="{ loading }"
