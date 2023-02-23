@@ -41,7 +41,7 @@ export default {
       default: "mdi-plus"
     },
     nudgeTooltip: {
-      type: Number | String,
+      type: [Number, String],
       default: 0
     }
   }

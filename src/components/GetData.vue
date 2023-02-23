@@ -71,7 +71,7 @@ export default {
             this.response = null;
           }
         })
-        .catch(e => {
+        .catch(() => {
           this.loading = false;
           this.response = null;
         });

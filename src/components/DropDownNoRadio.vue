@@ -24,11 +24,11 @@ export default {
   },
   props: {
     id: {
-      type: String | Number,
+      type: [String, Number],
       default: null
     },
     items: {
-      type: Object | Array,
+      type: [Object, Array],
       default: null
     },
     value: {
@@ -63,7 +63,7 @@ export default {
   },
   computed: {
     dropDownItems: function() {
-      if (this.items != null && this.items.hasOwnProperty(this.propname)) {
+      if (this.items != null && Object.prototype.hasOwnProperty.call(this.items, this.propname)){
         return this.items[this.propname];
       } else {
         return this.items;

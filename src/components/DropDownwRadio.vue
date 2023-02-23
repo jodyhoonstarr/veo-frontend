@@ -62,7 +62,7 @@ export default {
   },
   props: {
     items: {
-      type: Object | Array,
+      type: [Object, Array],
       default: null
     },
     propname: {
@@ -91,7 +91,7 @@ export default {
         return { selected: null, toggle: false };
       },
       validator: function(obj) {
-        return obj.hasOwnProperty("selected") && obj.hasOwnProperty("toggle");
+        return Object.prototype.hasOwnProperty.call(obj, "selected") && Object.prototype.hasOwnProperty.call(obj, "toggle");
       }
     }
   },
@@ -103,7 +103,7 @@ export default {
   },
   computed: {
     dropDownItems: function() {
-      if (this.items != null && this.items.hasOwnProperty(this.propname)) {
+      if (this.items != null && Object.prototype.hasOwnProperty.call(this.items, this.propname)) {
         return this.items[this.propname];
       } else {
         return this.items;

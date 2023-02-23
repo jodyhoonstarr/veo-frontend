@@ -44,7 +44,7 @@ export default {
       default: null
     },
     nudgeTooltip: {
-      type: Number | String,
+      type: [Number, String],
       default: 0
     }
   },

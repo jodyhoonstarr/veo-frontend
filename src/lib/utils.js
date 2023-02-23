@@ -1,5 +1,4 @@
 import { select } from "d3-selection";
-import { active } from "d3-transition";
 import { schemeCategory10 } from "d3-scale-chromatic";
 import { scaleOrdinal } from "d3-scale";
 import { PUBLICPATH } from "@/constants/config";

@@ -252,7 +252,7 @@ export default {
     // label groups and bar groups are mixed in terminology
     // sometimes the label means the text label, other times the label prop
     notNullandHasProp: function(obj, propname) {
-      return obj != null && obj.hasOwnProperty(propname);
+      return obj != null && Object.prototype.hasOwnProperty.call(obj, propname);
     },
     chartYBottom: function() {
       if (this.chartHeight) {
@@ -516,7 +516,7 @@ export default {
         .attr("stroke", highlightColor)
         .attr("stroke-width", strokeWidth);
     },
-    barHoverOut: function(d3This, vm, d) {
+    barHoverOut: function(d3This, vm) {
       // fade the shoutout
       select(vm.$refs.shoutout)
         .transition()
@@ -575,8 +575,6 @@ export default {
         });
     },
     bindRects: function() {
-      const vm = this; // for use with click event in d3
-
       const bound = select(this.$refs.chart)
         .selectAll("g.bargroup")
         .data(this.d3Data);

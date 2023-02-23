@@ -43,7 +43,7 @@ class LabelSpacer {
     this.calculateDescending();
     this.flagClusters();
     // if there's at least one cluster, process the space
-    if (this.clusters.hasOwnProperty("1")) {
+    if (Object.prototype.hasOwnProperty.call(this.clusters, "1")) {
       this.claimNeighboringClusterSpace();
     }
   }
@@ -51,7 +51,7 @@ class LabelSpacer {
   // update the cluster attribute data
   updateClusterProps(clusterID, prop, value) {
     let clusterProps;
-    if (this.clusters.hasOwnProperty(clusterID)) {
+    if ( Object.prototype.hasOwnProperty.call(this.clusters, clusterID)) {
       clusterProps = this.clusters[clusterID];
     } else {
       clusterProps = { mapIDs: [], min: null, max: null };
@@ -63,7 +63,7 @@ class LabelSpacer {
   // update the cluster count
   updateClusterList(clusterID, key) {
     let clusterProps;
-    if (this.clusters.hasOwnProperty(clusterID)) {
+    if (Object.prototype.hasOwnProperty.call(this.clusters, clusterID)) {
       clusterProps = this.clusters[clusterID];
     } else {
       clusterProps = { mapIDs: [], min: null, max: null };
@@ -244,7 +244,8 @@ class LabelSpacer {
         }
 
         // remove the available space from the neighbor cluster if touching
-        const neighborOnThisSide = this.clusters.hasOwnProperty(
+        const neighborOnThisSide = Object.prototype.hasOwnProperty.call(
+          this.clusters, 
           parseInt(m) + this.minMaxOperator(matchedSide)
         )
           ? this.clusters[parseInt(m) + this.minMaxOperator(matchedSide)][
@@ -283,7 +284,8 @@ class LabelSpacer {
         }
 
         // remove the available space from the neighbor cluster if touching
-        const neighborOnThatSide = this.clusters.hasOwnProperty(
+        const neighborOnThatSide = Object.prototype.hasOwnProperty.call(
+          this.clusters,
           parseInt(m) + this.minMaxOperator(otherSide)
         )
           ? this.clusters[parseInt(m) + this.minMaxOperator(otherSide)][

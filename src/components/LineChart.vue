@@ -32,12 +32,14 @@
 <script>
 import { format } from "d3-format";
 import { min, max } from "d3-array";
+// eslint-disable-next-line no-unused-vars
 import { transition } from "d3-transition";
 import { axisBottom, axisLeft } from "d3-axis";
+// eslint-disable-next-line no-unused-vars
 import { select, selectAll } from "d3-selection";
 import { line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
-import { arrayIsNullorEmpty, toTitleCase, wrapLabels } from "@/lib/utils";
+import { arrayIsNullorEmpty, toTitleCase} from "@/lib/utils";
 import { labelSpacer } from "@/lib/labelspacer";
 
 export default {
@@ -299,7 +301,7 @@ export default {
       });
     },
     notNullandHasProp: function(obj, propname) {
-      return obj != null && obj.hasOwnProperty(propname);
+      return obj != null && Object.prototype.hasOwnProperty.call(obj, propname);
     },
     chartYBottom: function() {
       if (this.y) {
@@ -566,7 +568,7 @@ export default {
 
       labelData.join(enter =>
         enter
-          .filter(d => this.spacedLabels.hasOwnProperty(d.label))
+          .filter(d => Object.prototype.hasOwnProperty.call(this.spacedLabels, d.label))
           .append("text")
           .attr("opacity", 0)
           .attr("text-anchor", "start")
@@ -775,7 +777,7 @@ export default {
         .transition("thiscirclesize")
         .attr("r", 8);
     },
-    circleHoverOut: function(d3This, vm, d) {
+    circleHoverOut: function(d3This, vm) {
       // fade the shoutout value
       select(vm.$refs.shoutout)
         .transition("shoutouttext")
@@ -859,7 +861,7 @@ export default {
         .transition("circlesizeopacity")
         .attr("opacity", 0.2);
     },
-    labelHoverOut: function(d3This, vm, d) {
+    labelHoverOut: function(d3This, vm) {
       // line - to default
       select(vm.$refs.chart)
         .selectAll("path")

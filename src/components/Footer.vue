@@ -14,9 +14,13 @@
           class="white--text xs-12 text-left"
           text-xs-left
         >{{ link.label }}</a>
-        <br class="hidden-sm-and-up">
+        <br
+          :key="index.toString() + 'b'"
+          class="hidden-sm-and-up"
+        >
         <v-divider
           v-if="index !== links.length - 1"
+          :key="index.toString() + 'd'"
           class="mx-1 shift-down hidden-xs-only"
           vertical
           color="white"
