@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-main>
+      <ShutdownBanner />
       <Header />
       <Navbar />
       <router-view />
@@ -13,6 +14,7 @@
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 import Navbar from "./components/Navbar.vue";
+import ShutdownBanner from "./components/ShutdownBanner.vue";
 
 export default {
   name: "App",
@@ -20,7 +22,8 @@ export default {
   components: {
     Header,
     Footer,
-    Navbar
+    Navbar,
+    ShutdownBanner
   }
 };
 </script>
