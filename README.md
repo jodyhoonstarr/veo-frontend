@@ -1,40 +1,52 @@
 # Veteran Employment Outcomes Explorer
-This is the repostory containing the VEO Explorer application vue2 project. 
 
+This is the repostory containing the VEO Explorer application vue2 project.
 
-### Prereqs
+## Prereqs
+
 Install [nodejs](https://nodejs.org/en/) and [vue cli](https://cli.vuejs.org/guide/installation.html) and configure for your own environment.
 
-### Install Packages
+## Install Packages
+
 Install the project dependencies.
-```
+
+```shell
 git clone
 npm install
 ```
 
-### Compiles and hot reload for development
+## Compiles and hot reload for development
+
 To work on the project locally run a development server on localhost.
-```
-npm run serve
+
+```shell
+npm run dev
 ```
 
-### Prepare deployment
+> Note: the app is configured to run in a subdirectory. Attempts to navigate to the root `/` will likely fail unless configured. Navigate directly to the url displayed in console.
+
+## Prepare deployment
+
 The application uses vue router which passes the URL path to the application for handling. This works as expected when served from the root website directory (e.g. ```www.website.com```) but requires some configuration if depoloyed elsewhere.
 
 In vue.config.js set the public path to be the home project directory. If this application is to be served from the root directory then set
-```publicPath = "/"``` 
+```publicPath = "/"```
 
-If deployment is in a subdirectory, such as ```www.website.com/project/app``` then the path variables should use 
-```publicPath = "/project/app"``` 
+If deployment is in a subdirectory, such as ```www.website.com/project/app``` then the path variables should use
+```publicPath = "/project/app"```
 
 This must be done before building the application files.
 
 ### Build and minify for production
-Bundle all project files into the `dist/` directory. 
-```
+
+Bundle all project files into the `dist/` directory.
+
+```shell
 npm run build
 ```
+
 At this point all files exist and need to be copied into place
+
 ```shell
 cp dist/ /tmp/ -r
 chmod 755 /tmp/dist -R
@@ -63,7 +75,8 @@ the webserver root directory.
 
 Using the example deploy directory of ```/project/app``` the following block must be added to the apache vhost for the
 parent site.
-```
+
+```conf
     <IfModule mod_rewrite.c>
       RewriteEngine On
       RewriteBase /project/app
@@ -77,7 +90,8 @@ parent site.
 ```
 
 ### USWDS Header
-The USWDS header is set in to reference `${publicPath}/assets/uswds...` files. 
+
+The USWDS header is set in to reference `${publicPath}/assets/uswds...` files.
 When using the vue router these links don't resolve at the url routing scheme (e.g. `/occupation/detail`)
 but should work when properly configured in apache to redirect any virtual directories created by
 vue router back to the root index page.
