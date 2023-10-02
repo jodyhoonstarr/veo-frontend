@@ -117,22 +117,22 @@ export default {
           children: [
             {
               route: "/occupation/detail",
-              label: "Detailed Occupation",
+              label: "Detailed Military Occupation",
               icon: "mdi-chart-bar"
             },
             {
               route: "/occupation/paygrade",
-              label: "Occupation by Paygrade",
+              label: "Military Occupation by Paygrade",
               icon: "mdi-chart-bar"
             },
             {
               route: "/occupation/industry",
-              label: "Occupation by Industry",
+              label: "Military Occupation by Industry",
               icon: "mdi-chart-bar"
             },
             {
               route: "/occupation/state",
-              label: "Occupation by State",
+              label: "Military Occupation by State",
               icon: "mdi-chart-bar"
             }
           ]
@@ -174,7 +174,7 @@ export default {
             },
             {
               route: "/service/occupation",
-              label: "Occupation by Paygrade",
+              label: "Militray Occupation by Paygrade",
               icon: "mdi-chart-bar"
             }
           ]
@@ -243,7 +243,7 @@ export default {
             },
             {
               route: "/industry/occupation",
-              label: "Occupation by Industry",
+              label: "Military Occupation by Industry",
               icon: "mdi-chart-bar"
             }
           ]
@@ -265,7 +265,7 @@ export default {
             },
             {
               route: "/state/occupation",
-              label: "Occupation by State",
+              label: "Military Occupation by State",
               icon: "mdi-chart-bar"
             }
           ]
