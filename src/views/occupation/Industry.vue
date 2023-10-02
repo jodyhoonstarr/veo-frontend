@@ -13,7 +13,7 @@
             v-model="occupationObj"
             slot-scope="{ response, loading }"
             :loading="loading"
-            label="Occupation"
+            label="Military Occupation"
             :items="response"
             propname="labels"
           />

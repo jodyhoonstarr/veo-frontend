@@ -13,7 +13,7 @@
             slot-scope="{ response, loading }"
             :detailed="true"
             :loading="loading"
-            label="Occupation"
+            label="Military Occupation"
             :items="response"
             propname="labels"
           />
