@@ -36,7 +36,7 @@
         :chart-data="chartData"
         :chart-colors="chartColors"
         :chart-data-type="chartDataType"
-        :chart-label="chartLabel"
+        :chart-label="formattedChartLabel"
       />
     </template>
 
@@ -67,7 +67,7 @@
         :chart-colors="chartColors"
         :chart-line-styles="chartLineStyles"
         :chart-data-type="chartDataType"
-        :chart-label="chartLabel"
+        :chart-label="formattedChartLabel"
         :magnify-y-axis="magnifyYAxis"
       />
     </template>
@@ -152,6 +152,14 @@ export default {
     };
   },
   computed: {
+    formattedChartLabel: function() {
+      if (this.chartLabel === "state") {
+        return "State of Employment";
+      } else if (this.chartLabel === "occupation") {
+        return "Military Occupation";
+      }
+      return this.chartLabel;
+    },
     height: function() {
       if (this.width == null) {
         return null;

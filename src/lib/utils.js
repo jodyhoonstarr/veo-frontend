@@ -4,8 +4,12 @@ import { scaleOrdinal } from "d3-scale";
 import { PUBLICPATH } from "@/constants/config";
 
 // titlecase a string
+const ignoreWords = ["of"];
 export function toTitleCase(str) {
-  return str.replace(/\w\S*/g, function(txt) {
+  return str.replace(/\w\S*/g, function (txt) {
+    if (ignoreWords.includes(txt.toLowerCase())) {
+      return txt;
+    }
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 }
@@ -36,13 +40,10 @@ export function arrayIsNullorEmpty(arr) {
 
 // wrap long text
 export function wrapLabels(text, width) {
-  text.each(function() {
+  text.each(function () {
     let text, words, word, line, lineNumber, lineHeight, y, dy, tspan;
     text = select(this);
-    words = text
-      .text()
-      .split(/\s+/)
-      .reverse();
+    words = text.text().split(/\s+/).reverse();
     line = [];
     lineNumber = 0;
     lineHeight = 1.1;
@@ -68,7 +69,7 @@ export function wrapLabels(text, width) {
             .append("tspan")
             .attr("x", 0)
             .attr("y", y)
-            .attr("dy", function() {
+            .attr("dy", function () {
               return ++lineNumber * lineHeight + dy + "em";
             })
             .text(word);
@@ -84,15 +85,15 @@ export function wrapLabels(text, width) {
 export function filterRows(csvData, dataSelections) {
   if (
     arrayIsNullorEmpty(csvData) ||
-    dataSelections.some(o => arrayIsNullorEmpty(o.data))
+    dataSelections.some((o) => arrayIsNullorEmpty(o.data))
   ) {
     return null;
   }
 
   // filter the selected rows from the data
-  return csvData.filter(row => {
-    return dataSelections.every(o =>
-      o.data.some(e => {
+  return csvData.filter((row) => {
+    return dataSelections.every((o) =>
+      o.data.some((e) => {
         if (e && Object.prototype.hasOwnProperty.call(e, "id")) {
           return e.id === row[o.prop];
         }
@@ -128,25 +129,25 @@ export function simplifiyRows(
   if (filters.primary[0].id === "earnings") {
     underscoreFilters = ["_earnings"];
   } else {
-    underscoreFilters = filters.secondary.map(f => `_${f.id}`);
+    underscoreFilters = filters.secondary.map((f) => `_${f.id}`);
   }
 
-  const dataTypeKeys = objKeys.filter(key => {
+  const dataTypeKeys = objKeys.filter((key) => {
     return (
-      underscoreFilters.some(f => key.toLocaleLowerCase().indexOf(f) > -1) &&
+      underscoreFilters.some((f) => key.toLocaleLowerCase().indexOf(f) > -1) &&
       key.toLocaleLowerCase().indexOf("status") === -1
     );
   });
 
   // get only the props defined in the filters e.g. y5 p50
-  let filterKeys = dataTypeKeys.filter(key => {
-    if (filters.primary.find(o => o.id === "earnings")) {
+  let filterKeys = dataTypeKeys.filter((key) => {
+    if (filters.primary.find((o) => o.id === "earnings")) {
       return (
-        filters.secondary.some(e => key.indexOf(`${e.id}_`) > -1) &&
-        filters.tertiary.some(e => key.indexOf(`${e.id}_`) > -1)
+        filters.secondary.some((e) => key.indexOf(`${e.id}_`) > -1) &&
+        filters.tertiary.some((e) => key.indexOf(`${e.id}_`) > -1)
       );
-    } else if (filters.primary.find(o => o.id === "counts")) {
-      return filters.tertiary.some(e => key.indexOf(`${e.id}_`) > -1);
+    } else if (filters.primary.find((o) => o.id === "counts")) {
+      return filters.tertiary.some((e) => key.indexOf(`${e.id}_`) > -1);
     }
   });
 
@@ -159,9 +160,9 @@ export function simplifiyRows(
   }
 
   // filter out the row data to only keep usable props
-  let usablePropsData = csvDataRows.map(row => {
+  let usablePropsData = csvDataRows.map((row) => {
     let result = {};
-    filterKeys.forEach(function(key) {
+    filterKeys.forEach(function (key) {
       if (Object.prototype.hasOwnProperty.call(row, key)) {
         result[key] = row[key];
       }
@@ -179,9 +180,9 @@ export function simplifiyRows(
     usablePropsData &&
     Object.prototype.hasOwnProperty.call(usablePropsData[0], "paygrade")
   ) {
-    const allPaygrades = usablePropsData.find(o => o.paygrade === "E1-E9");
+    const allPaygrades = usablePropsData.find((o) => o.paygrade === "E1-E9");
     if (allPaygrades) {
-      usablePropsData = usablePropsData.filter(o => o !== allPaygrades);
+      usablePropsData = usablePropsData.filter((o) => o !== allPaygrades);
       usablePropsData.unshift(allPaygrades);
     }
   }
@@ -208,51 +209,55 @@ export function createChartData(
   // e.g. ['y1_p50', 'y5_p50'] would give ['y1', 'y5']
   const topRow = csvDataRowsSimple[0];
   let keyArray = [];
-  Object.keys(topRow).map(k => {
+  Object.keys(topRow).map((k) => {
     if (k !== activeToggleProp && k !== "cohort") {
       keyArray.push(k.split("_"));
     }
   });
 
   // determine which column has the unique set of vales
-  const transposeArray = keyArray.map((col, i) => keyArray.map(row => row[i]));
-  const distinctTransposeArray = transposeArray.map(e => [...new Set(e)]);
+  const transposeArray = keyArray.map((col, i) =>
+    keyArray.map((row) => row[i])
+  );
+  const distinctTransposeArray = transposeArray.map((e) => [...new Set(e)]);
   let maxLen = 0;
-  distinctTransposeArray.map(a => (maxLen = Math.max(maxLen, a.length)));
+  distinctTransposeArray.map((a) => (maxLen = Math.max(maxLen, a.length)));
   const variableColumn = distinctTransposeArray.findIndex(
-    a => a.length === maxLen
+    (a) => a.length === maxLen
   );
 
   // get the strings to represent the unique column
-  let useKeys = keyArray.map(k => k[variableColumn]);
+  let useKeys = keyArray.map((k) => k[variableColumn]);
 
   if (keepCohorts) {
     useKeys.push("cohort");
   }
 
   let data = [];
-  csvDataRowsSimple.map(row => {
+  csvDataRowsSimple.map((row) => {
     let result = {};
 
     // find the activetoggle label from the array of data selections
-    let activeSelection = dataSelections.find(o => o.prop === activeToggleProp);
+    let activeSelection = dataSelections.find(
+      (o) => o.prop === activeToggleProp
+    );
 
     // find the label using the active group
-    result.label = activeSelection.data.find(obj => {
+    result.label = activeSelection.data.find((obj) => {
       return obj.id === row[activeToggleProp];
     }).label;
 
     // create the simple data
-    useKeys.forEach(k => {
-      const propName = Object.keys(row).find(prop => {
+    useKeys.forEach((k) => {
+      const propName = Object.keys(row).find((prop) => {
         if (prop === "cohort") {
           return true; // if the cohort is provided, keep it
-        } else if (filters.primary.find(f => f.id === "earnings")) {
+        } else if (filters.primary.find((f) => f.id === "earnings")) {
           // if earnings filter by p50_, p75_
           return prop.includes(`${k}_`);
         } else if (
           // if counts && grouped by emp/nonemp filter by _emp, _nonemp
-          filters.primary.find(f => f.id === "counts") &&
+          filters.primary.find((f) => f.id === "counts") &&
           Array.isArray(filters.secondary) &&
           filters.secondary.length > 1
         ) {

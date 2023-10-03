@@ -44,6 +44,8 @@ export default {
 
       if (textLabel === "State") {
         return "State of Employment";
+      } else if (textLabel === "Occupation") {
+        return "Military Occupation"
       } else {
         return textLabel;
       }
