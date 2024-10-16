@@ -20,4 +20,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // https://vite.dev/config/shared-options.html#base
+  // subdirectory path e.g. /applications/veo
+  // using a relative path should allow it to be placed in a subdirectory
+  base:'./',
 });

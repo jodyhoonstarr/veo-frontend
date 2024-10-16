@@ -10,7 +10,7 @@
       <v-img
         alt="Census Logo"
         contain
-        src="@/assets/images/census-logo-white.svg"
+        src="/assets/images/census-logo-white.svg"
         transition="scale-transition"
         width="86"
         aspect-ratio="1"
