@@ -91,8 +91,8 @@ import SelectBar from "@/components/SelectBar.vue";
 import DropDownwRadio from "@/components/DropDownwRadio.vue";
 import FiltersBar from "@/components/FiltersBar.vue";
 import ChartCard from "@/components/ChartCard.vue";
-import Chart from "@/components/Chart";
-import GetData from "@/components/GetData";
+import Chart from "@/components/Chart.vue";
+import GetData from "@/components/GetData.vue";
 import { GROUPCOLUMN } from "@/constants/lookups.js";
 import {
   createChartData,

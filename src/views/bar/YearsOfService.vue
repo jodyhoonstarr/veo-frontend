@@ -75,11 +75,11 @@
 
 <script>
 import SelectBar from "@/components/SelectBar.vue";
-import GetData from "@/components/GetData";
-import DropDownwRadio from "@/components/DropDownwRadio";
-import ChartCard from "@/components/ChartCard";
-import FiltersBar from "@/components/FiltersBar";
-import Chart from "@/components/Chart";
+import GetData from "@/components/GetData.vue";
+import DropDownwRadio from "@/components/DropDownwRadio.vue";
+import ChartCard from "@/components/ChartCard.vue";
+import FiltersBar from "@/components/FiltersBar.vue";
+import Chart from "@/components/Chart.vue";
 import { GROUPCOLUMN } from "@/constants/lookups";
 import {
   createChartData,

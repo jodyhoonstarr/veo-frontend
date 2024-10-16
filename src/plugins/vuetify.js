@@ -1,9 +1,9 @@
 import "@mdi/font/css/materialdesignicons.css";
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
-import SolidLine from "@/assets/icons/SolidLine";
-import DashedLine from "@/assets/icons/DashedLine";
-import DottedLine from "@/assets/icons/DottedLine";
+import SolidLine from "@/assets/icons/SolidLine.vue";
+import DashedLine from "@/assets/icons/DashedLine.vue";
+import DottedLine from "@/assets/icons/DottedLine.vue";
 
 Vue.use(Vuetify);
 

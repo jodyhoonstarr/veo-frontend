@@ -52,7 +52,7 @@
 
 <script>
 import DropDown from "@/components/DropDown.vue";
-import DetailDropDown from "@/components/DetailDropDown";
+import DetailDropDown from "@/components/DetailDropDown.vue";
 
 export default {
   name: "DropDownwRadio",

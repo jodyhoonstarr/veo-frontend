@@ -69,12 +69,12 @@
 
 <script>
 import SelectBar from "@/components/SelectBar.vue";
-import GetData from "@/components/GetData";
-import DropDownNoRadio from "@/components/DropDownNoRadio";
-import CohortSlider from "@/components/CohortSlider";
-import ChartCard from "@/components/ChartCard";
-import FiltersBar from "@/components/FiltersBar";
-import Chart from "@/components/Chart";
+import GetData from "@/components/GetData.vue";
+import DropDownNoRadio from "@/components/DropDownNoRadio.vue";
+import CohortSlider from "@/components/CohortSlider.vue";
+import ChartCard from "@/components/ChartCard.vue";
+import FiltersBar from "@/components/FiltersBar.vue";
+import Chart from "@/components/Chart.vue";
 import { GROUPCOLUMN } from "@/constants/lookups";
 import {
   createChartData,

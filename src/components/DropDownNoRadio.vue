@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import DropDown from "@/components/DropDown";
+import DropDown from "@/components/DropDown.vue";
 
 export default {
   name: "DropDownNoRadio",

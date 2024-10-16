@@ -93,11 +93,11 @@
 
 <script>
 import BarChart from "@/components/BarChart.vue";
-import LineChart from "@/components/LineChart";
-import NotificationCard from "@/components/NotificationCard";
-import ChartButtonToggle from "@/components/ChartButtonToggle";
-import ChartButtonDownload from "@/components/ChartButtonDownload";
-import ButtonContainer from "@/components/ButtonContainer";
+import LineChart from "@/components/LineChart.vue";
+import NotificationCard from "@/components/NotificationCard.vue";
+import ChartButtonToggle from "@/components/ChartButtonToggle.vue";
+import ChartButtonDownload from "@/components/ChartButtonDownload.vue";
+import ButtonContainer from "@/components/ButtonContainer.vue";
 
 export default {
   name: "Chart",
