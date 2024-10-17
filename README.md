@@ -29,13 +29,15 @@ npm run dev
 
 The application uses vue router which passes the URL path to the application for handling. This works as expected when served from the root website directory (e.g. ```www.website.com```) but requires some configuration if depoloyed elsewhere.
 
-In vue.config.js set the public path to be the home project directory. If this application is to be served from the root directory then set
-```publicPath = "/"```
+In vite.config.js set the public path to be the home project directory. If this application is to be served from the root directory then set
+```base = "/"```
 
 If deployment is in a subdirectory, such as ```www.website.com/project/app``` then the path variables should use
-```publicPath = "/project/app"```
+```base = "/project/app"```
 
 This must be done before building the application files.
+
+> IMPORTANT: Some public assets have a hardcoded path of "/applications/veo" required for the migration from vue-cli to vite 2. More modern versions of vite can handle this automatically.
 
 ### Build and minify for production
 

@@ -1,7 +1,6 @@
 import { select } from "d3-selection";
 import { schemeCategory10 } from "d3-scale-chromatic";
 import { scaleOrdinal } from "d3-scale";
-import { PUBLICPATH } from "@/constants/config";
 
 // titlecase a string
 const ignoreWords = ["of"];
@@ -16,14 +15,17 @@ export function toTitleCase(str) {
 
 // prefix a path with the public path from the config
 export function joinPublicPath(str) {
-  if (PUBLICPATH === "/" && str.charAt(0) === "/") {
-    return str;
-  } else if (PUBLICPATH !== "/" && str.charAt(0) === "/") {
-    return `${PUBLICPATH}${str}`;
-  } else if (PUBLICPATH !== "/" && str.charAt(0) !== "/") {
-    return `${PUBLICPATH}/${str}`;
+  let baseUrl = import.meta.env.BASE_URL;
+
+  // remove trailing slash
+  if (baseUrl.endsWith("/")) {
+    baseUrl = baseUrl.slice(0, -1);
+  }
+
+  if (str.startsWith("/")) {
+    return `${baseUrl}${str}`;
   } else {
-    return `/${str}`;
+    return `${baseUrl}/${str}`;
   }
 }
 
