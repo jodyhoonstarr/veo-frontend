@@ -22,5 +22,13 @@ export default defineConfig({
   },
   // https://vite.dev/config/shared-options.html#base
   // subdirectory path
-  base:'/applications/veo/',
+  base:'/applications/veo',
+  // process.env hack
+  // when migrating from vue-cli to vite the axios package will 
+  // sporadically throw an error (ReferenceError: process is not defined)
+  // define the process.env object to prevent this
+  // source: https://github.com/vitejs/vite/issues/1973
+  define: {
+    'process.env': {}
+  },
 });

@@ -56,7 +56,6 @@ export default {
       this.response = null;
       const urlArray = this.url.split(".");
       const lastExtension = urlArray[urlArray.length - 1].toLocaleLowerCase();
-
       http
         .get(this.url)
         .then(response => {
@@ -71,7 +70,8 @@ export default {
             this.response = null;
           }
         })
-        .catch(() => {
+        .catch((e) => {
+          console.error(e)
           this.loading = false;
           this.response = null;
         });
